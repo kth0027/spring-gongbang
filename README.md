@@ -1,5 +1,7 @@
 > 채널 개설, 카카오 맵 API, 쪽지 주고받기
 
+### Notion : [노션링크](https://cedar-echinacea-afc.notion.site/4-Spring-2-2366786eba4b49409a93a8345bcffdeb)
+
 # 주제 : 원데이 클래스 개설
 
 # 주요 기능 

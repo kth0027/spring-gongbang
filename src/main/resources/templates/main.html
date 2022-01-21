@@ -1,10 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" th:fragment="main">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>메인페이지</title>
+    <!-- main css 가져오기 -->
+    <link th:href="@{/css/main.css}" rel="stylesheet">
 
+
+</head>
+
+<body>
+<div th:replace=" common.html :: common"></div>
+<div id="wrap" class="border border-danger">
+    <main>
+        <div class="container">
+            <!-- 캐러셀 -->
+            <div class="row border">
+                <section>
+                    <ul class="carousel">
+                        <li class="items main-pos" id="1">
+                            <p>1</p>
+                        </li>
+                        <li class="items right-pos" id="2">
+                            <img src="http://farm9.staticflickr.com/8337/8234123289_2b23aeaf06.jpg" />
+                        </li>
+                        <li class="items back-pos" id="3">
+                            <img src="http://farm9.staticflickr.com/8337/8234711202_831b23a2b7.jpg" />
+                        </li>
+                        <li class="items- back-pos" id="4">
+                            <iframe width="500" height="281" src="https://www.youtube.com/embed/szIEr2F61DU"
+                                    frameborder="0" allowfullscreen></iframe>
+                        </li>
+                        <li class="items back-pos" id="5">
+                            <iframe src="https://player.vimeo.com/video/19464611" width="500" height="281"
+                                    frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+                        </li>
+                        <li class="items back-pos" id="6">
+                            <img
+                                    src="http://woofie2.pixiq.com/files/cache/20030323_img_7465_3072_x_2048_619x413.jpg" />
+                        </li>
+                        <li class="items left-pos" id="7"><img
+                                src="http://www.mishes.com/wp-content/uploads/2011/12/FlickrMonday07.jpg" />
+                        </li>
+                    </ul>
+                    <span>
+                            <input type="button" value="Prev" id="prev">
+                            <input type="button" value="Next" id="next">
+                        </span>
+                </section>
+            </div>
+
+
+            <div class="row border">
+                <div class="leftbox col-6 border" >
+                    리스트칸
+                </div>
+                <div class="leftbox col-6 border">
+                    지도칸
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- 메인캐러셀 js 가져오기 -->
+<script th:src="@{/js/maincarousel.js}"></script>
 </body>
+
 </html>

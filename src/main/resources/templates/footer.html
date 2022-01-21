@@ -1,10 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" th:fragment="footer">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>푸터페이지</title>
+    <!-- footer css 가져오기 -->
+    <link th:href="@{/css/footer.css}" rel="stylesheet">
+
 </head>
 <body>
+<div th:replace=" common.html :: common"></div>
+<div id="wrap" class="border border-dark">
+    <footer>
 
+    </footer>
+
+</div>
 </body>
 </html>

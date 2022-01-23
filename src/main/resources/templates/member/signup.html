@@ -1,10 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>회원가입</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/signup.css}" rel="stylesheet">
 </head>
 <body>
+<div th:replace="common.html :: common"></div>
+<div th:replace="header.html :: header"></div>
+
+
+<script th:src="@{/js/signup.js}"></script>
+
+
+<div id="wrap">
+    <div class="container d-flex">
+
+        <div class="col-8 offset-2 outline">
+            <form class="p-2 outlineinner p-5" method="post" action="/member/signupcontroller">
+                <h3>공방 :: 회원가입</h3>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control rounded-4" id="memail" name="memail" placeholder="이메일">
+                    <label for="floatingInput" id="emailcheck">이메일</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control rounded-4" id="mpassword" name="mpassword"
+                           placeholder="비밀번호">
+                    <label for="floatingInput" id="passwordcheck">비밀번호</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control rounded-4" id="mpasswordconfirm" name="mpasswordconfirm"
+                           placeholder="비밀번호확인">
+                    <label for="floatingInput">비밀번호확인</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control rounded-4" id="mname" name="mname" placeholder="이름">
+                    <label for="floatingInput" id="namecheck">이름</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control rounded-4" id="mphone" name="mphone" placeholder="연락처">
+                    <label for="floatingInput" id="phonecheck">연락처</label>
+                </div>
+
+                <div class=" mb-3 text-left">
+                    <label for="">성별 : </label>
+                    <input type="radio" name="msex" id="msex1" value="남" checked="checked">남자
+                    <input type="radio" name="msex" id="msex2" value="여">여자
+                </div>
+
+                <div><input type="checkbox" class="m-3" name="signupsign"> * <span
+                        class="text-success fw-bold"><u>이용약관</u></span>에
+                    동의 합니다 . *
+                </div>
+
+                <div><input type="checkbox" class="m-3" name="infosign"> * <span
+                        class="text-success fw-bold"><u>개인정보수집·이용</u></span>에 동의합니다. *
+                </div>
+
+
+                <div class="col-4 offset-4">
+                    <input id="formsubmit" type="button" class="form-control p-3 my-3 btn-primary" value="회원가입">
+                </div>
+
+                <div class="row d-flex justify-content-center">
+                    <h2 class="fs-5 fw-bold mb-3 text-center"> SNS 계정으로 시작하기</h2>      <!-- ouath2 -->
+                    <button class="w-75 py-2 mb-2 btn btn-outline-dark rounded-4" type="submit">구글</button>
+                    <button class="w-75 py-2 mb-2 btn btn-outline-primary rounded-4" type="submit">카카오</button>
+                    <button class="w-75 py-2 mb-2 btn btn-outline-secondary rounded-4" type="submit">네이버</button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+    <video class="video-bg" autoplay muted loop>
+        <source src="http://www.georgewpark.com/video/blurred-street.mp4" type="video/mp4" />
+        <source src="http://www.georgewpark.com/video/blurred-street.webm" type="video/webm" />
+    </video>
+
+</div>
+
 
 </body>
 </html>

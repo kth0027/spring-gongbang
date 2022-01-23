@@ -8,29 +8,25 @@
     <title>메인페이지</title>
     <!-- main css 가져오기 -->
     <link th:href="@{/css/main.css}" rel="stylesheet">
-
-
 </head>
 
 <body>
 <div th:replace=" common.html :: common"></div>
-<div id="wrap" class="border border-danger">
+<div id="wrap" class="border border-danger" style="width:100vw">
     <main>
         <div class="container">
-            <!-- 캐러셀 -->
+            <!-- 캐러셀 시작-->
             <div class="row border">
-                <section>
-                    <ul class="carousel">
-                        <li class="items main-pos" id="1">
-                            <p>1</p>
-                        </li>
+                <section class="border">
+                    <ul class="carousel d-flex justify-content-center">
+                        <li class="items main-pos" id="1"> <img src="http://farm9.staticflickr.com/8337/8234123289_2b23aeaf06.jpg"/></li>
                         <li class="items right-pos" id="2">
-                            <img src="http://farm9.staticflickr.com/8337/8234123289_2b23aeaf06.jpg" />
+                            <img src="http://farm9.staticflickr.com/8337/8234123289_2b23aeaf06.jpg"/>
                         </li>
                         <li class="items back-pos" id="3">
-                            <img src="http://farm9.staticflickr.com/8337/8234711202_831b23a2b7.jpg" />
+                            <img src="http://farm9.staticflickr.com/8337/8234711202_831b23a2b7.jpg"/>
                         </li>
-                        <li class="items- back-pos" id="4">
+                        <li class="items back-pos" id="4">
                             <iframe width="500" height="281" src="https://www.youtube.com/embed/szIEr2F61DU"
                                     frameborder="0" allowfullscreen></iframe>
                         </li>
@@ -39,28 +35,60 @@
                                     frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
                         </li>
                         <li class="items back-pos" id="6">
-                            <img
-                                    src="http://woofie2.pixiq.com/files/cache/20030323_img_7465_3072_x_2048_619x413.jpg" />
+                            <img src="http://woofie2.pixiq.com/files/cache/20030323_img_7465_3072_x_2048_619x413.jpg"/>
                         </li>
                         <li class="items left-pos" id="7"><img
-                                src="http://www.mishes.com/wp-content/uploads/2011/12/FlickrMonday07.jpg" />
+                                src="http://www.mishes.com/wp-content/uploads/2011/12/FlickrMonday07.jpg"/>
                         </li>
                     </ul>
-                    <span>
-                            <input type="button" value="Prev" id="prev">
-                            <input type="button" value="Next" id="next">
-                        </span>
+                    <span class="d-flex justify-content-center">
+                        <input type="button" value="Prev" id="prev">
+                        <input type="button" value="Next" id="next">
+                    </span>
                 </section>
             </div>
+            <!-- 캐러셀 종료 -->
+
+            <!-- 캐러셀 지역 / 카테고리 -->
+            <div class="row border">
+                <div id="tab-carousel">
+                    <ul class="nav nav-tabs">
+                        <li class="active" >
+                            <a href="#follow" style="cursor: pointer">지역</a>
+                        </li>
+                        <li style="cursor: pointer">
+                            <a href="#theyellow" style="cursor: pointer">카테고리</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="follow">
+
+
+                        </div>
+
+                        <div class="tab-pane" id="theyellow">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 캐러셀 종료-->
 
 
             <div class="row border">
-                <div class="leftbox col-6 border" >
+                <div class="leftbox col-6 border">
                     리스트칸
                 </div>
                 <div class="leftbox col-6 border">
                     지도칸
                 </div>
+            </div>
+
+            <!--            -->
+            <div class="row border">
+                <h6>다른분들이 참여한 클래스</h6>
+
+
             </div>
         </div>
     </main>
@@ -68,6 +96,10 @@
 
 <!-- 메인캐러셀 js 가져오기 -->
 <script th:src="@{/js/maincarousel.js}"></script>
+<!-- 메인 탭 캐러셀 js 가져오기 -->
+<script th:src="@{/js/maintabcarousel.js}"></script>
+<!-- 메인 탭 이너캐러셀 js 가져오기 -->
+<script th:src="@{/js/maintabcarouselinner.js}"></script>
 </body>
 
 </html>

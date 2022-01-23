@@ -8,15 +8,25 @@
     <!-- footer css 가져오기 -->
     <link th:href="@{/css/footer.css}" rel="stylesheet">
 
+
 </head>
 <body>
 <div th:replace=" common.html :: common"></div>
-<div id="wrap" class="border border-dark">
+
+<div id="wrap" class="border border-dark" style="width:100vw">
     <footer>
         <div class="container">
-            <div class="row">
+            <footer class="d-flex justify-content-between align-items-center py-3 my-4 border-top">
+                <ul class="nav col-4 justify-content-start list-unstyled d-flex">
+                    <li>© 2021 Company, Inc</li>
+                </ul>
 
-            </div>
+                <ul class="nav col-4 justify-content-end list-unstyled d-flex">
+                    <li class="ms-3"><a class="text-muted" href="#"><i class="bi bi-twitter"></i></a></li>
+                    <li class="ms-3"><a class="text-muted" href="#"><i class="bi bi-instagram"></i></a></li>
+                    <li class="ms-3"><a class="text-muted" href="#"><i class="bi bi-facebook"></i></a></li>
+                </ul>
+            </footer>
         </div>
     </footer>
 

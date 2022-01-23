@@ -2,22 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>공방프로젝트 미디어쿼리</title>
-    <style>
-        header {height:10vh}
-        main {height:80vh}
-        footer {height:10vh}
-    </style>
-
+    <title>Title</title>
 </head>
 <body>
-<div th:replace=" common.html :: common"></div>
-<div id="wrap">
-    <header><div th:replace=" header.html :: header"></div></header>
-    <main><div th:replace=" main.html :: main"></div></main>
-    <footer><div th:replace=" footer.html :: footer"></div></footer>
-</div>
+    <div th:replace="header.html :: header"></div>
+    <div th:replace="main.html :: main"></div>
+    <div th:replace="footer.html :: footer"></div>
 </body>
 </html>

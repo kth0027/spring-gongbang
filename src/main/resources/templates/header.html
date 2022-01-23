@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:fragment="header">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="header">
 <head>
     <meta charset="UTF-8">
     <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
@@ -11,33 +11,34 @@
 </head>
 <body>
 <div th:replace=" common.html :: common"></div>
-    <div id="wrap" class="border border-primary">
-        <header class="p-3 bg-dark text-white">
-            <div class="container">
-                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                    <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                        공방로고
-                    </a>
+<div id="wrap" class="border border-primary">
+    <header class="p-3 bg-dark text-white">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    공방로고
+                </a>
 
-                    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                        <li><a href="#" class="nav-link px-2 text-secondary">홈</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">클래스 개설</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">리뷰게시판</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">결제</a></li>
-                        <li><a href="#" class="nav-link px-2 text-white">내정보</a></li>
-                    </ul>
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="#" class="nav-link px-2 text-secondary">홈</a></li>
+                    <li><a th:href="@{/room/register}" class="nav-link px-2 text-white">클래스 개설</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">리뷰게시판</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">결제</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">내정보</a></li>
+                </ul>
 
-                    <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-                        <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-                    </form>
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                    <input type="search" class="form-control form-control-dark" placeholder="Search..."
+                           aria-label="Search">
+                </form>
 
-                    <div class="text-end">
-                        <button type="button" class="btn btn-outline-light me-2">Login</button>
-                        <button type="button" class="btn btn-warning">Sign-up</button>
-                    </div>
+                <div class="text-end">
+                    <button type="button" class="btn btn-outline-light me-2">Login</button>
+                    <button type="button" class="btn btn-warning">Sign-up</button>
                 </div>
             </div>
-        </header>
-    </div>
+        </div>
+    </header>
+</div>
 </body>
 </html>

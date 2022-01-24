@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="header">
+<html lang="en" th:fragment="header">
 <head>
     <meta charset="UTF-8">
     <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
@@ -8,37 +8,144 @@
     <!-- header css 가져오기 -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
 
+
 </head>
 <body>
 <div th:replace=" common.html :: common"></div>
-<div id="wrap" class="border border-primary">
+
+<!-- 로그인 스크립트-->
+<script th:src="@{/js/login.js}"></script>
+
+<div id="wrap" class="border border-primary" style="width:100vw">
+    <!-- 헤더메뉴 -->
     <header class="p-3 bg-dark text-white">
         <div class="container">
-            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <div class="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                    공방로고
+                    <img th:src="@{/img/logo/logo.png}" alt="logo">
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="#" class="nav-link px-2 text-secondary">홈</a></li>
-                    <li><a th:href="@{/room/register}" class="nav-link px-2 text-white">클래스 개설</a></li>
+                    <li><a href="#" class="nav-link px-2 text-white">클래스 개설</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">리뷰게시판</a></li>
                     <li><a href="#" class="nav-link px-2 text-white">결제</a></li>
-                    <li><a href="#" class="nav-link px-2 text-white">내정보</a></li>
                 </ul>
 
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+                <form class="col-6">
                     <input type="search" class="form-control form-control-dark" placeholder="Search..."
                            aria-label="Search">
                 </form>
 
                 <div class="text-end">
-                    <button type="button" class="btn btn-outline-light me-2">Login</button>
-                    <button type="button" class="btn btn-warning">Sign-up</button>
+                    <button th:if="${session.logindto == null }" type="button" class="btn btn-outline-light me-2 openlogin" data-target="#modallogin"
+                            data-toggle="modal">로그인
+                    </button>
+                    <a th:if="${session.logindto == null }" th:href="@{/member/signup}">
+                        <button type="button" class="btn btn-warning" data-target="#modalsignup" data-toggle="modal">
+                            회원가입
+                        </button>
+                    </a>
+
+                    <a th:if="${session.logindto != null }" th:href="@{/member/info}" style="text-decoration: none;">
+                        <button type="button" class="btn btn-outline-info">마이페이지</button>
+                    </a>
+
+                    <a th:if="${session.logindto != null }" th:href="@{/member/logout}" style="text-decoration: none;">
+                        <button type="button" class="btn btn-outline-info">로그아웃</button>
+                    </a>
+
+
                 </div>
             </div>
         </div>
     </header>
+    <!-- 헤더메뉴 END -->
+
+    <!-- 로그인 모달 -->
+    <div class="modal fade" id="modallogin" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-5 shadow">
+                <div class="modal-header p-5 pb-4 border-bottom-0">
+                    <h2 class="fw-bold mb-0 text-center w-100"><img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%"> <p class="text-center">로그인</p></h2>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close" style="width:2rem;"></button>
+                    <!-- 닫기 버튼 -->
+                </div>
+
+                <div class="modal-body p-5 pt-0">
+                    <div><label for="">이메일
+                    </label>
+                        <input type="text" class="form-control rounded-4" id="login_memail" placeholder="이메일">
+                    </div>
+                    <div><label for="">비밀번호</label><input type="password" class="form-control rounded-4"
+                                                          id="login_mpassword"
+                                                          placeholder="비밀번호">
+                    </div>
+                    <div id="loginfailmsg" class="text-danger text-center m-2"></div>       <!-- 로그인 실패시 메시지 -->
+                    <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" onclick="login()">로그인</button>
+                    <!-- 로그인 버튼 -->
+                    <div><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이 아니신가요? 회원가입</a></div>
+                    <a id="findbtn" th:href="@{/member/findemail}" data-dismiss="modal"><small class="text-muted px-2">회원정보찾기</small></a>
+
+                    <hr class="my-4">
+                    <h2 class="fs-5 fw-bold mb-3"> SNS 연동 로그인</h2>      <!-- ouath2 -->
+                    <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-4" type="submit">구글</button>
+                    <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" type="submit">카카오</button>
+                    <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-4" type="submit">네이버</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 로그인 모달종료 -->
+
+    <div id="popup" style="display: none">
+        <div class="popupmodal">
+            <div class="modal-body p-5 pt-0 d-flex justify-content-center align-items-center" style="height:100%;">
+                <div class="col-md-6">  <!-- 아이디찾기  -->
+                    <form action="/member/findemailcontroller" method="post">
+                        이름 : <input type="text" name="mname"> <br>
+                        핸드폰번호 : <input type="text" name="mphone"> <br>
+                        <input type="submit" value="이메일 찾기"> <br>
+                    </form>
+                    <div th:text="${findemailmsg}"></div>
+                </div>
+
+                <div class="col-md-6">  <!-- 패스워드찾기 -->
+                    <form action="/member/findpasswordcontroller" method="post">
+                        이메일 : <input type="text" name="meail"> <br>
+                        핸드폰번호 : <input type="text" name="mphone"> <br>
+                        <input type="submit" value="비밀번호 찾기"> <br>
+                    </form>
+                    <div th:text="${findpwmsg}"></div>
+                </div>
+
+
+            </div>
+            <button>닫기</button>
+
+        </div>
+
+    </div>
+
 </div>
+
+<script>
+
+$(document).ready(function(){
+    /* 클릭시 팝업창 열기/닫기 */
+    $("#findbtn").click(function(){
+        $("#modallogin").fadeOut();
+        $("#popup").fadeIn();
+    });
+
+    $(".popupmodal>button").click(function(){
+        $("#popup").fadeOut();
+    });
+});
+
+</script>
+
 </body>
 </html>

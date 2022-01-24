@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <title>클래스 개설</title>
     <style>
+        *{
+            border: 1px solid red;
+        }
         .addClassPhoto{
+            outline: 2px dashed #92b0b3 ;
+            outline-offset:-10px;
+            text-align: center;
+            transition: all .15s ease-in-out;
+            width: 300px;
+            height: 300px;
+            background-color: gray;
+        }
+
+        .addYourPhoto{
             outline: 2px dashed #92b0b3 ;
             outline-offset:-10px;
             text-align: center;
@@ -40,12 +53,9 @@
     </div>
 
     <div class="">
-        <div class="tab-container"></div>
-        <!-- 한 페이지 내에서 화면 전환만 일어나게한다. -->
         <form action="" method="post" enctype="multipart/form-data">
-            <!-- 여기서 section 을 왔다갔다 할 수 있도록 한다. -->
+            <!--첫번째 탭-->
             <div id="tab-1" class="tab-content current">
-                <div>섹션1</div>
                 <div>
                     <div> 강사님 기본 정보 <span class="color:red;">필수</span></div>
                     <div class="my-2">
@@ -59,11 +69,10 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="addClassName" class="form-label">클래스 명 <span style="color:red;">[필수]</span>
+                    <label for="addClassName" class="form-label">클래스 이름<span style="color:red;">[필수]</span>
                         <span>글자수(1/50)</span></label>
-                    <input type="text" class="addClassName" id="addClassName" aria-describedby="addClassName"
-                           name="addClassName">
-                    <div class="container">
+                    <input type="text" class="addClassName" id="addClassName" aria-describedby="addClassName" name="addClassName">
+                    <div class="container" style="font-size:0.6rem;">
                         <small>작성 TIP</small>
                         <div class="list-group">
                             <div class="list-group-item list-group-item-action list-group-item-secondary">어떤 수업인지 한 눈에 알
@@ -87,9 +96,9 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="addClassInfo" class="form-label">클래스 간단소개 <span style="color:red;">[필수]</span> <span>글자수(1/150)</span></label>
-                    <textarea name="" id="addClassInfo" cols="50" rows="20"></textarea>
-                    <div class="container">
+                    <label for="addClassInfo" class="form-label">클래스 간단소개 <span style="color:red;">[필수]</span> <span>글자수(1/150)</span></label><br>
+                    <textarea name="" id="addClassInfo" cols="30" rows="5" style="width:100%;"></textarea>
+                    <div class="container" style="font-size:0.6rem;">
                         <small>작성 TIP</small>
                         <div class="list-group list-group-flush">
                             <div class="list-group-item list-group-item-action list-group-item-secondary">클래스 요약 설명 작성란
@@ -107,7 +116,6 @@
                     </div>
                 </div>
 
-                &lt;!&ndash;카테고리 선택&ndash;&gt;
                 <div class="mb-3">
                     <label for="classCategory" class="form-label">클래스 카테고리<span style="color:red;">[필수]</span></label>
                     <div id="classCategory" class="container">
@@ -125,20 +133,47 @@
                     </div>
                 </div>
 
-                &lt;!&ndash;서브 카테고리 선택&ndash;&gt;
-
                 <div class="mb-3">
                     <label for="addClassPhoto">클래스 대표 이미지 등록<span style="color:red;">[필수]</span></label>
-                    <div class="addClassPhoto" id="addClassPhoto"></div>
+                    <div class="addClassPhoto" id="addClassPhoto" style="width:100%;"></div>
                 </div>
+
+                <div class="mb-3">
+                    <label for="addYourPhoto">강사님 이미지 등록<span style="color:red;">[필수]</span></label>
+                    <div class="addClassPhoto" id="addYourPhoto" style="width:100%;"></div>
+                </div>
+
             </div>
 
+
+            <!--두번 째 탭-->
             <div id="tab-2" class="tab-content">
-                <div>섹션2</div>
+                <div> 클래스 상세내용 <span>(필수)</span></div>
+                
+                <div class="mb-3">
+                    <label for=""> 클래스 소개</label>
+                    <!-- SummerNote 첨부하기 -->
+
+                    <div style="width:100%;" class="container">
+                        <div>작성 TIP</div>
+                    </div>
+                </div>
+
+                <div>클래스 결과물</div>
+                <!-- 사진 첨부-->
+
+                <div> 태그 입력</div>
+                <input type="text" class="form-control">
+                
             </div>
 
+
+
+            <!--세번 째 탭-->
             <div id="tab-3" class="tab-content">
-                <div>섹션3</div>
+                <div> 입력한 정보 출력</div>
+
+                <input type="submit" class="btn btn-secondary">
             </div>
 
         </form>

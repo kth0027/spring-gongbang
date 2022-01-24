@@ -1,4 +1,4 @@
 package com.ezen.domain.entity;
 
-public class RoomLike {
+public class BoardImgEntity {
 }

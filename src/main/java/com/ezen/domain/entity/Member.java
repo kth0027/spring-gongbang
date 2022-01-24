@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 @Builder
 @ToString
-public class Member extends BaseTime {
+public class Member extends BaseTimeEntity {
 
     // [회원 고유 식별 번호]
     @Id
@@ -65,7 +65,7 @@ public class Member extends BaseTime {
     private int memberPoint;
 
     // 룸 리스트
-    @OneToMany(mappedBy="member")
-    private List<Room> roomEntities = new ArrayList<>();
+//    @OneToMany(mappedBy="memberEntity")
+//    private List<RoomEntity> roomEntities = new ArrayList<>();
 
 }

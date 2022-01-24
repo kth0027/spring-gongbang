@@ -6,7 +6,6 @@
                 if (!emailj.test(memail)) {
                     $("#emailcheck").html("이메일 형식으로 입력해주세요");
                     $("#emailcheck").css('color', 'green');
-
                 } else {
                     // 이메일 중복체크 비동기 통신
                     $.ajax({

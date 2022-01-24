@@ -1,8 +1,6 @@
 package com.ezen.domain.entity;
 
 import lombok.*;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,7 +18,7 @@ import java.util.List;
 @Setter
 @Builder
 @ToString
-public class Room extends BaseTime {
+public class RoomEntity extends BaseTimeEntity {
 
     // [클래스 고유 식별 번호]
     @Id
@@ -71,13 +69,13 @@ public class Room extends BaseTime {
      * */
 
     // 회원번호 관계
-    @ManyToOne
-    @JoinColumn(name="memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
-    private Member member;
+//    @ManyToOne
+//    @JoinColumn(name="memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
+//    private MemberEntity memberEntity;
 
     // 이미지 관계
-    @OneToMany(mappedBy="room")
-    private List<RoomImg> roomImgEntities = new ArrayList<>();
+//    @OneToMany(mappedBy="room")
+//    private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
 
 
 }

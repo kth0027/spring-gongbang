@@ -13,11 +13,13 @@
             height: 300px;
             background-color: gray;
         }
+
     </style>
+    <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
 <div th:replace="header.html::header"></div>
-<script th:src="@{/js/}"></script>
+<script th:src="@{/js/register_class.js}"></script>
 <div class="container" style="margin-top: 2rem;">
     <div class="row">
         <div class="col-md-4">
@@ -42,11 +44,8 @@
         <!-- 한 페이지 내에서 화면 전환만 일어나게한다. -->
         <form action="" method="post" enctype="multipart/form-data">
             <!-- 여기서 section 을 왔다갔다 할 수 있도록 한다. -->
-            <div id="currentTab" class="addClassCurrent"></div>
-            <section id="tab-section-1" class="tab-section">
-                <!-- 회원가입 시 입력하지 않았던 정보들을 여기에 입력한다.-->
-                <!-- 모카 클래스에서는 이런 식인데, 그냥 회원가입 시 모든 정보를 -->
-                <!-- 빠짐없이 입력하도록 하는게 나은 것 같다. -->
+            <div id="tab-1" class="tab-content current">
+                <div>섹션1</div>
                 <div>
                     <div> 강사님 기본 정보 <span class="color:red;">필수</span></div>
                     <div class="my-2">
@@ -108,7 +107,7 @@
                     </div>
                 </div>
 
-                <!--카테고리 선택-->
+                &lt;!&ndash;카테고리 선택&ndash;&gt;
                 <div class="mb-3">
                     <label for="classCategory" class="form-label">클래스 카테고리<span style="color:red;">[필수]</span></label>
                     <div id="classCategory" class="container">
@@ -126,31 +125,31 @@
                     </div>
                 </div>
 
-                <!--서브 카테고리 선택-->
+                &lt;!&ndash;서브 카테고리 선택&ndash;&gt;
 
                 <div class="mb-3">
                     <label for="addClassPhoto">클래스 대표 이미지 등록<span style="color:red;">[필수]</span></label>
                     <div class="addClassPhoto" id="addClassPhoto"></div>
                 </div>
+            </div>
 
-                <button class="tab_menu">다음</button>
-            </section>
-
-            <section id="tab-section-2" class="tab-section" hidden>
+            <div id="tab-2" class="tab-content">
                 <div>섹션2</div>
-            </section>
+            </div>
 
-            <section id="tab-section-3" class="tab-section" hidden>
+            <div id="tab-3" class="tab-content">
                 <div>섹션3</div>
-            </section>
+            </div>
 
         </form>
 
-        <nav id="tab-button-nav">
-            <button class="tab-button" data-tab-section="tab-section-1">탭 1</button>
-            <button class="tab-button" data-tab-section="tab-section-2">탭 2</button>
-            <button class="tab-button" data-tab-section="tab-section-3">탭 3</button>
-        </nav>
+        <div class="tab-wrapper">
+            <ul class="tabs nav">
+                <li class="nav-item tab-link current" data-tab="tab-1">탭1</li>
+                <li class="nav-item tab-link" data-tab="tab-2">탭2</li>
+                <li class="nav-item tab-link" data-tab="tab-3">탭3</li>
+            </ul>
+        </div>
     </div>
 
 </div>

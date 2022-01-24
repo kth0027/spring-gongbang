@@ -37,7 +37,7 @@ public class MemberController { // C S
     // 이메일 중복체크
     @GetMapping("/emailcheck")
     @ResponseBody
-    public String emailcheck( @RequestParam("memail") String memail ){
+    public String emailcheck( @RequestParam("memberEmail") String memail ){
         boolean result = memberService.emailcheck( memail);
         if( result ){
             return "1"; // 중복
@@ -87,7 +87,7 @@ public class MemberController { // C S
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
 
         // 2. 세션에 회원정보를 service 에 전달해서 동일한 회원번호에 회원정보 가져오기
-        MemberDto memberDto = memberService.getmemberDto(loginDto.getMnum());
+        MemberDto memberDto = memberService.getmemberDto(loginDto.getMemberNo());
 
         // 3. 찾은 회원정보를 model 인터페이스를 이용한 view 전달하기
         model.addAttribute( "memberDto", memberDto);
@@ -105,7 +105,7 @@ public class MemberController { // C S
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         // 2. service에 로그인된 회원번호 , 확인패스워드
-        boolean result =  memberService.delete( memberDto.getMnum() , passwordconfirm );
+        boolean result =  memberService.delete( memberDto.getMemberNo() , passwordconfirm );
         // 3. 결과 를 ajax에게 응답
         if( result ){ return 1;}
         else{return 2;}

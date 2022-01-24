@@ -20,12 +20,12 @@
             <form class="p-2 outlineinner p-5" method="post" action="/member/signupcontroller">
                 <h3>공방 :: 회원가입</h3>
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" id="memail" name="memail" placeholder="이메일">
+                    <input type="text" class="form-control rounded-4" id="memail" name="memberEmail" placeholder="이메일">
                     <label for="floatingInput" id="emailcheck">이메일</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="password" class="form-control rounded-4" id="mpassword" name="mpassword"
+                    <input type="password" class="form-control rounded-4" id="mpassword" name="memberPassword"
                            placeholder="비밀번호">
                     <label for="floatingInput" id="passwordcheck">비밀번호</label>
                 </div>
@@ -37,19 +37,19 @@
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" id="mname" name="mname" placeholder="이름">
+                    <input type="text" class="form-control rounded-4" id="mname" name="memberName" placeholder="이름">
                     <label for="floatingInput" id="namecheck">이름</label>
                 </div>
 
                 <div class="form-floating mb-3">
-                    <input type="text" class="form-control rounded-4" id="mphone" name="mphone" placeholder="연락처">
+                    <input type="text" class="form-control rounded-4" id="mphone" name="memberPhone" placeholder="연락처">
                     <label for="floatingInput" id="phonecheck">연락처</label>
                 </div>
 
                 <div class=" mb-3 text-left">
                     <label for="">성별 : </label>
-                    <input type="radio" name="msex" id="msex1" value="남" checked="checked">남자
-                    <input type="radio" name="msex" id="msex2" value="여">여자
+                    <input type="radio" name="memberGender" id="msex1" value="남" checked="checked">남자
+                    <input type="radio" name="memberGender" id="msex2" value="여">여자
                 </div>
 
                 <div><input type="checkbox" class="m-3" name="signupsign"> * <span

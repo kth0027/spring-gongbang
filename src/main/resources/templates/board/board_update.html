@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
 <body>
+<div th:replace="header.html :: header"></div>
+<div class="container my-3">
+    <h3 class="text-center  my-3"> 클래스 수정 </h3>
+    <form class="row" method="post" action="" enctype="multipart/form-data">
+        <div class="col-md-5 offset-1 border p-3 rounded-3 shadow p-3 mb-5 bg-body rounded ">
+
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-4" id="" name="" placeholder="클래스명">
+                <label for="floatingInput">클래스명</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-4" id="" name="" placeholder="클래스 내용">
+                <label for="floatingInput">클래스 내용</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-4" id="" name="" placeholder="카테고리">
+                <label for="floatingInput">카테고리</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-4" id="" name="" placeholder="수업 장소">
+                <label for="floatingInput">수업 장소</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control rounded-4" id="" name="" placeholder="클래스 시작일">
+                <label for="floatingInput">클래스 시작일</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="date" class="form-control rounded-4" id="" name="" placeholder="클래스 종료일">
+                <label for="floatingInput">클래스 종료일</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control rounded-4" id="" name="" placeholder="">
+                <label for="floatingInput"></label>
+            </div>
+            <div>
+                <div class=" mb-3">
+                    <input type="file" multiple="multiple" class="form-control rounded-4" id="file" name="file">
+                </div>
+            </div>
+            <div class= "offset-1 col-md-11 d-grid gap-2">
+                <input type="submit" value="수정" class="btn btn-primary p-3 fs-3"> <!-- p: 안쫑여백 , m:바깥여백 , fs : 폰트사이즈 -->
+            </div>
+        </div>
+    </form>
+</div>
 
 </body>
 </html>

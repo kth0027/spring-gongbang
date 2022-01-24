@@ -8,9 +8,9 @@ import javax.persistence.*;
 @Table(name = "roomimg")
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @ToString(exclude = "room")
 @Setter
+@Builder
 @Getter
 public class RoomImg extends BaseTime {
 

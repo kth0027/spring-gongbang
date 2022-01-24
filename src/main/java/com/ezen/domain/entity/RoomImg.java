@@ -1,4 +1,31 @@
 package com.ezen.domain.entity;
 
-public class RoomImg {
+import lombok.*;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = "roomimg")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@ToString(exclude = "room")
+@Setter
+@Getter
+public class RoomImg extends BaseTime {
+
+    // 번호
+    @Id // pk[기본키 : 테이블 1개당 기본키 1개 권장]
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동번호키
+    @Column(name = "rImgNo") // 필드 속성(name)
+    private int rImgNo;
+
+    // 이미지경로
+    @Column(name = "rImg")
+    private String rImg;
+
+    // 룸 관계
+    @ManyToOne
+    @JoinColumn(name = "roomNo")
+    private Room room;
 }

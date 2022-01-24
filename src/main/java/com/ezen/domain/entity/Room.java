@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * 현재 개설중인 공방 리스트를 출력합니다.
@@ -67,6 +69,15 @@ public class Room extends BaseTime {
      * Member 엔티티와 @ManyToOne 관계를 맺습니다.
      * RoomImg 엔티티와 @OneToMany 관계를 맺습니다.
      * */
+
+    // 회원번호 관계
+    @ManyToOne
+    @JoinColumn(name="memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
+    private Member member;
+
+    // 이미지 관계
+    @OneToMany(mappedBy="room")
+    private List<RoomImg> roomImgEntities = new ArrayList<>();
 
 
 }

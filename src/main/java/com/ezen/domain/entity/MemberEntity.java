@@ -17,24 +17,24 @@ public class MemberEntity extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "memberNo")
-    private int mnum;
+    private int memberNo;
 
     @Column(name="memberEmail")
-    private String memail;
+    private String memberEmail;
 
     @Column(name = "memberPassword")
-    private String mpassword;
+    private String memberPassword;
 
     @Column(name = "memberName")
-    private String mname;
+    private String memberName;
 
     @Column(name = "memberPhone")
-    private String mphone;
+    private String memberPhone;
 
     @Column(name="memberGender")
-    private String msex;
+    private String memberGender;
 
     @Column(name="memberPoint")
-    private int mpoint;
+    private int memberPoint;
 
 }

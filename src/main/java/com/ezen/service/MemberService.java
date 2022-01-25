@@ -6,6 +6,7 @@ import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -24,13 +25,13 @@ public class MemberService {
     }
 
     // 이메일 중복체크
-    public boolean emailcheck(String memail) {
+    public boolean emailcheck(@RequestParam("memail") String memail) {
         // 1. 모든 엔티티 가져오기
         List<MemberEntity> memberEntities = memberRepository.findAll();
         // 2. 모든 엔티티 반복문 돌려서 엔티티 하나씩 가쟈오기
         for (MemberEntity memberEntity : memberEntities) {
             // 3. 해당 엔티티가 입력한 아이디와 동일하면
-            if (memberEntity.getMemail().equals(memail)) {
+            if (memberEntity.getMemberEmail().equals(memail)) {
                 return true; // 중복
             }
         }
@@ -41,11 +42,11 @@ public class MemberService {
     public MemberDto login(MemberDto memberDto) {
         List<MemberEntity> memberEntityList = memberRepository.findAll();
         for (MemberEntity memberEntity : memberEntityList) {
-            if (memberEntity.getMemail().equals(memberDto.getMemail()) &&
-                    memberEntity.getMpassword().equals(memberDto.getMpassword())) {
+            if (memberEntity.getMemberEmail().equals(memberDto.getMemberEmail()) &&
+                    memberEntity.getMemberPassword().equals(memberDto.getMemberPassword())) {
                 return MemberDto.builder()
-                        .memail(memberEntity.getMemail())
-                        .mnum(memberEntity.getMnum()).build();
+                        .memberEmail(memberEntity.getMemberEmail())
+                        .memberNo(memberEntity.getMemberNo()).build();
             }
         }
         return null;
@@ -59,12 +60,12 @@ public class MemberService {
         Optional<MemberEntity> memberEntity = memberRepository.findById(mnum);
         // 2. 찾은 entity를 dto 변경후 반환 [ 패스워드 , 수정날짜 제외 ]
         return MemberDto.builder()
-                .mname( memberEntity.get().getMname() )
-                .memail( memberEntity.get().getMemail() )
-                .mphone( memberEntity.get().getMphone() )
-                .mpoint( memberEntity.get().getMpoint() )
-                .msex( memberEntity.get().getMsex() )
-                .mcreatedDate( memberEntity.get().getCreatedDate() )
+                .memberName( memberEntity.get().getMemberName() )
+                .memberEmail( memberEntity.get().getMemberEmail() )
+                .memberPhone( memberEntity.get().getMemberPhone() )
+                .memberPoint( memberEntity.get().getMemberPoint() )
+                .memberGender( memberEntity.get().getMemberGender() )
+                .createdDate( memberEntity.get().getCreatedDate() )
                 .build();
     }
 
@@ -75,7 +76,7 @@ public class MemberService {
         Optional<MemberEntity> entityOptional = memberRepository.findById(mnum);
         // Optional 클래스 :  null 포함 객체 저장
         // 2. 해당 엔티티내 패스워드가 확인패스워드와 동일하면
-        if( entityOptional.get().getMpassword().equals( passwordconfirm) ){
+        if( entityOptional.get().getMemberPassword().equals( passwordconfirm) ){
             // Optional 클래스 -> memberEntity.get()  :  Optional 내 객체 호출
             memberRepository.delete( entityOptional.get() );
             return true;    // 회원탈퇴
@@ -90,10 +91,10 @@ public class MemberService {
         // 2. 반복문 이용한 모든 엔티티를 하나씩 꺼내보기
         for (MemberEntity memberEntity : memberEntities) {
             // 3. 만약에 해당 엔티티가 이름과 이메일이 동일하면
-            if (memberEntity.getMname().equals(memberDto.getMname()) &&
-                    memberEntity.getMphone().equals(memberDto.getMphone())) {
+            if (memberEntity.getMemberName().equals(memberDto.getMemberName()) &&
+                    memberEntity.getMemberPhone().equals(memberDto.getMemberPhone())) {
                 // 4. 아이디를 반환한다
-                return memberEntity.getMemail();
+                return memberEntity.getMemberEmail();
             }
         }
         // 5. 만약에 동일한 정보가 없으면
@@ -107,10 +108,10 @@ public class MemberService {
         // 2. 반복문 이용한 모든 엔티티를 하나씩 꺼내보기
         for (MemberEntity memberEntity : memberEntities) {
             // 3. 만약에 해당 엔티티가 이름과 이메일이 동일하면
-            if (memberEntity.getMemail().equals(memberDto.getMemail()) &&
-                    memberEntity.getMphone().equals(memberDto.getMphone())) {
+            if (memberEntity.getMemberEmail().equals(memberDto.getMemberEmail()) &&
+                    memberEntity.getMemberPhone().equals(memberDto.getMemberPhone())) {
                 // 4. 패스워드를 반환한다
-                return memberEntity.getMpassword();
+                return memberEntity.getMemberPassword();
             }
         }
         // 5. 만약에 동일한 정보가 없으면

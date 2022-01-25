@@ -5,14 +5,14 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roomimg")
+@Table(name = "roomimgentity")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "room")
+@ToString(exclude = "roomentity")
 @Setter
 @Builder
 @Getter
-public class RoomImg extends BaseTime {
+public class RoomImgEntity extends BaseTimeEntity {
 
     // 번호
     @Id // pk[기본키 : 테이블 1개당 기본키 1개 권장]
@@ -27,5 +27,5 @@ public class RoomImg extends BaseTime {
     // 룸 관계
     @ManyToOne
     @JoinColumn(name = "roomNo")
-    private Room room;
+    private RoomEntity roomEntity;
 }

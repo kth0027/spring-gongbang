@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @ToString
-public class Tags {
+public class TagsEntity {
 
     // [태그]
     // 태그 고유 식별 번호

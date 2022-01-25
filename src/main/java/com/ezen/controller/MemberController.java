@@ -150,5 +150,23 @@ public class MemberController { // C S
         return  "member/findemail";
     }
 
+    // [예약내역(히스토리) 페이지와 맵핑]
+    @GetMapping("/history")
+    public String history(){
+        return "member/history_list";
+    }
+    // [내가 개설한 클래스와 맵핑]
+    @GetMapping("/myclass")
+    public String myclass(){
+        return "member/member_class";
+    }
 
-} // C E
+    // [메시지 페이지와 맵핑]
+    @GetMapping("/msg")
+    public String msg(){
+        return "member/member_msg";
+    }
+
+
+
+}

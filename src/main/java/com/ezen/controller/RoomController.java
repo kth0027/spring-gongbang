@@ -28,17 +28,13 @@ public class RoomController {
     // 클래스 만든 후에는 room_view.html 와 맵핑시킨다.
     @PostMapping("/registerClassController")
     public String registerClassController() {
-
-
         return "room/room_view";
-
     }
 
     @GetMapping("/view")
     public String view() {
         return "room/room_view";
     }
-
 
     // [room_list.html 페이지와 맵핑]
     @GetMapping("/list")
@@ -56,7 +52,8 @@ public class RoomController {
     // [지역 선택 : 리스트 출력 컨트롤러]
     @GetMapping("/roomListAreaController")
     public String roomListAreaController(@PathVariable("roomListArea") String area, Model model) {
-
         return "room/room_list";
     }
+
+
 }

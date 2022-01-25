@@ -33,7 +33,7 @@ ul.tabs li.current{
 }
 
 .container {
-  width: clamp(0px, 100%, 512px);
+  width: clamp(0px, 50%, 512px);
   margin: 32px auto;
   text-align: center;
 }

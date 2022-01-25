@@ -4,27 +4,9 @@
     <meta charset="UTF-8">
     <title>클래스 개설</title>
     <style>
-        *{
-            border: 1px solid red;
-        }
-        .addClassPhoto{
-            outline: 2px dashed #92b0b3 ;
-            outline-offset:-10px;
-            text-align: center;
-            transition: all .15s ease-in-out;
-            width: 300px;
-            height: 300px;
-            background-color: gray;
-        }
 
-        .addYourPhoto{
-            outline: 2px dashed #92b0b3 ;
-            outline-offset:-10px;
-            text-align: center;
-            transition: all .15s ease-in-out;
-            width: 300px;
-            height: 300px;
-            background-color: gray;
+        * {
+            border: 1px solid red;
         }
 
     </style>
@@ -71,7 +53,8 @@
                 <div class="mb-3">
                     <label for="addClassName" class="form-label">클래스 이름<span style="color:red;">[필수]</span>
                         <span>글자수(1/50)</span></label>
-                    <input type="text" class="addClassName" id="addClassName" aria-describedby="addClassName" name="addClassName">
+                    <input type="text" class="addClassName" id="addClassName" aria-describedby="addClassName"
+                           name="addClassName">
                     <div class="container" style="font-size:0.6rem;">
                         <small>작성 TIP</small>
                         <div class="list-group">
@@ -133,15 +116,14 @@
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="addClassPhoto">클래스 대표 이미지 등록<span style="color:red;">[필수]</span></label>
-                    <div class="addClassPhoto" id="addClassPhoto" style="width:100%;"></div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="addYourPhoto">강사님 이미지 등록<span style="color:red;">[필수]</span></label>
-                    <div class="addClassPhoto" id="addYourPhoto" style="width:100%;"></div>
-                </div>
+                <main class="container">
+                    <label class="label" id="plabel" for="pinput">
+                        <div class="inner" id="inner">드래그하거나 클릭해서 업로드</div>
+                    </label>
+                    <input id="pinput" class="input" accept="image/*" type="file" required="true" multiple="true" hidden="true">
+                    <p class="preview-title">preview</p>
+                    <div class="preview" id="preview"></div>
+                </main>
 
             </div>
 
@@ -149,7 +131,7 @@
             <!--두번 째 탭-->
             <div id="tab-2" class="tab-content">
                 <div> 클래스 상세내용 <span>(필수)</span></div>
-                
+
                 <div class="mb-3">
                     <label for=""> 클래스 소개</label>
                     <!-- SummerNote 첨부하기 -->
@@ -164,9 +146,8 @@
 
                 <div> 태그 입력</div>
                 <input type="text" class="form-control">
-                
-            </div>
 
+            </div>
 
 
             <!--세번 째 탭-->

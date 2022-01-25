@@ -1,5 +1,8 @@
 package com.ezen.controller;
 
+import com.ezen.domain.entity.RoomEntity;
+import com.ezen.service.RoomService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,10 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/room")
 public class RoomController {
 
+    @Autowired
+    RoomService roomService;
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
@@ -39,6 +46,8 @@ public class RoomController {
     // [room_list.html 페이지와 맵핑]
     @GetMapping("/list")
     public String list() {
+//        List<RoomEntity> roomEntityList = roomService.getRoomlist();
+//        model.addAttribute("roomlist", roomEntityList);
         return "room/room_list";
     }
 

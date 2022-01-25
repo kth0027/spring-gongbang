@@ -167,6 +167,8 @@ public class MemberController { // C S
         return "member/member_msg";
     }
 
-
+    // [정산 페이지 맵핑]
+    @GetMapping("/calculate")
+    public String calculate() { return "member/calculate_page"; }
 
 }

@@ -3,6 +3,8 @@ package com.ezen.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -36,5 +38,8 @@ public class MemberEntity extends BaseTimeEntity {
 
     @Column(name="memberPoint")
     private int memberPoint;
+
+    @OneToMany(mappedBy = "memberEntity")
+    private List<RoomEntity> roomEntities = new ArrayList<>();
 
 }

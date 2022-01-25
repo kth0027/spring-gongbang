@@ -9,13 +9,17 @@
 <div class="container">
     <h3>내가 등록한 클래스</h3>
     <div class="row">
-        <div class="col-md-4">
-            <table class="table table-hover">
+        <div class="nav justify-content-end mb-5">
+            <a th:href="@{/member/calculate}"><button>정산 페이지</button></a>
+        </div>
+
+            <table class="table table-striped">
                 <tr>
                     <th>대표사진</th>
                     <th>클래스명</th>
                     <th>클래스 개설일</th>
                     <th>승인상태</th>
+                    <th>비고</th>
                 </tr>
                 <tr>
                     <td>
@@ -25,16 +29,17 @@
                         <a href="#">
                             <span></span>
                         </a>
-                        <a href="#"><button>내용 수정</button></a>
+
                     </td>
                     <td>2022-01-25</td>
                     <td>대기중</td>
                     <td>
+                        <a href="#"><button>내용 수정</button></a>
                         <button>삭제</button>
                     </td>
                 </tr>
+
             </table>
-        </div>
     </div>
 </div>
 

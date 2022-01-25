@@ -44,4 +44,3 @@ function uploadFiles(e){
     }
 }
 
-// 다음 버튼 누르면 content 영역에 다음 current section 만 보여주는 함수

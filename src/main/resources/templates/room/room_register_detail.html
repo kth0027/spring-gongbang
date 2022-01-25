@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>클래스 개설</title>
+    <link rel="stylesheet" th:href="@{/css/test.css}">
     <style>
         .addClassPhoto{
             outline: 2px dashed #92b0b3 ;
@@ -13,11 +14,12 @@
             height: 300px;
             background-color: gray;
         }
+
     </style>
 </head>
 <body>
 <div th:replace="header.html::header"></div>
-<script th:src="@{/js/}"></script>
+
 <div class="container" style="margin-top: 2rem;">
     <div class="row">
         <div class="col-md-4">
@@ -36,126 +38,43 @@
             </ul>
         </div>
     </div>
+    <div class="container">
 
-    <div class="">
-        <div class="tab-container"></div>
-        <!-- 한 페이지 내에서 화면 전환만 일어나게한다. -->
-        <form action="" method="post" enctype="multipart/form-data">
-            <!-- 여기서 section 을 왔다갔다 할 수 있도록 한다. -->
-            <div id="currentTab" class="addClassCurrent"></div>
-            <section id="tab-section-1" class="tab-section">
-                <!-- 회원가입 시 입력하지 않았던 정보들을 여기에 입력한다.-->
-                <!-- 모카 클래스에서는 이런 식인데, 그냥 회원가입 시 모든 정보를 -->
-                <!-- 빠짐없이 입력하도록 하는게 나은 것 같다. -->
+        <div class="tab">
+
+            <div id="tab-btn">
+                <span class="active">카테1</span>
+                <span>카테2</span>
+                <span>카테3</span>
+            </div>
+
+            <div id="tab-page">
+                <!-- 페이지1 -->
+                <div class="active">
+                    <h2>테스트1</h2>
+
+                </div>
+                <!-- 페이지2 -->
                 <div>
-                    <div> 강사님 기본 정보 <span class="color:red;">필수</span></div>
-                    <div class="my-2">
-                        <label for="addClassName"> <span class="color:red;">*</span> 강사명(닉네임)</label>
-                        <input type="text" name="addClassName" id="yourName">
-                    </div>
-                    <div class="my-2">
-                        <label for="yourPhone"> <span class="color:red;">*</span> 전화번호</label>
-                        <input type="text" name="addClassPhone" id="yourPhone">
-                    </div>
+                    <h2>테스트2</h2>
                 </div>
-
-                <div class="mb-3">
-                    <label for="addClassName" class="form-label">클래스 명 <span style="color:red;">[필수]</span>
-                        <span>글자수(1/50)</span></label>
-                    <input type="text" class="addClassName" id="addClassName" aria-describedby="addClassName"
-                           name="addClassName">
-                    <div class="container">
-                        <small>작성 TIP</small>
-                        <div class="list-group">
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">어떤 수업인지 한 눈에 알
-                                수
-                                있는 클래스 이름
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">스튜디오 또는 공방 및
-                                강습소의
-                                이름이 포함 되어도 좋습니다
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">지역 또는 클래스 성격
-                                (원데이
-                                클래스 / 정규 클래스) 등을 뒤에 적어 주셔도 좋습니다
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">등록 이후 언제나 자유롭게
-                                수정이
-                                가능하므로 부담없이 작성해 주세요
-                            </div>
-                        </div>
-                    </div>
+                <!-- 페이지3 -->
+                <div>
+                    <h2>테스트3</h2>
                 </div>
+            </div>
 
-                <div class="mb-3">
-                    <label for="addClassInfo" class="form-label">클래스 간단소개 <span style="color:red;">[필수]</span> <span>글자수(1/150)</span></label>
-                    <textarea name="" id="addClassInfo" cols="50" rows="20"></textarea>
-                    <div class="container">
-                        <small>작성 TIP</small>
-                        <div class="list-group list-group-flush">
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">클래스 요약 설명 작성란
-                                입니다
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">제목을 보완해 줄 수 있는
-                                설명을
-                                적어주세요
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">다음 스텝에서 자세한
-                                클래스
-                                소개란이 있으므로 간단히 작성해 주셔도 좋습니다
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--카테고리 선택-->
-                <div class="mb-3">
-                    <label for="classCategory" class="form-label">클래스 카테고리<span style="color:red;">[필수]</span></label>
-                    <div id="classCategory" class="container">
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="핸드메이드">핸드메이드
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="쿠킹">쿠킹
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="플라워">플라워
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="드로잉">드로잉
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="음악">음악
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="요가/필라테스">필라테스
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="스포츠">스포츠
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="뷰티">뷰티
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="에완동물">애완동물
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="체험">체험
-                        <input type="radio" name="addClassCategory" class="form-check-input mt-0" value="자기계발">자기계발
-                    </div>
-                </div>
-
-                <!--서브 카테고리 선택-->
-
-                <div class="mb-3">
-                    <label for="addClassPhoto">클래스 대표 이미지 등록<span style="color:red;">[필수]</span></label>
-                    <div class="addClassPhoto" id="addClassPhoto"></div>
-                </div>
-
-                <button class="tab_menu">다음</button>
-            </section>
-
-            <section id="tab-section-2" class="tab-section" hidden>
-                <div>섹션2</div>
-            </section>
-
-            <section id="tab-section-3" class="tab-section" hidden>
-                <div>섹션3</div>
-            </section>
-
-        </form>
-
-        <nav id="tab-button-nav">
-            <button class="tab-button" data-tab-section="tab-section-1">탭 1</button>
-            <button class="tab-button" data-tab-section="tab-section-2">탭 2</button>
-            <button class="tab-button" data-tab-section="tab-section-3">탭 3</button>
-        </nav>
+        </div>
     </div>
 
 </div>
 
 <script th:src="@{/js/newroom.js}"></script>
+
+<script>
+
+
+</script>
 
 
 </body>

@@ -1,7 +1,28 @@
 @charset "UTF-8";
 
-.logo {
- background: red;
+.logo img{
+    height : 50px;
+}
+.modal {
+display: none;}
+
+#popup {
+position : relative;
+width:100vw;
+height:100vh;
+background:rgba(0,0,0,0.8);
+}
+
+.popupmodal {
+border-radius: 5rem;
+z-index:100;
+position : absolute;
+background:white;
+width:60%;
+height:60%;
+top: 20%;
+left: 50%;
+transform: translate(-50%, -50%);
 }
 
 /* 주석 */

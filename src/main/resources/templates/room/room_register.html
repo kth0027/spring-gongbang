@@ -1,10 +1,53 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>클래스 개설 소개 </title>
 </head>
 <body>
+<div th:replace="header.html::header"></div>
+<div class="container">
+    <!-- 클래스 등록 소개 -->
+    <div class="row">
+        <div class="col-md-7">
+            <p style="font-size: 2.0rem;">누구나 강의를 개설할 수 있습니다</p>
+            <p style="font-size: 1.5rem; margin-bottom: 25px;">여러분의 재능을 공유하세요 !</p>
+            <a th:href="@{/room/registerDetail}">
+                <button type="button" style="background-color: pink;" class="btn">클래스 등록하기</button>
+            </a>
+        </div>
+        <div class="col-md-5">
+            <p> 이미지를 등록합니다. </p>
+        </div>
+    </div>
+    <!-- 클래스 등록하는 과정 소개-->
+    <div>
+        <div> 클래스 등록 과정</div>
+        <div class="row">
+            <div class="col-md-4">
+                <p> 클래스 등록</p>
+
+            </div>
+            <div class="col-md-4">
+                <p> 검토 후 승인</p>
+
+            </div>
+            <div class="col-md-4">
+                <p>수강 및 정산</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 클래스 등록 영상 가이드-->
+    <!-- 나중에 youtube 시연영상을 여기서 보여주면 될 듯-->
+    <!-- 다 완성하고 youtube 영상 링크 걸어주기 -->
+    <div>
+
+
+    </div>
+
+
+</div>
 
 </body>
 </html>

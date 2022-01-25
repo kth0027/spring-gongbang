@@ -12,15 +12,15 @@ import javax.persistence.*;
 @Setter
 @Builder
 @ToString
-public class Member {
+public class MemberEntity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "memberNo")
     private int memberNo;
 
-    @Column(name = "memberId")
-    private String memberId;
+    @Column(name="memberEmail")
+    private String memberEmail;
 
     @Column(name = "memberPassword")
     private String memberPassword;
@@ -28,26 +28,13 @@ public class Member {
     @Column(name = "memberName")
     private String memberName;
 
-    @Column(name = "memberPseudo")
-    private String memberPseudo;
-
-    @Column(name="memberImg")
-    private String memberImg;
-
-    @Column(name="memberEmail")
-    private String memberEmail;
+    @Column(name = "memberPhone")
+    private String memberPhone;
 
     @Column(name="memberGender")
     private String memberGender;
 
-    @Column(name="memberAge")
-    private int memberAge;
-
-    @Column(name="memberGrade")
-    private String memberGrade;
-
     @Column(name="memberPoint")
     private int memberPoint;
-
 
 }

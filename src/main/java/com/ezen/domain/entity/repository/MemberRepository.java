@@ -1,4 +1,7 @@
 package com.ezen.domain.entity.repository;
 
-public interface MemberRepository {
+import com.ezen.domain.entity.MemberEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface MemberRepository extends JpaRepository <MemberEntity, Integer> {
 }

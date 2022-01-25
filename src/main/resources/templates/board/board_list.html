@@ -5,6 +5,49 @@
     <title>Title</title>
 </head>
 <body>
-
+<div th:replace="header.html :: header"></div>
+<h3>boardlist</h3>
+<div class="container">
+    <div class="row">
+        <table class="table table-hover">
+            <tr>
+                <th>순번</th>
+                <th>클래스명</th>
+                <th>작성자</th>
+                <th>비고</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td><a th:href="@{/board/view}">비누만들기</a></td>
+                <td>공방1</td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>카드지갑만들기</td>
+                <td>공방2</td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>향수만들기</td>
+                <td>공방3</td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>칵테일만들기</td>
+                <td>공방4</td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>커피만들기</td>
+                <td>공방5</td>
+                <td>x</td>
+            </tr>
+        </table>
+    </div>
+</div>
 </body>
 </html>

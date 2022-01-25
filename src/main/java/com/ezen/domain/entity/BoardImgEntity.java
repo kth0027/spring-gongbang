@@ -1,4 +1,4 @@
 package com.ezen.domain.entity;
 
-public class Reply {
+public class BoardImgEntity {
 }

@@ -17,7 +17,7 @@
     <div class="container d-flex">
 
         <div class="col-8 offset-2 outline">
-            <form class="p-2 outlineinner p-5" method="post" action="/member/signupcontroller">
+            <form class="p-2 outlineinner p-5" method="post" th:action="@{/member/signupcontroller}">
                 <h3>공방 :: 회원가입</h3>
                 <div class="form-floating mb-3">
                     <input type="text" class="form-control rounded-4" id="memail" name="memberEmail" placeholder="이메일">

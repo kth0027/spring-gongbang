@@ -28,7 +28,7 @@ public class MemberDto {
                 .memberGender( this.memberGender )
                 .memberPhone( this.memberPhone)
                 .memberEmail( this.memberEmail)
-                .memberPoint(1000)
+                .memberPoint(this.memberPoint)
                 .build();
     }
 

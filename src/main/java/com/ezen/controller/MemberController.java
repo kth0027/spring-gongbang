@@ -1,6 +1,7 @@
 package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
+import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,9 @@ public class MemberController { // C S
 
     @Autowired
     MemberService memberService;
+
+    @Autowired
+    MemberRepository memberRepository;
 
     @Autowired
     HttpServletRequest request; // 요청 객체    [ jsp : 내장객체(request)와 동일  ]
@@ -37,8 +41,8 @@ public class MemberController { // C S
     // 이메일 중복체크
     @GetMapping("/emailcheck")
     @ResponseBody
-    public String emailcheck( @RequestParam("memberEmail") String memail ){
-        boolean result = memberService.emailcheck( memail);
+    public String emailcheck( @RequestParam("memail") String memail ){
+        boolean result = memberService.emailcheck(memail);
         if( result ){
             return "1"; // 중복
         }else{
@@ -55,7 +59,7 @@ public class MemberController { // C S
     // 로그인처리
     @PostMapping("/logincontroller")
     @ResponseBody
-    public String logincontroller( @RequestBody MemberDto memberDto ){
+    public String logincontroller(@RequestBody MemberDto memberDto){
 
         MemberDto loginDto =   memberService.login( memberDto );
         if( loginDto !=null ){

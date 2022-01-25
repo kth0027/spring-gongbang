@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" th:fragment="header">
+<html lang="en" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
@@ -73,13 +73,12 @@
                 </div>
 
                 <div class="modal-body p-5 pt-0">
-                    <div><label for="">이메일
-                    </label>
-                        <input type="text" class="form-control rounded-4" id="login_memail" placeholder="이메일">
+                    <div>
+                        <label for="login_memail">이메일</label>
+                        <input name="memberEmail" type="text" class="form-control rounded-4" id="login_memail" placeholder="이메일">
                     </div>
-                    <div><label for="">비밀번호</label><input type="password" class="form-control rounded-4"
-                                                          id="login_mpassword"
-                                                          placeholder="비밀번호">
+                    <div><label for="login_mpassword">비밀번호</label>
+                        <input name="memberPassword" type="password" class="form-control rounded-4" id="login_mpassword" placeholder="비밀번호">
                     </div>
                     <div id="loginfailmsg" class="text-danger text-center m-2"></div>       <!-- 로그인 실패시 메시지 -->
                     <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" onclick="login()">로그인</button>
@@ -113,7 +112,7 @@
 
                 <div class="col-md-6">  <!-- 패스워드찾기 -->
                     <form action="/member/findpasswordcontroller" method="post">
-                        이메일 : <input type="text" name="meail"> <br>
+                        이메일 : <input type="text" name="memail"> <br>
                         핸드폰번호 : <input type="text" name="mphone"> <br>
                         <input type="submit" value="비밀번호 찾기"> <br>
                     </form>

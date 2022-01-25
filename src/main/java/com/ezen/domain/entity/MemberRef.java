@@ -3,8 +3,6 @@ package com.ezen.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -14,7 +12,7 @@ import java.util.List;
 @Setter
 @Builder
 @ToString
-public class Member extends BaseTimeEntity {
+public class MemberRef extends BaseTimeEntity {
 
     // [회원 고유 식별 번호]
     @Id

@@ -1,8 +1,8 @@
 function login(){
 
-    var memail = $("#login_memail").val();
-    var mpassword = $("#login_mpassword").val();
-    var memberdto = { "memail" : memail  , "mpassword" : mpassword  };
+    var memberEmail = $("#login_memail").val();
+    var memberPassword = $("#login_mpassword").val();
+    var memberdto = { "memberEmail" : memberEmail  , "memberPassword" : memberPassword  };
     // json형식 = { "키" : 값  ,  "키2" : 값2 }
 
      $.ajax({
@@ -11,7 +11,7 @@ function login(){
            //  JSON.stringify( JSON 자료형 -> 문자열 )
         method: "post",        //  Get , Post 방식중 선택
         contentType: "application/json" ,  //  ajax 타입
-        success: function(result ){     // 성공시 반환값
+        success: function(result){     // 성공시 반환값
             if( result == 1 ){
                 location.href="/"   // 로그인 성공시 메인페이지로 이동
             }else{

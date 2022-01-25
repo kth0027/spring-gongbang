@@ -6,7 +6,6 @@ import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -25,7 +24,7 @@ public class MemberService {
     }
 
     // 이메일 중복체크
-    public boolean emailcheck(@RequestParam("memail") String memail) {
+    public boolean emailcheck(String memail) {
         // 1. 모든 엔티티 가져오기
         List<MemberEntity> memberEntities = memberRepository.findAll();
         // 2. 모든 엔티티 반복문 돌려서 엔티티 하나씩 가쟈오기

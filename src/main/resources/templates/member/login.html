@@ -8,16 +8,18 @@
 <div th:replace="common.html :: common"></div>
 
 <div class="container">
+    <form th:action="@{/member/logincontroller}">
+        <div class="row">
+            아이디 :
+            <input type="text" class="form-control">
+            패스워드 :
+            <input type="password" class="form-control">
+        </div>
+    </form>
 
-    <div class="row">
-        아이디 :
-        <input type="text" class="form-control">
-        패스워드 :
-        <input type="password" class="form-control">
-
-    </div>
-
-    <a th:href="@{/member/signup}"> <button>회원가입</button> </a>
+    <a th:href="@{/member/signup}">
+        <button>회원가입</button>
+    </a>
 
 </div>
 

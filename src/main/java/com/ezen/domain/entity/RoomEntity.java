@@ -3,8 +3,6 @@ package com.ezen.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * 현재 개설중인 공방 리스트를 출력합니다.
@@ -64,7 +62,7 @@ public class RoomEntity extends BaseTimeEntity {
 
     /*
      * 추가 사항
-     * Member 엔티티와 @ManyToOne 관계를 맺습니다.
+     * MemberRef 엔티티와 @ManyToOne 관계를 맺습니다.
      * RoomImg 엔티티와 @OneToMany 관계를 맺습니다.
      * */
 

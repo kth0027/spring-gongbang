@@ -25,7 +25,7 @@ public class RoomImgEntity extends BaseTimeEntity {
     private String roomImg;
 
 //    // 룸 관계
-//    @ManyToOne
-//    @JoinColumn(name = "roomNo")
-//    private RoomEntity roomEntity;
+    @ManyToOne
+    @JoinColumn(name = "roomNo")
+    private RoomEntity roomEntity;
 }

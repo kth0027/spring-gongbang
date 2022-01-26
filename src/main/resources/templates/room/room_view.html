@@ -9,6 +9,19 @@
         display: inline;
         margin-left: 20px;
         }
+        #qnabox{
+        width: 96%;
+        height: auto;
+        display: flex;
+        padding: 2%;
+        margin-top: 20px;
+        border-color: #e0e0e0;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 7px;
+        flex-direction: column;
+
+        }
 
 
     </style>
@@ -19,8 +32,10 @@
 <div class="container">
     <div class="row">
         <div class="">
-            <a th:href="@{/board/update}"><button class="btn btn-warning">수정</button></a>
-            <button class="btn btn-warning">삭제</button> <!-- 비동기 삭제 생각중 -->
+            <a href="#">
+                <button class="btn btn-warning">채널보기</button>
+            </a>
+            <button class="btn btn-warning">클래스 신청하기</button>
         </div>
         <div class="col-md-9">
             <div>
@@ -28,23 +43,36 @@
                 <img src="" alt="">
             </div>
             <div>
-                <h3>클래스제목</h3>
+                <h3 th:text="${roomEntity.roomTitle}"></h3>
                 <h4>간단한 내용</h4>
-                <h5>장소</h5>
+                <h5 th:text="${roomEntity.roomAddress}">장소</h5>
             </div>
             <ul>
-                <a href="#classinfo"><li>클래스 소개</li></a>
-                <a href="#curriculum"><li>커리큘럼</li></a>
-                <a href="#teacherinfo"><li>강사소개</li></a>
-                <a href="#position"><li>위치</li></a>
-                <a href="#review"><li>후기</li></a>
-                <a href="#qna"><li>문의</li></a>
+                <a href="#classinfo">
+                    <li>클래스 소개</li>
+                </a>
+                <a href="#curriculum">
+                    <li>커리큘럼</li>
+                </a>
+                <a href="#teacherinfo">
+                    <li>강사소개</li>
+                </a>
+                <a href="#position">
+                    <li>위치</li>
+                </a>
+                <a href="#review">
+                    <li>후기</li>
+                </a>
+                <a href="#qna">
+                    <li>문의</li>
+                </a>
             </ul>
             <hr>
             <div>
                 <h3 id="classinfo">클래스 소개</h3>
-                <br><br>
-                <br><br>
+                <div th:text="${roomEntity.roomContent}">
+
+                </div>
                 <hr>
 
                 <h3 id="curriculum">커리큘럼</h3>
@@ -62,45 +90,59 @@
                 <br><br>
                 <br><br>
                 <hr>
-
-                <h3 id="review">후기</h3>
-                <div>
-                    <div class="col-md-8">
-                        <div>
-                            <span>이미지</span>
-                            <span>이름</span>
-                            <span>작성날짜</span>
-                        </div>
-                        <div>
-                            <h3>내용</h3>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <h3>후기사진</h3>
-                    </div>
-                </div>
-                <hr>
-
-
-                <h3 id="qna">클래스 문의</h3>
-                <div>
-                    <div>
-                        <span>이미지</span>
-                        <span>이름</span>
-                        <span>작성날짜</span>
-                    </div>
-                    <div>
-                        <h3>내용</h3>
-                    </div>
-                </div>
-
-                <hr>
             </div>
+
+            <h3 id="review">후기 </h3>
+            <div class="row">
+                <div class="col-md-2">
+                    사진
+                </div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-4">아이디</div>
+                        <div class="col-md-4">날짜</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">내용자릴ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ</div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <h3 id="qna">클래스 문의 </h3>
+            <div class="row">
+                <div class="col-md-2">
+                    로고자리
+                </div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-4">아이디</div>
+                        <div class="col-md-4">날짜</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9">내용자릴ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ</div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+
+            <div>
+                <div id="qnabox">
+                    <p>문의내용 작성</p>
+
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="" style="height: 100px; resize: none;"></textarea>
+                        <label for="floatingTextarea">궁금하신 점을 작성해 주세요~</label>
+                        <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;"> 작성 완료 </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
+
         <div class="col-md-3">
             <h1>달력</h1>
         </div>
-
     </div>
 </div>
 <div th:replace="footer.html :: footer"></div>

@@ -3,13 +3,16 @@ package com.ezen.service;
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
+
 import com.ezen.domain.entity.repository.RoomImgRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
+
 import java.util.List;
 
 @Service
@@ -37,5 +40,12 @@ public class RoomService {
     }
 
 
+
+    // 모든 룸 가져오기
+    public List<RoomEntity> getroomlist(){
+        return roomRepository.findAll();
+
+
+    }
 
 }

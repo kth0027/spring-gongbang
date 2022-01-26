@@ -3,6 +3,8 @@ package com.ezen.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  * 현재 개설중인 공방 리스트를 출력합니다.
@@ -15,12 +17,13 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Builder
-@ToString
+@ToString(exclude = "roomImgEntities")
 public class RoomEntity extends BaseTimeEntity {
 
     // [클래스 고유 식별 번호]
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="roomNo")
     private int roomNo;
 
     // [클래스 명]
@@ -66,14 +69,11 @@ public class RoomEntity extends BaseTimeEntity {
      * RoomImg 엔티티와 @OneToMany 관계를 맺습니다.
      * */
 
-//     회원번호 관계
+
     @ManyToOne
     @JoinColumn(name="memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
     private MemberEntity memberEntity;
 
-    // 이미지 관계
-//    @OneToMany(mappedBy="room")
-//    private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
 
 
 }

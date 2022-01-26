@@ -14,12 +14,12 @@ public class AdminController {
     @Autowired
     private RoomService roomService;
 
-    @GetMapping("/roomlist")
+    @GetMapping("/room_list")
     public String roomlist(Model model) {
 
         // List<Room> roomEntities = roomService.getroomlist();
         // model.addAttribute("roomEntities",roomEntities);
 
-        return "admin/roomlist";
+        return "admin/room_list";
     }
 }

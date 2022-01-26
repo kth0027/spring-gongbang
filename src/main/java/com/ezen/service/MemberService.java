@@ -3,7 +3,6 @@ package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
-import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

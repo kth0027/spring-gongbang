@@ -49,11 +49,11 @@
                 <div>
                     <div> 강사님 기본 정보</div>
                     <div class="my-2">
-                        <input class="form-control" type="text" name="addClassName" id="yourName" disabled="disabled">
+                        <div th:text="${member.memberName}" style="background-color:#ffffff"></div>
                     </div>
                     <div> 강사님 연락처</div>
                     <div class="my-2">
-                        <input class="form-control" type="text" name="addClassPhone" id="yourPhone" disabled="disabled">
+                        <div th:text="${member.memberPhone}"  style="background-color:#ffffff"></div>
                     </div>
                 </div>
 
@@ -123,8 +123,7 @@
                     </div>
                 </div>
 
-                <div class="image-drag-wrapper1" style="width: 100%;">\
-                    <div class="my-3"> 클래스 결과물 미리보기 이미지</div>
+                <div class="image-drag-wrapper1" style="width: 100%;">
                     <label class="label" id="rlabel" for="rinput">
                         <div class="inner" id="inner">드래그하거나 클릭해서 업로드</div>
                     </label>

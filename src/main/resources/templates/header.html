@@ -29,7 +29,7 @@
                 <div class="col-md-4">
                     <input type="search" class="form-control form-control-dark" placeholder="Search..."
                            aria-label="Search">
-                    <a th:href="@{/room/list}"><button>dfsdsfdfsdfsdfsdfsfadsdfsfd검색121212gsfggfsd11221fsfsdddsf212</button>
+                    <a th:href="@{/room/list}"><button>검색</button>
                     </a>
                 </div>
                 <div class="col-md-2">
@@ -42,7 +42,7 @@
                     <div class="text-end">
                         <button th:if="${session.logindto == null }" type="button"
                                 class="btn btn-outline-info me-2 openlogin" data-target="#modallogin"
-                                data-toggle="modal">로그인fsdfdssdsadsadffsdsadsadsdasad
+                                data-toggle="modal">로그인
                         </button>
                         <a th:if="${session.logindto == null }" th:href="@{/member/signup}">
                             <button type="button" class="btn btn-warning" data-target="#modalsignup"

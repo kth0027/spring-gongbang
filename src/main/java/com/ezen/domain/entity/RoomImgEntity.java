@@ -5,10 +5,10 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roomimgentity")
+@Table(name = "roomimg")
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "roomentity")
+@ToString(exclude = "roomEntity")
 @Setter
 @Builder
 @Getter
@@ -24,8 +24,8 @@ public class RoomImgEntity extends BaseTimeEntity {
     @Column(name = "rImg")
     private String rImg;
 
-    // 룸 관계
-    @ManyToOne
-    @JoinColumn(name = "roomNo")
-    private RoomEntity roomEntity;
+//    // 룸 관계
+//    @ManyToOne
+//    @JoinColumn(name = "roomNo")
+//    private RoomEntity roomEntity;
 }

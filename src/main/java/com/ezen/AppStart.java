@@ -17,6 +17,6 @@ public class AppStart {
     // 메인페이지 매핑[ 연결 ]
     @GetMapping("/") // 최상위 경로
     public String index() {
-        return "index.html";
+        return "index";
     }
 }

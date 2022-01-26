@@ -29,6 +29,7 @@ public class RoomService {
     @Autowired
     private MemberService memberService;
 
+    // 내가 만든 room list 가져오기
     public List<RoomEntity> getmyroomlist() {
 
         HttpSession session = request.getSession();
@@ -39,13 +40,14 @@ public class RoomService {
         return roomEntities;
     }
 
-
+    // room 상세페이지
+    public RoomEntity getroom(int roomNo) {
+        return roomRepository.findById(roomNo).get();
+    }
 
     // 모든 룸 가져오기
     public List<RoomEntity> getroomlist(){
         return roomRepository.findAll();
-
-
     }
 
 }

@@ -8,14 +8,24 @@ $(function(){
 
         $(this).addClass("current");
         $("#"+ tabId).addClass("current");
-    })
+    });
+
+    $('#summernote').summernote({
+        lang: 'ko-KR',  // 메뉴 한글 버전 ,
+        minHeight: 400, // 최소 높이
+        maxHeight: null,
+        placeholder: "내용 입력"
+
+    });
 
 });
 
+/*
 var input = document.getElementById("pinput");
 var initLabel = document.getElementById("plabel");
 
-input.addEventListener("change", (event) => {
+
+$("#pinput").addEventListener("change", (event) => {
   const files = changeEvent(event);
   handleUpdate(files);
 });
@@ -116,4 +126,4 @@ function el(nodeName, attributes, ...children) {
   });
 
   return node;
-}
+}*/

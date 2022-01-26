@@ -74,6 +74,7 @@ public class RoomEntity extends BaseTimeEntity {
     @JoinColumn(name="memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
     private MemberEntity memberEntity;
 
-
+    @OneToMany(mappedBy="roomEntity")
+    private List<ReplyEntity> replyEntities = new ArrayList<>();
 
 }

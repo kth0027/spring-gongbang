@@ -2,6 +2,7 @@ package com.ezen.controller;
 
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.service.RoomService;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import java.util.List;
+
 @Controller
 @RequestMapping(value = "/room")
 public class RoomController {
+
     @Autowired
     private RoomService roomService;
+
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
@@ -42,7 +47,6 @@ public class RoomController {
     public String roomlist(Model model) {
         List<RoomEntity> roomEntities = roomService.getroomlist();
         model.addAttribute("roomEntities",roomEntities);
-
         return "room/room_list";
     }
 
@@ -67,6 +71,13 @@ public class RoomController {
     @GetMapping("/roomListAreaController")
     public String roomListAreaController(@PathVariable("roomListArea") String area, Model model) {
         return "room/room_list";
+    }
+
+
+    // [ room_update.html 페이지와 맵핑 ]
+    @GetMapping("/update")
+    public String update(){
+        return "room/room_update";
     }
 
     // json 반환[지도에 띄우고자 하는 방 응답하기]
@@ -101,6 +112,7 @@ public class RoomController {
 
         return jsonObject;
     }
+
 
 
 }

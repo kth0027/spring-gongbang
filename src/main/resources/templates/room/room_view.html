@@ -3,13 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        ul li{
+        list-style-type: none;
+        display: inline;
+        margin-left: 20px;
+        }
+
+
+    </style>
 </head>
 <body>
 
-<div th:replace="header.html::header"></div>
-    <div class="container">
-        <h1>dsfdfsjkla</h1>
+<div th:replace="header.html :: header"></div>
+<div class="container">
+    <div class="row">
+        <div class="">
+            <a th:href="@{/board/update}"><button class="btn btn-warning">수정</button></a>
+            <button class="btn btn-warning">삭제</button> <!-- 비동기 삭제 생각중 -->
+        </div>
+        <div class="col-md-9">
+            <div>
+                <h1>메인이미지 넣을곳</h1>
+                <img src="" alt="">
+            </div>
+            <div>
+                <h3>클래스제목</h3>
+                <h4>간단한 내용</h4>
+                <h5>장소</h5>
+            </div>
+            <ul>
+                <a href="#classinfo"><li>클래스 소개</li></a>
+                <a href="#curriculum"><li>커리큘럼</li></a>
+                <a href="#teacherinfo"><li>강사소개</li></a>
+                <a href="#position"><li>위치</li></a>
+                <a href="#review"><li>후기</li></a>
+                <a href="#qna"><li>문의</li></a>
+            </ul>
+            <hr>
+            <div>
+                <h3 id="classinfo">클래스 소개</h3>
+                <br><br>
+                <br><br>
+                <hr>
 
+                <h3 id="curriculum">커리큘럼</h3>
+                <br><br>
+                <br><br>
+                <hr>
+                <h3 id="teacherinfo">강사소개</h3>
+                <br><br>
+                <br><br>
+                <hr>
+
+
+                <h3 id="position">위치</h3>
+                <h5>지도</h5>
+                <br><br>
+                <br><br>
+                <hr>
+
+                <h3 id="review">후기</h3>
+                <div>
+                    <div class="col-md-8">
+                        <div>
+                            <span>이미지</span>
+                            <span>이름</span>
+                            <span>작성날짜</span>
+                        </div>
+                        <div>
+                            <h3>내용</h3>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <h3>후기사진</h3>
+                    </div>
+                </div>
+                <hr>
+
+
+                <h3 id="qna">클래스 문의</h3>
+                <div>
+                    <div>
+                        <span>이미지</span>
+                        <span>이름</span>
+                        <span>작성날짜</span>
+                    </div>
+                    <div>
+                        <h3>내용</h3>
+                    </div>
+                </div>
+
+                <hr>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <h1>달력</h1>
+        </div>
     </div>
+</div>
+<div th:replace="footer.html :: footer"></div>
 </body>
 </html>

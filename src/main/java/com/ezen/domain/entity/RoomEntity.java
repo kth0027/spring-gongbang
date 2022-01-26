@@ -69,14 +69,11 @@ public class RoomEntity extends BaseTimeEntity {
      * RoomImg 엔티티와 @OneToMany 관계를 맺습니다.
      * */
 
-//    // 회원번호 관계
-//    @ManyToOne
-//    @JoinColumn(name="memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
-//    private MemberEntity memberEntity;
-//
-//    // 이미지 관계
-//    @OneToMany(mappedBy="roomEntity")
-//    private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name="memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
+    private MemberEntity memberEntity;
+
 
 
 }

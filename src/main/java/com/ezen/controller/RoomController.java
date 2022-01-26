@@ -64,5 +64,10 @@ public class RoomController {
         return "room/room_list";
     }
 
+    // [ room_update.html 페이지와 맵핑 ]
+    @GetMapping("/update")
+    public String update(){
+        return "room/room_update";
+    }
 
 }

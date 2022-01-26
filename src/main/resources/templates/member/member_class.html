@@ -21,27 +21,26 @@
                     <th>승인상태</th>
                     <th>비고</th>
                 </tr>
-                <tr>
+                <tr th:each="room : ${myroomlist}">
                     <td>
                         <img src="" alt="">
                     </td>
                     <td>
-                        <a href="#">
-                            <span></span>
+                        <a th:href="@{/room/view}">
+                            <span th:text="${room.roomTitle}"></span>
                         </a>
 
                     </td>
-                    <td>2022-01-25</td>
-                    <td>대기중</td>
+                    <td th:text="${room.createdDate}"></td>
+                    <td th:text="${room.roomStatus}"></td>
                     <td>
-                        <a href="#"><button>내용 수정</button></a>
+                        <a th:href="@{/room/update}"><button>내용 수정</button></a>
                         <button>삭제</button>
                     </td>
                 </tr>
-
             </table>
     </div>
 </div>
-
+<div th:replace="footer.html::footer"></div>
 </body>
 </html>

@@ -1,8 +1,10 @@
 package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
+import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.service.MemberService;
+import com.ezen.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequestMapping("/member")
 @Controller
@@ -155,9 +158,20 @@ public class MemberController { // C S
     public String history(){
         return "member/history_list";
     }
+
+    @Autowired
+    RoomService roomService;
     // [내가 개설한 클래스와 맵핑]
     @GetMapping("/myclass")
-    public String myclass(){
+    public String myclass( Model model ){
+
+
+        List<RoomEntity> myroomlist = roomService.getmyroomlist();
+
+
+        model.addAttribute( "myroomlist" , myroomlist );
+
+
         return "member/member_class";
     }
 
@@ -167,6 +181,8 @@ public class MemberController { // C S
         return "member/member_msg";
     }
 
-
+    // [정산 페이지 맵핑]
+    @GetMapping("/calculate")
+    public String calculate() { return "member/calculate_page"; }
 
 }

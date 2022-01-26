@@ -6,7 +6,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Entity
 @Table(name = "room")
 @NoArgsConstructor
@@ -14,11 +13,13 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString(exclude = "roomImgEntities")
 public class RoomEntity extends BaseTimeEntity {
 
     // [클래스 고유 식별 번호]
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="roomNo")
     private int roomNo;
 
     // [클래스 명]
@@ -69,12 +70,6 @@ public class RoomEntity extends BaseTimeEntity {
 
     @Column(name = "roomETC")
     private String roomETC;
-
-    /*
-     * 추가 사항
-     * MemberRef 엔티티와 @ManyToOne 관계를 맺습니다.
-     * RoomImg 엔티티와 @OneToMany 관계를 맺습니다.
-     * */
 
     // 회원번호 관계
     @ManyToOne

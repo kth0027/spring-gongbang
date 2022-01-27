@@ -34,7 +34,7 @@
                 // 커스텀 오버레이를 생성하고 지도에 표시한다
                       var customOverlay = new kakao.maps.CustomOverlay({
                          map: map2,
-                         content: "<div style='padding:0 5px;background:#fff;'>"+position.roomNo+"<br><a href='/room/view/"+position.roomNo+"'>바로가기</a></div>", // 내용물
+                         content: "<div style='padding:0 5px;background:#fff;'>"+position.roomNo+","+position.roomImg+"<br><a href='/room/view/"+position.roomNo+"'>바로가기</a></div>", // 내용물
                          position: new kakao.maps.LatLng(position.lat, position.lng), // 커스텀 오버레이를 표시할 좌표
                          xAnchor: 0.5, // 컨텐츠의 x 위치
                          yAnchor: 0 // 컨텐츠의 y 위치

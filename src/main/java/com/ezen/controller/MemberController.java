@@ -29,14 +29,14 @@ public class MemberController { // C S
 
     // 회원가입페이지 연결
     @GetMapping("/signup")
-    public String signup(){
+    public String signup() {
         return "member/signup";
     }
 
     // 회원가입 처리 연결
     @PostMapping("/signupcontroller") // 회원가입 처리 연결
     public String signupcontroller(MemberDto memberDto
-    ){
+    ) {
         memberService.membersignup(memberDto);
         return "redirect:/";  // 회원가입 성공시 메인페이지 연결
     }
@@ -44,33 +44,33 @@ public class MemberController { // C S
     // 이메일 중복체크
     @GetMapping("/emailcheck")
     @ResponseBody
-    public String emailcheck( @RequestParam("memail") String memail ){
+    public String emailcheck(@RequestParam("memail") String memail) {
         boolean result = memberService.emailcheck(memail);
-        if( result ){
+        if (result) {
             return "1"; // 중복
-        }else{
+        } else {
             return "2"; // 중복x
         }
     }
 
     // 로그인페이지 연결
     @GetMapping("/login")
-    public String login(){
+    public String login() {
         return "member/login";
     }
 
     // 로그인처리
     @PostMapping("/logincontroller")
     @ResponseBody
-    public String logincontroller(@RequestBody MemberDto memberDto){
+    public String logincontroller(@RequestBody MemberDto memberDto) {
 
-        MemberDto loginDto =   memberService.login( memberDto );
-        if( loginDto !=null ){
+        MemberDto loginDto = memberService.login(memberDto);
+        if (loginDto != null) {
             HttpSession session = request.getSession();   // 서버내 세션 가져오기
-            session.setAttribute( "logindto" , loginDto );    // 세션 설정
+            session.setAttribute("logindto", loginDto);    // 세션 설정
             // session.getAttribute("logindto") ; // 세션 호출
             return "1";
-        }else{
+        } else {
             return "2";
         }
         // 타임리프를 설치했을경우  RETRUN URL , HTML
@@ -79,15 +79,15 @@ public class MemberController { // C S
 
     // 로그아웃 처리
     @GetMapping("/logout")
-    public String logout(){
+    public String logout() {
         HttpSession session = request.getSession();
-        session.setAttribute( "logindto" , null);   // 기존 세션을 null 로 변경
+        session.setAttribute("logindto", null);   // 기존 세션을 null 로 변경
         return "redirect:/"; // 로그아웃 성공시 메인페이지로 이동
     }
 
     // 마이페이지 연결
     @GetMapping("/info")
-    public String info( Model model ){
+    public String info(Model model) {
 
         // 1. 로그인 세션 호출
         HttpSession session = request.getSession();
@@ -97,7 +97,7 @@ public class MemberController { // C S
         MemberDto memberDto = memberService.getmemberDto(loginDto.getMemberNo());
 
         // 3. 찾은 회원정보를 model 인터페이스를 이용한 view 전달하기
-        model.addAttribute( "memberDto", memberDto);
+        model.addAttribute("memberDto", memberDto);
 
         return "member/info";
     }
@@ -105,71 +105,74 @@ public class MemberController { // C S
     // 회원삭제 처리
     @GetMapping("/mdelete")
     @ResponseBody
-    public int mdelete(
-            @RequestParam("passwordconfirm") String passwordconfirm ){
+    public int mdelete(@RequestParam("passwordconfirm") String passwordconfirm) {
 
         // 1. 세션 호출
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         // 2. service에 로그인된 회원번호 , 확인패스워드
-        boolean result =  memberService.delete( memberDto.getMemberNo() , passwordconfirm );
+        boolean result = memberService.delete(memberDto.getMemberNo(), passwordconfirm);
         // 3. 결과 를 ajax에게 응답
-        if( result ){ return 1;}
-        else{return 2;}
+        if (result) {
+            return 1;
+        } else {
+            return 2;
+        }
     }
 
     // 회원정보찾기 페이지로 연결
     @GetMapping("/findemail")
-    public String findemail(){
+    public String findemail() {
         return "member/findemail";
     }
 
     // 이메일 찾기
     @PostMapping("/findemailcontroller")
-    public String findemailcontroller(MemberDto memberDto , Model model){
+    public String findemailcontroller(MemberDto memberDto, Model model) {
         String result = memberService.findemail(memberDto);
-        if( result != null ){
-            String msg = " 회원님의 이메일 : " + result ;
+        if (result != null) {
+            String msg = " 회원님의 이메일 : " + result;
             model.addAttribute("findemailmsg", msg);
-        }else{
-            String msg = " 동일한 회원정보가 없습니다." ;
+        } else {
+            String msg = " 동일한 회원정보가 없습니다.";
             model.addAttribute("findemailmsg", msg);
         }
 
-        return  "member/findemail";
+        return "member/findemail";
     }
 
     // 비밀번호 찾기
     @PostMapping("/findpasswordcontroller")
-    public String findpasswordcontroller( MemberDto memberDto , Model model ){
+    public String findpasswordcontroller(MemberDto memberDto, Model model) {
         String result = memberService.findpassword(memberDto);
-        if( result != null ){
-            String msg = " 회원님의 이메일 : " + result ;
+        if (result != null) {
+            String msg = " 회원님의 이메일 : " + result;
             model.addAttribute("findpwmsg", msg);
-        }else{
-            String msg = " 동일한 회원정보가 없습니다." ;
+        } else {
+            String msg = " 동일한 회원정보가 없습니다.";
             model.addAttribute("findpwmsg", msg);
         }
-        return  "member/findemail";
+        return "member/findemail";
     }
 
     // [예약내역(히스토리) 페이지와 맵핑]
     @GetMapping("/history")
-    public String history(){
+    public String history() {
         return "member/history_list";
     }
 
     @Autowired
     RoomService roomService;
+
     // [내가 개설한 클래스와 맵핑]
     @GetMapping("/myclass")
-    public String myclass( Model model ){
+    public String myclass(Model model) {
 
 
         List<RoomEntity> myroomlist = roomService.getmyroomlist();
 
 
-        model.addAttribute( "myroomlist" , myroomlist );
+        model.addAttribute("myroomlist", myroomlist);
 
 
         return "member/member_class";
@@ -177,12 +180,14 @@ public class MemberController { // C S
 
     // [메시지 페이지와 맵핑]
     @GetMapping("/msg")
-    public String msg(){
+    public String msg() {
         return "member/member_msg";
     }
 
     // [정산 페이지 맵핑]
     @GetMapping("/calculate")
-    public String calculate() { return "member/calculate_page"; }
+    public String calculate() {
+        return "member/calculate_page";
+    }
 
 }

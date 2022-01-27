@@ -1,13 +1,18 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
+
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.RoomImgEntity;
-import com.ezen.domain.entity.repository.MemberRepository;
+
 import com.ezen.domain.entity.repository.RoomImgRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,6 +23,10 @@ import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+import javax.servlet.http.HttpSession;
+
+import java.util.List;
 
 @Service
 public class RoomService {
@@ -87,6 +96,19 @@ public class RoomService {
             }
         }
         return true;
+    }
+
+    public Page<RoomEntity> getmyroomlist(Pageable pageable){
+
+        //페이지번호
+        int page = 0;
+        if(pageable.getPageNumber()==0) page=0; // 0이면1페이지
+        else page = pageable.getPageNumber()-1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
+        //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
+        pageable = PageRequest.of(page,5, Sort.by(Sort.Direction.DESC,"roomNo")); // 변수 페이지 10개 출력
+
+
+        return roomRepository.findAll(pageable);
     }
 
 

@@ -56,29 +56,12 @@ public class RoomController {
         return "room/room_register_detail";
     }
 
-    // [클래스 개설하는 컨트롤러]
-    // 클래스 만든 후에는 room_view.js.html 와 맵핑시킨다.
-    @PostMapping("/registerClassController")
-    public String registerClassController() {
-
-        return "room/room_view";
-    }
-
-
     @GetMapping("/list")
     public String roomlist(Model model, @PageableDefault Pageable pageable) {
         /*ArrayList<BoardDto> boardDtos = boardService.boardlist();*/
-
-
         Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
-
         model.addAttribute("roomDtos", roomDtos);
         return "room/room_list";  // 타임리프 를 통한 html 반환
-
-
-
-
-
     }
 
     // 룸보기 페이지 이동
@@ -119,7 +102,7 @@ public class RoomController {
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         boolean result = roomService.registerClass(roomEntity, files);
 
-        return "room/room_list";
+        return "index";
     }
 
 

@@ -1,6 +1,10 @@
 package com.ezen.controller;
 
 import com.ezen.domain.entity.RoomEntity;
+import com.ezen.domain.entity.repository.RoomRepository;
+import com.ezen.service.RoomService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 
 
 
@@ -18,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.data.domain.Pageable;
 import javax.transaction.Transactional;
 
 import java.util.List;
@@ -57,20 +62,33 @@ public class RoomController {
         return "room/room_view";
     }
 
+
+
     @GetMapping("/list")
-    public String roomlist(Model model) {
-        List<RoomEntity> roomEntities = roomService.getroomlist();
-        model.addAttribute("roomEntities",roomEntities);
-        return "room/room_list";
+    public String roomlist(Model model, @PageableDefault Pageable pageable) {
+        /*ArrayList<BoardDto> boardDtos = boardService.boardlist();*/
+
+
+        Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
+
+        model.addAttribute("roomDtos", roomDtos);
+        return "room/room_list";  // 타임리프 를 통한 html 반환
+
+
+
+
+
     }
 
-    // 룸보기 페이지ㅣ 이동
+
     @GetMapping("/view/{roomNo}") // 이동
     public String roomview(@PathVariable("roomNo") int roomNo, Model model){
         RoomEntity roomEntity = roomService.getroom(roomNo);
         model.addAttribute("roomEntity",roomEntity);
         return "room/room_view"; // 타임리프
     }
+
+
 
 
     // [카테고리 선택 : 리스트 출력 컨트롤러]
@@ -113,9 +131,9 @@ public class RoomController {
     }
 
     // json 반환[지도에 띄우고자 하는 방 응답하기]
-    @GetMapping("/gonbang.json")
+    @GetMapping("/gongbang.json")
     @ResponseBody
-    public JSONObject gikbang(){
+    public JSONObject gongbang(){
         // Map <--> Json[키:값] => 엔트리
         // {"키": 리스트{ "키" : 값1, "키" : 값2}} => 중첩 가능
         // map ={키:값}
@@ -127,6 +145,7 @@ public class RoomController {
         List<RoomEntity> roomlist = roomService.getroomlist(); // 모든 방[위도, 경도 포함]
         for(RoomEntity roomEntity : roomlist){ //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
+
 
             data.put("lat", roomEntity.getRoomAddress().split(",")[0]); // 위도
             data.put("lng", roomEntity.getRoomAddress().split(",")[1]); // 경도
@@ -144,6 +163,17 @@ public class RoomController {
 
         return jsonObject;
     }
+
+
+    @GetMapping("/addressXY")
+    @ResponseBody
+    public String addressXY(@RequestParam("roomNo") int roomNo){
+
+        return roomRepository.findById( roomNo ).get().getRoomAddress();
+    }
+
+    @Autowired
+    private RoomRepository roomRepository;
 
 
 

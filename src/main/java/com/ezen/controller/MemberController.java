@@ -6,6 +6,9 @@ import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -163,14 +166,12 @@ public class MemberController { // C S
     RoomService roomService;
     // [내가 개설한 클래스와 맵핑]
     @GetMapping("/myclass")
-    public String myclass( Model model ){
+    public String myclass( Model model, @PageableDefault Pageable pageable ){
 
 
-        List<RoomEntity> myroomlist = roomService.getmyroomlist();
+        Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
 
-
-        model.addAttribute( "myroomlist" , myroomlist );
-
+        model.addAttribute( "roomDtos" , roomDtos );
 
         return "member/member_class";
     }

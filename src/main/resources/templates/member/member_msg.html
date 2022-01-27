@@ -1,31 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        *{
-            border: 1px solid #cccccc;
-        }
-    </style>
+    <title>메시지</title>
 </head>
 <body>
-
 
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
 <div class="container">
-    <div class="row" style="border: 1px solid red;">
-        <div class="col-md-4">
-
+    <div class="row">
+        <div class="col-md-4 p-2 my-3" style="border: 1px solid #eeeeee; height: 80rem; box-shadow: 3px 3px 3px #cccccc;">
+            <div class="row p-3">
+                <div class="col-md-3 align-items-center">
+                    <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                         class="rounded-circle img-fluid">
+                </div>
+                <div class="col-md-7">
+                    <div>받은 쪽지 내용 몇글자만 미리보기</div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                    <!-- 읽었으면 완료 표시-->
+                    <div><span style="color:green;"><i class="bi bi-check-lg"></i></span></div>
+                    <!-- 안 읽었으면 미완료표시-->
+                    <div><span style="color:red;"><i class="bi bi-question-lg"></i></span></div>
+                </div>
+            </div>
+            <div class="row p-3">
+                <div class="col-md-3 align-items-center">
+                    <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                         class="rounded-circle img-fluid">
+                </div>
+                <div class="col-md-7">
+                    <div>받은 쪽지 내용 몇글자만 미리보기</div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                    <!-- 읽었으면 완료 표시-->
+                    <div><span style="color:green;"><i class="bi bi-check-lg"></i></span></div>
+                    <!-- 안 읽었으면 미완료표시-->
+                    <!--<div><span style="color:red;"><i class="bi bi-question-lg"></i></span></div>-->
+                </div>
+            </div>
+            <div class="row p-3">
+                <div class="col-md-3 align-items-center">
+                    <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                         class="rounded-circle img-fluid">
+                </div>
+                <div class="col-md-7">
+                    <div>받은 쪽지 내용 몇글자만 미리보기</div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                    <!-- 읽었으면 완료 표시-->
+                    <!--<div><span style="color:green;"><i class="bi bi-check-lg"></i></span></div>-->
+                    <!-- 안 읽었으면 미완료표시-->
+                    <div><span style="color:red;"><i class="bi bi-question-lg"></i></span></div>
+                </div>
+            </div>
+            <div class="row p-3">
+                <div class="col-md-3 align-items-center">
+                    <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                         class="rounded-circle img-fluid">
+                </div>
+                <div class="col-md-7">
+                    <div>받은 쪽지 내용 몇글자만 미리보기</div>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                    <!-- 읽었으면 완료 표시-->
+                    <div><span style="color:green;"><i class="bi bi-check-lg"></i></span></div>
+                    <!-- 안 읽었으면 미완료표시-->
+                    <!--<div><span style="color:red;"><i class="bi bi-question-lg"></i></span></div>-->
+                </div>
+            </div>
 
         </div>
-        <div class="col-md-8">
+        <div class="col-md-8 p-2 my-3" style="border: 1px solid #eeeeee; height: 80rem; box-shadow: 3px 3px 3px #cccccc;">
+            <!-- 왼쪽에서 쪽지 클릭하면 이전 내역까지 모두 보여주기 -->
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-5 offset-4">
+                        받은 쪽지 내용을 출력합니다.
+                    </div>
+                    <div class="col-md-3 align-items-center">
+                        <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                             class="rounded-circle img-fluid">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <span style="color: gray;"> 2022.01.27 15:00</span>
+                </div>
+            </div>
+
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-3 align-items-center">
+                        <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                             class="rounded-circle img-fluid">
+                    </div>
+                    <div class="col-md-5">
+                        <div>내가 답변한 내용을 출력합니다.</div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-start">
+                    <span style="color: gray;"> 2022.01.27 15:00</span>
+                </div>
+            </div>
+
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-5 offset-4">
+                        받은 쪽지 내용을 출력합니다.
+                    </div>
+                    <div class="col-md-3 align-items-center">
+                        <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                             class="rounded-circle img-fluid">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <span style="color: gray;"> 2022.01.27 15:00</span>
+                </div>
+            </div>
+
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-3 align-items-center">
+                        <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                             class="rounded-circle img-fluid">
+                    </div>
+                    <div class="col-md-5">
+                        <div>내가 답변한 내용을 출력합니다.</div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-start">
+                    <span style="color: gray;"> 2022.01.27 15:00</span>
+                </div>
+            </div>
+
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-5 offset-4">
+                        받은 쪽지 내용을 출력합니다.
+                    </div>
+                    <div class="col-md-3 align-items-center">
+                        <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                             class="rounded-circle img-fluid">
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <span style="color: gray;"> 2022.01.27 15:00</span>
+                </div>
+            </div>
+
+            <div class="p-3">
+                <div class="row">
+                    <div class="col-md-3 align-items-center">
+                        <img src="/img/default-profile-photo.png" alt="" width="32" height="32"
+                             class="rounded-circle img-fluid">
+                    </div>
+                    <div class="col-md-5">
+                        <div>내가 답변한 내용을 출력합니다.</div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-start">
+                    <span style="color: gray;"> 2022.01.27 15:00</span>
+                </div>
+            </div>
 
 
         </div>
 
     </div>
 </div>
+<div th:replace="footer.html::footer"></div>
+
 </body>
 </html>

@@ -108,6 +108,18 @@ public class RoomService {
 
         return roomRepository.findAll(pageable);
     }
+
+    // 내가 만든 room list 가져오기
+    public List<RoomEntity> getmyroomlist() {
+
+        HttpSession session = request.getSession();
+        MemberDto logindto = (MemberDto)session.getAttribute("logindto");
+
+        List<RoomEntity> roomEntities = memberRepository.findById( logindto.getMemberNo()).get().getRoomEntities();
+
+        return roomEntities;
+    }
+
     // room 상세페이지
     public RoomEntity getroom(int roomNo) {
         return roomRepository.findById(roomNo).get();

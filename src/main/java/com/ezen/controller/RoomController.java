@@ -1,30 +1,26 @@
 package com.ezen.controller;
 
+import com.ezen.domain.dto.MemberDto;
+import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.repository.RoomRepository;
-import com.ezen.service.RoomService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.web.PageableDefault;
-
-
-
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomLikeService;
-
-
+import com.ezen.service.RoomService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import org.springframework.data.domain.Pageable;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-
 import java.util.List;
 
 @Controller
@@ -40,6 +36,8 @@ public class RoomController {
     @Autowired
     RoomLikeService roomLikeService;
 
+    @Autowired
+    HttpServletRequest request;
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
@@ -49,8 +47,12 @@ public class RoomController {
 
     // [room_register_detail.html 페이지와 맵핑]
     @GetMapping("/registerDetail")
-    public String registerDetail() {
-
+    public String registerDetail(Model model) {
+        // member 정보를 가져와서 뿌려준다.
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = memberService.getMember(loginDto.getMemberNo());
+        model.addAttribute("member", memberEntity);
         return "room/room_register_detail";
     }
 
@@ -61,7 +63,6 @@ public class RoomController {
 
         return "room/room_view";
     }
-
 
 
     @GetMapping("/list")
@@ -80,15 +81,13 @@ public class RoomController {
 
     }
 
-
+    // 룸보기 페이지 이동
     @GetMapping("/view/{roomNo}") // 이동
     public String roomview(@PathVariable("roomNo") int roomNo, Model model){
         RoomEntity roomEntity = roomService.getroom(roomNo);
         model.addAttribute("roomEntity",roomEntity);
         return "room/room_view"; // 타임리프
     }
-
-
 
 
     // [카테고리 선택 : 리스트 출력 컨트롤러]
@@ -146,7 +145,6 @@ public class RoomController {
         for(RoomEntity roomEntity : roomlist){ //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
 
-
             data.put("lat", roomEntity.getRoomAddress().split(",")[0]); // 위도
             data.put("lng", roomEntity.getRoomAddress().split(",")[1]); // 경도
             data.put("roomTitle",roomEntity.getRoomTitle());
@@ -163,6 +161,8 @@ public class RoomController {
 
         return jsonObject;
     }
+    
+
 
 
     @GetMapping("/addressXY")

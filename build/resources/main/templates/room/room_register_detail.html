@@ -4,14 +4,7 @@
     <meta charset="UTF-8">
     <title>클래스 개설</title>
     <link rel="stylesheet" th:href="@{/css/register.css}">
-    <style>
-        * {
-            border: 1px solid green;
-        }
 
-
-
-    </style>
 </head>
 <body>
 <div th:replace="common.html::common"></div>
@@ -49,11 +42,11 @@
                 <div>
                     <div> 강사님 기본 정보</div>
                     <div class="my-2">
-                        <input class="form-control" type="text" name="addClassName" id="yourName" disabled="disabled">
+                        <div th:text="${member.memberName}" style="background-color:#ffffff"></div>
                     </div>
                     <div> 강사님 연락처</div>
                     <div class="my-2">
-                        <input class="form-control" type="text" name="addClassPhone" id="yourPhone" disabled="disabled">
+                        <div th:text="${member.memberPhone}"  style="background-color:#ffffff"></div>
                     </div>
                 </div>
 
@@ -123,8 +116,7 @@
                     </div>
                 </div>
 
-                <div class="image-drag-wrapper1" style="width: 100%;">\
-                    <div class="my-3"> 클래스 결과물 미리보기 이미지</div>
+                <div class="image-drag-wrapper1" style="width: 100%;">
                     <label class="label" id="rlabel" for="rinput">
                         <div class="inner" id="inner">드래그하거나 클릭해서 업로드</div>
                     </label>
@@ -162,9 +154,9 @@
                 <div>
                     <div> 지역 선택</div>
                     <div id="classLocalCategory" class="">
-                        <input type="radio" name="roomLocal" class="form-check-input mt-0" value="핸드메이드">서울
-                        <input type="radio" name="roomLocal" class="form-check-input mt-0" value="쿠킹">경기
-                        <input type="radio" name="roomLocal" class="form-check-input mt-0" value="플라워">인천
+                        <input type="radio" name="roomLocal" class="form-check-input mt-0" value="서울">서울
+                        <input type="radio" name="roomLocal" class="form-check-input mt-0" value="경기">경기
+                        <input type="radio" name="roomLocal" class="form-check-input mt-0" value="인천">인천
                     </div>
                 </div>
 

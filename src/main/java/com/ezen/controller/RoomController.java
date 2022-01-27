@@ -1,6 +1,7 @@
 package com.ezen.controller;
 
 import com.ezen.domain.entity.RoomEntity;
+import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.service.RoomService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
@@ -102,9 +103,9 @@ public class RoomController {
     }
 
     // json 반환[지도에 띄우고자 하는 방 응답하기]
-    @GetMapping("/gonbang.json")
+    @GetMapping("/gongbang.json")
     @ResponseBody
-    public JSONObject gikbang(){
+    public JSONObject gongbang(){
         // Map <--> Json[키:값] => 엔트리
         // {"키": 리스트{ "키" : 값1, "키" : 값2}} => 중첩 가능
         // map ={키:값}
@@ -116,6 +117,7 @@ public class RoomController {
         List<RoomEntity> roomlist = roomService.getroomlist(); // 모든 방[위도, 경도 포함]
         for(RoomEntity roomEntity : roomlist){ //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
+
 
             data.put("lat", roomEntity.getRoomAddress().split(",")[0]); // 위도
             data.put("lng", roomEntity.getRoomAddress().split(",")[1]); // 경도
@@ -134,11 +136,16 @@ public class RoomController {
         return jsonObject;
     }
 
-    @PostMapping("/roomnavy")
-    public String roomnavy(){
 
-        return "room/room_navy";
+    @GetMapping("/addressXY")
+    @ResponseBody
+    public String addressXY(@RequestParam("roomNo") int roomNo){
+
+        return roomRepository.findById( roomNo ).get().getRoomAddress();
     }
+
+    @Autowired
+    private RoomRepository roomRepository;
 
 
 

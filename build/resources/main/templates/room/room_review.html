@@ -9,9 +9,17 @@
 <div th:replace="header.html::header"></div>
 <div class="container">
     <div class="row">
-        <div>
+        <form action="" method="post" enctype="multipart/form-data">
+            <h3>후기 작성 페이지</h3>
+            <div class="form-floating">
+                <textarea class="form-control" placeholder="Leave a comment here" id=""
+                          style="height: 100px; resize: none;"></textarea>
+                <label for="floatingTextarea">수강 후기를 작성해 주세요~</label>
+                <input type="file">
 
-        </div>
+                <input type="submit" class="btn btn-primary" value="작성">
+            </div>
+        </form>
     </div>
 </div>
 

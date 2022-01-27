@@ -1,13 +1,16 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
+
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
+
 import com.ezen.domain.entity.RoomImgEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.domain.entity.repository.RoomImgRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,10 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+
+
 @Service
 public class RoomService {
     @Autowired
@@ -35,7 +41,6 @@ public class RoomService {
     HttpServletRequest request;
     @Autowired
     private MemberService memberService;
-
     @Transactional
     public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files){
         System.out.println(roomEntity.getRoomNo());
@@ -91,7 +96,6 @@ public class RoomService {
         }
         return true;
     }
-
     public Page<RoomEntity> getmyroomlist(Pageable pageable){
 
         //페이지번호
@@ -104,7 +108,6 @@ public class RoomService {
 
         return roomRepository.findAll(pageable);
     }
-
 
     // 내가 만든 room list 가져오기
     public List<RoomEntity> getmyroomlist() {
@@ -125,7 +128,7 @@ public class RoomService {
     // 모든 룸 가져오기
     public List<RoomEntity> getroomlist(){
         return roomRepository.findAll();
-    }
 
+    }
 
 }

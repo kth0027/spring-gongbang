@@ -120,7 +120,7 @@ public class RoomController {
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         boolean result = roomService.registerClass(roomEntity, files);
 
-        return "room/room_list";
+        return "member/member_class";
     }
 
 
@@ -147,11 +147,11 @@ public class RoomController {
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
 
 
-            data.put("lat", roomEntity.getRoomAddress().split(",")[0]); // 위도
-            data.put("lng", roomEntity.getRoomAddress().split(",")[1]); // 경도
+            data.put("lat", roomEntity.getRoomAddress().split(",")[1]); // 위도
+            data.put("lng", roomEntity.getRoomAddress().split(",")[2]); // 경도
             data.put("roomTitle",roomEntity.getRoomTitle());
             data.put("roomNo", roomEntity.getRoomNo());
-            //data.put("rImg", roomEntity.getRoomImgEntities().get(0).getRImg());
+            data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
 
 
             jsonArray.add(data); //리스트에 저장

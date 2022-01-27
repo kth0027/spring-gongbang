@@ -78,6 +78,6 @@ public class RoomEntity extends BaseTimeEntity {
 
     // 이미지 관계
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
-    private List<RoomImgEntity> roomImgEntities = new ArrayList<RoomImgEntity>();
+    private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
 
 }

@@ -12,18 +12,24 @@
     <h3>개설중인 클래스 리스트</h3>
     <div class="row">
         <div class="col-md-4" style="overflow-y: auto; height:650px;">
-            <div th:each="room : ${roomDtos}"> <!-- 룸 1개당 반복문-->
-                <div th:text="${room.roomNo}"></div>
-                <div th:text="${room.roomTitle}"></div>
-                <div th:text="${room.roomContent}"></div>
-                <div th:text="${room.roomCategory}"></div>
-                <div th:text="${room.roomDate}"></div>
-                <div th:text="${room.roomMax}"></div>
-                <div th:text="${room.roomStatus}"></div>
-                <div th:text="${room.roomAddress}"></div>
-                <div>
-                    <button th:onclick="roomnavy([[${room.roomNo}]])">길찾기</button>
-                    <button style="display:none;" id="modalnavy1" data-target="#modalnavy"data-toggle="modal"></button>
+            <div th:each="room : ${roomDtos}" class="row"> <!-- 룸 1개당 반복문-->
+                <div class="col-md-5">
+                    <a href="@{'/room/view/' + ${room.roomNo} }" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <img th:src="@{'/roomImg/'+${room.roomImgEntities.get(0).roomImg}}" width="100%" >
+                    </a>
+                </div>
+                <div class="col-md-7">
+                    <div th:text="${room.roomNo}"></div>
+                    <div th:text="${room.roomTitle}"></div>
+                    <div th:text="${room.roomCategory}"></div>
+                    <div th:text="${room.roomDate}"></div>
+                    <div th:text="${room.roomMax}"></div>
+                    <div th:text="${room.roomStatus}"></div>
+                    <div th:text="${#strings.listSplit(room.roomAddress,',')[0]}"></div>
+                    <div>
+                        <button th:onclick="roomnavy([[${room.roomNo}]])">길찾기</button>
+                        <button style="display:none;" id="modalnavy1" data-target="#modalnavy"data-toggle="modal"></button>
+                    </div>
                 </div>
                 <br>
             </div>

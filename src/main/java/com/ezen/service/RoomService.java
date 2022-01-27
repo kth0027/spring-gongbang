@@ -1,11 +1,10 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
-
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.RoomImgEntity;
-
+import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.domain.entity.repository.RoomImgRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +22,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
-import javax.servlet.http.HttpSession;
-
-import java.util.List;
 
 @Service
 public class RoomService {

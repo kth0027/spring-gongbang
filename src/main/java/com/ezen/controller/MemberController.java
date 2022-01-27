@@ -186,4 +186,9 @@ public class MemberController { // C S
         return "member/calculate_page";
     }
 
+    // [채널 페이지 맵핑 01-27 조지훈]
+    @GetMapping("channel")
+    public String channel(){
+        return "member/channel";
+    }
 }

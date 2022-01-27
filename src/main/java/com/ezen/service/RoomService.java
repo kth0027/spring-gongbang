@@ -4,7 +4,6 @@ import com.ezen.domain.dto.MemberDto;
 
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
-
 import com.ezen.domain.entity.RoomImgEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.domain.entity.repository.RoomImgRepository;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -96,29 +94,27 @@ public class RoomService {
         }
         return true;
     }
-    public Page<RoomEntity> getmyroomlist(Pageable pageable){
+    public Page<RoomEntity> getmyroomlist(Pageable pageable) {
 
         //페이지번호
         int page = 0;
-        if(pageable.getPageNumber()==0) page=0; // 0이면1페이지
-        else page = pageable.getPageNumber()-1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
+        if (pageable.getPageNumber() == 0) page = 0; // 0이면1페이지
+        else page = pageable.getPageNumber() - 1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
         //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-        pageable = PageRequest.of(page,5, Sort.by(Sort.Direction.DESC,"roomNo")); // 변수 페이지 10개 출력
-
-
+        pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
         return roomRepository.findAll(pageable);
     }
 
     // 내가 만든 room list 가져오기
-    public List<RoomEntity> getmyroomlist() {
-
-        HttpSession session = request.getSession();
-        MemberDto logindto = (MemberDto)session.getAttribute("logindto");
-
-        List<RoomEntity> roomEntities = memberRepository.findById( logindto.getMemberNo()).get().getRoomEntities();
-
-        return roomEntities;
-    }
+//    public List<RoomEntity> getmyroomlist() {
+//
+//        HttpSession session = request.getSession();
+//        MemberDto logindto = (MemberDto)session.getAttribute("logindto");
+//
+//        List<RoomEntity> roomEntities = memberRepository.findById( logindto.getMemberNo()).get().getRoomEntities();
+//
+//        return roomEntities;
+//    }
 
     // room 상세페이지
     public RoomEntity getroom(int roomNo) {
@@ -128,7 +124,7 @@ public class RoomService {
     // 모든 룸 가져오기
     public List<RoomEntity> getroomlist(){
         return roomRepository.findAll();
-
     }
+
 
 }

@@ -6,6 +6,8 @@ import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomLikeService;
+
+
 import com.ezen.service.RoomService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -63,7 +65,6 @@ public class RoomController {
 
         return "room/room_view";
     }
-
 
     @GetMapping("/list")
     public String roomlist(Model model, @PageableDefault Pageable pageable) {
@@ -161,8 +162,13 @@ public class RoomController {
 
         return jsonObject;
     }
-    
 
+
+    // [ review 페이지 맵핑 ] 01-27 조지훈
+    @GetMapping("/review")
+    public String review() {
+        return "room/room_review";
+    }
 
 
     @GetMapping("/addressXY")

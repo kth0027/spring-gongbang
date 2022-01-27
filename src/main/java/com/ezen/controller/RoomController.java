@@ -64,6 +64,7 @@ public class RoomController {
         return "room/room_view";
     }
 
+
     @GetMapping("/list")
     public String roomlist(Model model, @PageableDefault Pageable pageable) {
         /*ArrayList<BoardDto> boardDtos = boardService.boardlist();*/

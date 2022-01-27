@@ -79,14 +79,7 @@ public class RoomController {
 
 
     }
-    // 룸보기 페이지ㅣ 이동
-    @GetMapping("/view/{roomNo}") // 이동
-    public String roomviewlist(Model model){
-        List<RoomEntity> roomEntities = roomService.getroomlist();
-        model.addAttribute("roomEntities",roomEntities);
 
-        return  "room/room_view"; // 타임리프
-    }
 
     @GetMapping("/view/{roomNo}") // 이동
     public String roomview(@PathVariable("roomNo") int roomNo, Model model){

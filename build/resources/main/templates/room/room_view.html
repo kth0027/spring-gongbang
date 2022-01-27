@@ -3,14 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-</head>
-<body>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
     <style>
         ul li{
         list-style-type: none;
@@ -35,8 +27,11 @@
     </style>
 </head>
 <body>
-<div th:replace="common.html :: common"></div>
-<div th:replace="header.html :: header"></div>
+
+
+<div th:replace="common.html::common"></div>
+<div th:replace="header.html::header"></div>
+
 <div class="container">
     <div class="row">
         <div class="">
@@ -144,8 +139,6 @@
                         <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;"> 작성 완료 </button>
                     </div>
                 </div>
-
-                <hr>
             </div>
 
         </div>
@@ -156,5 +149,6 @@
     </div>
 </div>
 <div th:replace="footer.html :: footer"></div>
+
 </body>
 </html>

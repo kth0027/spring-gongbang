@@ -176,5 +176,15 @@ public class RoomController {
     private RoomRepository roomRepository;
 
 
+    @GetMapping("/room_pay")
+    public String room_pay() {
+        return "room/room_pay";
+    }
+
+
+    @GetMapping("/room/roompayment")
+    public String roompayment() {
+        return "room/roompayment";
+    }
 
 }

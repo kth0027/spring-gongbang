@@ -1,3 +1,8 @@
+/*
+    @Author: 김정진
+    @Param name : 이름
+    @Note : 이 함수를 작성한 의도
+*/
 function mdelete(){
 
     var passwordconfirm = $("#passwordconfirm").val();

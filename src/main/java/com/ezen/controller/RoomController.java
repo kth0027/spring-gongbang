@@ -5,25 +5,40 @@ import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.service.RoomService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
+
+
+
+import com.ezen.service.MemberService;
+import com.ezen.service.RoomLikeService;
+
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.data.domain.Pageable;
+import javax.transaction.Transactional;
 
 import java.util.List;
-
 
 @Controller
 @RequestMapping(value = "/room")
 public class RoomController {
 
     @Autowired
-    private RoomService roomService;
+    RoomService roomService;
+
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    RoomLikeService roomLikeService;
 
 
     // [room_write.html 페이지와 맵핑]
@@ -47,39 +62,40 @@ public class RoomController {
         return "room/room_view";
     }
 
-/*    @GetMapping("/list")
-    public String roomlist(Model model) {
-        List<RoomEntity> roomEntities = roomService.getroomlist();
-
-        model.addAttribute("roomEntities",roomEntities);
-        return "room/room_list";
-    }*/
 
 
     @GetMapping("/list")
-    public String roomlist(Model model, @PageableDefault Pageable pageable){
+    public String roomlist(Model model, @PageableDefault Pageable pageable) {
         /*ArrayList<BoardDto> boardDtos = boardService.boardlist();*/
 
 
         Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
 
-        model.addAttribute("roomDtos",roomDtos);
+        model.addAttribute("roomDtos", roomDtos);
         return "room/room_list";  // 타임리프 를 통한 html 반환
+
+
+
+
+
     }
-
-
-
-
-
-
     // 룸보기 페이지ㅣ 이동
     @GetMapping("/view/{roomNo}") // 이동
-    public String roomview(Model model){
+    public String roomviewlist(Model model){
         List<RoomEntity> roomEntities = roomService.getroomlist();
         model.addAttribute("roomEntities",roomEntities);
 
         return  "room/room_view"; // 타임리프
     }
+
+    @GetMapping("/view/{roomNo}") // 이동
+    public String roomview(@PathVariable("roomNo") int roomNo, Model model){
+        RoomEntity roomEntity = roomService.getroom(roomNo);
+        model.addAttribute("roomEntity",roomEntity);
+        return "room/room_view"; // 타임리프
+    }
+
+
 
 
     // [카테고리 선택 : 리스트 출력 컨트롤러]
@@ -95,9 +111,28 @@ public class RoomController {
         return "room/room_list";
     }
 
+    // [작성한 클래스 등록]
+    @PostMapping("/classRegister")
+    @Transactional
+    public String classRegister(RoomEntity roomEntity,
+                                @RequestParam("roomImageInput") List<MultipartFile> files,
+                                @RequestParam("addressX") double addressX,
+                                @RequestParam("addressY") double addressY,
+                                @RequestParam("checkBox1") String checkBox1,
+                                @RequestParam("checkBox2") String checkBox2,
+                                @RequestParam("checkBox3") String checkBox3) {
+        // 1. roomStatus : 0 --> 승인 대기중으로 설정
+        roomEntity.setRoomStatus(0);
+        roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
+        roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
+        boolean result = roomService.registerClass(roomEntity, files);
+
+        return "room/room_list";
+    }
+
 
     // [ room_update.html 페이지와 맵핑 ]
-    @GetMapping("/update")
+    @GetMapping("/update/{roomNo}")
     public String update(){
         return "room/room_update";
     }

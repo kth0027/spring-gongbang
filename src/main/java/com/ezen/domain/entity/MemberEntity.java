@@ -39,7 +39,10 @@ public class MemberEntity extends BaseTimeEntity {
     @Column(name="memberPoint")
     private int memberPoint;
 
+    // 회원이 여러개의 방을 등록할 수 있다.
+    // RoomEntity 와 1 : N 관계를 맺는다.
     @OneToMany(mappedBy = "memberEntity")
     private List<RoomEntity> roomEntities = new ArrayList<>();
+
 
 }

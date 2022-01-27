@@ -2,17 +2,20 @@ package com.ezen.controller;
 
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.service.RoomService;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+
 
 @Controller
 @RequestMapping(value = "/room")
@@ -43,12 +46,30 @@ public class RoomController {
         return "room/room_view";
     }
 
-    @GetMapping("/list")
+/*    @GetMapping("/list")
     public String roomlist(Model model) {
         List<RoomEntity> roomEntities = roomService.getroomlist();
+
         model.addAttribute("roomEntities",roomEntities);
         return "room/room_list";
+    }*/
+
+
+    @GetMapping("/list")
+    public String roomlist(Model model, @PageableDefault Pageable pageable){
+        /*ArrayList<BoardDto> boardDtos = boardService.boardlist();*/
+
+
+        Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
+
+        model.addAttribute("roomDtos",roomDtos);
+        return "room/room_list";  // 타임리프 를 통한 html 반환
     }
+
+
+
+
+
 
     // 룸보기 페이지ㅣ 이동
     @GetMapping("/view/{roomNo}") // 이동
@@ -111,6 +132,12 @@ public class RoomController {
 
 
         return jsonObject;
+    }
+
+    @PostMapping("/roomnavy")
+    public String roomnavy(){
+
+        return "room/room_navy";
     }
 
 

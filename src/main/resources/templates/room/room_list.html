@@ -10,8 +10,8 @@
 <div class="container">
     <h3>개설중인 클래스 리스트</h3>
     <div class="row">
-        <div class="col-md-4">
-            <div th:each="room : ${roomEntities}"> <!-- 룸 1개당 반복문-->
+        <div class="col-md-4" style="overflow-y: auto; height:650px;">
+            <div th:each="room : ${roomDtos}"> <!-- 룸 1개당 반복문-->
                 <div th:text="${room.roomNo}"></div>
                 <div th:text="${room.roomTitle}"></div>
                 <div th:text="${room.roomContent}"></div>
@@ -20,16 +20,71 @@
                 <div th:text="${room.roomMax}"></div>
                 <div th:text="${room.roomStatus}"></div>
                 <div th:text="${room.roomAddress}"></div>
+                <div>
+                    <button onclick="roomnavy()">길찾기</button>
+                    <button style="display:none;" id="modalnavy1" data-target="#modalnavy"data-toggle="modal"></button>
+                </div>
                 <br>
             </div>
 
+
+
+            <ul class="pagination justify-content-center"
+                th:with="start=${T(Math).floor(roomDtos.number/10) * 10 + 1 } ,
+                            last=(${start + 9 < roomDtos.totalPages ?  start + 9 : roomDtos.totalPages })">
+                <!-- 첫페이지이동 -->
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/room/list(page=1)}"> << </a>
+                </li>
+                <!-- 이전페이지이동 -->
+                <li class="page-item" th:class="${roomDtos.first}?'disabled'" > <!-- 첫번페이지에서 이전페이지이동 표시 x -->
+                    <a class="page-link" th:href="${roomDtos.first} ? '#' : @{/room/list(page=${ roomDtos.number })}"> < </a>
+                </li>
+                <!-- 페이지번호 -->
+                <li class="page-item" th:each="page : ${#numbers.sequence( start , last ) }">
+                    <a class="page-link" th:href="@{/room/list(page=${page})}" th:text="${page}"> </a>
+                </li>
+                <!-- 다음페이지이동 -->
+                <li class="page-item" th:class="${roomDtos.last}?'disabled'">
+                    <a class="page-link" th:href="${roomDtos.last} ? '#' : @{/room/list(page=${roomDtos.number+2})}"> > </a>
+                </li>
+                <!-- 마지막페이지 이동 -->
+                <li class="page-item">
+                    <a class="page-link" th:href="@{/room/list(page=${roomDtos.totalPages})}"> >> </a>
+                </li>
+
+            </ul>
         </div>
         <div class="col-md-8">
             <div id="map" style="width:100%;height:700px;"></div>
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="modalnavy" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-5 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h2 class="fw-bold mb-0 text-center w-100">
+                    <p class="text-center">찾아오는 길</p></h2>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+                        style="width:2rem;"></button>
+                <!-- 닫기 버튼 -->
+            </div>
+            <div class="modal-body p-5 pt-0" id="modalnavy2">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c4b311c12f156511eb9b89bf63938e65&libraries=clusterer"></script>
 <script th:src="@{/js/roomview.js}"></script>
+<script th:src="@{/js/roomnavy.js}"></script>
+<script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx1a649f9e9e5642ed82f72ada2ff00e9d"></script>
 </body>
 </html>

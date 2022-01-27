@@ -3,18 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>클래스 개설</title>
-    <style>
-
-        * {
-            border: 1px solid red;
-        }
-
-    </style>
     <link rel="stylesheet" th:href="@{/css/register.css}">
 </head>
 <body>
 <div th:replace="header.html::header"></div>
 <script th:src="@{/js/register_class.js}"></script>
+
 <div class="container" style="margin-top: 2rem;">
     <div class="row">
         <div class="col-md-4">
@@ -29,12 +23,12 @@
             <ul class="list-group">
                 <li class="list-group-item">최종 등록하지 않은 내용은 전부 사라집니다.</li>
                 <li class="list-group-item">등록 후 자유롭게 수정이 가능합니다.</li>
-                <li class="list-group-item"> (*)필수 작성 사항을 기입하지 않으면 등록할 수 없습니다.</li>
+                <li class="list-group-item"><span>(*)</span>필수 작성 사항을 기입하지 않으면 등록할 수 없습니다.</li>
             </ul>
         </div>
     </div>
 
-    <div class="">
+    <div>
         <form action="" method="post" enctype="multipart/form-data">
             <!--첫번째 탭-->
             <div id="tab-1" class="tab-content current">
@@ -120,13 +114,13 @@
                     <label class="label" id="plabel" for="pinput">
                         <div class="inner" id="inner">드래그하거나 클릭해서 업로드</div>
                     </label>
-                    <input id="pinput" class="input" accept="image/*" type="file" required="true" multiple="true" hidden="true">
+                    <input id="pinput" class="input" accept="image/*" type="file" required="true" multiple="true"
+                           hidden="true">
                     <p class="preview-title">preview</p>
                     <div class="preview" id="preview"></div>
                 </main>
 
             </div>
-
 
             <!--두번 째 탭-->
             <div id="tab-2" class="tab-content">
@@ -135,9 +129,8 @@
                 <div class="mb-3">
                     <label for=""> 클래스 소개</label>
                     <!-- SummerNote 첨부하기 -->
-
-                    <div style="width:100%;" class="container">
-                        <div>작성 TIP</div>
+                    <div>
+                        <textarea id="summernote"></textarea>
                     </div>
                 </div>
 
@@ -148,7 +141,6 @@
                 <input type="text" class="form-control">
 
             </div>
-
 
             <!--세번 째 탭-->
             <div id="tab-3" class="tab-content">
@@ -169,8 +161,6 @@
     </div>
 
 </div>
-
-<script th:src="@{/js/newroom.js}"></script>
 
 
 </body>

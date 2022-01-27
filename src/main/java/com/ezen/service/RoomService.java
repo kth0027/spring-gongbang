@@ -6,6 +6,7 @@ import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.RoomImgEntity;
 
+import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.domain.entity.repository.RoomImgRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;

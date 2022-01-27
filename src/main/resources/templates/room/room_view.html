@@ -20,7 +20,6 @@
         border-width: 1px;
         border-radius: 7px;
         flex-direction: column;
-
         }
 
 
@@ -31,11 +30,11 @@
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
 
-<div class="container">
+<div class="container mt-5">
     <div class="row">
         <div class="">
             <a href="#">
-                <button class="btn btn-warning">채널보기</button>
+                <a th:href="@{/member/channel}"><button class="btn btn-warning">채널보기</button></a>
             </a>
             <button class="btn btn-warning">클래스 신청하기</button>
         </div>
@@ -88,13 +87,14 @@
 
 
                 <h3 id="position">위치</h3>
-                <h5>지도</h5>
-                <br><br>
-                <br><br>
+                <div>
+                    <div id="map" style="width:100%;height:350px;"></div> <!-- 지도가 표시되는 구역 -->
+                </div>
                 <hr>
             </div>
 
-            <h3 id="review">후기 </h3>
+            <p style="font-size:24px;" id="review">후기</p> <button type="button" data-bs-toggle="modal" data-bs-target="#classselect" class="btn btn-outline-secondary mt-3" style="border: solid 1px;">작성</button>
+            <br>
             <div class="row">
                 <div class="col-md-2">
                     사진
@@ -147,7 +147,44 @@
         </div>
     </div>
 </div>
+
+<!-- 리뷰 작성할 클래스 선택 모달 [ 임시 ] -->
+<div class="modal" tabindex="-1" id="classselect" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h2 class="fw-bold mb-0">내가 수강한 클래스 내역</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- 닫기 -->
+            </div>
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0">리뷰를 작성하실 클래스를 선택해 주세요</h5>
+               <table class="table table-striped">
+                   <tr>
+                       <th>대표사진</th>
+                       <th>클래스명</th>
+                       <th>클래스 수강일</th>
+                       <th>비고</th>
+                   </tr>
+                   <tr>
+                       <td></td>
+                       <td></td>
+                       <td></td>
+                       <td></td>
+                   </tr>
+               </table>
+            </div>
+            <div class="modal-footer flex-nowrap p-0">
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" onclick="mdelete()"><strong>리뷰작성</strong></button>
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div th:replace="footer.html :: footer"></div>
 
+<!-- 인증 스크립트 -->
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3d40af5fcd7dc90460ae943f10753607&libraries=clusterer"></script>
+<script th:src="@{/js/roomview.js}"></script>
 </body>
 </html>

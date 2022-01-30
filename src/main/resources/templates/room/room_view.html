@@ -21,9 +21,6 @@
         border-radius: 7px;
         flex-direction: column;
         }
-
-
-
     </style>
 </head>
 <body>
@@ -44,22 +41,22 @@
         </div>
         <div class="col-md-9">
             <div>
-                <div id="carousel" class="carousel slide" data-bs-ride="carousel">
+                <div th:id="${'carousel' + roomEntity.roomNo}" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner"> <!-- 반복문 -->
                         <div class="carousel-item active">
-                            <img th:src="@{'/roomimg/'+${room.roomImgEntities.get(0).roomImg} }" class="d-block w-100" alt="...">
+                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }" class="d-block w-100" alt="...">
                         </div>
-                        <div class="carousel-item" th:each="roomimg : ${room.roomImgEntities}">
+                        <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
                             <img th:src="@{'/roomimg/'+${roomimg.roomImg} }"  class="d-block w-100" alt="...">
                         </div>
                     </div>
 
-                    <button class="carousel-control-prev" type="button" data-bs-target="#carousel"
+                    <button class="carousel-control-prev" type="button" th:data-bs-target="${'#carousel' + roomEntity.roomNo}"
                             data-bs-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carousel"
+                    <button class="carousel-control-next" type="button" data-bs-target="${'#carousel' + roomEntity.roomNo}"
                             data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>

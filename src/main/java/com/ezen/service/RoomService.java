@@ -68,7 +68,7 @@ public class RoomService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_","-");
                 // 2. 저장될 경로
-                String dir = "C:\\Users\\82108\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
+                String dir = "C:\\Users\\PC\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 String filepath = dir + "\\" + uuidfile;
                 try{

@@ -123,9 +123,9 @@ public class MemberService {
         return null;
     }
 
-    // 내가등록한 클래스
-//    public List<RoomEntity> getMyClass(int memberNo) {
-//
-//    }
-
+    // 회원번호 넣으면 해당 회원엔티티 반환 [ 02-02 조지훈 ]
+    public MemberEntity getmemberEntity(int memberNo) {
+        Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
+        return entityOptional.get();
+    }
 }

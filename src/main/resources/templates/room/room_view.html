@@ -117,9 +117,9 @@
             </div>
 
             <p style="font-size:24px;" id="review">후기</p>
-            <button type="button" data-bs-toggle="modal" data-bs-target="#classselect"
-                    class="btn btn-outline-secondary mt-3" style="border: solid 1px;">작성
-            </button>
+            <a th:href="@{'/room/review/' + ${roomEntity.roomNo} }">
+            <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;">작성</button>
+            </a>
             <br>
             <div class="row">
                 <div class="col-md-2">
@@ -176,38 +176,38 @@
     </div>
 </div>
 
-<!-- 리뷰 작성할 클래스 선택 모달 [ 임시 ] -->
-<div class="modal" tabindex="-1" id="classselect" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content rounded-4 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h2 class="fw-bold mb-0">내가 수강한 클래스 내역</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- 닫기 -->
-            </div>
-            <div class="modal-body p-4 text-center">
-                <h5 class="mb-0">리뷰를 작성하실 클래스를 선택해 주세요</h5>
-                <table class="table table-striped">
-                    <tr>
-                        <th>대표사진</th>
-                        <th>클래스명</th>
-                        <th>클래스 수강일</th>
-                        <th>비고</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <img src="" alt="">
-                        </td>
-                        <td>
-                            <a th:href="@{/room/review}">쿠킹쿠킹</a>
-                        </td>
-                        <td>2022-01-27</td>
-                        <td>?</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+<!--&lt;!&ndash; 리뷰 작성할 클래스 선택 모달 [ 임시 ] &ndash;&gt;-->
+<!--<div class="modal" tabindex="-1" id="classselect" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog">-->
+<!--    <div class="modal-dialog  modal-lg" role="document">-->
+<!--        <div class="modal-content rounded-4 shadow">-->
+<!--            <div class="modal-header p-5 pb-4 border-bottom-0">-->
+<!--                <h2 class="fw-bold mb-0">내가 수강한 클래스 내역</h2>-->
+<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> &lt;!&ndash; 닫기 &ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="modal-body p-4 text-center">-->
+<!--                <h5 class="mb-0">리뷰를 작성하실 클래스를 선택해 주세요</h5>-->
+<!--                <table class="table table-striped">-->
+<!--                    <tr>-->
+<!--                        <th>대표사진</th>-->
+<!--                        <th>클래스명</th>-->
+<!--                        <th>클래스 수강일</th>-->
+<!--                        <th>비고</th>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td>-->
+<!--                            <img src="" alt="">-->
+<!--                        </td>-->
+<!--                        <td>-->
+<!--                            <a th:href="@{/room/review}">쿠킹쿠킹</a>-->
+<!--                        </td>-->
+<!--                        <td>2022-01-27</td>-->
+<!--                        <td>?</td>-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 
 <div th:replace="footer.html :: footer"></div>
 

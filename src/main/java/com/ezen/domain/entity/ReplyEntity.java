@@ -3,6 +3,8 @@ package com.ezen.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "reply")
@@ -21,10 +23,6 @@ public class ReplyEntity extends BaseTimeEntity{
     @Column(name="replyContent")
     private String replyContent;
 
-     // 후기 / 문의 로 나누어 쓸까 생각
-    @Column(name="replyCategory")
-    private int replyCategory;
-
 
     @ManyToOne
     @JoinColumn(name="roomNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
@@ -34,6 +32,8 @@ public class ReplyEntity extends BaseTimeEntity{
     @JoinColumn(name="memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
     private MemberEntity memberEntity;
 
+    @OneToMany(mappedBy = "replyEntity", cascade = CascadeType.ALL)
+    private List<ReplyImgEntity> roomImgEntities = new ArrayList<ReplyImgEntity>();
 
 
 

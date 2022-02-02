@@ -3,6 +3,8 @@ package com.ezen.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "history")
@@ -20,6 +22,10 @@ public class HistoryEntity extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int historyNo;
+
+//    @OneToMany(mappedBy = "HistoryEntity", cascade = CascadeType.ALL)
+//    private List<RoomEntity>  roomEntities = new ArrayList<>();
+
 
 
 }

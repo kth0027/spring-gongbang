@@ -165,8 +165,9 @@ public class RoomController {
 
 
     // [ review 페이지 맵핑 ] 01-27 조지훈
-    @GetMapping("/review")
-    public String review() {
+    @GetMapping("/review/{roomNo}")
+    public String review(@PathVariable("roomNo") int roomNo, Model model) {
+        model.addAttribute("roomNo",roomNo);
         return "room/room_review";
     }
 

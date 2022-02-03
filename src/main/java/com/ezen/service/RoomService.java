@@ -1,16 +1,15 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
-
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
-
 import com.ezen.domain.entity.RoomImgEntity;
+import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.domain.entity.repository.RoomImgRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
+import com.ezen.domain.entity.repository.TimeTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -41,8 +39,12 @@ public class RoomService {
     HttpServletRequest request;
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    TimeTableRepository timeTableRepository;
+
     @Transactional
-    public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files){
+    public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files) {
         System.out.println(roomEntity.getRoomNo());
         System.out.println(roomEntity.getRoomAddress());
         System.out.println(roomEntity.getRoomCategory());
@@ -64,19 +66,19 @@ public class RoomService {
 
         // 5. 이미지 처리
         String uuidfile = null;
-        if(files.size()!=0){
-            for(MultipartFile file : files){
+        if (files.size() != 0) {
+            for (MultipartFile file : files) {
                 // 1. 난수 + '_' + 파일이름
                 UUID uuid = UUID.randomUUID();
-                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_","-");
+                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
                 String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 String filepath = dir + "\\" + uuidfile;
-                try{
+                try {
                     // 4. 지정한 경로에 파일을 저장시킨다.
                     file.transferTo(new File(filepath));
-                } catch(Exception e){
+                } catch (Exception e) {
                     System.out.println("오류 : " + e);
                 }
                 // 5.entity 에 파일 경로를 저장한다.
@@ -96,15 +98,15 @@ public class RoomService {
         }
         return true;
     }
-    public Page<RoomEntity> getmyroomlist(Pageable pageable){
+
+    public Page<RoomEntity> getmyroomlist(Pageable pageable) {
 
         //페이지번호
         int page = 0;
-        if(pageable.getPageNumber()==0) page=0; // 0이면1페이지
-        else page = pageable.getPageNumber()-1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
+        if (pageable.getPageNumber() == 0) page = 0; // 0이면1페이지
+        else page = pageable.getPageNumber() - 1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
         //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-        pageable = PageRequest.of(page,5, Sort.by(Sort.Direction.DESC,"roomNo")); // 변수 페이지 10개 출력
-
+        pageable = PageRequest.of(page, 5, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
 
         return roomRepository.findAll(pageable);
     }
@@ -113,9 +115,9 @@ public class RoomService {
     public List<RoomEntity> getmyroomlist() {
 
         HttpSession session = request.getSession();
-        MemberDto logindto = (MemberDto)session.getAttribute("logindto");
+        MemberDto logindto = (MemberDto) session.getAttribute("logindto");
 
-        List<RoomEntity> roomEntities = memberRepository.findById( logindto.getMemberNo()).get().getRoomEntities();
+        List<RoomEntity> roomEntities = memberRepository.findById(logindto.getMemberNo()).get().getRoomEntities();
 
         return roomEntities;
     }
@@ -126,8 +128,25 @@ public class RoomService {
     }
 
     // 모든 룸 가져오기
-    public List<RoomEntity> getroomlist(){
+    public List<RoomEntity> getroomlist() {
         return roomRepository.findAll();
+
+    }
+
+    // 룸에 날짜, 시간 지정하기
+    public boolean registerTimeToClass(TimeTableEntity timeTableEntity, int roomNo) {
+        if (roomRepository.findById(roomNo).isPresent()) {
+            RoomEntity roomEntity = roomRepository.findById(roomNo).get();
+            timeTableEntity.setRoomEntity(roomEntity);
+            // room 엔티티에 timeTableEntity 추가
+            roomEntity.getTimeTableEntity().add(timeTableEntity);
+            // room 리스트에 room 을 추가
+            // 작성된 시간 엔티티를 db 에 추가시킨다.
+            timeTableRepository.save(timeTableEntity);
+            return true;
+        } else {
+            return false;
+        }
 
     }
 

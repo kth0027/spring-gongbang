@@ -3,6 +3,7 @@ package com.ezen.controller;
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
+import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomLikeService;
@@ -75,17 +76,13 @@ public class RoomController {
         model.addAttribute("roomDtos", roomDtos);
         return "room/room_list";  // 타임리프 를 통한 html 반환
 
-
-
-
-
     }
 
     // 룸보기 페이지 이동
     @GetMapping("/view/{roomNo}") // 이동
-    public String roomview(@PathVariable("roomNo") int roomNo, Model model){
+    public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
         RoomEntity roomEntity = roomService.getroom(roomNo);
-        model.addAttribute("roomEntity",roomEntity);
+        model.addAttribute("roomEntity", roomEntity);
         return "room/room_view"; // 타임리프
     }
 
@@ -125,14 +122,14 @@ public class RoomController {
 
     // [ room_update.html 페이지와 맵핑 ]
     @GetMapping("/update/{roomNo}")
-    public String update(){
+    public String update() {
         return "room/room_update";
     }
 
     // json 반환[지도에 띄우고자 하는 방 응답하기]
     @GetMapping("/gongbang.json")
     @ResponseBody
-    public JSONObject gongbang(){
+    public JSONObject gongbang() {
         // Map <--> Json[키:값] => 엔트리
         // {"키": 리스트{ "키" : 값1, "키" : 값2}} => 중첩 가능
         // map ={키:값}
@@ -142,12 +139,12 @@ public class RoomController {
 
 
         List<RoomEntity> roomlist = roomService.getroomlist(); // 모든 방[위도, 경도 포함]
-        for(RoomEntity roomEntity : roomlist){ //모든 방에서 하나씩 반복문 돌리기
+        for (RoomEntity roomEntity : roomlist) { //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
 
             data.put("lat", roomEntity.getRoomAddress().split(",")[0]); // 위도
             data.put("lng", roomEntity.getRoomAddress().split(",")[1]); // 경도
-            data.put("roomTitle",roomEntity.getRoomTitle());
+            data.put("roomTitle", roomEntity.getRoomTitle());
             data.put("roomNo", roomEntity.getRoomNo());
             //data.put("rImg", roomEntity.getRoomImgEntities().get(0).getRImg());
 
@@ -161,20 +158,45 @@ public class RoomController {
 
         return jsonObject;
     }
-    
-
 
 
     @GetMapping("/addressXY")
     @ResponseBody
-    public String addressXY(@RequestParam("roomNo") int roomNo){
+    public String addressXY(@RequestParam("roomNo") int roomNo) {
 
-        return roomRepository.findById( roomNo ).get().getRoomAddress();
+        return roomRepository.findById(roomNo).get().getRoomAddress();
     }
 
     @Autowired
     private RoomRepository roomRepository;
 
+    // 내가 등록한 클래스 보기
+    @GetMapping("/timeSelectPage/{roomNo}")
+    public String timeSelectController(@PathVariable("roomNo") int roomNo, Model model) {
+        // 1. 등록된 클래스 가져오기
+        // List<RoomEntity> roomEntities = roomService.getmyroomlist();
+        RoomEntity roomEntity = roomService.getroom(roomNo);
+        model.addAttribute("room", roomEntity);
+        return "member/member_timeselect";
+
+    }
+
+    // 등록한 클래스에 날짜, 시간 선택하기
+    @GetMapping("/timeSelectController")
+    public String timeSelectController(TimeTableEntity timeTableEntity,
+                                       @RequestParam("beginTime") String beginTime,
+                                       @RequestParam("endTime") String endTime,
+                                       @RequestParam("roomNo") int roomNo,
+                                       Model model, @PageableDefault Pageable pageable) {
+        timeTableEntity.setRoomTime(beginTime + "," + endTime);
+
+        boolean result = roomService.registerTimeToClass(timeTableEntity, roomNo);
+
+        Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
+        model.addAttribute( "roomDtos" , roomDtos );
+        return "member/member_class";
+
+    }
 
 
 }

@@ -29,6 +29,9 @@ public class MemberController { // C S
     @Autowired
     HttpServletRequest request; // 요청 객체    [ jsp : 내장객체(request)와 동일  ]
 
+    @Autowired
+    RoomService roomService;
+
     // 회원가입페이지 연결
     @GetMapping("/signup")
     public String signup() {
@@ -136,7 +139,6 @@ public class MemberController { // C S
             String msg = " 동일한 회원정보가 없습니다." ;
             model.addAttribute("findemailmsg", msg);
         }
-
         return  "member/findemail";
     }
 
@@ -160,12 +162,11 @@ public class MemberController { // C S
         return "member/history_list";
     }
 
-    @Autowired
-    RoomService roomService;
+
     // [내가 개설한 클래스와 맵핑]
+
     @GetMapping("/myclass")
     public String myclass( Model model, @PageableDefault Pageable pageable ){
-
 
         Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
 

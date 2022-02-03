@@ -54,7 +54,6 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomLocal")
     private String roomLocal;
 
-
     // [클래스 상태]
     // 0 : 승인 대기 중
     // 1 : 승인, 모집 중
@@ -71,10 +70,17 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomETC")
     private String roomETC;
 
+    // 날짜, 시간과 N : M 맵핑
+
+
     // 회원번호 관계
     @ManyToOne
     @JoinColumn(name = "memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
     private MemberEntity memberEntity;
+
+    // timetable 과의 관계
+    @OneToMany(mappedBy="roomEntity")
+    private List<TimeTableEntity> timeTableEntity;
 
     // 이미지 관계
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)

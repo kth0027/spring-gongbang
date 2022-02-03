@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="common.html::common"></div>
+<div th:replace="header.html::header"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div th:text="${room.roomNo}"></div>
+            <div th:text="${room.roomTitle}"></div>
+        </div>
+        <div class="col-md-5">
+            <form th:action="@{/room/timeSelectController}" method="get">
+                <div style="background-color:red; width: 300px; height: 300px;"></div>
+                날짜 : <input type="date" class="form-control" name="roomDate">
+                시작하는 시간 : <input type="time" class="form-control" name="beginTime" id="beginTime">
+                끝나는 시간 : <input type="time" class="form-control" name="endTime" id="endTime">
+                <input type="hidden" th:value="${room.roomNo}" name="roomNo">
+                <input type="submit" class="btn" value="등록">
+            </form>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>

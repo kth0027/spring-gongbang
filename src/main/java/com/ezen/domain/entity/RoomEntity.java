@@ -35,7 +35,7 @@ public class RoomEntity extends BaseTimeEntity {
     private String roomContent;
 
     // [클래스 상세 설명]
-    @Column(name = "roomDetail")
+    @Column(name = "roomDetail", columnDefinition = "LONGTEXT")
     private String roomDetail;
 
     // [클래스 진행 예정 날짜]

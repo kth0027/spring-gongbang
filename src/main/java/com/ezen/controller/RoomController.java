@@ -116,7 +116,7 @@ public class RoomController {
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         boolean result = roomService.registerClass(roomEntity, files);
 
-        return "room/room_list";
+        return "index";
     }
 
 
@@ -191,12 +191,10 @@ public class RoomController {
         timeTableEntity.setRoomTime(beginTime + "," + endTime);
 
         boolean result = roomService.registerTimeToClass(timeTableEntity, roomNo);
-
         Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
-        model.addAttribute( "roomDtos" , roomDtos );
+        model.addAttribute("roomDtos", roomDtos);
         return "member/member_class";
 
     }
-
 
 }

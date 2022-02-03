@@ -8,15 +8,37 @@
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
 
+<!--
+@Author : 김정진
+@Date : 2022-02-03
+@Content :
+    1. 본인이 등록한 클래스 상세
+    2. 캘린더를 선택해서 날짜를 선택
+    3. 시간을 선택해서 시작 시간, 종료 시간 등록
+    4.
+
+-->
+
 <div class="container">
     <div class="row">
         <div class="col-md-7">
+            <!-- 이미지 출력 -->
+            <img th:src="@{'/roomimg/' + ${room.roomImgEntities.get(0).roomImg}}" alt="">
             <div th:text="${room.roomNo}"></div>
             <div th:text="${room.roomTitle}"></div>
         </div>
         <div class="col-md-5">
             <form th:action="@{/room/timeSelectController}" method="get">
-                <div style="background-color:red; width: 300px; height: 300px;"></div>
+
+                <!--
+                1. 캘린더 출력
+                2. 클릭 이벤트 발생 시 날짜 데이터 전달
+                3.
+                -->
+                <div style="background-color:red; width: 300px; height: 300px;">
+
+
+                </div>
                 날짜 : <input type="date" class="form-control" name="roomDate">
                 시작하는 시간 : <input type="time" class="form-control" name="beginTime" id="beginTime">
                 끝나는 시간 : <input type="time" class="form-control" name="endTime" id="endTime">

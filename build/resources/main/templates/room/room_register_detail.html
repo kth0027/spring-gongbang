@@ -36,8 +36,23 @@
     </div>
 
     <div>
+        <!--
+        1. @Author : 김정진
+        2. @Date : 2022-01-27
+        3. @Note :
+            1. form 태그 이용한 클래스 정보 등록
+            2. tab-1, tab-2, tab-3 에 각각 탭 이동 이벤트가 걸려있다.
+            3. room 엔티티는 member, roomimg 와 1:N 맵핑 되어있다.
+            4. 현재 드래그 앤 드롭이 합치는 과정에서 망가져서 드래그 앤 드롭이 적용되지 않는다.
+            5.
+
+        -->
         <form action="/room/classRegister" id="form" method="post" enctype="multipart/form-data">
             <!--첫번째 탭-->
+            <!--
+                1. 강사 기본 정보를 맨 처음 출력한다.
+                2.
+            -->
             <div id="tab-1" class="tab-content current">
                 <div>
                     <div> 강사님 기본 정보</div>
@@ -51,34 +66,43 @@
                 </div>
 
                 <div class="mb-3">
+                    <!--
+                    1. 클래스 이름 입력
+                    2. 50자 안으로 입력할 수 있도록 유효성 검사 적용 해야한다.
+                    -->
                     <label for="roomTitle" class="form-label">클래스 이름<span style="color:red;">[필수]</span>
                         <span>글자수(1/50)</span></label>
                     <input type="text" class="form-control" id="roomTitle" aria-describedby="addClassName"
                            name="roomTitle">
+                    <!--
+                        1. 작성 tip 을 아래에 출력한다.
+                        2. 현재 내용은 mocha class 에 있는 내용과 거의 동일하다.
+                    -->
                     <div class="" style="font-size:0.6rem;">
                         <small>작성 TIP</small>
                         <div class="list-group">
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">어떤 수업인지 한 눈에 알
-                                수
-                                있는 클래스 이름
+                            <div class="list-group-item list-group-item-action list-group-item-secondary">
+                                어떤 수업인지 한 눈에 알 수 있는 클래스 이름을 등록해주세요
                             </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">스튜디오 또는 공방 및
-                                강습소의
-                                이름이 포함 되어도 좋습니다
+                            <div class="list-group-item list-group-item-action list-group-item-secondary">
+                                스튜디오 또는 공방 및 강습소의 이름이 포함 되어도 좋습니다
                             </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">지역 또는 클래스 성격
-                                (원데이
-                                클래스 / 정규 클래스) 등을 뒤에 적어 주셔도 좋습니다
+                            <div class="list-group-item list-group-item-action list-group-item-secondary">
+                                지역 또는 클래스 성격 (원데이 클래스 / 정규 클래스) 등을 뒤에 적어 주셔도 좋습니다
                             </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">등록 이후 언제나 자유롭게
-                                수정이
-                                가능하므로 부담없이 작성해 주세요
+                            <div class="list-group-item list-group-item-action list-group-item-secondary">
+                                등록 이후 언제나 자유롭게 수정이 가능하므로 부담없이 작성해 주세요
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="mb-3">
+                    <!--
+                    1. 클래스에 대한 간략한 소개를 작성한다.
+                    2. 글자수는 150자 내외로 입력하도록 유효성 검사를 걸어야한다.
+                        1. change 를 사용해서 input 태그에 입력된 문자열의 길이를 받아서 150자가 넘으면 에러 메시지를 출력한다.
+                    -->
                     <label for="addClassInfo" class="form-label">클래스 간단소개 <span style="color:red;">[필수]</span> <span>글자수(1/150)</span></label><br>
                     <textarea name="roomContent" id="addClassInfo" cols="30" rows="5" style="width:100%;"></textarea>
                     <div class="" style="font-size:0.6rem;">
@@ -100,6 +124,10 @@
                 </div>
 
                 <div class="mb-3">
+                    <!--
+                    1. 클래스 카테고리는 미리 정해져있고, 관리자만이 추가 및 삭제, 수정이 가능하다.
+
+                    -->
                     <label for="classCategory" class="form-label">클래스 카테고리<span style="color:red;">[필수]</span></label>
                     <div id="classCategory" class="container">
                         <input type="radio" name="roomCategory" class="form-check-input mt-0" value="핸드메이드">핸드메이드
@@ -116,13 +144,15 @@
                     </div>
                 </div>
 
+                <!--
+                1. 이미지를 여러 장 드래그 앤 드롭, 혹은 클릭해서 업로드하는 부분이다.
+                2. 현재 누가 뭘 만졌는지 고장나서 클릭 후 업로드밖에 먹히지 않는다.
+                -->
                 <div class="image-drag-wrapper1" style="width: 100%;">
                     <label class="label" id="rlabel" for="rinput">
                         <div class="inner" id="inner">드래그하거나 클릭해서 업로드</div>
                     </label>
-                    <input id="rinput" name="roomImageInput" class="input" accept="image/*" type="file" required="true"
-                           multiple="true"
-                           hidden="true">
+                    <input id="rinput" name="roomImageInput" class="input" accept="image/*" type="file" required="true" multiple="true" hidden="true">
                     <div class="preview" id="preview"></div>
                 </div>
 

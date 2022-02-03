@@ -72,7 +72,6 @@ public class RoomEntity extends BaseTimeEntity {
 
     // 날짜, 시간과 N : M 맵핑
 
-
     // 회원번호 관계
     @ManyToOne
     @JoinColumn(name = "memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]

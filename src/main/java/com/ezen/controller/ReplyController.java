@@ -24,6 +24,8 @@ public class ReplyController {
                                   @RequestParam("roomNo") int roomNo){
         replyService.write(replyEntity,files,roomNo);
 
-        return "redierect:/room/view/" + roomNo;
+        return "redirect:/room/view/" + roomNo;
     }
+
+
 }

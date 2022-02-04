@@ -115,10 +115,8 @@ public class RoomController {
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         boolean result = roomService.registerClass(roomEntity, files);
-
         return "index";
     }
-
 
     // [ room_update.html 페이지와 맵핑 ]
     @GetMapping("/update/{roomNo}")
@@ -196,5 +194,7 @@ public class RoomController {
         return "member/member_class";
 
     }
+
+    // header 에서 들어온 검색 값
 
 }

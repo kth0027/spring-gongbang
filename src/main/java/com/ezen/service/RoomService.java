@@ -150,4 +150,9 @@ public class RoomService {
 
     }
 
+    public Page<RoomEntity> getMyRoomList(Pageable pageable){
+
+
+        return null;
+    }
 }

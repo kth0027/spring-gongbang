@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequestMapping("/member")
 @Controller
@@ -29,19 +30,16 @@ public class MemberController { // C S
     @Autowired
     HttpServletRequest request; // 요청 객체    [ jsp : 내장객체(request)와 동일  ]
 
-    @Autowired
-    RoomService roomService;
-
     // 회원가입페이지 연결
     @GetMapping("/signup")
-    public String signup() {
+    public String signup(){
         return "member/signup";
     }
 
     // 회원가입 처리 연결
     @PostMapping("/signupcontroller") // 회원가입 처리 연결
     public String signupcontroller(MemberDto memberDto
-    ) {
+    ){
         memberService.membersignup(memberDto);
         return "redirect:/";  // 회원가입 성공시 메인페이지 연결
     }
@@ -110,7 +108,8 @@ public class MemberController { // C S
     // 회원삭제 처리
     @GetMapping("/mdelete")
     @ResponseBody
-    public int mdelete(@RequestParam("passwordconfirm") String passwordconfirm) {
+    public int mdelete(
+            @RequestParam("passwordconfirm") String passwordconfirm ){
 
         // 1. 세션 호출
         HttpSession session = request.getSession();
@@ -139,36 +138,38 @@ public class MemberController { // C S
             String msg = " 동일한 회원정보가 없습니다." ;
             model.addAttribute("findemailmsg", msg);
         }
+
         return  "member/findemail";
     }
 
     // 비밀번호 찾기
     @PostMapping("/findpasswordcontroller")
-    public String findpasswordcontroller(MemberDto memberDto, Model model) {
+    public String findpasswordcontroller( MemberDto memberDto , Model model ){
         String result = memberService.findpassword(memberDto);
-        if (result != null) {
-            String msg = " 회원님의 이메일 : " + result;
+        if( result != null ){
+            String msg = " 회원님의 이메일 : " + result ;
             model.addAttribute("findpwmsg", msg);
-        } else {
-            String msg = " 동일한 회원정보가 없습니다.";
+        }else{
+            String msg = " 동일한 회원정보가 없습니다." ;
             model.addAttribute("findpwmsg", msg);
         }
-        return "member/findemail";
+        return  "member/findemail";
     }
 
     // [예약내역(히스토리) 페이지와 맵핑]
     @GetMapping("/history")
-    public String history() {
+    public String history(){
         return "member/history_list";
     }
 
-
+    @Autowired
+    RoomService roomService;
     // [내가 개설한 클래스와 맵핑]
-
     @GetMapping("/myclass")
     public String myclass( Model model, @PageableDefault Pageable pageable ){
 
-        Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
+
+        List<RoomEntity> roomDtos = roomService.getroomlist();
 
         model.addAttribute( "roomDtos" , roomDtos );
 
@@ -177,14 +178,12 @@ public class MemberController { // C S
 
     // [메시지 페이지와 맵핑]
     @GetMapping("/msg")
-    public String msg() {
+    public String msg(){
         return "member/member_msg";
     }
 
     // [정산 페이지 맵핑]
     @GetMapping("/calculate")
-    public String calculate() {
-        return "member/calculate_page";
-    }
+    public String calculate() { return "member/calculate_page"; }
 
 }

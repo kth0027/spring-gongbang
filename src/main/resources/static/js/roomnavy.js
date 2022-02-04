@@ -94,7 +94,7 @@ function initTmap() {
 
                 marker_e = new Tmapv2.Marker(
                     {
-                        position : new Tmapv2.LatLng(words[0], words[1]),
+                        position : new Tmapv2.LatLng(words[1], words[2]),
                         icon : "http://tmapapi.sktelecom.com/upload/tmap/marker/pin_r_m_e.png",
                         iconSize : new Tmapv2.Size(24, 38),
                         map : map
@@ -122,8 +122,8 @@ function initTmap() {
                                         "appKey" : "l7xx1a649f9e9e5642ed82f72ada2ff00e9d",
                                         "startX" : lon_s,
                                         "startY" : lat_s,
-                                        "endX" : words[1],
-                                        "endY" : words[0],
+                                        "endX" : words[2],
+                                        "endY" : words[1],
                                         "reqCoordType" : "WGS84GEO",
                                         "resCoordType" : "EPSG3857",
                                         "searchOption" : searchOption,

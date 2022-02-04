@@ -11,7 +11,6 @@
 
 </head>
 <body>
-<div th:replace=" common.html :: common"></div>
 <!-- 로그인 스크립트-->
 <script th:src="@{/js/login.js}"></script>
 
@@ -27,11 +26,33 @@
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <input type="search" class="form-control form-control-dark" placeholder="Search..."
-                           aria-label="Search">
-                    <a th:href="@{/room/list}"><button>검색</button>
-                    </a>
-                </div>
+                        <form action="/room/list" method="get"  class="input-group my-3 g-0" >
+
+                                <select name="keyword" class="form-select" >
+                                    <option value="선택"> 선택 </option>
+                                    <option value="핸드메이드"> 핸드메이드 </option>
+                                    <option value="쿠킹"> 쿠킹 </option>
+                                    <option value="플라워"> 플라워·가드닝 </option>
+                                    <option value="드로잉"> 드로잉 </option>
+                                    <option value="음악"> 음악 </option>
+                                    <option value="요가"> 요가·필라테스 </option>
+                                    <option value="레져"> 레져·스포츠 </option>
+                                    <option value="뷰티"> 뷰티 </option>
+                                    <option value="반려동물"> 반려동물 </option>
+                                    <option value="체험"> 체험 </option>
+                                    <option value="자기계발"> 자기계발 </option>
+                                </select>
+
+
+                            <input type="type" name="search" class="form-control form-control-dark" placeholder="Search..."
+                                   aria-label="Search">
+
+                            <a th:href="@{/room/list}"><button>검색</button>
+                            </a>
+
+                        </form>
+                    </div>
+
                 <div class="col-md-2">
                     <a th:href="@{/room/register}" class="nav-link px-2 text-white">
                         <button type="button" style="background:#374b73; width: 100%;">클래스 개설</button>

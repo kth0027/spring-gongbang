@@ -52,6 +52,12 @@ public class MemberService {
         return null;
     }
 
+    // 회원 번호로 회원 entity 가져오기
+    public MemberEntity getMember(int memberNo){
+        Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
+        return entityOptional.get();
+    }
+
     // 회원번호 -> 회원정보 반환
     public MemberDto getmemberDto( int mnum ){
         // memberRepository.findAll(); : 모든 엔티티 호출

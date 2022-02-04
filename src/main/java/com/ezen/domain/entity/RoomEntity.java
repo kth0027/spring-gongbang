@@ -6,10 +6,6 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
- * 현재 개설중인 공방 리스트를 출력합니다.
- *
- * */
 @Entity
 @Table(name = "room")
 @NoArgsConstructor
@@ -38,6 +34,10 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomContent")
     private String roomContent;
 
+    // [클래스 상세 설명]
+    @Column(name = "roomDetail")
+    private String roomDetail;
+
     // [클래스 진행 예정 날짜]
     // 2021-01-30,15:00,17:00
     // 날짜, 시작 시간, 끝나는 시간을 한번에 저장합니다.
@@ -49,6 +49,11 @@ public class RoomEntity extends BaseTimeEntity {
     // 위 조합으로 한꺼번에 db에 저장합니다.
     @Column(name = "roomAddress")
     private String roomAddress;
+
+    // 클래스 지역 설정
+    @Column(name = "roomLocal")
+    private String roomLocal;
+
 
     // [클래스 상태]
     // 0 : 승인 대기 중
@@ -63,17 +68,16 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomMax")
     private int roomMax;
 
-    /*
-     * 추가 사항
-     * MemberRef 엔티티와 @ManyToOne 관계를 맺습니다.
-     * RoomImg 엔티티와 @OneToMany 관계를 맺습니다.
-     * */
+    @Column(name = "roomETC")
+    private String roomETC;
 
-
+    // 회원번호 관계
     @ManyToOne
-    @JoinColumn(name="memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
+    @JoinColumn(name = "memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
     private MemberEntity memberEntity;
 
-
+    // 이미지 관계
+    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+    private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
 
 }

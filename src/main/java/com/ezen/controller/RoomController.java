@@ -1,28 +1,47 @@
 package com.ezen.controller;
 
 import com.ezen.domain.entity.RoomEntity;
+import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.service.RoomService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PageableDefault;
+
+
+
+import com.ezen.service.MemberService;
+import com.ezen.service.RoomLikeService;
+
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 
+import java.util.List;
 
 @Controller
 @RequestMapping(value = "/room")
 public class RoomController {
 
     @Autowired
-    private RoomService roomService;
+    RoomService roomService;
+
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    RoomLikeService roomLikeService;
 
 
     // [room_write.html 페이지와 맵핑]
@@ -46,38 +65,25 @@ public class RoomController {
         return "room/room_view";
     }
 
-/*    @GetMapping("/list")
-    public String roomlist(Model model) {
-        List<RoomEntity> roomEntities = roomService.getroomlist();
-
-        model.addAttribute("roomEntities",roomEntities);
-        return "room/room_list";
-    }*/
+    @Autowired
+    HttpServletRequest request;
 
 
     @GetMapping("/list")
-    public String roomlist(Model model, @PageableDefault Pageable pageable){
-        /*ArrayList<BoardDto> boardDtos = boardService.boardlist();*/
+    public String roomlist(Model model) {
 
 
-        Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
+        List<RoomEntity> roomDtos = roomService.getroomlist();
 
-        model.addAttribute("roomDtos",roomDtos);
+        model.addAttribute("roomDtos", roomDtos);
         return "room/room_list";  // 타임리프 를 통한 html 반환
     }
 
-
-
-
-
-
-    // 룸보기 페이지ㅣ 이동
     @GetMapping("/view/{roomNo}") // 이동
-    public String roomview(Model model){
-        List<RoomEntity> roomEntities = roomService.getroomlist();
-        model.addAttribute("roomEntities",roomEntities);
-
-        return  "room/room_view"; // 타임리프
+    public String roomview(@PathVariable("roomNo") int roomNo, Model model){
+        RoomEntity roomEntity = roomService.getroom(roomNo);
+        model.addAttribute("roomEntity",roomEntity);
+        return "room/room_view"; // 타임리프
     }
 
 
@@ -94,17 +100,36 @@ public class RoomController {
         return "room/room_list";
     }
 
+    // [작성한 클래스 등록]
+    @PostMapping("/classRegister")
+    @Transactional
+    public String classRegister(RoomEntity roomEntity,
+                                @RequestParam("roomImageInput") List<MultipartFile> files,
+                                @RequestParam("addressX") double addressX,
+                                @RequestParam("addressY") double addressY,
+                                @RequestParam("checkBox1") String checkBox1,
+                                @RequestParam("checkBox2") String checkBox2,
+                                @RequestParam("checkBox3") String checkBox3) {
+        // 1. roomStatus : 0 --> 승인 대기중으로 설정
+        roomEntity.setRoomStatus(0);
+        roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
+        roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
+        boolean result = roomService.registerClass(roomEntity, files);
+
+        return "member/member_class";
+    }
+
 
     // [ room_update.html 페이지와 맵핑 ]
-    @GetMapping("/update")
+    @GetMapping("/update/{roomNo}")
     public String update(){
         return "room/room_update";
     }
 
     // json 반환[지도에 띄우고자 하는 방 응답하기]
-    @GetMapping("/gonbang.json")
+    @GetMapping("/gongbang.json")
     @ResponseBody
-    public JSONObject gikbang(){
+    public JSONObject gongbang(){
         // Map <--> Json[키:값] => 엔트리
         // {"키": 리스트{ "키" : 값1, "키" : 값2}} => 중첩 가능
         // map ={키:값}
@@ -117,11 +142,12 @@ public class RoomController {
         for(RoomEntity roomEntity : roomlist){ //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
 
-            data.put("lat", roomEntity.getRoomAddress().split(",")[0]); // 위도
-            data.put("lng", roomEntity.getRoomAddress().split(",")[1]); // 경도
+
+            data.put("lat", roomEntity.getRoomAddress().split(",")[1]); // 위도
+            data.put("lng", roomEntity.getRoomAddress().split(",")[2]); // 경도
             data.put("roomTitle",roomEntity.getRoomTitle());
             data.put("roomNo", roomEntity.getRoomNo());
-            //data.put("rImg", roomEntity.getRoomImgEntities().get(0).getRImg());
+            data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
 
 
             jsonArray.add(data); //리스트에 저장
@@ -134,12 +160,27 @@ public class RoomController {
         return jsonObject;
     }
 
-    @PostMapping("/roomnavy")
-    public String roomnavy(){
 
-        return "room/room_navy";
+    @GetMapping("/addressXY")
+    @ResponseBody
+    public String addressXY(@RequestParam("roomNo") int roomNo){
+
+        return roomRepository.findById( roomNo ).get().getRoomAddress();
+    }
+
+    @Autowired
+    private RoomRepository roomRepository;
+
+
+    @GetMapping("/room_pay")
+    public String room_pay() {
+        return "room/room_pay";
     }
 
 
+    @GetMapping("/room/roompayment")
+    public String roompayment() {
+        return "room/roompayment";
+    }
 
 }

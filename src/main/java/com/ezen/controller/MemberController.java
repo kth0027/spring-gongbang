@@ -166,10 +166,10 @@ public class MemberController { // C S
     RoomService roomService;
     // [내가 개설한 클래스와 맵핑]
     @GetMapping("/myclass")
-    public String myclass( Model model, @PageableDefault Pageable pageable ){
+    public String myclass( Model model){
 
 
-        Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
+        List<RoomEntity> roomDtos = roomService.getroomlist();
 
         model.addAttribute( "roomDtos" , roomDtos );
 

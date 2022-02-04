@@ -17,15 +17,15 @@ public class RoomImgEntity extends BaseTimeEntity {
     // 번호
     @Id // pk[기본키 : 테이블 1개당 기본키 1개 권장]
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동번호키
-    @Column(name = "rImgNo") // 필드 속성(name)
-    private int rImgNo;
+    @Column(name = "roomImgNo") // 필드 속성(name)
+    private int roomImgNo;
 
     // 이미지경로
-    @Column(name = "rImg")
-    private String rImg;
+    @Column(name = "roomImg")
+    private String roomImg;
 
 //    // 룸 관계
-//    @ManyToOne
-//    @JoinColumn(name = "roomNo")
-//    private RoomEntity roomEntity;
+    @ManyToOne
+   @JoinColumn(name = "roomNo")
+    private RoomEntity roomEntity;
 }

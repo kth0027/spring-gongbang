@@ -14,28 +14,27 @@ function payment(){
 	    pay_method: document.getElementById("payselect").innerHTML,	// 결제방식
 	    merchant_uid: "ORD20180131-0000011", // 주문번호[별도]
 	    name: "ezen 공방", // 결제창에 나오는 결제이름
-	    amount: document.getElementById("totalpay").innerHTML	// 결제금액
-//	    buyer_email: "gildong@gmail.com",
-//	    buyer_name: $("#name").val(),
-//	    buyer_tel: $("#phone").val(),
+	    amount: document.getElementById("totalpay").innerHTML,	// 결제금액
+	    buyer_email: "gildong@gmail.com",
+	    buyer_name: $("#name").val(),
+	    buyer_tel: $("#phone").val(),
 		  }, function (rsp) { // callback
 		      if (rsp.success) { // 결제 성공했을때 -> 주문 완료 페이지로 이동 []
 		      } else {
 				// 결제 실패 했을때  // 테스트 : 결제 성공
 				$.ajax({
-					url : "room/roompayment" ,
+					url : "/room/roompayment" ,
 					data : {
-//						order_name :  $("#name").val(),
-//						order_phone	:  $("#phone").val(),
-//						order_pay : document.getElementById("totalpay").innerHTML,
-						order_payment : document.getElementById("payselect").innerHTML
-//						delivery_pay : 3000 ,
-//						order_contents : document.getElementById("prequest").value
+						order_name :  $("#name").val(),
+						order_phone	:  $("#phone").val(),
+						order_pay : document.getElementById("totalpay").innerHTML,
+						order_payment : document.getElementById("payselect").innerHTML ,
+						delivery_pay : 3000 ,
+						order_contents : document.getElementById("prequest").value
 					 } ,
 					success : function( result ){ // 결제성공 과  db처리 성공시 결제주문 완료 페이지 이동
-//						if(result == 1){ location.href="room/room_view"; }
-//						else{ alert("주문db오류 관리자에게문의");}
-alert(result);
+						if(result == 1){ location.href="room/room_view"; }
+						else{ alert("주문db오류 관리자에게문의");}
 					}
 				})
 		      }
@@ -43,7 +42,6 @@ alert(result);
 }
 /* 결제 API 아임포트 END */
 
-/*
 
 function pchange2( i , type , stock , price ){
 	var p_count = document.getElementById("pcount"+i).value*1;
@@ -73,4 +71,4 @@ function pchange2( i , type , stock , price ){
 				location.reload();
 			}
 	});
-}*/
+}

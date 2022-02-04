@@ -23,6 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.data.domain.Pageable;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
 import java.util.List;
@@ -62,24 +65,19 @@ public class RoomController {
         return "room/room_view";
     }
 
+    @Autowired
+    HttpServletRequest request;
 
 
     @GetMapping("/list")
-    public String roomlist(Model model, @PageableDefault Pageable pageable) {
-        /*ArrayList<BoardDto> boardDtos = boardService.boardlist();*/
+    public String roomlist(Model model) {
 
 
-        Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
+        List<RoomEntity> roomDtos = roomService.getroomlist();
 
         model.addAttribute("roomDtos", roomDtos);
         return "room/room_list";  // 타임리프 를 통한 html 반환
-
-
-
-
-
     }
-
 
     @GetMapping("/view/{roomNo}") // 이동
     public String roomview(@PathVariable("roomNo") int roomNo, Model model){
@@ -87,8 +85,6 @@ public class RoomController {
         model.addAttribute("roomEntity",roomEntity);
         return "room/room_view"; // 타임리프
     }
-
-
 
 
     // [카테고리 선택 : 리스트 출력 컨트롤러]

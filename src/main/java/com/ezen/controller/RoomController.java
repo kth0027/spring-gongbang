@@ -146,7 +146,7 @@ public class RoomController {
 
             data.put("lat", roomEntity.getRoomAddress().split(",")[1]); // 위도
             data.put("lng", roomEntity.getRoomAddress().split(",")[2]); // 경도
-            data.put("roomTitle",roomEntity.getRoomTitle());
+            data.put("roomTitle", roomEntity.getRoomTitle());
             data.put("roomNo", roomEntity.getRoomNo());
             data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
 
@@ -193,15 +193,17 @@ public class RoomController {
         timeTableEntity.setRoomTime(beginTime + "," + endTime);
 
         boolean result = roomService.registerTimeToClass(timeTableEntity, roomNo);
-        Page<RoomEntity> roomDtos = roomService.getmyroomlist(pageable);
+        List<RoomEntity> roomDtos = roomService.getmyroomlist();
         model.addAttribute("roomDtos", roomDtos);
         return "member/member_class";
+
+
+    }
 
     @GetMapping("/room_pay")
     public String room_pay() {
         return "room/room_pay";
     }
-
 
     @GetMapping("/room/roompayment")
     public String roompayment() {

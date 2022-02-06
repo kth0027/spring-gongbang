@@ -164,8 +164,6 @@ public class MemberController { // C S
         return "member/history_list";
     }
 
-    @Autowired
-    RoomService roomService;
     // [내가 개설한 클래스와 맵핑]
     @GetMapping("/myclass")
     public String myclass( Model model){

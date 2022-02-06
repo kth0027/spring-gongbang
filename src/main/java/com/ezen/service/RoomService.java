@@ -130,12 +130,9 @@ public class RoomService {
 
     // 내가 만든 room list 가져오기
     public List<RoomEntity> getmyroomlist() {
-
         HttpSession session = request.getSession();
         MemberDto logindto = (MemberDto) session.getAttribute("logindto");
-
         List<RoomEntity> roomEntities = memberRepository.findById(logindto.getMemberNo()).get().getRoomEntities();
-
         return roomEntities;
     }
 
@@ -168,31 +165,6 @@ public class RoomService {
     }
 
     public Page<RoomEntity> getMyRoomList(Pageable pageable) {
-
-
-        return null;
-    }
-
-    // 룸에 날짜, 시간 지정하기
-    public boolean registerTimeToClass(TimeTableEntity timeTableEntity, int roomNo) {
-        if (roomRepository.findById(roomNo).isPresent()) {
-            RoomEntity roomEntity = roomRepository.findById(roomNo).get();
-            timeTableEntity.setRoomEntity(roomEntity);
-            // room 엔티티에 timeTableEntity 추가
-            roomEntity.getTimeTableEntity().add(timeTableEntity);
-            // room 리스트에 room 을 추가
-            // 작성된 시간 엔티티를 db 에 추가시킨다.
-            timeTableRepository.save(timeTableEntity);
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    public Page<RoomEntity> getMyRoomList(Pageable pageable) {
-
-
         return null;
     }
 }

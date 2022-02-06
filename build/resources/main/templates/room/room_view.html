@@ -2,6 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <title>Title</title>
     <style>
         ul li{
@@ -25,6 +27,8 @@
 
 
     </style>
+
+
 </head>
 <body>
 
@@ -142,13 +146,58 @@
             </div>
 
         </div>
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
         <div class="col-md-3">
             <h1>달력</h1>
+
+            <div class="input-group">
+                <span class="input-group-addon">
+                <i class="fa fa-calendar bigger-110"></i>
+                </span>
+                <input type="text" id="datepicker" class="form-control col-xs-12" />
+                <a th:href="@{/room/room_pay}" >
+                    <button class="form-control bg-success text-white p-3">  클래스신청 </button>
+                </a>
+
+            </div>
+
+
+
         </div>
     </div>
 </div>
+
 <div th:replace="footer.html :: footer"></div>
+<script>
+
+$("#datepicker").datepicker({
+dateFormat: 'yy-mm-dd',
+  onSelect: function(dateText, inst) {
+          var date = $(this).val();
+          alert(date);
+     },
+showOtherMonths: true,
+showMonthAfterYear:true,
+changeYear: true,
+changeMonth: true,
+showOn: "both",
+yearSuffix: "년",
+monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'],
+dayNamesMin: ['일','월','화','수','목','금','토'],
+dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'],
+minDate: "-1M",
+maxDate: "+1M",
+buttonImage: "C:/Users/505/IdeaProjects/gongbang/src/main/resources/static/img/logo/logo.png",
+buttonImageOnly: true,
+buttonText: "선택",
+});
+
+</script>
+
 
 </body>
 </html>

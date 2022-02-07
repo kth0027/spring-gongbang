@@ -12,98 +12,105 @@
 <body>
 <!-- 로그인 스크립트-->
 <script th:src="@{/js/login.js}"></script>
-z
+
 <div id="wrap" class="border border-primary" style="width:100vw">
     <!-- 헤더메뉴 -->
     <header class="p-3 text-white" style="background-color: #fff1ed;">
         <div class="container">
             <div class="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
-                <div class="col-md-2 d-flex justify-content-center">
+                <div class="col-md-1 d-flex justify-content-center">
                     <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                         <img th:src="@{/img/logo/logo.png}" alt="logo">
                     </a>
                 </div>
-                <div class="col-md-5">
-                    <div class="row">
+                <div class="col-md-7">
+                    <div class="row" style="padding: 0px; margin: 0px;">
                         <form th:action="@{/room/list}" method="get">
-                            <div class="col-md-9">
+                            <div class="col-md-6">
                                 <!-- 검색어 입력 창-->
-                                <input type="search" class="form-control form-control-dark" placeholder="Search..."
-                                       aria-label="Search" style="width:100%;" name="roomSearch" id="roomSearch">
-                                <!-- 지역 선택 -->
-                                <select name="classLocal" id="classLocal" class="form-select">
-                                    <option selected>지역선택</option>
-                                    <option value="서울">서울</option>
-                                    <option value="경기">경기</option>
-                                    <option value="인천">인천</option>
-                                </select>
-                                <!-- 카테고리 선택 -->
-                                <select name="classCategory" id="classCategory" class="form-select">
-                                    <option selected></option>
-                                    <option value="핸드메이드">핸드메이드</option>
-                                    <option value="쿠킹">쿠킹</option>
-                                    <option value="플라워">플라워</option>
-                                    <option value="드로잉">드로잉</option>
-                                    <option value="음악">음악</option>
-                                    <option value="요가/필라테스">필라테스</option>
-                                    <option value="스포츠">스포츠</option>
-                                    <option value="뷰티">뷰티</option>
-                                    <option value="애완동물">애완동물</option>
-                                    <option value="체험">체험</option>
-                                    <option value="자기계발">자기계발</option>
-                                </select>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <input type="search" class="form-control form-control-dark"
+                                               placeholder="Search..."
+                                               aria-label="Search" style="width:100%;" name="roomSearch"
+                                               id="roomSearch">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- 지역 선택 -->
+                                        <select name="classLocal" id="classLocal" class="form-select form-select-lg">
+                                            <option value="" selected>지역선택</option>
+                                            <option value="서울">서울</option>
+                                            <option value="경기">경기</option>
+                                            <option value="인천">인천</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <!-- 카테고리 선택 -->
+                                        <select name="classCategory" id="classCategory" class="form-select form-select-lg">
+                                            <option value="" selected></option>
+                                            <option value="핸드메이드">핸드메이드</option>
+                                            <option value="쿠킹">쿠킹</option>
+                                            <option value="플라워">플라워</option>
+                                            <option value="드로잉">드로잉</option>
+                                            <option value="음악">음악</option>
+                                            <option value="요가/필라테스">필라테스</option>
+                                            <option value="스포츠">스포츠</option>
+                                            <option value="뷰티">뷰티</option>
+                                            <option value="애완동물">애완동물</option>
+                                            <option value="체험">체험</option>
+                                            <option value="자기계발">자기계발</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <button type="submit" class="btn"
-                                        style="background: #ffffff; border: 1px solid #374b73; width: 100%;">검색
+                            <div class="col-md-2">
+                                <button type="submit" class="btn" style="background: #ffffff; border: 1px solid #374b73; width: 100%;">
+                                    검색
                                 </button>
+                            </div>
+                            <div class="col-md-3 d-flex justify-content-center">
+                                <a th:href="@{/room/register}" class="nav-link px-2 text-white">
+                                    <button type="button" class="btn" style="border: 2px solid #374b73; width: 100%;">
+                                        클래스 개설
+                                    </button>
+                                </a>
                             </div>
                         </form>
                     </div>
-                    <div class="col-md-2 d-flex justify-content-center">
-                        <a th:href="@{/room/register}" class="nav-link px-2 text-white">
-                            <button type="button" class="btn" style="border: 2px solid #374b73; width: 100%;">클래스 개설
+                </div>
+                <div class="col-md-4">
+                    <div class="justify-content-center">
+                        <button th:if="${session.logindto == null}" type="button"
+                                class="btn btn-secondary me-2 openlogin my-1" data-target="#modallogin"
+                                data-toggle="modal">로그인
+                        </button>
+                        <a class="my-1" th:if="${session.logindto == null}" th:href="@{/member/signup}">
+                            <button type="button" class="btn btn-secondary" data-target="#modalsignup"
+                                    data-toggle="modal">
+                                회원가입
                             </button>
                         </a>
-                    </div>
-
-                    <div class="col-md-3">
-                        <div class="justify-content-center">
-                            <button th:if="${session.logindto == null}" type="button"
-                                    class="btn btn-secondary me-2 openlogin my-1" data-target="#modallogin"
-                                    data-toggle="modal">로그인
-                            </button>
-                            <a class="my-1" th:if="${session.logindto == null}" th:href="@{/member/signup}">
-                                <button type="button" class="btn btn-secondary" data-target="#modalsignup"
-                                        data-toggle="modal">
-                                    회원가입
-                                </button>
+                        <!-- 로그인해서 들어오면 Dropdown 메뉴 출력 -->
+                        <div th:if="${session.logindto != null}" class="flex-shrink-0 dropdown">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
+                               id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="/img/default-profile-photo.png" alt="mdo" width="32" height="32"
+                                     class="rounded-circle">
                             </a>
-                            <!-- 로그인해서 들어오면 Dropdown 메뉴 출력 -->
-                            <div th:if="${session.logindto != null}" class="flex-shrink-0 dropdown">
-                                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
-                                   id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="/img/default-profile-photo.png" alt="mdo" width="32" height="32"
-                                         class="rounded-circle">
-                                </a>
-                                <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                                    <li><a th:if="${session.logindto != null }" th:href="@{/member/info}"
-                                           style="text-decoration: none;"> 마이페이지 </a></li>
-                                    <li><a class="nav-link" th:href="@{/member/history}">예약내역</a></li>
-                                    <li><a class="nav-link" th:href="@{/member/myclass}">내가등록한클래스</a></li>
-                                    <li><a class="nav-link" th:href="@{/member/msg}">메시지</a></li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a th:if="${session.logindto != null }" th:href="@{/member/logout}"
-                                           style="text-decoration: none;">로그아웃</a></li>
-                                </ul>
-                            </div>
+                            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                                <li><a th:if="${session.logindto != null }" th:href="@{/member/info}"
+                                       style="text-decoration: none;"> 마이페이지 </a></li>
+                                <li><a class="nav-link" th:href="@{/member/history}">예약내역</a></li>
+                                <li><a class="nav-link" th:href="@{/member/myclass}">내가등록한클래스</a></li>
+                                <li><a class="nav-link" th:href="@{/member/msg}">메시지</a></li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a th:if="${session.logindto != null }" th:href="@{/member/logout}"
+                                       style="text-decoration: none;">로그아웃</a></li>
+                            </ul>
                         </div>
                     </div>
-
-
                 </div>
             </div>
     </header>
@@ -195,6 +202,10 @@ $(document).ready(function(){
         $("#popup").fadeOut();
     });
 });
+
+
+
+
 
 
 

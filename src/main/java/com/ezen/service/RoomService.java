@@ -96,31 +96,6 @@ public class RoomService {
         }
         return true;
     }
-//    public Page<RoomEntity> getmyroomlist(Pageable pageable , String keyword , String search ){
-//
-//        //페이지번호
-//        int page = 0;
-//        if(pageable.getPageNumber()==0) page=0; // 0이면1페이지
-//        else page = pageable.getPageNumber()-1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
-//        //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-//        pageable = PageRequest.of(page,5, Sort.by(Sort.Direction.DESC,"roomNo")); // 변수 페이지 10개 출력
-//
-//        // 만약에 검색이 있을경우
-//        if (  keyword !=null && keyword.equals("none") ) return roomRepository.findAllnone( search , pageable );
-//       /* if (  keyword !=null && keyword.equals("handmade") ) return roomRepository.findAllhandmade( search , pageable );
-//        if (  keyword !=null && keyword.equals("cooking") ) return roomRepository.findAllcooking( search , pageable );
-//        if (  keyword !=null && keyword.equals("flower") ) return roomRepository.findAllflower( search , pageable );
-//        if (  keyword !=null && keyword.equals("drawing") ) return roomRepository.findAlldrawing( search , pageable );
-//        if (  keyword !=null && keyword.equals("music") ) return roomRepository.findAllmusic( search , pageable );
-//        if (  keyword !=null && keyword.equals("yoga") ) return roomRepository.findAllyoga( search , pageable );
-//        if (  keyword !=null && keyword.equals("leisure") ) return roomRepository.findAllleisure( search , pageable );
-//        if (  keyword !=null && keyword.equals("beauty") ) return roomRepository.findAllbeauty( search , pageable );
-//        if (  keyword !=null && keyword.equals("experience") ) return roomRepository.findAllexperience( search , pageable );
-//        if (  keyword !=null && keyword.equals("development") ) return roomRepository.findAlldevelopment( search , pageable );
-//        if (  keyword !=null && keyword.equals("pet") ) return roomRepository.findAllpet( search , pageable );*/
-//
-//        return roomRepository.findAll(pageable);
-//    }
 
     // 내가 만든 room list 가져오기
     public List<RoomEntity> getmyroomlist() {

@@ -12,40 +12,40 @@ import java.util.*;
 
 @Controller
 public class CalendarController {
+    /*
+    * @Author : 김정진
+    * @Date : 2022-02-07
+    *
+    * 캘린더를 호출할 페이지 :
+    *   1. 클래스 상세 페이지 : 날짜 선택 후 해당 날짜에 등록된 클래스 시간 나타내기
+    *   2. 클래스 날짜, 시간 등록 페이지 : 등록된 클래스의 날짜와 시간을 선택해서 강의를 등록한다.
+    *   3. 예약 내역 : 캘린더의 날짜를 클릭하면, 해당 날짜에 수강했던 날짜만 클릭한다.
+    *
+    * 캘린더를 호출하면서 클래스 데이터가 등록되어 있는 날짜만 선택하게 한다.
+    * 나머지 날짜들은 disabled 시켜서 클릭 못하게 막는다.
+    *
+    * [DB 와 연동]
+    * 해당 페이지에 리스트를 출력하는 컨트롤러에 Model 에 같이 출력시킨다.
+    * 캘린더 컨트롤러에서는 단순히 연, 월, 일을 출력한다.
+    *
+    *
+    *
+    *
+    * */
 
+
+    // 캘린더를 호출하면 해당 메서드가 실행된다.
     @RequestMapping(value = "calendar.do", method = RequestMethod.GET)
-    public String getCalendaer(Model model, HttpServletRequest request, CalendarDTO calendarDTO) {
-        Calendar cal = Calendar.getInstance();
-        CalendarDTO calendarData;
+    public String getCalendar(Model model, HttpServletRequest request) {
 
-        if (calendarDTO.getDate().equals("") && calendarDTO.getMonth().equals("")) {
-            calendarDTO = new CalendarDTO(String.valueOf(cal.get(Calendar.YEAR)), String.valueOf(cal.get(Calendar.MONTH)), String.valueOf(cal.get(Calendar.DATE)), null);
-        }
 
-        Map<String, Integer> todayInfo = todayInfo(calendarDTO);
-        List<CalendarDTO> dateList = new ArrayList<CalendarDTO>();
-
-        for (int i = 1; i < todayInfo.get("start"); i++) {
-            calendarData = new CalendarDTO(null, null, null, null);
-            dateList.add(calendarData);
-        }
-
-        for (int i = todayInfo.get("startDay"); i <= todayInfo.get("endDay"); i++) {
-            if (i == todayInfo.get("today")) { //
-                calendarData = new CalendarDTO(String.valueOf(calendarDTO.getYear()), String.valueOf(calendarDTO.getMonth()), String.valueOf(i), null);
-            }
-        }
-
-        return null;
-
+        return "";
 
     }
 
-    public Map<String, Integer> todayInfo(CalendarDTO calendarDTO) {
-        Map<String, Integer> todayData = new HashMap<String, Integer>();
+    public void todayInfo() {
+        // 캘린더 인스턴스 생성
         Calendar cal = Calendar.getInstance();
-        cal.set(Integer.parseInt(calendarDTO.getYear()), Integer.parseInt(calendarDTO.getMonth()), 1);
-
         // 현재 월의 시작 날짜
         int beginDay = cal.getMinimum(java.util.Calendar.DATE);
         // 현재 월의 종료 날짜
@@ -53,64 +53,9 @@ public class CalendarController {
         // 현재 요일 [일요일 : 1, 토요일 : 7]
         int start = cal.get(java.util.Calendar.DAY_OF_WEEK);
 
-        Calendar todayCal = Calendar.getInstance();
-        SimpleDateFormat ysdf = new SimpleDateFormat("yyyy");
-        SimpleDateFormat msdf = new SimpleDateFormat("M");
-
-        int todayYear = Integer.parseInt(ysdf.format(todayCal.getTime()));
-        int todayMonth = Integer.parseInt(msdf.format(todayCal.getTime()));
-
-        int searchYear = Integer.parseInt(calendarDTO.getYear());
-        int searchMonth = Integer.parseInt(calendarDTO.getMonth()) + 1;
-
-        int today = -1;
-        if (todayYear == searchYear && todayMonth == searchMonth) {
-            SimpleDateFormat dsdf = new SimpleDateFormat("dd");
-            today = Integer.parseInt(dsdf.format(todayCal.getTime()));
-        }
-
-        searchMonth = searchMonth - 1;
-
-        Map<String, Integer> beforeAfterCalendar = beforeAfterCalendar(searchYear, searchMonth);
-
-        todayData.put("start", start);
-        todayData.put("beginDay", beginDay);
-        todayData.put("endDay", endDay);
-        todayData.put("today", today);
-        todayData.put("searchYear", searchYear);
-        todayData.put("searchMonth", searchMonth + 1);
-        todayData.put("beforeYear", beforeAfterCalendar.get("beforeYear"));
-        todayData.put("beforeMonth", beforeAfterCalendar.get("beforeMonth"));
-        todayData.put("afterYear", beforeAfterCalendar.get("afterYear"));
-        todayData.put("afterMonth", beforeAfterCalendar.get("afterMonth"));
-        return todayData;
 
     }
 
-    private Map<String, Integer> beforeAfterCalendar(int searchYear, int searchMonth) {
-        Map<String, Integer> beforeAfterData = new HashMap<String, Integer>();
-        int beforeYear = searchYear;
-        int beforeMonth = searchMonth - 1;
-        int afterYear = searchYear;
-        int afterMonth = searchMonth + 1;
-
-        if (beforeMonth < 0) {
-            beforeMonth = 11;
-            beforeYear = searchYear - 1;
-        }
-        if (searchMonth > 11) {
-            afterMonth = 0;
-            afterYear = searchYear + 1;
-        }
-
-        beforeAfterData.put("beforeYear", beforeYear);
-        beforeAfterData.put("beforeMonth", beforeMonth);
-        beforeAfterData.put("afterYear", afterYear);
-        beforeAfterData.put("afterMonth", afterMonth);
-
-        return beforeAfterData;
-
-    }
 
 
 }

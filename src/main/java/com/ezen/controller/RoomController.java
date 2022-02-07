@@ -81,7 +81,6 @@ public class RoomController {
 
         // 세션 호출
         HttpSession session = request.getSession();
-        System.out.println(keyword + "," + local + "," + category);
 
         // 1. 검색 X 지역 X 카테고리 X
         if (keyword.equals("") && local.equals("") && category.equals("")) {
@@ -89,7 +88,6 @@ public class RoomController {
             keyword = (String) session.getAttribute("keyword");
             local = (String) session.getAttribute("local");
             category = (String) session.getAttribute("category");
-
         }
         // 2. 검색, 지역, 카테고리 셋 중 하나라도 선택 했을 경우
         else {
@@ -98,9 +96,13 @@ public class RoomController {
             session.setAttribute("category", category);
         }
 
-        List<RoomEntity> roomDtos= roomService.getRoomEntityBySearch(keyword, local, category);
+        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
         // List<RoomEntity> roomDtos = roomService.getroomlist();
-        model.addAttribute("roomDtos", roomDtos);
+        model.addAttribute("roomEntities", roomEntities);
+
+        // 지도 출력
+        RoomController roomController = new RoomController();
+
         return "room/room_list";  // 타임리프 를 통한 html 반환
     }
 
@@ -138,24 +140,26 @@ public class RoomController {
     // json 반환[지도에 띄우고자 하는 방 응답하기]
     @GetMapping("/gongbang.json")
     @ResponseBody
-    public JSONObject gongbang() {
+    public JSONObject gongbang(@RequestParam("keyword") String keyword, @RequestParam("local") String local, @RequestParam("category") String category) {
+
         // Map <--> Json[키:값] => 엔트리
         // {"키": 리스트{ "키" : 값1, "키" : 값2}} => 중첩 가능
         // map ={키:값}
         // map 객체 = {"키":List[map 객체, map 객체]}
         JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
         JSONArray jsonArray = new JSONArray(); // json 안에 들어가는 리스트
+        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
 
-        List<RoomEntity> roomlist = roomService.getroomlist(); // 모든 방[위도, 경도 포함]
-        for (RoomEntity roomEntity : roomlist) { //모든 방에서 하나씩 반복문 돌리기
+
+        for (RoomEntity roomEntity : roomEntities) { //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
-
+            System.out.println("위도 : " + roomEntity.getRoomAddress().split(",")[1]);
+            System.out.println("경도 : " + roomEntity.getRoomAddress().split(",")[2]);
             data.put("lat", roomEntity.getRoomAddress().split(",")[1]); // 위도
             data.put("lng", roomEntity.getRoomAddress().split(",")[2]); // 경도
             data.put("roomTitle", roomEntity.getRoomTitle());
             data.put("roomNo", roomEntity.getRoomNo());
             data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
-
             jsonArray.add(data); //리스트에 저장
         }
 

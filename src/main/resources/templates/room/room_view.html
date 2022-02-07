@@ -2,8 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <title>Title</title>
     <style>
         ul li{
@@ -22,16 +20,12 @@
         border-width: 1px;
         border-radius: 7px;
         flex-direction: column;
-
         }
-
-
     </style>
-
+    <link rel="stylesheet" th:href="@{/css/member/rome.css}">
 
 </head>
 <body>
-
 
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
@@ -110,7 +104,7 @@
                         <div class="col-md-4">날짜</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-9">내용자릴ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ</div>
+                        <div class="col-md-9">내용</div>
                     </div>
                 </div>
             </div>
@@ -127,7 +121,7 @@
                         <div class="col-md-4">날짜</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-9">내용자릴ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ</div>
+                        <div class="col-md-9">내용</div>
                     </div>
                 </div>
             </div>
@@ -138,32 +132,45 @@
                     <p>문의내용 작성</p>
 
                     <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a comment here" id="" style="height: 100px; resize: none;"></textarea>
+                        <textarea class="form-control" placeholder="Leave a comment here" id=""
+                                  style="height: 100px; resize: none;"></textarea>
                         <label for="floatingTextarea">궁금하신 점을 작성해 주세요~</label>
-                        <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;"> 작성 완료 </button>
+                        <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;"> 작성 완료
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+
+            <!-- 달력 출력 -->
+            <div class="content">
+                <div class="container border w-100">
+                    <div class="row justify-content-center">
+                        <div class="text-center">
+                            <h2 class="mb-5 text-center">날짜 선택</h2>
+                            <form action="#" class="row">
+                                <div class="">
+                                    <div id="inline_cal"></div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
 
-        </div>
-        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+            <!-- <div class="input-group">
+                 <span class="input-group-addon">
+                 <i class="fa fa-calendar bigger-110"></i>
+                 </span>
+                 <input type="text" id="datepicker" class="form-control col-xs-12" />
+                 <a th:href="@{/room/room_pay}" >
+                     <button class="form-control bg-success text-white p-3">  클래스신청 </button>
+                 </a>
 
-        <div class="col-md-3">
-            <h1>달력</h1>
-
-            <div class="input-group">
-                <span class="input-group-addon">
-                <i class="fa fa-calendar bigger-110"></i>
-                </span>
-                <input type="text" id="datepicker" class="form-control col-xs-12" />
-                <a th:href="@{/room/room_pay}" >
-                    <button class="form-control bg-success text-white p-3">  클래스신청 </button>
-                </a>
-
-            </div>
-
+             </div>-->
 
 
         </div>
@@ -171,7 +178,18 @@
 </div>
 
 <div th:replace="footer.html :: footer"></div>
+
+<!-- 캘린더 -->
+<script th:src="@{/js/rome.js}"></script>
 <script>
+        $(function () {
+            rome(inline_cal, { time: false });
+        });
+    </script>
+</body>
+
+
+<!--<script>
 
 $("#datepicker").datepicker({
 dateFormat: 'yy-mm-dd',
@@ -196,7 +214,8 @@ buttonImageOnly: true,
 buttonText: "선택",
 });
 
-</script>
+
+</script>-->
 
 
 </body>

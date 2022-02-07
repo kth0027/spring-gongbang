@@ -169,11 +169,8 @@ public class RoomService {
                 return roomRepository.findRoomByKeyword(keyword);
             }
         }
-
         return null;
-
     }
-
 
     // room 상세페이지
     public RoomEntity getroom(int roomNo) {

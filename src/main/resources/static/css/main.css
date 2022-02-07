@@ -58,6 +58,59 @@ span {
 }
 
 /* 스틱슬라이드*/
+/*
+@Author : 태호
+@Content : 간격 수치 등 조정
+@Date : 2022-02-07
+*/
+.slider-parent {
+  justify-content: center;
+  display: flex;
+}
+
+.slider-child {
+  width: 90%;
+  
+}
+
+.slick-list {
+  height: 10rem;
+  width: 100%;
+  border: 1px solid #000;
+}
+
+.slick-track > .slick-slide {
+  display: flex;
+  justify-content: center;
+}
+
+.slick-arrow {
+  background: rgb(0, 0, 0);
+  border-radius: 1rem;
+}
+
+.slick-arrow:hover {
+  background: rgb(0, 0, 0);
+}
+
+.slick-prev {
+  
+}
+
+.slick-next {
+  
+}
+
+.slick-slide svg path{
+  -webkit-filter: saturate(6);
+ filter: saturate(6);
+ 
+}
+
+.slick-slide svg path:hover{
+  -webkit-filter: invert(.9);
+  filter: invert(.9);
+}
 
 
 
@@ -71,12 +124,11 @@ span {
 	width: 350px;
 	border-radius: 15px;
 	display: inline-block;
-	margin-top: 30px;
-	margin-left: 30px;
 	margin-bottom: 30px;
 	position: relative;
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 	overflow: hidden;
+  margin: 2rem auto;
 }
 
 .card-header {
@@ -91,7 +143,6 @@ span {
 	background-image: url(/img/coffee.jpg);
 	background-size: 100% 280px;
 	background-repeat: no-repeat;
-
 }
 
 .card:hover .card-header  {
@@ -119,14 +170,13 @@ h1 {
 }
 
 .card-body {
-
+  background-color: rgb(255, 255, 255);
+  border: 1;
 }
 
 .card-body-header{
 	line-height: 25px;
 	margin: 10px 20px 0px 20px;
-    overflow: hidden;
-
 }
 
 .card-body-description  {
@@ -141,6 +191,7 @@ h1 {
     overflow: hidden;
 	height: 180px;
 	margin: 5px 20px;
+  
 }
 
 .card:hover .card-body-description {
@@ -150,7 +201,6 @@ h1 {
     -ms-transition: .5s ease-in-out;
     -o-transition: .5s ease-in-out;
     transition : .5s ease-in-out;
-    overflow: scroll;
 }
 
 .card-body-hashtag {
@@ -165,8 +215,10 @@ h1 {
     bottom: 0;
     width: 314px;
     font-size: 14px;
-    color: #9FA5A8;
+    color: #000000;
+    background-color: rgb(255, 255, 255);
     padding: 0 15px;
+    z-index: 1;
 }
 
 .icon {

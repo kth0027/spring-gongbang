@@ -154,21 +154,20 @@ public class RoomService {
         else {
             // 검색 O 지역 O 카테고리 X
             if (local != null && category.equals("")) {
-
+                return roomRepository.findRoomByKeyword(keyword);
             }
             // 검색 O 지역 X 카테고리 O
             else if (local.equals("") && category != null) {
-
+                return roomRepository.findRoomByKeyword(keyword);
             }
             // 검색 O 지역 O 카테고리 O
             else if (local != null && category != null) {
-
-            }
-            // 검색 O 지역 X 카테고리 X
-            else if (local.equals("") && category.equals("")){
                 return roomRepository.findRoomByKeyword(keyword);
             }
-
+            // 검색 O 지역 X 카테고리 X
+            else if (local.equals("") && category.equals("")) {
+                return roomRepository.findRoomByKeyword(keyword);
+            }
         }
 
         return null;

@@ -1079,11 +1079,14 @@
             <!-- 리뷰 후기 카드 출력 02-04 조지훈 작성중 -->
             <div class="row border">
                 <section class="variable-width">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card" th:each="reply : ${replylist}" style="width: 18rem;">
                         <img src="..." class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">Card title</h5>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <h5 class="card-title">
+                                <span th:text="${reply.replyNo}">
+                                </span>
+                            </h5>
+                            <p class="card-text" th:text="${reply.replyContent}"></p>
                         </div>
                         <div class="card-body">
                             <a href="#" class="card-link">Card link</a>

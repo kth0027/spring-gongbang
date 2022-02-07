@@ -75,4 +75,7 @@ public class ReplyService {
         return true;
     }
 
+    public List<ReplyEntity> replylist () {
+        return replyRepository.findAll();
+    }
 }

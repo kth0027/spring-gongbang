@@ -19,4 +19,8 @@ public class AppStart {
     public String index() {
         return "index";
     }
+
+    // 리뷰출력
+
+
 }

@@ -84,14 +84,14 @@ public class RoomController {
         System.out.println(keyword + "," + local + "," + category);
 
         // 1. 검색 X 지역 X 카테고리 X
-        if (keyword == null && local == null && category == null) {
+        if (keyword.equals("") && local.equals("") && category.equals("")) {
             // 1.1 검색이 없는 경우 세션 처리
             keyword = (String) session.getAttribute("keyword");
             local = (String) session.getAttribute("local");
             category = (String) session.getAttribute("category");
 
         }
-        // 2. 검색, 지역, 카테고리 셋중 하나라도 선택 했을 경우
+        // 2. 검색, 지역, 카테고리 셋 중 하나라도 선택 했을 경우
         else {
             session.setAttribute("keyword", keyword);
             session.setAttribute("local", local);

@@ -211,5 +211,12 @@ public class RoomController {
         return "room/roompayment";
     }
 
+    // 메인화면에서 카테고리 혹은 지역 선택후 넘어가는 페이지와 맵핑
+    @GetMapping("")
+    public String roomSelectView(){
+
+        return null;
+    }
+
 
 }

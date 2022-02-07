@@ -6,6 +6,8 @@
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/history_list.css}">
     <link rel="stylesheet" th:href="@{/css/member/rome.css}">
+
+
 </head>
 
 <body>
@@ -122,49 +124,14 @@
         </div>
 
         <div class="col-md-4 col-4" id="calendar">
-            <!--
-        1. 캘린더를 출력합니다.
-        2. 이전 히스토리가 남아 있는 날짜만 날짜 색깔을 다르게 해서 표시합니다.
-        3. 이전 히스토리가 있는 날짜만 클릭할 수 있게 합니다.
-        -->
-            <div class="position-fixed border"
-                 style="width: 30rem; height: auto; box-shadow: 5px 5px 5px #cccccc; margin-top: 2rem;">
-                <!-- 캘린더 내부 시작 -->
-                <div class="content">
-                    <div class="container border w-100">
-                        <div class="row justify-content-center">
-                            <div class="text-center">
-                                <h2 class="mb-5 text-center">날짜 선택</h2>
-                                <form action="#" class="row">
-                                    <div class="">
-                                        <div id="inline_cal"></div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 캘린더 내부 종료 -->
-
-                <div>
-                    <div><label for="">선택일 : <span>ㅇㅇ</span></label></div>
-                </div>
-            </div>
 
         </div>
+
     </div>
 
 
 </div>
 
-<!-- 캘린더 -->
-<!-- 캐러셀 메인 js 가져오기 -->
-<script th:src="@{/js/rome.js}"></script>
-<script>
-        $(function () {
-            rome(inline_cal, { time: false });
-        });
-    </script>
 </body>
 
 </html>

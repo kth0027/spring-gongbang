@@ -38,16 +38,19 @@ import java.util.List;
 public class RoomController {
 
     @Autowired
-    RoomService roomService;
+    private RoomService roomService;
 
     @Autowired
-    MemberService memberService;
+    private MemberService memberService;
 
     @Autowired
-    RoomLikeService roomLikeService;
+    private RoomLikeService roomLikeService;
 
     @Autowired
-    HttpServletRequest request;
+    private HttpServletRequest request;
+
+    @Autowired
+    private RoomRepository roomRepository;
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
@@ -74,8 +77,73 @@ public class RoomController {
     }
 
 
+    /*
+     * @Author : 김정진
+     * @Date : 2022-02-07
+     * 1. header 에 위치한 검색 창에서 '키워드검색' '지역 선택' '카테고리 선택' 세가지 경우에 결과값을 출력한다.
+     * 2.
+     * */
+
+    // [개설된 강좌 출력]
+    // 검색이 있는 경우 / 검색이 없는 경우 구분 짓는다.
     @GetMapping("/list")
-    public String roomlist(Model model) {
+    public String roomlist(@RequestParam("roomSearch") String keyword, @RequestParam("classLocal") String local, @RequestParam("classCategory") String category, Model model) {
+
+        // 세션 호출
+        HttpSession session = request.getSession();
+
+        // 1. 검색 X 지역 X 카테고리 X
+        if(keyword == null && local == null && category == null){
+            // 1.1 검색이 없는 경우 세션 처리
+            keyword = (String) session.getAttribute("keyword");
+            local = (String) session.getAttribute("local");
+            category = (String) session.getAttribute("category");
+
+        }
+        // 2. 검색, 지역, 카테고리 셋중 하나라도 선택 했을 경우
+        else {
+            session.setAttribute("keyword", keyword);
+            session.setAttribute("local", local);
+            session.setAttribute("category", category);
+
+        }
+
+        roomService.getroomlist();
+
+/*        // 2. 검색어 O 지역 X 카테고리 X
+        else if (keyword != null && local == null && category == null) {
+            session.setAttribute("keyword", keyword);
+            session.setAttribute("local", local);
+            session.setAttribute("category", category);
+
+
+        }
+        // 3. 검색어 X 지역 O 카테고리 X
+        else if (keyword == null && local != null && category == null) {
+
+        }
+        // 4. 검색어 X 지역 X 카테고리 O
+        else if (keyword == null && local == null && category != null) {
+
+        }
+
+        // 5. 검색어 O 지역 O 카테고리 X
+        else if (keyword != null && local != null && category == null) {
+
+        }
+
+        // 6. 검색어 O 지역 X 카테고리 O
+        else if (keyword != null && local == null && category != null) {
+
+        }
+
+        // 7. 검색어 O 지역 O 카테고리 O
+        else if (keyword != null && local != null && category != null) {
+
+        }*/
+
+
+
         List<RoomEntity> roomDtos = roomService.getroomlist();
         model.addAttribute("roomDtos", roomDtos);
         return "room/room_list";  // 타임리프 를 통한 html 반환
@@ -86,20 +154,6 @@ public class RoomController {
         RoomEntity roomEntity = roomService.getroom(roomNo);
         model.addAttribute("roomEntity", roomEntity);
         return "room/room_view"; // 타임리프
-    }
-
-
-    // [카테고리 선택 : 리스트 출력 컨트롤러]
-    @GetMapping("/roomListCategoryController")
-    public String roomListController(@PathVariable("roomCategory") String category, Model model) {
-        // 1. DB 조회 후 room_list.html 에 Model 로 데이터 넘겨준다.
-        return "room/room_list";
-    }
-
-    // [지역 선택 : 리스트 출력 컨트롤러]
-    @GetMapping("/roomListAreaController")
-    public String roomListAreaController(@PathVariable("roomListArea") String area, Model model) {
-        return "room/room_list";
     }
 
     // [작성한 클래스 등록]
@@ -120,7 +174,6 @@ public class RoomController {
         return "index";
     }
 
-
     // [ room_update.html 페이지와 맵핑 ]
     @GetMapping("/update/{roomNo}")
     public String update() {
@@ -138,11 +191,9 @@ public class RoomController {
         JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
         JSONArray jsonArray = new JSONArray(); // json 안에 들어가는 리스트
 
-
         List<RoomEntity> roomlist = roomService.getroomlist(); // 모든 방[위도, 경도 포함]
         for (RoomEntity roomEntity : roomlist) { //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
-
 
             data.put("lat", roomEntity.getRoomAddress().split(",")[1]); // 위도
             data.put("lng", roomEntity.getRoomAddress().split(",")[2]); // 경도
@@ -150,27 +201,19 @@ public class RoomController {
             data.put("roomNo", roomEntity.getRoomNo());
             data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
 
-
             jsonArray.add(data); //리스트에 저장
-
         }
 
         jsonObject.put("positions", jsonArray); // json 전체에 리스트 넣기
-
-
         return jsonObject;
     }
-
 
     @GetMapping("/addressXY")
     @ResponseBody
     public String addressXY(@RequestParam("roomNo") int roomNo) {
-
         return roomRepository.findById(roomNo).get().getRoomAddress();
     }
 
-    @Autowired
-    private RoomRepository roomRepository;
 
     // 내가 등록한 클래스 보기
     @GetMapping("/timeSelectPage/{roomNo}")
@@ -196,9 +239,8 @@ public class RoomController {
         List<RoomEntity> roomDtos = roomService.getmyroomlist();
         model.addAttribute("roomDtos", roomDtos);
         return "member/member_class";
-
-
     }
+
 
     @GetMapping("/room_pay")
     public String room_pay() {
@@ -209,4 +251,6 @@ public class RoomController {
     public String roompayment() {
         return "room/roompayment";
     }
+
+
 }

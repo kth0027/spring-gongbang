@@ -7,35 +7,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+import java.util.Optional;
+
 public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
 
-    // JPA 메소드 만들기
-    //  네이티브쿼리 = 실제SQL
+    // 1. 지역만을 선택 했을 때 쿼리문
+    @Query( nativeQuery = true , value = "select * from room where roomLocal = :local")
+    List<RoomEntity> findRoomByLocal(@Param("local") String local);
 
+    // 2. 카테고리만을 선택했을 때 쿼리문
+    @Query( nativeQuery = true , value = "select * from room where roomCategory = :category")
+    List<RoomEntity> findRoomByCategory(@Param("category") String category);
 
-//    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search% or roomTitle like %:search%"  )
-//    Page<RoomEntity> findAllnone( @Param("search") String search, Pageable pageable);
-/*    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAllhandmade( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAllcooking( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAllflower( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAlldrawing( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAllmusic( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAllyoga( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAllleisure( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAllbeauty( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAllexperience( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAlldevelopment( @Param("search") String search, Pageable pageable);
-    @Query( nativeQuery = true , value = "select * from room where roomCategory like %:search%" )
-    Page<RoomEntity> findAllpet( @Param("search") String search, Pageable pageable);*/
+    // 3. 지역, 카테고리 동시 선택 시 쿼리문
+    @Query(nativeQuery = true, value= "select * from room where roomLocal = (select roomLocal from room where roomCategory =: category) ")
+    List<RoomEntity> findRoomByLocalAndCategory(@Param("local") String local, @Param("category") String category);
 
 }

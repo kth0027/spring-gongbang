@@ -136,6 +136,31 @@ public class RoomService {
         return roomEntities;
     }
 
+/*    // 검색 결과 room list
+    public List<RoomEntity> getRoomEntityBySearch(String keyword, String local, String category) {
+        // 1.1 검색이 없는 경우
+        if (keyword == null) {
+            // 1.2 지역은 선택하고 카테고리는 선택하지 않았을 경우
+            if (local != null && category == null) {
+                // 1.2.1 지역만을 인수로 넘긴다.
+                return roomRepository.findRoomByLocal(local);
+            }
+            // 1.3 지역은 선택하지 않고 카테고리는 선택했을 경우
+            else if (local == null && category != null) {
+                // 1.3.1 카테고리만을 인수로 넘긴다.
+            }
+            // 1.4 지역과 카테고리를 모두 선택했을 경우
+            else if (local != null && category != null) {
+                // 1.4.1 지역, 카테고리를 인수로 넘기고 inner join 을 사용한다.
+            }
+        }
+        // 2. 검색이 있는 경우
+        else {
+
+        }
+
+    }*/
+
 
     // room 상세페이지
     public RoomEntity getroom(int roomNo) {

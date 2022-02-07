@@ -10,6 +10,7 @@ import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.domain.entity.repository.RoomImgRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
+import com.ezen.domain.entity.repository.TimeTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -42,8 +43,12 @@ public class RoomService {
     HttpServletRequest request;
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    TimeTableRepository timeTableRepository;
+
     @Transactional
-    public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files){
+    public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files) {
         System.out.println(roomEntity.getRoomNo());
         System.out.println(roomEntity.getRoomAddress());
         System.out.println(roomEntity.getRoomCategory());
@@ -65,19 +70,19 @@ public class RoomService {
 
         // 5. 이미지 처리
         String uuidfile = null;
-        if(files.size()!=0){
-            for(MultipartFile file : files){
+        if (files.size() != 0) {
+            for (MultipartFile file : files) {
                 // 1. 난수 + '_' + 파일이름
                 UUID uuid = UUID.randomUUID();
-                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_","-");
+                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
                 String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 String filepath = dir + "\\" + uuidfile;
-                try{
+                try {
                     // 4. 지정한 경로에 파일을 저장시킨다.
                     file.transferTo(new File(filepath));
-                } catch(Exception e){
+                } catch (Exception e) {
                     System.out.println("오류 : " + e);
                 }
                 // 5.entity 에 파일 경로를 저장한다.
@@ -97,8 +102,7 @@ public class RoomService {
         }
         return true;
     }
-
-    //    public Page<RoomEntity> getmyroomlist(Pageable pageable , String keyword , String search ){
+//    public Page<RoomEntity> getmyroomlist(Pageable pageable , String keyword , String search ){
 //
 //        //페이지번호
 //        int page = 0;
@@ -126,15 +130,36 @@ public class RoomService {
 
     // 내가 만든 room list 가져오기
     public List<RoomEntity> getmyroomlist() {
-
         HttpSession session = request.getSession();
         MemberDto logindto = (MemberDto) session.getAttribute("logindto");
-
         List<RoomEntity> roomEntities = memberRepository.findById(logindto.getMemberNo()).get().getRoomEntities();
-
         return roomEntities;
     }
 
+/*    // 검색 결과 room list
+    public List<RoomEntity> getRoomEntityBySearch(String keyword, String local, String category) {
+        // 1.1 검색이 없는 경우
+        if (keyword == null) {
+            // 1.2 지역은 선택하고 카테고리는 선택하지 않았을 경우
+            if (local != null && category == null) {
+                // 1.2.1 지역만을 인수로 넘긴다.
+                return roomRepository.findRoomByLocal(local);
+            }
+            // 1.3 지역은 선택하지 않고 카테고리는 선택했을 경우
+            else if (local == null && category != null) {
+                // 1.3.1 카테고리만을 인수로 넘긴다.
+            }
+            // 1.4 지역과 카테고리를 모두 선택했을 경우
+            else if (local != null && category != null) {
+                // 1.4.1 지역, 카테고리를 인수로 넘기고 inner join 을 사용한다.
+            }
+        }
+        // 2. 검색이 있는 경우
+        else {
+
+        }
+
+    }*/
 
 
     // room 상세페이지
@@ -143,9 +168,8 @@ public class RoomService {
     }
 
     // 모든 룸 가져오기
-    public List<RoomEntity> getroomlist(){
+    public List<RoomEntity> getroomlist() {
         return roomRepository.findAll();
-
     }
 
     // 룸에 날짜, 시간 지정하기
@@ -165,10 +189,7 @@ public class RoomService {
 
     }
 
-    public Page<RoomEntity> getMyRoomList(Pageable pageable){
-
-
+    public Page<RoomEntity> getMyRoomList(Pageable pageable) {
         return null;
     }
-
 }

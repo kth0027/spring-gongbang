@@ -61,7 +61,7 @@
                     </div>
                     <div> 강사님 연락처</div>
                     <div class="my-2">
-                        <div th:text="${member.memberPhone}"  style="background-color:#ffffff"></div>
+                        <div th:text="${member.memberPhone}" style="background-color:#ffffff"></div>
                     </div>
                 </div>
 
@@ -152,7 +152,8 @@
                     <label class="label" id="rlabel" for="rinput">
                         <div class="inner" id="inner">드래그하거나 클릭해서 업로드</div>
                     </label>
-                    <input id="rinput" name="roomImageInput" class="input" accept="image/*" type="file" required="true" multiple="true" hidden="true">
+                    <input id="rinput" name="roomImageInput" class="input" accept="image/*" type="file" required="true"
+                           multiple="true" hidden="true">
                     <div class="preview" id="preview"></div>
                 </div>
 
@@ -217,16 +218,13 @@
                         <option value="2">2명</option>
                         <option value="3">3명</option>
                         <option value="4">4명</option>
+                        <option value="5">5명</option>
+                        <option value="6">6명</option>
                     </select>
                 </div>
 
                 <div>
-                    <input class="form-control" name="roomDate" type="date">
-                </div>
-
-                <div>
                     <div>편의사항 및 제공사항</div>
-
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" name="infoCheck"
                                id="formCheck1">
@@ -252,10 +250,13 @@
                         <input type="hidden" value="" id="checkBox3" name="checkBox3">
                     </div>
                 </div>
+
+                <div>
+                    <input type="submit" class="btn btn-secondary" style="width: 50%;">
+                </div>
+
             </div>
-            <div>
-                <input type="submit" class="btn btn-secondary" style="width: 50%;">
-            </div>
+
         </form>
     </div>
 

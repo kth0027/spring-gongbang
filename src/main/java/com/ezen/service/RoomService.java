@@ -1,10 +1,8 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
-
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
-
 import com.ezen.domain.entity.RoomImgEntity;
 import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
@@ -12,18 +10,14 @@ import com.ezen.domain.entity.repository.RoomImgRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.domain.entity.repository.TimeTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -136,7 +130,7 @@ public class RoomService {
         return roomEntities;
     }
 
-/*    // 검색 결과 room list
+    // 검색 결과 room list
     public List<RoomEntity> getRoomEntityBySearch(String keyword, String local, String category) {
         // 1.1 검색이 없는 경우
         if (keyword == null) {
@@ -148,18 +142,29 @@ public class RoomService {
             // 1.3 지역은 선택하지 않고 카테고리는 선택했을 경우
             else if (local == null && category != null) {
                 // 1.3.1 카테고리만을 인수로 넘긴다.
+                return roomRepository.findRoomByCategory(category);
             }
             // 1.4 지역과 카테고리를 모두 선택했을 경우
             else if (local != null && category != null) {
-                // 1.4.1 지역, 카테고리를 인수로 넘기고 inner join 을 사용한다.
+                // 1.4.1 지역, 카테고리를 인수로 넘긴다.
+                return roomRepository.findRoomByLocalAndCategory(local, category);
             }
         }
         // 2. 검색이 있는 경우
         else {
+            if (local != null && category == null) {
+
+            } else if (local == null && category != null) {
+
+            } else if (local != null && category != null) {
+
+            }
 
         }
 
-    }*/
+        return null;
+
+    }
 
 
     // room 상세페이지

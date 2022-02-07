@@ -5,20 +5,12 @@ import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.RoomRepository;
-import com.ezen.service.RoomService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.web.PageableDefault;
-
-
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomLikeService;
 import com.ezen.service.RoomService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
@@ -28,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import javax.transaction.Transactional;
-
 import java.util.List;
 
 @Controller
@@ -91,9 +81,10 @@ public class RoomController {
 
         // 세션 호출
         HttpSession session = request.getSession();
+        System.out.println(keyword + "," + local + "," + category);
 
         // 1. 검색 X 지역 X 카테고리 X
-        if(keyword == null && local == null && category == null){
+        if (keyword == null && local == null && category == null) {
             // 1.1 검색이 없는 경우 세션 처리
             keyword = (String) session.getAttribute("keyword");
             local = (String) session.getAttribute("local");
@@ -105,46 +96,10 @@ public class RoomController {
             session.setAttribute("keyword", keyword);
             session.setAttribute("local", local);
             session.setAttribute("category", category);
-
         }
 
-        roomService.getroomlist();
-
-/*        // 2. 검색어 O 지역 X 카테고리 X
-        else if (keyword != null && local == null && category == null) {
-            session.setAttribute("keyword", keyword);
-            session.setAttribute("local", local);
-            session.setAttribute("category", category);
-
-
-        }
-        // 3. 검색어 X 지역 O 카테고리 X
-        else if (keyword == null && local != null && category == null) {
-
-        }
-        // 4. 검색어 X 지역 X 카테고리 O
-        else if (keyword == null && local == null && category != null) {
-
-        }
-
-        // 5. 검색어 O 지역 O 카테고리 X
-        else if (keyword != null && local != null && category == null) {
-
-        }
-
-        // 6. 검색어 O 지역 X 카테고리 O
-        else if (keyword != null && local == null && category != null) {
-
-        }
-
-        // 7. 검색어 O 지역 O 카테고리 O
-        else if (keyword != null && local != null && category != null) {
-
-        }*/
-
-
-
-        List<RoomEntity> roomDtos = roomService.getroomlist();
+        List<RoomEntity> roomDtos= roomService.getRoomEntityBySearch(keyword, local, category);
+        // List<RoomEntity> roomDtos = roomService.getroomlist();
         model.addAttribute("roomDtos", roomDtos);
         return "room/room_list";  // 타임리프 를 통한 html 반환
     }

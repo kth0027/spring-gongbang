@@ -18,7 +18,6 @@
     <header class="p-3 text-white" style="background-color: #fff1ed;">
         <div class="container">
             <div class="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-
                 <div class="col-md-2 d-flex justify-content-center">
                     <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                         <img th:src="@{/img/logo/logo.png}" alt="logo">
@@ -34,22 +33,23 @@
 
                     1. 데이터를 form 형태로 컨트롤러에 넘긴다.
                 -->
-                <form th:action="@{/room/roomSearchController}" method="get">
-                    <div class="col-md-4">
-                        <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <form th:action="@{/room/list}" method="get">
                             <div class="col-md-9">
                                 <!-- 검색어 입력 창-->
                                 <input type="search" class="form-control form-control-dark" placeholder="Search..."
                                        aria-label="Search" style="width:100%;" name="roomSearch" id="roomSearch">
                                 <!-- 지역 선택 -->
                                 <select name="classLocal" id="classLocal" class="form-select">
-                                    <option value="">지역선택</option>
+                                    <option selected>지역선택</option>
                                     <option value="서울">서울</option>
                                     <option value="경기">경기</option>
                                     <option value="인천">인천</option>
                                 </select>
                                 <!-- 카테고리 선택 -->
                                 <select name="classCategory" id="classCategory" class="form-select">
+                                    <option selected></option>
                                     <option value="핸드메이드">핸드메이드</option>
                                     <option value="쿠킹">쿠킹</option>
                                     <option value="플라워">플라워</option>
@@ -68,17 +68,18 @@
                                         style="background: #ffffff; border: 1px solid #374b73; width: 100%;">검색
                                 </button>
                             </div>
+                        </form>
+
+                        <div class="col-md-3 d-flex justify-content-end">
+                            <a th:href="@{/room/register}" class="nav-link px-2 text-white">
+                                <button type="button" class="btn" style="border: 2px solid #374b73; width: 100%;">클래스 개설
+                                </button>
+                            </a>
                         </div>
                     </div>
-                </form>
-                <div class="col-md-3 d-flex justify-content-end">
-                    <a th:href="@{/room/register}" class="nav-link px-2 text-white">
-                        <button type="button" class="btn" style="border: 2px solid #374b73; width: 100%;">클래스 개설
-                        </button>
-                    </a>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="justify-content-end">
                         <button th:if="${session.logindto == null}" type="button"
                                 class="btn btn-secondary me-2 openlogin" data-target="#modallogin"
@@ -205,6 +206,13 @@ $(document).ready(function(){
         $("#popup").fadeOut();
     });
 });
+
+
+
+
+
+
+
 
 
 

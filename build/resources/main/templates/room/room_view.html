@@ -2,8 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <title>Title</title>
     <style>
         ul li{
@@ -23,6 +21,8 @@
         border-radius: 7px;
         flex-direction: column;
         }
+
+
     </style>
     <link rel="stylesheet" th:href="@{/css/member/rome.css}">
 
@@ -74,7 +74,6 @@
             <div>
                 <h3 id="classinfo">클래스 소개</h3>
                 <div th:text="${roomEntity.roomContent}">
-
                 </div>
                 <hr>
 
@@ -86,7 +85,6 @@
                 <br><br>
                 <br><br>
                 <hr>
-
 
                 <h3 id="position">위치</h3>
                 <h5>지도</h5>
@@ -132,7 +130,6 @@
             <div>
                 <div id="qnabox">
                     <p>문의내용 작성</p>
-
                     <div class="form-floating">
                         <textarea class="form-control" placeholder="Leave a comment here" id=""
                                   style="height: 100px; resize: none;"></textarea>
@@ -162,7 +159,6 @@
                 </div>
             </div>
 
-
             <!-- <div class="input-group">
                  <span class="input-group-addon">
                  <i class="fa fa-calendar bigger-110"></i>
@@ -174,7 +170,6 @@
 
              </div>-->
 
-
         </div>
     </div>
 </div>
@@ -184,10 +179,12 @@
 <!-- 캘린더 -->
 <script th:src="@{/js/rome.js}"></script>
 <script>
-        $(function () {
-            rome(inline_cal, { time: false });
-        });
-    </script>
+    $(function () {
+        rome(inline_cal, { time: false });
+    });
+
+</script>
+
 </body>
 
 
@@ -219,6 +216,4 @@ buttonText: "선택",
 
 </script>-->
 
-
-</body>
 </html>

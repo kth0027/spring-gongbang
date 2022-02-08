@@ -1,16 +1,18 @@
 $(document).ready(function() {
     calendarInit();
 });
+
+function test(year , month , day){
+    var date = year + "-" + (month + 1) + "-" + day;
+    $("#dateSelected").val(date);
+}
+
 /*
     달력 렌더링 할 때 필요한 정보 목록
     현재 월(초기값 : 현재 시간)
     금월 마지막일 날짜와 요일
     전월 마지막일 날짜와 요일
 */
-
-function test( a , b , c){
-    alert(a + "," + "," + b + "," +c);
-}
 
 function calendarInit() {
 
@@ -69,10 +71,10 @@ function calendarInit() {
         // 이번달
         for (var i = 1; i <= nextDate; i++) {
             // id : 2022-02-22
-            // var dayId = currentYear + "-" + currentMonth+1 + "-" + i;
-            var tmp = currentMonth+1;
-            var dayId = currentYear+"".concat(',', tmp, ',', i);
-            calendar.innerHTML = calendar.innerHTML + '<div onclick="test('+currentYear+', '+currentMonth+ ' , '+i+')" class="day current day-select" id="'+dayId+'">' + i + '</div>';
+            var dayId = currentYear + "-" + currentMonth+1 + "-" + i;
+            // var currentMonth = currentMonth + 1; for 문 안에서 사용하니 자꾸 숫자가 증가한다.
+            // var dayId = currentYear+"".concat(',', tmp, ',', i);
+            calendar.innerHTML = calendar.innerHTML + '<div onclick="test('+currentYear+','+currentMonth+','+i+')" class="day current day-select" id="'+dayId+'">' + i + '</div>';
             /*
             해당 버튼 id 를 부여해서 클릭 이벤트를 부여한다.
             */

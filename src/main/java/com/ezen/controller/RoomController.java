@@ -194,32 +194,6 @@ public class RoomController {
             return "2";
         }
     }
-//    @GetMapping("/roommap.json")
-//    @ResponseBody
-//    public JSONObject roommap(){
-//        // Map <--> Json[키:값] => 엔트리
-//        // {"키": 리스트{ "키" : 값1, "키" : 값2}} => 중첩 가능
-//        // map ={키:값}
-//        // map 객체 = {"키":List[map 객체, map 객체]}
-//        JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
-//        JSONArray jsonArray = new JSONArray(); // json 안에 들어가는 리스트
-//
-//        RoomEntity roomEntity = roomService.getroom(); // 모든 방[위도, 경도 포함]
-//
-//            JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
-//            data.put("lat", roomEntity.getRoomAddress().split(",")[0]); // 위도
-//            data.put("lng", roomEntity.getRoomAddress().split(",")[1]); // 경도
-//            data.put("roomTitle",roomEntity.getRoomTitle());
-//            data.put("roomNo", roomEntity.getRoomNo());
-//            //data.put("rImg", roomEntity.getRoomImgEntities().get(0).getRImg());
-//
-//
-//            jsonArray.add(data); //리스트에 저장
-//
-//        jsonObject.put("positions", jsonArray); // json 전체에 리스트 넣기
-//
-//
-//        return jsonObject;
-//    }
+
 
 }

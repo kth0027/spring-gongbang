@@ -110,6 +110,9 @@
                 <div>
                     <h5 th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></h5>
                     <div id="map" style="width:100%;height:350px;"></div> <!-- 지도가 표시되는 구역 -->
+                    <!-- 히든으로 위도 경도 잘라서 js로 넘겨라 -->
+                    <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[1] }" name="roomaddress1">
+                    <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[2] }" name="roomaddress2">
                 </div>
                 <hr>
             </div>

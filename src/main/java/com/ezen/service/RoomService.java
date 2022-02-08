@@ -118,6 +118,10 @@ public class RoomService {
                 // 1.4.1 지역, 카테고리를 인수로 넘긴다.
                 return roomRepository.findRoomByLocalAndCategory(local, category);
             }
+            // 1.5 검색 X 카테고리 X 지역 X 인 경우에는 등록된 클래스 전체를 리턴한다.
+            else if (local.equals("") && category.equals("")){
+                return roomRepository.findAll();
+            }
         }
         // 2. 검색이 있는 경우
         else {

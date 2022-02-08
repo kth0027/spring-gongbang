@@ -1080,22 +1080,87 @@
             <div class="row border">
                 <section class="variable-width">
                     <div class="card" th:each="reply : ${replylist}" style="width: 18rem;">
-                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" class="card-img-top" alt="...">
+                        <button type="button" class="btn btn-outline-primary me-2" th:data-bs-target="${'#modal'+reply.replyNo}"
+                                data-bs-toggle="modal">
+                            <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" class="card-img-top" alt="...">
+                        </button>
                         <div class="card-body">
                             <div class="card-title" th:text="${reply.roomEntity.roomTitle}">
                             </div>
                             <p class="card-text" th:text="${reply.replyContent}"></p>
                         </div>
-<!--                        <div class="card-body">-->
-<!--                            <a href="#" class="card-link">Card link</a>-->
-<!--                            <a href="#" class="card-link">Another link</a>-->
-<!--                        </div>-->
+                        <div class="modal" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog" th:id="${'modal'+reply.replyNo}" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content rounded-5 shadow">
+                                    <div class="modal-header p-5 pb-4 border-bottom-0">
+                                        <div th:id="${'carousel' +reply.replyNo}" class="carousel slide" data-bs-ride="carousel">
+                                            <div class="carousel-inner"> <!-- 반복문 -->
+                                                <div class="carousel-item active">
+                                                    <img th:src="@{'/replyimg/'+${reply.replyImgEntities.get(0).replyImg} }" class="d-block w-100" alt="...">
+                                                </div>
+                                                <div class="carousel-item" th:each="replyimg : ${reply.replyImgEntities}">
+                                                    <img th:src="@{'/replyimg/'+${replyimg.replyImg} }"  class="d-block w-100" alt="...">
+                                                </div>
+                                            </div>
+
+                                            <button class="carousel-control-prev" type="button" th:data-bs-target="${'#carousel'+reply.replyNo}"
+                                                    data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" th:data-bs-target="${'#carousel'+reply.replyNo}"
+                                                    data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body p-5 pt-0">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
             </div>
         </div>
     </main>
 </div>
+
+<!--<div class="modal fade" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog" th:id="${'modal'+replylist.replyNo}" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-lg" role="document">-->
+<!--        <div class="modal-content rounded-5 shadow">-->
+<!--            <div class="modal-header p-5 pb-4 border-bottom-0">-->
+<!--                <div th:id="${'carousel' +room.rnum}" class="carousel slide" data-bs-ride="carousel">-->
+<!--                    <div class="carousel-inner"> &lt;!&ndash; 반복문 &ndash;&gt;-->
+<!--                        <div class="carousel-item active">-->
+<!--                            <img th:src="@{'/roomimg/'+${room.roomimgEntities.get(0).rimg} }" class="d-block w-100" alt="...">-->
+<!--                        </div>-->
+<!--                        <div class="carousel-item" th:each="roomimg : ${room.roomimgEntities}">-->
+<!--                            <img th:src="@{'/roomimg/'+${roomimg.rimg} }"  class="d-block w-100" alt="...">-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <button class="carousel-control-prev" type="button" th:data-bs-target="${'#carousel'+room.rnum}"-->
+<!--                            data-bs-slide="prev">-->
+<!--                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
+<!--                        <span class="visually-hidden">Previous</span>-->
+<!--                    </button>-->
+<!--                    <button class="carousel-control-next" type="button" th:data-bs-target="${'#carousel'+room.rnum}"-->
+<!--                            data-bs-slide="next">-->
+<!--                        <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
+<!--                        <span class="visually-hidden">Next</span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="modal-body p-5 pt-0">-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
 <!-- 조지훈 댓글 슬릭 js -->
 <script type="text/javascript">
     $('.variable-width').slick({

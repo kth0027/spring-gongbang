@@ -34,11 +34,4 @@ public class ReplyController {
         return "redirect:/room/view/" + roomNo;
     }
 
-    @GetMapping("/list")
-    public String replylist(Model model) {
-        List<ReplyEntity> replylist = replyService.replylist();
-        model.addAttribute("replylist", replylist);
-        return "/";
-    }
-
 }

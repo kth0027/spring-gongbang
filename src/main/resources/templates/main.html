@@ -1080,18 +1080,16 @@
             <div class="row border">
                 <section class="variable-width">
                     <div class="card" th:each="reply : ${replylist}" style="width: 18rem;">
-                        <img src="..." class="card-img-top" alt="...">
+                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title">
-                                <span th:text="${reply.replyNo}">
-                                </span>
-                            </h5>
+                            <div class="card-title" th:text="${reply.roomEntity.roomTitle}">
+                            </div>
                             <p class="card-text" th:text="${reply.replyContent}"></p>
                         </div>
-                        <div class="card-body">
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
-                        </div>
+<!--                        <div class="card-body">-->
+<!--                            <a href="#" class="card-link">Card link</a>-->
+<!--                            <a href="#" class="card-link">Another link</a>-->
+<!--                        </div>-->
                     </div>
                 </section>
             </div>

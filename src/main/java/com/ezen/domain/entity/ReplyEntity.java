@@ -33,7 +33,7 @@ public class ReplyEntity extends BaseTimeEntity{
     private MemberEntity memberEntity;
 
     @OneToMany(mappedBy = "replyEntity", cascade = CascadeType.ALL)
-    private List<ReplyImgEntity> roomImgEntities = new ArrayList<ReplyImgEntity>();
+    private List<ReplyImgEntity> replyImgEntities = new ArrayList<>();
 
 
 

@@ -69,7 +69,8 @@ public class ReplyService {
                         .replyEntity(replyEntitysaved)
                         .build();
                 int replyImgNo = replyImgRepository.save(replyImgEntity).getReplyImgNo();
-                replyEntitysaved.getRoomImgEntities().add(replyImgRepository.findById(replyImgNo).get());
+                replyEntitysaved.getReplyImgEntities().add(replyImgRepository.findById(replyImgNo).get());
+
             }
         }
         return true;

@@ -40,6 +40,9 @@ public class RoomService {
     HttpServletRequest request;
     @Autowired
     private MemberService memberService;
+    @Autowired
+    HistoryRepository historyRepository;
+
     @Transactional
     public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files){
         System.out.println(roomEntity.getRoomNo());
@@ -127,8 +130,7 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
-    @Autowired
-    HistoryRepository historyRepository;
+    // 02-08 클래스 수강 조지훈
     public boolean classregistration(int roomNo) {
         RoomEntity roomEntity = roomRepository.findById(roomNo).get();
 

@@ -84,8 +84,8 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-6 offset-1">
-                            <input name="roomSearch" type="search" class="form-control form-control-dark col-6"
-                                   placeholder="검색어를 입력하세요! " aria-label="Search">
+                                <input name="roomSearch" type="search" class="form-control form-control-dark col-6"
+                                       placeholder="검색어를 입력하세요! " aria-label="Search">
                             </div>
                         </div>
                         <!-- 드롭다운 셀렉 -->
@@ -237,7 +237,6 @@
                 </form>
                 <div th:text="${findemailmsg}"></div>
             </div>
-
             <div class="col-md-6">  <!-- 패스워드찾기 -->
                 <form action="/member/findpasswordcontroller" method="post">
                     이메일 : <input type="text" name="memail"> <br>
@@ -246,15 +245,11 @@
                 </form>
                 <div th:text="${findpwmsg}"></div>
             </div>
-
         </div>
         <button>닫기</button>
-
     </div>
-
 </div>
 
-</div>
 
 <script>
 
@@ -269,6 +264,7 @@ $(document).ready(function(){
         $("#popup").fadeOut();
     });
 });
+
 
 
 
@@ -289,6 +285,7 @@ $(document).ready(function () {
         $("#togglesearch").hide();
     });
 });
+
 
 
 

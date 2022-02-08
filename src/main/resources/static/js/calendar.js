@@ -4,11 +4,9 @@ $(document).ready(function() {
     // 각 버튼의 id : YY-MM-DD
     // 각각에 해당하는 클릭 이벤트를 부여한다.
     var days = $(".day-select");
-
     days.on("click", function(e){
         console.log(e.target);
     });
-
 
 });
 /*
@@ -70,16 +68,24 @@ function calendarInit() {
 
         // 지난달
         for (var i = prevDate - prevDay + 1; i <= prevDate; i++) {
-            calendar.innerHTML = calendar.innerHTML + '<div class="day prev disable">' + i + '</div>';
+            calendar.innerHTML = calendar.innerHTML + '<div class="day prev disable day-select">' + i + '</div>';
         }
+
         // 이번달
         for (var i = 1; i <= nextDate; i++) {
             var dayId = currentYear + "-" + (currentMonth+1) + "-" + i;
             calendar.innerHTML = calendar.innerHTML + '<div class="day current day-select" id="'+dayId+'">' + i + '</div>';
+
+            /*
+            해당 버튼 id 를 부여해서 클릭 이벤트를 부여한다.
+
+            */
+
         }
+
         // 다음달
         for (var i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
-            calendar.innerHTML = calendar.innerHTML + '<div class="day next disable">' + i + '</div>';
+            calendar.innerHTML = calendar.innerHTML + '<div class="day next disable day-select">' + i + '</div>';
         }
         // 오늘 날짜 표기
         if (today.getMonth() == currentMonth) {

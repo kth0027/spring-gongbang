@@ -24,7 +24,7 @@
 
     $(function(){
 
-        var map2 = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
+        var map = new kakao.maps.Map(document.getElementById('map'), { // 지도를 표시할 div
             center : new kakao.maps.LatLng(36.2683, 127.6358), // 지도의 중심좌표
             level : 14 // 지도의 확대 레벨
         });
@@ -35,7 +35,7 @@
         // 이 예제에서는 disableClickZoom 값을 true로 설정하여 기본 클릭 동작을 막고
         // 클러스터 마커를 클릭했을 때 클릭된 클러스터 마커의 위치를 기준으로 지도를 1레벨씩 확대합니다
         var clusterer = new kakao.maps.MarkerClusterer({
-            map: map2, // 마커들을 클러스터로 관리하고 표시할 지도 객체
+            map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
             averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
             minLevel: 10, // 클러스터 할 최소 지도 레벨
             disableClickZoom: true // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
@@ -52,6 +52,7 @@
                     url : "/room/gongbang.json",
                     data : {"keyword" : keyword, "local" : local, "category" : category},
                     method : "GET",
+                    async: false,
                     success: function(data){
 
                         alert(JSON.stringify(data));
@@ -64,35 +65,32 @@
                             kakao.maps.event.addListener(marker, 'click', function() {
                             // 커스텀 오버레이를 생성하고 지도에 표시한다
                                   var customOverlay = new kakao.maps.CustomOverlay({
-                                     map: map2,
-                                     content: "<div style='padding:0 5px;background:#fff;'>"+position.roomNo+","+position.roomImg+"<br><a href='/room/view/"+position.roomNo+"'>바로가기</a></div>", // 내용물
-                                     position: new kakao.maps.LatLng(position.lat, position.lng), // 커스텀 오버레이를 표시할 좌표
-                                     xAnchor: 0.5, // 컨텐츠의 x 위치
-                                     yAnchor: 0 // 컨텐츠의 y 위치
+                                     // map: map2,
+                                     // content: "<div style='padding:0 5px;background:#fff;'>"+position.roomNo+","+position.roomImg+"<br><a href='/room/view/"+position.roomNo+"'>바로가기</a></div>", // 내용물
+                                     position: new kakao.maps.LatLng(position.lat, position.lng) // 커스텀 오버레이를 표시할 좌표
+                                     // xAnchor: 0.5, // 컨텐츠의 x 위치
+                                     // yAnchor: 0 // 컨텐츠의 y 위치
                                   });
+                                  alert(JSON.stringify(marker));
+                                  return marker;
                             });
-                            alert(JSON.stringify(marker));
-                            return marker;
+
+                            clusterer.addMarkers(markers);
                         });
-                        clusterer.addMarkers(markers);
+
+                        kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
+
+                        // 현재 지도 레벨에서 1레벨 확대한 레벨
+                        var level = map2.getLevel()-1;
+
+                        // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
+                        map2.setLevel(level, {anchor: cluster.getCenter()});
+                        });
                     }
                 });
 
-                kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
-
-                    // 현재 지도 레벨에서 1레벨 확대한 레벨
-                    var level = map2.getLevel()-1;
-
-                    // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
-                    map2.setLevel(level, {anchor: cluster.getCenter()});
-                    });
-
-
 
             });
-
-
-
     });
 
     /*$("#classSearchBtn").on("click", function(){

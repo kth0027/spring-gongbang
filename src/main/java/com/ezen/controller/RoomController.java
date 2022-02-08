@@ -97,11 +97,7 @@ public class RoomController {
         }
 
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
-        // List<RoomEntity> roomDtos = roomService.getroomlist();
         model.addAttribute("roomEntities", roomEntities);
-
-        // 지도 출력
-        RoomController roomController = new RoomController();
 
         return "room/room_list";  // 타임리프 를 통한 html 반환
     }
@@ -150,7 +146,6 @@ public class RoomController {
         JSONArray jsonArray = new JSONArray(); // json 안에 들어가는 리스트
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
 
-
         for (RoomEntity roomEntity : roomEntities) { //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
             System.out.println("위도 : " + roomEntity.getRoomAddress().split(",")[1]);
@@ -198,17 +193,6 @@ public class RoomController {
         List<RoomEntity> roomDtos = roomService.getmyroomlist();
         model.addAttribute("roomDtos", roomDtos);
         return "member/member_class";
-    }
-
-
-    @GetMapping("/room_pay")
-    public String room_pay() {
-        return "room/room_pay";
-    }
-
-    @GetMapping("/room/roompayment")
-    public String roompayment() {
-        return "room/roompayment";
     }
 
     // 메인화면에서 카테고리 혹은 지역 선택후 넘어가는 페이지와 맵핑

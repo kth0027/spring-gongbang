@@ -43,10 +43,6 @@ public class RoomService {
 
     @Transactional
     public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files) {
-        System.out.println(roomEntity.getRoomNo());
-        System.out.println(roomEntity.getRoomAddress());
-        System.out.println(roomEntity.getRoomCategory());
-
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
@@ -61,7 +57,6 @@ public class RoomService {
         // 4.2 memberEntity 에는 @OneToMany 형태로 맵핑되어있다.
         // 4.3 member 1명이 여러개의 room 을 등록할 수 있고, 등록할 시 맵핑을 시켜주는 역할이다.
         memberEntity.getRoomEntities().add(roomEntitySaved);
-
         // 5. 이미지 처리
         String uuidfile = null;
         if (files.size() != 0) {
@@ -85,7 +80,6 @@ public class RoomService {
                         .roomImg(uuidfile)
                         .roomEntity(roomEntitySaved)
                         .build();
-
                 // 6. 각각의 파일을 repo 를 통해 db에 저장한다.
                 // 6.1 해당하는 파일의 roomImgNo 를 통해 해당하는 이미지를 불러온다.
                 int roomImgNo = roomImgRepository.save(roomImgEntity).getRoomImgNo();

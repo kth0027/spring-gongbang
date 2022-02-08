@@ -23,8 +23,13 @@ public class HistoryEntity extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int historyNo;
 
-//    @OneToMany(mappedBy = "HistoryEntity", cascade = CascadeType.ALL)
-//    private List<RoomEntity>  roomEntities = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "memberNo")
+    private MemberEntity memberEntity;
+
+    @ManyToOne
+    @JoinColumn(name = "roomNo")
+    private RoomEntity roomEntity;
 
 
 

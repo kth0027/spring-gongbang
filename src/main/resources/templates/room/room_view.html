@@ -28,7 +28,7 @@
 
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
-
+<script th:src="@{/js/class_registration.js}"></script>
 <div class="container mt-5">
     <div class="row">
         <div class="">
@@ -37,7 +37,7 @@
                     <button class="btn btn-warning">채널보기</button>
                 </a>
             </a>
-            <button class="btn btn-warning">클래스 신청하기</button>
+            <button class="btn btn-warning" data-bs-target="#registration" data-bs-toggle="modal">클래스 신청하기</button>
         </div>
         <div class="col-md-9">
             <div>
@@ -176,38 +176,24 @@
     </div>
 </div>
 
-<!--&lt;!&ndash; 리뷰 작성할 클래스 선택 모달 [ 임시 ] &ndash;&gt;-->
-<!--<div class="modal" tabindex="-1" id="classselect" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog">-->
-<!--    <div class="modal-dialog  modal-lg" role="document">-->
-<!--        <div class="modal-content rounded-4 shadow">-->
-<!--            <div class="modal-header p-5 pb-4 border-bottom-0">-->
-<!--                <h2 class="fw-bold mb-0">내가 수강한 클래스 내역</h2>-->
-<!--                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> &lt;!&ndash; 닫기 &ndash;&gt;-->
-<!--            </div>-->
-<!--            <div class="modal-body p-4 text-center">-->
-<!--                <h5 class="mb-0">리뷰를 작성하실 클래스를 선택해 주세요</h5>-->
-<!--                <table class="table table-striped">-->
-<!--                    <tr>-->
-<!--                        <th>대표사진</th>-->
-<!--                        <th>클래스명</th>-->
-<!--                        <th>클래스 수강일</th>-->
-<!--                        <th>비고</th>-->
-<!--                    </tr>-->
-<!--                    <tr>-->
-<!--                        <td>-->
-<!--                            <img src="" alt="">-->
-<!--                        </td>-->
-<!--                        <td>-->
-<!--                            <a th:href="@{/room/review}">쿠킹쿠킹</a>-->
-<!--                        </td>-->
-<!--                        <td>2022-01-27</td>-->
-<!--                        <td>?</td>-->
-<!--                    </tr>-->
-<!--                </table>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<!-- 리뷰 작성할 클래스 선택 모달 [ 임시 ] -->
+<div class="modal" tabindex="-1" id="registration" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h2 class="fw-bold mb-0">클래스 수강 여부 확인</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- 닫기 -->
+            </div>
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0">클래스를 등록하시겠습니까??</h5>
+            </div>
+            <div class="modal-footer flex-nowrap p-0">
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" th:onclick="classregistration([[${roomEntity.roomNo}]])"><strong>예</strong></button>
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">아니오</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div th:replace="footer.html :: footer"></div>
 

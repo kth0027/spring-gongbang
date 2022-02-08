@@ -2,9 +2,11 @@ package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
 
+import com.ezen.domain.entity.HistoryEntity;
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.RoomImgEntity;
+import com.ezen.domain.entity.repository.HistoryRepository;
 import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.domain.entity.repository.RoomImgRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
@@ -34,7 +36,6 @@ public class RoomService {
     private RoomRepository roomRepository;
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     HttpServletRequest request;
     @Autowired
@@ -126,5 +127,24 @@ public class RoomService {
         return roomRepository.findAll();
     }
 
+    @Autowired
+    HistoryRepository historyRepository;
+    public boolean classregistration(int roomNo) {
+        RoomEntity roomEntity = roomRepository.findById(roomNo).get();
 
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = memberService.getMember(memberDto.getMemberNo());
+
+        HistoryEntity historyEntity = HistoryEntity.builder()
+                .roomEntity(roomEntity)
+                .memberEntity(memberEntity)
+                .build();
+         historyRepository.save(historyEntity);
+
+
+         memberEntity.getHistoryEntities().add(historyEntity);
+         roomEntity.getHistoryEntities().add(historyEntity);
+        return true;
+    }
 }

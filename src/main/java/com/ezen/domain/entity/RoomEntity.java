@@ -83,9 +83,8 @@ public class RoomEntity extends BaseTimeEntity {
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     private List<ReplyEntity> replyEntities = new ArrayList<ReplyEntity>();
 
-//    // 히스토리관계
-//    @ManyToOne
-//    @JoinColumn(name = "historyNo")
-//    private HistoryEntity historyEntity;
+    // 히스토리관계
+    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+    private List<HistoryEntity> historyEntities = new ArrayList<>();
 
 }

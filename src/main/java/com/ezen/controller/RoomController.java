@@ -182,6 +182,16 @@ public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
 
+    // 02-08 클래스 수강 조지훈
+    @GetMapping("/classregistration")
+    @ResponseBody
+    public String classregistration(@RequestParam("roomNo") int roomNo) {
+
+        boolean result = roomService.classregistration(roomNo);
+
+
+        return "1";
+    }
 
 
 }

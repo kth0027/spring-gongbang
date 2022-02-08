@@ -23,10 +23,11 @@ public class HistoryEntity extends BaseTimeEntity{
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int historyNo;
 
+    // 02-08 클래스 수강 조지훈
     @ManyToOne
     @JoinColumn(name = "memberNo")
     private MemberEntity memberEntity;
-
+    // 02-08 클래스 수강 조지훈
     @ManyToOne
     @JoinColumn(name = "roomNo")
     private RoomEntity roomEntity;

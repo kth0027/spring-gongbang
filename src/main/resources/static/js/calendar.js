@@ -1,3 +1,9 @@
+
+/*
+@Author : 김정진
+@Date : 2022-02-06 ~ 2022-02-09
+*/
+
 $(document).ready(function() {
     calendarInit();
 });
@@ -90,7 +96,6 @@ function calendarInit() {
             var dayPicked = $(dayPickedId);
             dayPicked.addEventListener("click", () => { alert("hi"); });
             */
-
         }
 
         // 다음달

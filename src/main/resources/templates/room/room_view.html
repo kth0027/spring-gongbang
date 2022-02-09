@@ -26,11 +26,15 @@
 
     </style>
     <link rel="stylesheet" th:href="@{/css/member/rome.css}">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<div th:replace="common.html::common"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+
+
 <div th:replace="header.html::header"></div>
 
 <div class="container">
@@ -40,7 +44,25 @@
                 <button class="btn btn-warning">채널보기</button>
             </a>
             <button class="btn btn-warning">클래스 신청하기</button>
+            <button class="btn btn-warning"   data-bs-target="#notemodal" data-bs-toggle="modal" >문의하기</button>
+            <div class="modal fade" tabindex="-1" id="notemodal" data-bs-keyword="false" data-bs-backdrop="static">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content rounded-4 shadow">
+                        <div class="modal-body p-4 text-center">
+                            <h5 class="mb-0"> 문의하기 </h5>
+                            <p class="mb-3" id="notemsg"> 공방 관련 정보를 문의하실 수 있습니다.</p>
+                            <textarea class="form-control" row="10" id="noteContents"></textarea>
+                        </div>
+                        <div class="modal-footer flex-nowrap p-0">
+                            <button th:onclick="notewrite([[${roomEntity.roomNo}]]);"  type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"><strong>문의합니다.</strong></button>
+                            <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">나가기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
         <div class="col-md-9">
             <div>
                 <h1>메인이미지 넣을곳</h1>
@@ -177,6 +199,7 @@
 </div>
 
 <div th:replace="footer.html :: footer"></div>
-
+<script th:src = "@{/js/roomview.js}"></script>
+<script th:src = "@{/js/nreply.js}"></script>
 </body>
 </html>

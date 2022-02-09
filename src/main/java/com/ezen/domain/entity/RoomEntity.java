@@ -60,7 +60,7 @@ public class RoomEntity extends BaseTimeEntity {
     // 2 : 시작하지 않았지만 정원이 꽉 찼음
     // 3 : 지정된 시간이 끝나서 더 이상 참여 및 수정이 불가능함
     @Column(name = "roomStatus")
-    private int roomStatus;
+    private String roomStatus;
 
     // [클래스 정원]
     // 개발자 마음대로 1명~6명으로 제한을 걸겠습니다.
@@ -78,11 +78,15 @@ public class RoomEntity extends BaseTimeEntity {
     private MemberEntity memberEntity;
 
     // timetable 과의 관계
-    @OneToMany(mappedBy="roomEntity")
+    @OneToMany(mappedBy="roomEntity", cascade = CascadeType.ALL)
     private List<TimeTableEntity> timeTableEntity;
 
     // 이미지 관계
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
+
+    // 문의글 리스트
+    @OneToMany(mappedBy="roomEntity" , cascade = CascadeType.ALL)
+    private List<NoteEntity> noteEntities = new ArrayList<>();
 
 }

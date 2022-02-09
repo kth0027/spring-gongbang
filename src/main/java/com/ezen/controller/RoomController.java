@@ -123,8 +123,8 @@ public class RoomController {
                                 @RequestParam("checkBox1") String checkBox1,
                                 @RequestParam("checkBox2") String checkBox2,
                                 @RequestParam("checkBox3") String checkBox3) {
-        // 1. roomStatus : 0 --> 승인 대기중으로 설정
-        roomEntity.setRoomStatus(0);
+        // 1. roomStatus : 0 --> 검토중으로 설정
+        roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         boolean result = roomService.registerClass(roomEntity, files);
@@ -206,7 +206,7 @@ public class RoomController {
         return "room/room_pay";
     }
 
-    @GetMapping("/room/roompayment")
+    @GetMapping("/roompayment")
     public String roompayment() {
         return "room/roompayment";
     }
@@ -216,6 +216,28 @@ public class RoomController {
     public String roomSelectView(){
 
         return null;
+    }
+
+    // 문의 등록
+    @GetMapping("/notewrite")
+    @ResponseBody
+    public String notewrite(@RequestParam("roomNo") int roomNo, @RequestParam("noteContents") String noteContents){
+
+        boolean result = roomService.notewrite(roomNo,noteContents);
+        if (result) {
+
+            return "1";
+        } else {
+            return "2";
+        }
+    }
+
+    // 읽음처리 업데이트
+    @GetMapping("/nreadupdate")
+    @ResponseBody // 페이지 전환하면 안되서 사용
+    public void nreadupdate(@RequestParam("noteNo") int noteNo){
+
+        roomService.nreadupdate(noteNo);
     }
 
 

@@ -47,7 +47,7 @@
                                     <div class="col-md-3">
                                         <!-- 카테고리 선택 -->
                                         <select name="classCategory" id="classCategory" class="form-select form-select-lg">
-                                            <option value="" selected></option>
+                                            <option value="" selected>카테고리선택</option>
                                             <option value="핸드메이드">핸드메이드</option>
                                             <option value="쿠킹">쿠킹</option>
                                             <option value="플라워">플라워</option>
@@ -100,9 +100,10 @@
                             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                                 <li><a th:if="${session.logindto != null }" th:href="@{/member/info}"
                                        style="text-decoration: none;"> 마이페이지 </a></li>
+                                <li><a th:href="@{/admin/adminlist}"> 관리리스트 </a></li>
                                 <li><a class="nav-link" th:href="@{/member/history}">예약내역</a></li>
                                 <li><a class="nav-link" th:href="@{/member/myclass}">내가등록한클래스</a></li>
-                                <li><a class="nav-link" th:href="@{/member/msg}">메시지</a></li>
+                                <li><a class="nav-link" th:href="@{/member/msg}" th:text="${'Q&A ('+session.nreadcount+')'}">메시지</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

@@ -1,14 +1,8 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
-import com.ezen.domain.entity.MemberEntity;
-import com.ezen.domain.entity.RoomEntity;
-import com.ezen.domain.entity.RoomImgEntity;
-import com.ezen.domain.entity.TimeTableEntity;
-import com.ezen.domain.entity.repository.MemberRepository;
-import com.ezen.domain.entity.repository.RoomImgRepository;
-import com.ezen.domain.entity.repository.RoomRepository;
-import com.ezen.domain.entity.repository.TimeTableRepository;
+import com.ezen.domain.entity.*;
+import com.ezen.domain.entity.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -105,6 +99,7 @@ public class RoomService {
         return roomEntities;
     }
 
+
     // 검색 결과 room list
     public List<RoomEntity> getRoomEntityBySearch(String keyword, String local, String category) {
         // 1.1 검색이 없는 경우
@@ -177,4 +172,108 @@ public class RoomService {
     public Page<RoomEntity> getMyRoomList(Pageable pageable) {
         return null;
     }
+
+
+    // 특정 룸 삭제
+    public boolean delete(int roomNo){
+
+        roomRepository.delete(roomRepository.findById(roomNo).get());
+        return true;
+    }
+
+
+    // 특정 룸 상태변경
+    @Transactional
+    public boolean activeupdate(int roomNo, String upactive){
+
+        System.out.println(roomNo);
+        System.out.println(upactive);
+        RoomEntity roomEntity = roomRepository.findById(roomNo).get(); // 엔티티 호출
+        if(roomEntity.getRoomStatus().equals(upactive)){
+            // 선택 버튼의 상태와기존 룸 상태가 동일하면 업데이트X
+            return false;
+        } else {
+            roomEntity.setRoomStatus(upactive); return true;
+        }
+
+    }
+
+
+    // 로그인 된 회원이 등록한 문의 출력
+    public List<NoteEntity> getmynotelist(){
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto)session.getAttribute("logindto");
+        MemberEntity memberEntity = memberService.getMemberEntity(memberDto.getMemberNo());
+        return memberEntity.getNoteEntities();
+
+    }
+
+    //문의 등록
+    public boolean notewrite(int roomNo, String noteContents){
+        //로그인된 회원정보를 가져온다[작성자]
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto)session.getAttribute("logindto");
+        // 만약에 로그인이 되어 있지 않으면
+        if(memberDto == null ){
+            return false; // 등록실패
+        }
+
+        // 문의 엔티티 생성
+        NoteEntity noteEntity = new NoteEntity();
+        noteEntity.setNoteContents(noteContents); // 작성내용
+        noteEntity.setMemberEntity(memberService.getMemberEntity(memberDto.getMemberNo())); // 작성자 엔티티
+        noteEntity.setRoomEntity(roomRepository.findById(roomNo).get()); // 방엔티티
+        // 문의 엔티티 저장
+        int NoteNo = noteRepository.save(noteEntity).getNoteNo();
+        // 해당 룸 엔티티의 문의 리스트에 문의 엔티티 저장
+        roomRepository.findById(roomNo).get().getNoteEntities().add(noteRepository.findById(NoteNo).get());
+        // 해당 회원엔티티의 문의 리스트에 문의 엔티티 저장
+        memberService.getMemberEntity(memberDto.getMemberNo()).getNoteEntities().add(noteRepository.findById(NoteNo).get());
+
+        return true;
+    }
+
+
+    @Autowired
+    NoteRepository noteRepository;
+    //답변등록
+    @Transactional
+    public boolean notereplywrite(int noteNo, String noteReply){
+        noteRepository.findById(noteNo).get().setNoteReply(noteReply);
+        return true;
+    }
+
+
+    // 쪽지 카운트 세기 // nread : 0 읽지 않음 / 1 읽음
+    // 모든페이지에서 쿠키나 세션으로 출력해야함. 굳이 반환타입을 사용할 필요 x
+    public void nreadcount(){
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto)session.getAttribute("logindto");
+        if(memberDto == null) { return; } // 로그인이 되어 있지 않으면 제외
+
+        int nreadcount =0 ; // 안읽은 쪽지의 갯수
+        // 로그인된 회원번호와 쪽지 받은 사람의 회원번호가 모두 동일하면
+        for (NoteEntity noteEntity : noteRepository.findAll()) {
+            if(noteEntity.getRoomEntity().getMemberEntity().getMemberNo() == memberDto.getMemberNo() && noteEntity.getNoteRead() ==0) { // 받는사람 == 로그인된 번호 && 읽음이 0이면
+                // 문의 엔티티. 방엔티티. 멤버엔티티. 멤버번호
+                nreadcount++;
+
+            }
+
+        }
+
+        // 세션에 저장하기
+        session.setAttribute("nreadcount",nreadcount);
+
+
+    }
+
+    //읽음처리 서비스
+    @Transactional // 업데이트처리에서 필수
+    public boolean nreadupdate(int noteNo){
+        noteRepository.findById(noteNo).get().setNoteRead(1);
+        return true;
+    }
+
+
 }

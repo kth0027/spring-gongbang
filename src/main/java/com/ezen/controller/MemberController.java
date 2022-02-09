@@ -178,12 +178,31 @@ public class MemberController { // C S
 
     // [메시지 페이지와 맵핑]
     @GetMapping("/msg")
-    public String msg(){
+    public String msg(Model model){
+        model.addAttribute("rooms",roomService.getmyroomlist());
+        model.addAttribute("notes",roomService.getmynotelist());
         return "member/member_msg";
     }
+    // 쪽지 쓰기
+    @GetMapping("/notereplywrite")
+    @ResponseBody
+    public String notereplywrite(@RequestParam("noteNo") int noteNo,
+                                 @RequestParam("noteReply") String noteReply){
+
+        roomService.notereplywrite(noteNo, noteReply);
+
+        return "1";
+    }
+
+
 
     // [정산 페이지 맵핑]
     @GetMapping("/calculate")
     public String calculate() { return "member/calculate_page"; }
+
+
+
+
+
 
 }

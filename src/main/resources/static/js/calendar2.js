@@ -1,12 +1,9 @@
 
 /*
 @Author : 김정진
-@Date : 2022-02-06 ~ 2022-02-09
+@Date : 2022-02-09~
 @Note :
-    1. 클릭 이벤트를 통해서 날짜만 전달하는 함수입니다.
-    2. calendar2.js 는 DB에서 데이터를 넘겨주고 이벤트를 할당하는 js 입니다.
-    3. renderCalender 에 인수를 넘겨주며 하나로 통합해서 사용할 수도 있습니다.
-    4. 다만 클래스 날짜 등록 페이지에서는 심플한 달력만을 출력하기 위해 굳이 구분해서 사용한다는 점을 기록해둡니다.
+    1. 인수를 전달받고 개설된 강좌만 선택되도록 하는 달력을 출력합니다.
 */
 
 $(document).ready(function() {
@@ -48,7 +45,9 @@ function calendarInit() {
     // 캘린더 렌더링
     renderCalender(thisMonth);
 
-    function renderCalender(thisMonth) {
+    // @Param thisMonth : 날짜 데이터 (연도, 월, 일)
+    // @Param roomNo : 게시물 상세 페이지에 해당하는 클래스 번호
+    function renderCalender(thisMonth, roomNo) {
 
         // 렌더링을 위한 데이터 정리
         currentYear = thisMonth.getFullYear();
@@ -83,6 +82,17 @@ function calendarInit() {
 
         // 이번달
         for (var i = 1; i <= nextDate; i++) {
+
+            // ajax 이용해서 roomNo 에 해당하는 데이터 불러옵니다.
+            $.ajax({
+                url: "",
+                data: {}.
+                success(function(data) {
+
+
+                })
+
+            });
             // id : 2022-02-22
             var dayId = currentYear + "-" + (currentMonth+1) + "-" + i;
             // var currentMonth = currentMonth + 1; for 문 안에서 사용하니 자꾸 숫자가 증가한다.
@@ -113,26 +123,23 @@ function calendarInit() {
             var currentMonthDate = document.querySelectorAll('.dates .current');
             currentMonthDate[todayDate -1].classList.add('today');
         }
-
     }
-
 
     // 이전달로 이동
     $('.go-prev').on('click', function() {
         thisMonth = new Date(currentYear, currentMonth - 1, 1);
-        renderCalender(thisMonth);
+        renderCalender(thisMonth, roomNo);
         $(".dates").load(location.href + ".dates");
     });
 
     // 다음달로 이동
     $('.go-next').on('click', function() {
         thisMonth = new Date(currentYear, currentMonth + 1, 1);
-        renderCalender(thisMonth);
+        renderCalender(thisMonth, roomNo);
         $(".dates").load(location.href + ".dates");
     });
 
     // 캘린더에 YYYY-MM-DD 데이터를 넘겨서 해당하는 day 값만 바꾸고 이벤트를 등록하는 함수
-
 
 
 

@@ -228,6 +228,15 @@ public class RoomController {
         return null;
     }
 
+    // roomNo 를 이용해서 TimeTable 가져오는 메서드
+    @GetMapping("/timetable")
+    public String getTimeTableByRoomNo(@RequestParam("roomNo") int roomNo, Model model){
+
+
+
+        return "room/room_view";
+    }
+
 
 
 

@@ -1,8 +1,14 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
-import com.ezen.domain.entity.*;
-import com.ezen.domain.entity.repository.*;
+import com.ezen.domain.entity.MemberEntity;
+import com.ezen.domain.entity.RoomEntity;
+import com.ezen.domain.entity.RoomImgEntity;
+import com.ezen.domain.entity.TimeTableEntity;
+import com.ezen.domain.entity.repository.MemberRepository;
+import com.ezen.domain.entity.repository.RoomImgRepository;
+import com.ezen.domain.entity.repository.RoomRepository;
+import com.ezen.domain.entity.repository.TimeTableRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,10 +43,6 @@ public class RoomService {
 
     @Transactional
     public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files) {
-        System.out.println(roomEntity.getRoomNo());
-        System.out.println(roomEntity.getRoomAddress());
-        System.out.println(roomEntity.getRoomCategory());
-
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
@@ -55,7 +57,6 @@ public class RoomService {
         // 4.2 memberEntity 에는 @OneToMany 형태로 맵핑되어있다.
         // 4.3 member 1명이 여러개의 room 을 등록할 수 있고, 등록할 시 맵핑을 시켜주는 역할이다.
         memberEntity.getRoomEntities().add(roomEntitySaved);
-
         // 5. 이미지 처리
         String uuidfile = null;
         if (files.size() != 0) {
@@ -65,8 +66,20 @@ public class RoomService {
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
                 String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
+
+                /*
+                * 저장되는 경로를 상대경로로 지정합니다.
+                * resources - static - roomimg
+                *
+                * */
+                // 상대 경로 지정
+                String newdir = "/static/roomimg";
+
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 String filepath = dir + "\\" + uuidfile;
+
+                String newFilePath = newdir + "/" + uuidfile;
+
                 try {
                     // 4. 지정한 경로에 파일을 저장시킨다.
                     file.transferTo(new File(filepath));
@@ -79,7 +92,6 @@ public class RoomService {
                         .roomImg(uuidfile)
                         .roomEntity(roomEntitySaved)
                         .build();
-
                 // 6. 각각의 파일을 repo 를 통해 db에 저장한다.
                 // 6.1 해당하는 파일의 roomImgNo 를 통해 해당하는 이미지를 불러온다.
                 int roomImgNo = roomImgRepository.save(roomImgEntity).getRoomImgNo();
@@ -119,6 +131,10 @@ public class RoomService {
                 // 1.4.1 지역, 카테고리를 인수로 넘긴다.
                 return roomRepository.findRoomByLocalAndCategory(local, category);
             }
+            // 1.5 검색 X 카테고리 X 지역 X 인 경우에는 등록된 클래스 전체를 리턴한다.
+            else if (local.equals("") && category.equals("")){
+                return roomRepository.findAll();
+            }
         }
         // 2. 검색이 있는 경우
         else {
@@ -153,6 +169,7 @@ public class RoomService {
     }
 
     // 룸에 날짜, 시간 지정하기
+    @Transactional
     public boolean registerTimeToClass(TimeTableEntity timeTableEntity, int roomNo) {
         if (roomRepository.findById(roomNo).isPresent()) {
             RoomEntity roomEntity = roomRepository.findById(roomNo).get();
@@ -166,10 +183,17 @@ public class RoomService {
         } else {
             return false;
         }
-
     }
 
-    public Page<RoomEntity> getMyRoomList(Pageable pageable) {
+    // 메인 화면에 등록된 강좌 출력
+    // 가장 최근에 강의가 개설된 강좌 6개만 출력합니다.
+    // 아니 그냥 대칭으로 보기 이쁘게 9개 출력합니다.
+    public List<RoomEntity> getRoomEntityInMain(){
+        // 1. 가장 최근에 등록한 강좌를 TableEntity 에서 빼옵니다.
+        List<TimeTableEntity> roomEntities = timeTableRepository.getByTimeSequence();
+        // 2. RoomEntity 를 저장하는 리스트를 생성해서 집어넣습니다. 9개가 되면 종료 !
+        int count = 0;
+
         return null;
     }
 

@@ -1,5 +1,10 @@
 /* section calendar */
 
+.day:hover{
+    cursor: pointer;
+    background-color: #fff1ed;
+}
+
 .sec_cal {
     width: 360px;
     margin: 0 auto;

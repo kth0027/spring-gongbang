@@ -5,9 +5,10 @@
     <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>헤더 페이지</title>
+
+
     <!-- header css 가져오기 -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
-
 </head>
 <body>
 <!-- 로그인 스크립트-->
@@ -92,7 +93,7 @@
                         <div class="dropdownmenu">
                             <ul class="list-unstyled ps-0">
                                 <li class="mb-1 d-flex">
-                                    <div class="col-md-5 p-1 m-1">
+                                    <div class="col-md-2 p-1 m-1">
                                         <div>
                                             <button class="btn btn-outline-dark btn-toggle align-items-center rounded collapsed"
                                                     data-bs-toggle="collapse" data-bs-target="#home-collapse"
@@ -103,7 +104,7 @@
                                     </div>
                                     <div class="col-md-3 p-1 m-1">
                                         <div class="collapse" id="home-collapse" style="">
-                                            <select name="classLocal" id="classLocal" class="form-select">
+                                            <select name="classLocal" id="classLocal" class="form-select form-select-lg">
                                                 <option value="" selected>지역선택</option>
                                                 <option value="서울">서울</option>
                                                 <option value="경기">경기</option>
@@ -113,7 +114,7 @@
                                     </div>
                                 </li>
                                 <li class="mb-1 d-flex">
-                                    <div class="col-md-5 p-1 m-1">
+                                    <div class="col-md-2 p-1 m-1">
                                         <div>
                                             <button
                                                     class="btn btn-outline-dark btn-toggle align-items-center rounded collapsed"
@@ -126,7 +127,7 @@
                                     </div>
                                     <div class="col-md-3 p-1 m-1">
                                         <div class="collapse" id="dashboard-collapse" style="">
-                                            <select name="classCategory" id="classCategory" class="form-select">
+                                            <select name="classCategory" id="classCategory" class="form-select form-select-lg">
                                                 <option value="" selected>카테고리선택</option>
                                                 <option value="핸드메이드">핸드메이드</option>
                                                 <option value="쿠킹">쿠킹</option>
@@ -172,12 +173,11 @@
                     <li class="recommand">가죽</li>
                     <li class="recommand">요가</li>
                 </ul>
-                <button class="btn-outline-dark col-1 offset-5 closesearch"
-                        style="text-align:center; height:1.5rem;">닫기
+                <button class="btn-outline-dark col-1 offset-5 closesearch" style="text-align:center; height:1.5rem;">
+                    닫기
                 </button>
             </div>
         </div>
-
     </header>
 </div>
 
@@ -252,7 +252,6 @@
 
 
 <script>
-
 $(document).ready(function(){
     /* 클릭시 팝업창 열기/닫기 */
     $("#findbtn").click(function(){
@@ -264,10 +263,6 @@ $(document).ready(function(){
         $("#popup").fadeOut();
     });
 });
-
-
-
-
 
 </script>
 
@@ -285,31 +280,6 @@ $(document).ready(function () {
         $("#togglesearch").hide();
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </script>

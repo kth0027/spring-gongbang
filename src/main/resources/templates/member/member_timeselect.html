@@ -19,7 +19,8 @@
     4.
 -->
 
-<form th:action="@{/room/timeSelectController}" method="get">
+<form th:action="@{/room/timeSelectController}" method="get" onsubmit="return inputCheck()">
+    <input type="hidden" th:value="${room.roomNo}" name="roomNo">
     <div class="container">
         <div class="row">
             <div class="col-md-7" style="box-shadow: 5px 5px 5px #cccccc;">
@@ -74,17 +75,33 @@
                 -->
                 <div class="time-select-wrapper" style="margin-top: 25px;">
                     <!-- 캘린더에서 선택한 날짜를 input 안에 집어넣습니다 -->
-                    <input type="text" id="dateSelected" name="dateSelected">
+                    <div>
+                        <label for="selectedDate">선택된 날짜</label>
+                        <input type="text" id="selectedDate" class="form-control" disabled>
+                        <input type="hidden" id="roomDate" name="roomDate" class="form-control">
+                        <span id="dateMsg"></span>
+                    </div>
+
                     <div class="mb-3">
                         <label for="beginTime">시작 시간 선택</label>
-                        <input type="time" id="beginTime" class="" name="beginTime">
+                        <select onchange="inputCheck();" name="beginTime" id="beginTime"
+                                class="form-select form-select-lg">
+                            <option value="-1">시간선택</option>
+                            <option th:each="number : ${#numbers.sequence(9,23,1)}" th:value="${number}"
+                                    th:text="${number}+'시'"></option>
+                        </select>
+                        <span id="beginTimeMsg"></span>
                     </div>
                     <div class="mb-3">
                         <label for="endTime">끝나는 시간 선택</label>
-                        <input type="time" id="endTime" class="" name="endTime">
+                        <select onchange="inputCheck();" name="endTime" id="endTime" class="form-select form-select-lg">
+                            <option value="-1">시간선택</option>
+                            <option th:each="number : ${#numbers.sequence(9,23,1)}" th:value="${number}"
+                                    th:text="${number}+'시'"></option>
+                        </select>
+                        <span id="endTimeMsg"></span>
                     </div>
                 </div>
-
                 <div class="">
                     <input type="submit" class="btn btn-secondary" value="클래스 시간 등록">
                 </div>
@@ -92,7 +109,10 @@
         </div>
     </div>
 </form>
+
 <script th:src="@{/js/calendar.js}"></script>
+<script th:src="@{/js/timeselect.js}"></script>
+
 
 </body>
 </html>

@@ -22,7 +22,7 @@ public class TimeTableEntity extends BaseTimeEntity {
     private String roomDate;
 
     // 시작시간, 끝나는 시간
-    // ex) 15:00,17:00
+    // ex) 15,17
     @Column(name = "roomTime")
     private String roomTime;
 

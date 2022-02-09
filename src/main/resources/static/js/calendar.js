@@ -4,7 +4,8 @@ $(document).ready(function() {
 
 function test(year , month , day){
     var date = year + "-" + (month + 1) + "-" + day;
-    $("#dateSelected").val(date);
+    $("#selectedDate").val(date);
+    $("#roomDate").val(date);
 }
 
 /*
@@ -14,6 +15,7 @@ function test(year , month , day){
     전월 마지막일 날짜와 요일
 */
 
+// 캘린더를 출력하는 함수
 function calendarInit() {
 
     // 날짜 정보 가져오기
@@ -71,15 +73,19 @@ function calendarInit() {
         // 이번달
         for (var i = 1; i <= nextDate; i++) {
             // id : 2022-02-22
-            var dayId = currentYear + "-" + currentMonth+1 + "-" + i;
+            var dayId = currentYear + "-" + (currentMonth+1) + "-" + i;
             // var currentMonth = currentMonth + 1; for 문 안에서 사용하니 자꾸 숫자가 증가한다.
             // var dayId = currentYear+"".concat(',', tmp, ',', i);
             calendar.innerHTML = calendar.innerHTML + '<div onclick="test('+currentYear+','+currentMonth+','+i+')" class="day current day-select" id="'+dayId+'">' + i + '</div>';
             /*
-            해당 버튼 id 를 부여해서 클릭 이벤트를 부여한다.
+            해당 버튼 id 를 부여해서 클릭 이벤트를 부여한다. -> 일단 실패
             */
 
             /*
+            addEventListener 가 먹히지 않는다. 왜 안먹히는지 원인을 찾는 중인데 일단 잠정 보류
+
+            날짜가 출력되는 html 내에 script 선언해서 테스트해봐야함
+
             var dayPickedId = "#" + dayId;
             var dayPicked = $(dayPickedId);
             dayPicked.addEventListener("click", () => { alert("hi"); });
@@ -100,9 +106,6 @@ function calendarInit() {
 
     }
 
-    // 이전 달, 다음 달 이동 시에도 클릭 이벤트를 적용하려면 화면 새로 고침 하는 방법 밖에 안 떠오르는데
-    // 그렇게 하면 적용 안됨. 화면 깨짐
-    //
 
     // 이전달로 이동
     $('.go-prev').on('click', function() {
@@ -117,4 +120,11 @@ function calendarInit() {
         renderCalender(thisMonth);
         $(".dates").load(location.href + ".dates");
     });
+
+    // 캘린더에 YYYY-MM-DD 데이터를 넘겨서 해당하는 day 값만 바꾸고 이벤트를 등록하는 함수
+
+
+
+
 }
+

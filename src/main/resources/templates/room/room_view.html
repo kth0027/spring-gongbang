@@ -25,8 +25,7 @@
 
 
     </style>
-    <link rel="stylesheet" th:href="@{/css/member/rome.css}">
-
+    <link rel="stylesheet" th:href="@{/css/calendar.css}">
 </head>
 <body>
 
@@ -126,57 +125,90 @@
                     </div>
                 </div>
             </div>
+
             <hr>
 
             <div>
                 <div id="qnabox">
                     <p>문의내용 작성</p>
                     <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a comment here" id=""
+                        <textarea class="form-control" placeholder="Leave a comment here" id="qnaText"
                                   style="height: 100px; resize: none;"></textarea>
-                        <label for="floatingTextarea">궁금하신 점을 작성해 주세요~</label>
+                        <label for="qnaText">궁금하신 점을 작성해 주세요~</label>
                         <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;"> 작성 완료
                         </button>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <div class="col-md-3">
 
-            <!-- 달력 출력 -->
-            <div style="width: 450px; height: 450px;">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <td>
-                            <button type="button" value="<"></button>
-                        </td>
-                        <td colspan="3">연-월 선택</td>
-                        <td>
-                            <button type="button" value=">"></button>
-                        </td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>일</td>
-                        <td>월</td>
-                        <td>화</td>
-                        <td>수</td>
-                        <td>목</td>
-                        <td>금</td>
-                        <td>토</td>
-                    </tr>
-                    </tbody>
-                </table>
+            <!--
+            1. roomNo 에 해당하는 TimeTable 엔티티를 가져온다.
+            2. roomDate : YYYY-MM-DD
+            3. 각 날짜 Id : YYYY-MM-DD
+
+            -->
+
+
+            <!-- 달력 출력 시작 -->
+            <div style="width: 450px; height: 550px; box-shadow: 5px 5px 5px #cccccc;">
+                <div class="sec_cal">
+                    <div class="cal_nav">
+                        <a href="javascript:;" class="nav-btn go-prev">prev</a>
+                        <div class="year-month"></div>
+                        <a href="javascript:;" class="nav-btn go-next">next</a>
+                    </div>
+                    <div class="cal_wrap">
+                        <div class="days">
+                            <div class="day">MON</div>
+                            <div class="day">TUE</div>
+                            <div class="day">WED</div>
+                            <div class="day">THU</div>
+                            <div class="day">FRI</div>
+                            <div class="day">SAT</div>
+                            <div class="day">SUN</div>
+                        </div>
+                        <div class="dates"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 달력 출력 종료 -->
+
+            <div class="" style="margin: 15px 5px;">
+                <label for="selectedDate"> 선택한 날짜 </label>
+                <input type="text" id="selectedDate" class="form-control" value="" name="">
+            </div>
+
+            <!-- 날짜 선택 시 보여줄 화면-->
+            <!-- 해당 날짜에 등록된 클래스 정보 + 시간을 알려준다-->
+            <div class="container" style="background : green;">
+                <div class="time-selected-wrapper">
+
+
+                </div>
             </div>
 
         </div>
     </div>
 </div>
 
+<script th:src="@{/js/calendar.js}"></script>
 <div th:replace="footer.html :: footer"></div>
+
+<script>
+
+    $(function(){
+
+
+
+    });
+
+
+
+</script>
 
 </body>
 </html>

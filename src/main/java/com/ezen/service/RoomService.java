@@ -66,8 +66,20 @@ public class RoomService {
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
                 String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
+
+                /*
+                * 저장되는 경로를 상대경로로 지정합니다.
+                * resources - static - roomimg
+                *
+                * */
+                // 상대 경로 지정
+                String newdir = "/static/roomimg";
+
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 String filepath = dir + "\\" + uuidfile;
+
+                String newFilePath = newdir + "/" + uuidfile;
+
                 try {
                     // 4. 지정한 경로에 파일을 저장시킨다.
                     file.transferTo(new File(filepath));
@@ -156,6 +168,7 @@ public class RoomService {
     }
 
     // 룸에 날짜, 시간 지정하기
+    @Transactional
     public boolean registerTimeToClass(TimeTableEntity timeTableEntity, int roomNo) {
         if (roomRepository.findById(roomNo).isPresent()) {
             RoomEntity roomEntity = roomRepository.findById(roomNo).get();
@@ -169,10 +182,20 @@ public class RoomService {
         } else {
             return false;
         }
-
     }
 
-    public Page<RoomEntity> getMyRoomList(Pageable pageable) {
+    // 메인 화면에 등록된 강좌 출력
+    // 가장 최근에 강의가 개설된 강좌 6개만 출력합니다.
+    // 아니 그냥 대칭으로 보기 이쁘게 9개 출력합니다.
+    public List<RoomEntity> getRoomEntityInMain(){
+        // 1. 가장 최근에 등록한 강좌를 TableEntity 에서 빼옵니다.
+        List<TimeTableEntity> roomEntities = timeTableRepository.getByTimeSequence();
+        // 2. RoomEntity 를 저장하는 리스트를 생성해서 집어넣습니다. 9개가 되면 종료 !
+        int count = 0;
+
         return null;
+
+
     }
+
 }

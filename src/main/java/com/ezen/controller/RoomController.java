@@ -5,6 +5,7 @@ import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.RoomRepository;
+import com.ezen.domain.entity.repository.TimeTableRepository;
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomLikeService;
 import com.ezen.service.RoomService;
@@ -42,6 +43,9 @@ public class RoomController {
     @Autowired
     private RoomRepository roomRepository;
 
+    @Autowired
+    private TimeTableRepository timeTableRepository;
+
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
     public String register() {
@@ -65,7 +69,6 @@ public class RoomController {
     public String registerClassController() {
         return "room/room_view";
     }
-
 
     /*
      * @Author : 김정진
@@ -99,13 +102,35 @@ public class RoomController {
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
         model.addAttribute("roomEntities", roomEntities);
 
-        return "room/room_list";  // 타임리프 를 통한 html 반환
+        return "room/room_list";  // 타임리프를 통한 html 반환
+    }
+
+    // 메인 화면에서 지역 아이콘 선택했을 때 검색 후 결과 출력 페이지로 이동
+    @GetMapping("/byLocal/{local}")
+    public String roomListByLocal(@PathVariable("local") String local, Model model) {
+        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", local, "");
+        model.addAttribute("roomEntities", roomEntities);
+        return "room/room_list";
+    }
+
+    // 메인 화면에서 카테고리 선택했을 때 검색 후 결과 출력 페이지로 이동
+    @GetMapping("/byCategory/{category}")
+    public String roomListByCategory(@PathVariable("category") String category, Model model) {
+        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", "", category);
+        model.addAttribute("roomEntities", roomEntities);
+        return "room/room_list";
     }
 
     @GetMapping("/view/{roomNo}") // 이동
     public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
+
+        // 1. 선택된 클래스 엔티티를 불러와서 Model 로 전달한다.
         RoomEntity roomEntity = roomService.getroom(roomNo);
         model.addAttribute("roomEntity", roomEntity);
+
+        // 2. roomNo 이용해서 해당 강좌의 개설된 정보 (TimeTable) 을 불러온다.
+        List<TimeTableEntity> timeTableEntities = roomEntity.getTimeTableEntity();
+        model.addAttribute("timeTableEntities", timeTableEntities);
         return "room/room_view"; // 타임리프
     }
 
@@ -138,10 +163,6 @@ public class RoomController {
     @ResponseBody
     public JSONObject gongbang(@RequestParam("keyword") String keyword, @RequestParam("local") String local, @RequestParam("category") String category) {
 
-        // Map <--> Json[키:값] => 엔트리
-        // {"키": 리스트{ "키" : 값1, "키" : 값2}} => 중첩 가능
-        // map ={키:값}
-        // map 객체 = {"키":List[map 객체, map 객체]}
         JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
         JSONArray jsonArray = new JSONArray(); // json 안에 들어가는 리스트
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
@@ -181,6 +202,8 @@ public class RoomController {
     }
 
     // 등록한 클래스에 날짜, 시간 선택하기
+    // /member/member_timeselect.html 에서 값을 받아옵니다.
+    // form 태그로 받아오며 날짜, 시간, roomNo 를 받습니다.
     @GetMapping("/timeSelectController")
     public String timeSelectController(TimeTableEntity timeTableEntity,
                                        @RequestParam("beginTime") String beginTime,
@@ -195,12 +218,17 @@ public class RoomController {
         return "member/member_class";
     }
 
-    // 메인화면에서 카테고리 혹은 지역 선택후 넘어가는 페이지와 맵핑
-    @GetMapping("")
-    public String roomSelectView(){
+    // 메인 페이지에 등록한 클래스 가져와서 출력하기
+    // 모두 다 가져오지 말고, 가장 최근에 등록한 클래스 9개 출력한다.
+    @GetMapping("/mainRoomList")
+    public String mainRoomList(Model model){
+        // 만들어진 순서 X
+        // 강좌가 최근에 등록된 순서
 
         return null;
     }
+
+
 
 
 }

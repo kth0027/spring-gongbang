@@ -31,4 +31,5 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
     // 4.3 검색 O 지역 X 카테고리 O
 
     // 4.4 검색 O 지역 O 카테고리 O
+
 }

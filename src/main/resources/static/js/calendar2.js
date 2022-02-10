@@ -11,6 +11,8 @@ $(document).ready(function() {
 });
 
 function test(year , month , day){
+
+// 여기서 ajax
     var date = year + "-" + (month + 1) + "-" + day;
     $("#selectedDate").val(date);
     $("#roomDate").val(date);

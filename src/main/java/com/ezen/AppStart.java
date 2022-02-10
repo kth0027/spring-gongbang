@@ -23,10 +23,11 @@ public class AppStart {
         return "index";
     }
 
-    @GetMapping("/error")
-    public String error() {
-        return "error";
-    }
+//    @GetMapping("/error")
+//    public String error() {
+//        return "error";
+//    }
+
     @Autowired
     private RoomService roomService;
 

@@ -1,16 +1,47 @@
  $(function () {
+// 아이디 유효성 검사
+     $("#memberId").keyup(function(){
+             // 해당 태그에 키보드가 눌렸을 때 이벤트 : keyup
+         var memberId = $("#memberId").val();
+         var idj = /^[a-z0-9]{5,15}$/; // 정규표현식
+
+         if(!idj.test(memberId)){ //정규표현식이 다를경우
+              $("#idcheck").html("영소문자 5~15 글자만 가능합니다.");
+              $("#emailcheck").css('color', 'green');
+            // $("input[type='submit']").prop("disabled", true); // 전송버튼 막기
+         } else {
+             // 아이디ㅣ 중복체크 비동기 통신
+             $.ajax({
+                 url: "/member/idcheck",
+                 data : {"memberId" : memberId},
+                 success : function(result){
+                     if(result==1){
+                         $("#idcheck").html("현재 사용중인 아이디입니다.");
+                         $("#emailcheck").css('color', 'red');
+                         $("#emailcheck").css('font-weight', 'bold');
+                      //    $("input[type='submit']").prop("disabled", true);
+                     } else {
+                         $("#idcheck").html("사용가능");
+                         $("#emailcheck").css('color', 'blue');
+                         $("#emailcheck").css('font-weight', 'bold');
+                     }
+                 }
+             });
+         }
+     });
+
             // 이메일 유효성검사
-            $("#memail").keyup(function () {
+            $("#memberEmail").keyup(function () {
                 var emailj = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-                var memail = $("#memail").val();
-                if (!emailj.test(memail)) {
+                var memberEmail = $("#memberEmail").val();
+                if (!emailj.test(memberEmail)) {
                     $("#emailcheck").html("이메일 형식으로 입력해주세요");
                     $("#emailcheck").css('color', 'green');
                 } else {
                     // 이메일 중복체크 비동기 통신
                     $.ajax({
                         url: "/member/emailcheck",
-                        data: { "memail": memail },
+                        data: { "memberEmail": memberEmail },
                         success: function (result) {
                             if (result == 1) {
                                 $("#emailcheck").html("현재 사용중인 이메일 입니다.");
@@ -28,11 +59,11 @@
 
 
             // 패스워드 유효성검사
-            $("#mpassword").keyup(function () {
+            $("#memberPassword").keyup(function () {
                 var pwj = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,15}$/;
                 // 영대소문자+숫자+특수문자[ !@#$%^&*()+|= ] 8~15포함
-                var mpassword = $("#mpassword").val();
-                if (!pwj.test(mpassword)) {
+                var memberPassword = $("#memberPassword").val();
+                if (!pwj.test(memberPassword)) {
                     $("#passwordcheck").html("영대소문자+숫자+특수문자[ !@#$%^&*()+|= ] 8~15포함");
                     $("#passwordcheck").css('color', 'green');
 
@@ -43,33 +74,19 @@
                 }
             });
 
-            // 패스워드 유효성검사
-            $("#mpassword").keyup(function () {
-                var pwj = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,15}$/;
-                // 영대소문자+숫자+특수문자[ !@#$%^&*()+|= ] 8~15포함
-                var mpassword = $("#mpassword").val();
-                if (!pwj.test(mpassword)) {
-                    $("#passwordcheck").html("영대소문자+숫자+특수문자[ !@#$%^&*()+|= ] 8~15포함");
-                    $("#passwordcheck").css('color', 'green');
 
-                } else {
-                    $("#passwordcheck").html("사용가능");
-                    $("#passwordcheck").css('color', 'blue');
-                    $("#passwordcheck").css('font-weight', 'bold');
-                }
-            });
 
             // 패스워드 확인 유효성검사
-            $("#mpasswordconfirm").keyup(function () {
+            $("#memberPasswordConfirm").keyup(function () {
                 var pwj = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,16}$/;
                 // 숫자', '문자', '특수문자' 무조건 1개 이상, 비밀번호 '최소 8자에서 최대 16자'까지 허용
-                var mpassword = $("#mpassword").val();
-                var mpasswordconfirm = $("#mpasswordconfirm").val();
-                if (!pwj.test(mpasswordconfirm)) {
+                var memberPassword = $("#memberPassword").val();
+                var memberPasswordConfirm = $("#memberPasswordConfirm").val();
+                if (!pwj.test(memberPasswordConfirm)) {
                     $("#passwordcheck").html("숫자', '문자', '특수문자' 포함 , '최소 8문자~16글자 허용.");
                     $("#passwordcheck").css('color', 'green');
 
-                } else if (mpassword != mpasswordconfirm) {
+                } else if (memberPassword != memberPasswordConfirm) {
                     $("#passwordcheck").html("서로 패스워드가 다릅니다.");
                     $("#passwordcheck").css('color', 'red');
                     $("#passwordcheck").css('font-weight', 'bold');
@@ -82,10 +99,10 @@
             });
 
             // 이름 유효성검사
-            $("#mname").keyup(function () {
+            $("#memberName").keyup(function () {
                 var namej = /^[A-Za-z가-힣]{1,15}$/;	// 이름 정규표현식
-                var mname = $("#mname").val();
-                if (!namej.test(mname)) {
+                var memberName = $("#memberName").val();
+                if (!namej.test(memberName)) {
                     $("#namecheck").html("영대문자/한글 1~15 허용");
                     $("#namecheck").css('color', 'green');
                     $("#namecheck").css('font-weight', 'bold');
@@ -98,10 +115,10 @@
             });
 
             // 연락처 유효성검사
-            $("#mphone").keyup(function () {
+            $("#memberPhone").keyup(function () {
                 var phonej = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 연락처
-                var mphone = $("#mphone").val();
-                if (!phonej.test(mphone)) {
+                var memberPhone = $("#memberPhone").val();
+                if (!phonej.test(memberPhone)) {
                     $("#phonecheck").html("01X-XXXX-XXXX 형식으로 입력해주세요");
                     $("#phonecheck").css('color', 'red');
                     $("#phonecheck").css('font-weight', 'bold');
@@ -128,6 +145,9 @@
                 }else if(  $("#passwordcheck").html() != "사용가능" ){
                      alert(" 패스워드 불가능합니다 . ");
                  }
+                 else if(  $("#idcheck").html() != "사용가능" ){
+                                      alert(" 아이디 불가능합니다 . ");
+                                  }
                  else if(  $("#namecheck").html() != "사용가능" ){
                      alert(" 이름 불가능합니다 . ");
                   }

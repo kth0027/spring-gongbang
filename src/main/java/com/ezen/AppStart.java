@@ -27,6 +27,9 @@ public class AppStart {
     public String error() {
         return "error";
     }
+
+
+
     @Autowired
     private RoomService roomService;
 

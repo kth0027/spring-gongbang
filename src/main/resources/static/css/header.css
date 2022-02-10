@@ -26,4 +26,32 @@ left: 50%;
 transform: translate(-50%, -50%);
 }
 
+.googlesignup {
+    background: rgb(61, 139, 255);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 3rem;
+    box-shadow: 3px 3px 3px black;
+
+}
+
+.kakaosignup {
+    background: rgb(238, 255, 0);
+    color: rgb(0, 0, 0);
+    font-weight: bold;
+    border: none;
+    border-radius: 3rem;
+    box-shadow: 3px 3px 3px black;
+}
+
+.naversignup {
+    background: rgb(21, 148, 59);
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 3rem;
+    box-shadow: 3px 3px 3px black;
+}
+
 /* 주석 */

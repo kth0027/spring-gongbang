@@ -231,9 +231,17 @@
 
                 <hr class="my-4">
                 <h2 class="fs-5 fw-bold mb-3"> SNS 연동 로그인</h2>      <!-- ouath2 -->
-                <button class="w-100 py-2 mb-2 btn btn-outline-dark rounded-4" type="submit">구글</button>
-                <button class="w-100 py-2 mb-2 btn btn-outline-primary rounded-4" type="submit">카카오</button>
-                <button class="w-100 py-2 mb-2 btn btn-outline-secondary rounded-4" type="submit">네이버</button>
+                <div class="d-flex justify-content-center">
+                    <button class="googlesignup w-75 py-2 mx-1 mb-2 btn-outline-dark rounded-4"
+                            type="submit"><a class="text-white" href="/oauth2/authorization/google"> 구글 로그인</a>
+                    </button>
+                    <button class="kakaosignup w-75 py-2 mx-1 mb-2 btn-outline-primary rounded-4"
+                            type="submit"><a class="text-white" href="/oauth2/authorization/naver"> 네이버 로그인</a>
+                    </button>
+                    <button class="naversignup w-75 py-2 mx-1 mb-2 btn-outline-secondary rounded-4"
+                            type="submit"><a class="text-white" href="/oauth2/authorization/kakao"> 카카오 로그인</a>
+                    </button>
+                </div>
 
             </div>
         </div>

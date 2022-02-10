@@ -258,6 +258,7 @@ public class RoomService {
     //답변등록
     @Transactional
     public boolean notereplywrite(int noteNo, String noteReply) {
+
         noteRepository.findById(noteNo).get().setNoteReply(noteReply);
         return true;
     }

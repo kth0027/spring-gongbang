@@ -49,3 +49,15 @@ $(function(){
     })
 
 });
+
+
+
+// 쪽지 카운트 세기
+$(function(){
+    $.ajax({
+    url: "/nreadcount",
+    success: function(data){
+
+    }
+    });
+});

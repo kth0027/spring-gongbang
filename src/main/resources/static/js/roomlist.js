@@ -1,4 +1,4 @@
-
+// 클래스 지우기
 function rdelete(roomNo){
 alert(roomNo);
     $.ajax({
@@ -17,7 +17,7 @@ alert(roomNo);
 
 
 
-
+// 클래스 상태변경
 function activeupdate(roomNo, active) {
 alert(roomNo);
 alert(active);

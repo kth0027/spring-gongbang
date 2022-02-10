@@ -93,7 +93,9 @@
                                 <span th:text="${'내용 : ' + note.noteContents}"></span>
                                 <span th:text="${'보낸 날짜 : ' + #temporals.format (note.createdDate,'MM-dd hh:mm')}"></span>
                                 <span th:if="${note.noteReply!=null}" style="color:orange; border: solid 3px orange; text-align: center; border-radius:5px; padding:5px;"> 답변완료 </span>
-                                <span th:if="${note.noteReply==null}" > <button class="btn btn-warning" th:onclick="notereply([[${note.noteNo}]],[[${note.noteContents}]])"> 답변하기 </button></span>
+                                <span th:if="${session.logindto.memberNo != note.memberEntity.memberNo}">
+                                    <span th:if="${note.noteReply==null}" > <button class="btn btn-warning" th:onclick="notereply([[${note.noteNo}]],[[${note.noteContents}]])"> 답변하기 </button></span>
+                                </span>
                                 <span th:text="${note.noteRead==0} ? 읽지않음 : 읽음" style="color:black; border: solid 3px black; text-align: center; border-radius:5px; padding:5px; margin-left:5px;"></span>
                             </div>
                         </td>

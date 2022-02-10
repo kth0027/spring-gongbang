@@ -197,8 +197,7 @@
     // 문의 버튼 클릭 이벤트
 function notewrite(roomNo){
    var noteContents =$("#noteContents").val();
-   alert(roomNo);
-   alert(noteContents);
+
    $.ajax({
     url: '/room/notewrite',
     data:{"roomNo":roomNo , "noteContents":noteContents},

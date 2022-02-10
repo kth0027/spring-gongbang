@@ -3,7 +3,9 @@ package com.ezen.controller;
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
+import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.RoomRepository;
+import com.ezen.domain.entity.repository.TimeTableRepository;
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomLikeService;
 import com.ezen.service.RoomService;
@@ -117,7 +119,7 @@ public class RoomController {
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", "", category);
         model.addAttribute("roomEntities", roomEntities);
         return "room/room_list";
-
+    }
     // 룸보기 페이지 이동
     @GetMapping("/view/{roomNo}") // 이동
     public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
@@ -132,8 +134,8 @@ public class RoomController {
         return "room/room_view"; // 타임리프
     }
 
-    // [작성한 클래스 등록]
-    @PostMapping("/classRegister")
+    // [작성한 클래스 등록
+        @PostMapping("/classRegister")
     @Transactional
     public String classRegister(RoomEntity roomEntity,
                                 @RequestParam("roomImageInput") List<MultipartFile> files,

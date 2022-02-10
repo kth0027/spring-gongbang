@@ -3,8 +3,7 @@ package com.ezen.controller;
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
-import com.ezen.domain.entity.TimeTableEntity;
-import com.ezen.domain.entity.repository.*;
+import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomLikeService;
 import com.ezen.service.RoomService;
@@ -37,13 +36,13 @@ public class RoomController {
     private RoomLikeService roomLikeService;
 
     @Autowired
-    private HttpServletRequest request;
-
-    @Autowired
     private RoomRepository roomRepository;
 
     @Autowired
     private TimeTableRepository timeTableRepository;
+
+    @Autowired
+    HttpServletRequest request;
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
@@ -118,8 +117,8 @@ public class RoomController {
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", "", category);
         model.addAttribute("roomEntities", roomEntities);
         return "room/room_list";
-    }
 
+    // 룸보기 페이지 이동
     @GetMapping("/view/{roomNo}") // 이동
     public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
 
@@ -181,6 +180,7 @@ public class RoomController {
         jsonObject.put("positions", jsonArray); // json 전체에 리스트 넣기
         return jsonObject;
     }
+
 
     @GetMapping("/addressXY")
     @ResponseBody
@@ -250,6 +250,18 @@ public class RoomController {
             return "2";
         }
     }
+    // 02-08 클래스 수강 조지훈
+    @GetMapping("/classregistration")
+    @ResponseBody
+    public String classregistration(@RequestParam("roomNo") int roomNo) {
+
+        boolean result = roomService.classregistration(roomNo);
+        if(result) {
+           return "1";
+        }else {
+            return "2";
+        }
+    }
 
     // 읽음처리 업데이트
     @GetMapping("/nreadupdate")
@@ -258,9 +270,4 @@ public class RoomController {
 
         roomService.nreadupdate(noteNo);
     }
-
-
-
-
-
 }

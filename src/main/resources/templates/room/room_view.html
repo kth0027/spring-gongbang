@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -22,6 +22,7 @@
         flex-direction: column;
         }
 
+
     </style>
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
     <link rel="stylesheet" th:href="@{/css/member/rome.css}">
@@ -33,11 +34,11 @@
 <script src="http://code.jquery.com/jquery-latest.min.js"></script>
 
 <div th:replace="header.html::header"></div>
-
-<div class="container">
+<script th:src="@{/js/class_registration.js}"></script>
+<div class="container mt-5">
     <div class="row">
         <div class="">
-            <a href="#">
+            <a th:href="@{/member/channel}">
                 <button class="btn btn-warning">채널보기</button>
             </a>
             <button class="btn btn-warning">클래스 신청하기</button>
@@ -67,20 +68,44 @@
 
         <div class="col-md-9">
             <div>
-                <h1>메인이미지 넣을곳</h1>
-                <img src="" alt="">
+                <div th:id="${'carousel' + roomEntity.roomNo}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner"> <!-- 반복문 -->
+                        <div class="carousel-item active">
+                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
+                                 class="d-block w-100" alt="...">
+                        </div>
+                        <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
+                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="...">
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button"
+                            th:data-bs-target="${'#carousel' + roomEntity.roomNo}"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="${'#carousel' + roomEntity.roomNo}"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
             </div>
             <div>
                 <h3 th:text="${roomEntity.roomTitle}"></h3>
-                <h4>간단한 내용</h4>
-                <h5 th:text="${roomEntity.roomAddress}">장소</h5>
+                <div>
+                    <h4 th:text="${roomEntity.roomContent}"></h4>
+                </div>
+                <h5 th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></h5>
             </div>
             <ul>
                 <a href="#classinfo">
                     <li>클래스 소개</li>
                 </a>
-                <a href="#curriculum">
-                    <li>커리큘럼</li>
+                <a href="#ETC">
+                    <li>편의사항</li>
                 </a>
                 <a href="#teacherinfo">
                     <li>강사소개</li>
@@ -91,20 +116,19 @@
                 <a href="#review">
                     <li>후기</li>
                 </a>
-                <a href="#qna">
-                    <li>문의</li>
-                </a>
             </ul>
             <hr>
             <div>
                 <h3 id="classinfo">클래스 소개</h3>
-                <div th:text="${roomEntity.roomContent}">
+                <div th:utext="${roomEntity.roomDetail}">
+
                 </div>
                 <hr>
 
-                <h3 id="curriculum">커리큘럼</h3>
-                <br><br>
-                <br><br>
+                <h3 id="ETC">편의사항</h3>
+                <div>
+                    <span th:text="${roomEntity.roomETC}"></span>
+                </div>
                 <hr>
                 <h3 id="teacherinfo">강사소개</h3>
                 <br><br>
@@ -112,13 +136,23 @@
                 <hr>
 
                 <h3 id="position">위치</h3>
-                <h5>지도</h5>
-                <br><br>
-                <br><br>
+                <div>
+                    <h5 th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></h5>
+                    <div id="map" style="width:100%;height:350px;"></div> <!-- 지도가 표시되는 구역 -->
+                    <!-- 히든으로 위도 경도 잘라서 js로 넘겨라 -->
+                    <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[1] }"
+                           name="roomaddress1">
+                    <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[2] }"
+                           name="roomaddress2">
+                </div>
                 <hr>
             </div>
 
-            <h3 id="review">후기 </h3>
+            <p style="font-size:24px;" id="review">후기</p>
+            <a th:href="@{'/room/review/' + ${roomEntity.roomNo} }">
+                <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;">작성</button>
+            </a>
+            <br>
             <div class="row">
                 <div class="col-md-2">
                     사진
@@ -129,54 +163,20 @@
                         <div class="col-md-4">날짜</div>
                     </div>
                     <div class="row">
-                        <div class="col-md-9">내용</div>
+                        <div class="col-md-9">내용자릴ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ</div>
                     </div>
                 </div>
             </div>
             <hr>
-
-            <h3 id="qna">클래스 문의 </h3>
-            <div class="row">
-                <div class="col-md-2">
-                    로고자리
-                </div>
-                <div class="col-md-10">
-                    <div class="row">
-                        <div class="col-md-4">아이디</div>
-                        <div class="col-md-4">날짜</div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-9">내용</div>
-                    </div>
-                </div>
-            </div>
-
-            <hr>
-
-            <div>
-                <div id="qnabox">
-                    <p>문의내용 작성</p>
-                    <div class="form-floating">
-                        <textarea class="form-control" placeholder="Leave a comment here" id="qnaText"
-                                  style="height: 100px; resize: none;"></textarea>
-                        <label for="qnaText">궁금하신 점을 작성해 주세요~</label>
-                        <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;"> 작성 완료
-                        </button>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <div class="col-md-3">
-
             <!--
             1. roomNo 에 해당하는 TimeTable 엔티티를 가져온다.
             2. roomDate : YYYY-MM-DD
             3. 각 날짜 Id : YYYY-MM-DD
 
             -->
-
 
             <!-- 달력 출력 시작 -->
             <div style="width: 450px; height: 550px; box-shadow: 5px 5px 5px #cccccc;">
@@ -219,10 +219,40 @@
         </div>
     </div>
 </div>
+</div>
+</div>
+
+<!-- 02-08 클래스 수강 모달 조지훈 -->
+<div class="modal" tabindex="-1" id="registration" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h2 class="fw-bold mb-0">클래스 수강 여부 확인</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- 닫기 -->
+            </div>
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0">클래스를 등록하시겠습니까??</h5>
+            </div>
+            <div class="modal-footer flex-nowrap p-0">
+                <button type="button"
+                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"
+                        th:onclick="classregistration([[${roomEntity.roomNo}]])"><strong>예</strong></button>
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                        data-bs-dismiss="modal">아니오
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script th:src="@{/js/calendar.js}"></script>
 <script th:src="@{/js/roomview.js}"></script>
 <script th:src="@{/js/nreply.js}"></script>
+
+<!-- 인증 스크립트 -->
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=3d40af5fcd7dc90460ae943f10753607&libraries=services"></script>
+<script th:src="@{/js/roomview_jh.js}"></script>
 
 <div th:replace="footer.html :: footer"></div>
 

@@ -3,6 +3,8 @@ package com.ezen.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "history")
@@ -20,6 +22,16 @@ public class HistoryEntity extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int historyNo;
+
+    // 02-08 클래스 수강 조지훈
+    @ManyToOne
+    @JoinColumn(name = "memberNo")
+    private MemberEntity memberEntity;
+    // 02-08 클래스 수강 조지훈
+    @ManyToOne
+    @JoinColumn(name = "roomNo")
+    private RoomEntity roomEntity;
+
 
 
 }

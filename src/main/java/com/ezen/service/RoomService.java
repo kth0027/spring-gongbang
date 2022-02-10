@@ -1,6 +1,15 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
+
+import com.ezen.domain.entity.HistoryEntity;
+import com.ezen.domain.entity.MemberEntity;
+import com.ezen.domain.entity.RoomEntity;
+import com.ezen.domain.entity.RoomImgEntity;
+import com.ezen.domain.entity.repository.HistoryRepository;
+import com.ezen.domain.entity.repository.MemberRepository;
+import com.ezen.domain.entity.repository.RoomImgRepository;
+import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.domain.entity.*;
 import com.ezen.domain.entity.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +29,27 @@ import java.util.UUID;
 public class RoomService {
     @Autowired
     private RoomImgRepository roomImgRepository;
+
     @Autowired
     private RoomRepository roomRepository;
+
     @Autowired
     private MemberRepository memberRepository;
 
     @Autowired
     private HttpServletRequest request;
+
     @Autowired
     private MemberService memberService;
 
     @Autowired
     private TimeTableRepository timeTableRepository;
 
-
     @Autowired
     private NoteRepository noteRepository;
+
+    @Autowired
+    HistoryRepository historyRepository;
 
     @Transactional
     public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files) {
@@ -296,5 +310,23 @@ public class RoomService {
         return true;
     }
 
+    // 02-08 클래스 수강 조지훈
+    public boolean classregistration(int roomNo) {
+        RoomEntity roomEntity = roomRepository.findById(roomNo).get();
 
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = memberService.getMember(memberDto.getMemberNo());
+
+        HistoryEntity historyEntity = HistoryEntity.builder()
+                .roomEntity(roomEntity)
+                .memberEntity(memberEntity)
+                .build();
+         historyRepository.save(historyEntity);
+
+
+         memberEntity.getHistoryEntities().add(historyEntity);
+         roomEntity.getHistoryEntities().add(historyEntity);
+        return true;
+    }
 }

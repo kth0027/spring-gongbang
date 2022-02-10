@@ -126,6 +126,4 @@ public class MemberService {
         Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
         return entityOptional.get();
     }
-
-
 }

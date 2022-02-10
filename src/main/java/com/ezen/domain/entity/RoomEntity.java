@@ -89,4 +89,11 @@ public class RoomEntity extends BaseTimeEntity {
     @OneToMany(mappedBy="roomEntity" , cascade = CascadeType.ALL)
     private List<NoteEntity> noteEntities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+    private List<ReplyEntity> replyEntities = new ArrayList<ReplyEntity>();
+
+    // 히스토리관계 // 02-08 클래스 수강 조지훈
+    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+    private List<HistoryEntity> historyEntities = new ArrayList<>();
+
 }

@@ -8,6 +8,13 @@
     <title>메인페이지</title>
     <!-- main css 가져오기 -->
     <link th:href="@{/css/main.css}" rel="stylesheet">
+    <!-- slick -->
+    <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <style>
+        .variable-width { position:relative;}
+        .variable-width button { position:absolute; z-index:10; top:50%; transform:translate(-50%); }
+    </style>
 </head>
 
 <body>
@@ -1075,13 +1082,103 @@
                 </div>
             </div>
             <!-- 등록된 리스트를 card 형식으로 출력하는 부분 종료-->
+
+            <!-- 리뷰 후기 카드 출력 02-04 조지훈 작성중 -->
             <div class="row border">
-                <h4> 리뷰를 카드 형식으로 출력 </h4>
+                <section class="variable-width">
+                    <div class="card" th:each="reply : ${replylist}" style="width: 18rem;">
+                        <button type="button" class="btn btn-outline-primary me-2" th:data-bs-target="${'#modal'+reply.replyNo}"
+                                data-bs-toggle="modal">
+                            <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" class="card-img-top" alt="...">
+                        </button>
+                        <div class="card-body">
+                            <div class="card-title" th:text="${reply.roomEntity.roomTitle}">
+                            </div>
+                            <p class="card-text" th:text="${reply.replyContent}"></p>
+                        </div>
+                        <div class="modal" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog" th:id="${'modal'+reply.replyNo}" aria-hidden="true">
+                            <div class="modal-dialog modal-lg" role="document">
+                                <div class="modal-content rounded-5 shadow">
+                                    <div class="modal-header p-5 pb-4 border-bottom-0">
+                                        <div th:id="${'carousel' +reply.replyNo}" class="carousel slide" data-bs-ride="carousel">
+                                            <div class="carousel-inner"> <!-- 반복문 -->
+                                                <div class="carousel-item active">
+                                                    <img th:src="@{'/replyimg/'+${reply.replyImgEntities.get(0).replyImg} }" class="d-block w-100" alt="...">
+                                                </div>
+                                                <div class="carousel-item" th:each="replyimg : ${reply.replyImgEntities}">
+                                                    <img th:src="@{'/replyimg/'+${replyimg.replyImg} }"  class="d-block w-100" alt="...">
+                                                </div>
+                                            </div>
+
+                                            <button class="carousel-control-prev" type="button" th:data-bs-target="${'#carousel'+reply.replyNo}"
+                                                    data-bs-slide="prev">
+                                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Previous</span>
+                                            </button>
+                                            <button class="carousel-control-next" type="button" th:data-bs-target="${'#carousel'+reply.replyNo}"
+                                                    data-bs-slide="next">
+                                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                                <span class="visually-hidden">Next</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body p-5 pt-0">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </main>
 </div>
 
+<!--<div class="modal fade" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog" th:id="${'modal'+replylist.replyNo}" aria-hidden="true">-->
+<!--    <div class="modal-dialog modal-lg" role="document">-->
+<!--        <div class="modal-content rounded-5 shadow">-->
+<!--            <div class="modal-header p-5 pb-4 border-bottom-0">-->
+<!--                <div th:id="${'carousel' +room.rnum}" class="carousel slide" data-bs-ride="carousel">-->
+<!--                    <div class="carousel-inner"> &lt;!&ndash; 반복문 &ndash;&gt;-->
+<!--                        <div class="carousel-item active">-->
+<!--                            <img th:src="@{'/roomimg/'+${room.roomimgEntities.get(0).rimg} }" class="d-block w-100" alt="...">-->
+<!--                        </div>-->
+<!--                        <div class="carousel-item" th:each="roomimg : ${room.roomimgEntities}">-->
+<!--                            <img th:src="@{'/roomimg/'+${roomimg.rimg} }"  class="d-block w-100" alt="...">-->
+<!--                        </div>-->
+<!--                    </div>-->
+
+<!--                    <button class="carousel-control-prev" type="button" th:data-bs-target="${'#carousel'+room.rnum}"-->
+<!--                            data-bs-slide="prev">-->
+<!--                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>-->
+<!--                        <span class="visually-hidden">Previous</span>-->
+<!--                    </button>-->
+<!--                    <button class="carousel-control-next" type="button" th:data-bs-target="${'#carousel'+room.rnum}"-->
+<!--                            data-bs-slide="next">-->
+<!--                        <span class="carousel-control-next-icon" aria-hidden="true"></span>-->
+<!--                        <span class="visually-hidden">Next</span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="modal-body p-5 pt-0">-->
+
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!-- 조지훈 댓글 슬릭 js -->
+<script type="text/javascript">
+    $('.variable-width').slick({
+      dots: true,
+      infinite: true,
+      speed: 300,
+      slidesToShow: 1,
+      centerMode: true,
+      variableWidth: true
+    });
+</script>
 
 <!-- 개발자 js 가져오기 : 지역, 카테고리 slick 관련 스크립트 -->
 <script th:src="@{/js/main.js}"></script>
@@ -1134,10 +1231,6 @@
             ]
         });
     })
-
-
-
-
 </script>
 
 

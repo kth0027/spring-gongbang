@@ -41,17 +41,27 @@ public class MemberController { // C S
 
     // 회원가입 처리 연결
     @PostMapping("/signupcontroller") // 회원가입 처리 연결
-    public String signupcontroller(MemberDto memberDto
-    ){
+    public String signupcontroller(MemberDto memberDto){
         memberService.membersignup(memberDto);
         return "redirect:/";  // 회원가입 성공시 메인페이지 연결
+    }
+    // 아이디 중복체크
+    @GetMapping("/idcheck")
+    @ResponseBody // 클라이언트에게 객체 반환
+    public int idcheck(@RequestParam("memberId") String memberId) {
+        boolean result = memberService.idcheck(memberId);
+        if(result){
+            return 1; // 중복있음
+        } else {
+            return 2; // 중복없음
+        }
     }
 
     // 이메일 중복체크
     @GetMapping("/emailcheck")
     @ResponseBody
-    public String emailcheck( @RequestParam("memail") String memail ){
-        boolean result = memberService.emailcheck(memail);
+    public String emailcheck( @RequestParam("memberEmail") String memberEmail ){
+        boolean result = memberService.emailcheck(memberEmail);
         if( result ){
             return "1"; // 중복
         }else{
@@ -65,31 +75,31 @@ public class MemberController { // C S
         return "member/login";
     }
 
-    // 로그인처리
-    @PostMapping("/logincontroller")
-    @ResponseBody
-    public String logincontroller(@RequestBody MemberDto memberDto){
-
-        MemberDto loginDto =   memberService.login( memberDto );
-        if( loginDto !=null ){
-            HttpSession session = request.getSession();   // 서버내 세션 가져오기
-            session.setAttribute( "logindto" , loginDto );    // 세션 설정
-            // session.getAttribute("logindto") ; // 세션 호출
-            return "1";
-        }else{
-            return "2";
-        }
-        // 타임리프를 설치했을경우  RETRUN URL , HTML
-        // html 혹은 url 아닌 값 반환할때  @ResponseBody
-    }
+//    // 로그인처리
+//    @PostMapping("/logincontroller")
+//    @ResponseBody
+//    public String logincontroller(@RequestBody MemberDto memberDto){
+//
+//        MemberDto loginDto =   memberService.login( memberDto );
+//        if( loginDto !=null ){
+//            HttpSession session = request.getSession();   // 서버내 세션 가져오기
+//            session.setAttribute( "logindto" , loginDto );    // 세션 설정
+//            // session.getAttribute("logindto") ; // 세션 호출
+//            return "1";
+//        }else{
+//            return "2";
+//        }
+//        // 타임리프를 설치했을경우  RETRUN URL , HTML
+//        // html 혹은 url 아닌 값 반환할때  @ResponseBody
+//    }
 
     // 로그아웃 처리
-    @GetMapping("/logout")
-    public String logout(){
-        HttpSession session = request.getSession();
-        session.setAttribute( "logindto" , null);   // 기존 세션을 null 로 변경
-        return "redirect:/"; // 로그아웃 성공시 메인페이지로 이동
-    }
+//    @GetMapping("/logout")
+//    public String logout(){
+//        HttpSession session = request.getSession();
+//        session.setAttribute( "logindto" , null);   // 기존 세션을 null 로 변경
+//        return "redirect:/"; // 로그아웃 성공시 메인페이지로 이동
+//    }
 
     // 마이페이지 연결
     @GetMapping("/info")
@@ -193,8 +203,6 @@ public class MemberController { // C S
 
         return "1";
     }
-
-
 
     // [정산 페이지 맵핑]
     @GetMapping("/calculate")

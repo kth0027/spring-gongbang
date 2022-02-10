@@ -1114,14 +1114,12 @@
                                                     <img th:src="@{'/replyimg/'+${replyimg.replyImg} }"  class="d-block w-100 h-100" alt="...">
                                                 </div>
                                             </div>
-
-                                            <div class="bg-info">
-                                                <div class="mt-5 mb-5" style="height: 0px;">
+                                            <div>
+                                                <div class="mt-5 mb-5">
                                                     <span class="fw-bold" th:text="${reply.roomEntity.roomTitle}"></span>
                                                     <span th:text="${reply.memberEntity.memberName}"></span>
                                                 </div>
                                             </div>
-                                            
                                             <button class="carousel-control-prev" type="button" th:data-bs-target="${'#carousel'+reply.replyNo}"
                                                     data-bs-slide="prev">
                                                 <span class="visually-hidden">Previous</span>

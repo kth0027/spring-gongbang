@@ -36,7 +36,7 @@ public class ReplyService {
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto)session.getAttribute("logindto");
 
-        MemberEntity memberEntity = memberService.getmemberEntity(loginDto.getMemberNo());
+        MemberEntity memberEntity = memberService.getMember(loginDto.getMemberNo());
         replyEntity.setMemberEntity(memberEntity);
 
         RoomEntity roomEntity = roomService.getroom(roomNo);
@@ -56,7 +56,7 @@ public class ReplyService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-");
 
-                String dir = "C:\\Users\\PC\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\replyimg";
+                String dir = "C:\\Users\\505\\Desktop\\gongbang\\src\\main\\resources\\static\\replyimg";
                 String filepath = dir + "\\" + uuidfile;
                 try{
                     file.transferTo(new File(filepath));

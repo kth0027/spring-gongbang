@@ -2,11 +2,13 @@ package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
+import com.ezen.domain.entity.ReplyEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.domain.entity.repository.TimeTableRepository;
 import com.ezen.service.MemberService;
+import com.ezen.service.ReplyService;
 import com.ezen.service.RoomLikeService;
 import com.ezen.service.RoomService;
 import org.json.simple.JSONArray;
@@ -45,6 +47,9 @@ public class RoomController {
 
     @Autowired
     HttpServletRequest request;
+
+    @Autowired
+    ReplyService replyService;
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
@@ -131,6 +136,7 @@ public class RoomController {
         // 2. roomNo 이용해서 해당 강좌의 개설된 정보 (TimeTable) 을 불러온다.
         List<TimeTableEntity> timeTableEntities = roomEntity.getTimeTableEntity();
         model.addAttribute("timeTableEntities", timeTableEntities);
+
         return "room/room_view"; // 타임리프
     }
 
@@ -272,4 +278,11 @@ public class RoomController {
 
         roomService.nreadupdate(noteNo);
     }
+    // [ review 페이지 맵핑 ] 01-27 조지훈
+    @GetMapping("/review/{roomNo}")
+    public String review(@PathVariable("roomNo") int roomNo, Model model) {
+        model.addAttribute("roomNo",roomNo);
+        return "room/room_review";
+    }
+
 }

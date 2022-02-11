@@ -99,6 +99,7 @@ public class RoomController {
             session.setAttribute("category", category);
         }
 
+
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
         model.addAttribute("roomEntities", roomEntities);
 
@@ -166,8 +167,10 @@ public class RoomController {
 
         for (RoomEntity roomEntity : roomEntities) { //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
+
             System.out.println("위도 : " + roomEntity.getRoomAddress().split(",")[1]);
             System.out.println("경도 : " + roomEntity.getRoomAddress().split(",")[2]);
+
             data.put("lat", roomEntity.getRoomAddress().split(",")[1]); // 위도
             data.put("lng", roomEntity.getRoomAddress().split(",")[2]); // 경도
             data.put("roomTitle", roomEntity.getRoomTitle());
@@ -175,7 +178,6 @@ public class RoomController {
             data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
             jsonArray.add(data); //리스트에 저장
         }
-
         jsonObject.put("positions", jsonArray); // json 전체에 리스트 넣기
         return jsonObject;
     }
@@ -262,7 +264,9 @@ public class RoomController {
                     data.put("roomNo", roomEntity.getRoomNo());
                     data.put("category", roomEntity.getRoomCategory());
                     data.put("title", roomEntity.getRoomTitle());
-                    data.put("time", timeTableEntity.getRoomTime().split(",")[0] + "-" + timeTableEntity.getRoomTime().split(",")[1]);
+                    data.put("date", timeTableEntity.getRoomDate());
+                    data.put("beginTime", timeTableEntity.getRoomTime().split(",")[0]);
+                    data.put("endTime", timeTableEntity.getRoomTime().split(",")[1]);
                     data.put("local", roomEntity.getRoomLocal());
                     data.put("max", roomEntity.getRoomMax());
                     jsonArray.add(data);

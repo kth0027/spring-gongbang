@@ -22,11 +22,26 @@
         flex-direction: column;
         }
 
+        .classBtn{
+            border: 1px solid #374b73;
+            background-color: rgb(0, 0, 0, 0);
+            color: #ff9a9a;
+            padding: 5px;
+        }
+
+        .classContent{
+            border: 1px solid #374b73;
+            background-color: rgb(0, 0, 0, 0);
+            color: #ff9a9a;
+            padding: 5px;
+        }
+
     </style>
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
 
 </head>
 <body>
+
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
 
@@ -203,15 +218,12 @@
                 <input type="text" id="selectedDate" class="form-control" value="" name="">
             </div>
 
-            <button onclick="getTimeTable();">ajax 테스트</button>
-
             <!-- 날짜 선택 시 보여줄 화면-->
             <!-- 해당 날짜에 등록된 클래스 정보 + 시간을 알려준다-->
-            <div class="container" style="background : red;">
-                <div class="time-selected-wrapper">
+            <div class="container" style="width: 300px;">
+                <div class="row time-selected-wrapper">
                     <!-- 반복문을 돌면서 -->
                     <div id="time-select-inner"></div>
-
                 </div>
             </div>
 
@@ -220,10 +232,8 @@
 </div>
 
 <script th:src="@{/js/calendar2.js}"></script>
-<script th:src="@{/js/roomview.js}"></script>
 <script th:src="@{/js/nreply.js}"></script>
 
 <div th:replace="footer.html :: footer"></div>
-
 </body>
 </html>

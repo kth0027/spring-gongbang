@@ -50,4 +50,9 @@ public class MemberEntity extends BaseTimeEntity {
     @ToString.Exclude
     private List<NoteEntity> noteEntities = new ArrayList<>();
 
+    // 회원은 여러개의 예약 내역을 가질 수 있습니다.
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
+    private List<HistoryEntity> historyEntities = new ArrayList<>();
+
+
 }

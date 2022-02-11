@@ -162,7 +162,7 @@
                         </div>
                         <!-- 검색 -->
                         <div id="search" class="search d-flex justify-content-center">
-                            <input type="submit" class="btn btn-secondary" value="클래스검색">
+                            <input type="submit" id="classSearchBtn" class="btn btn-secondary" value="클래스검색">
                         </div>
                     </div>
                 </form>
@@ -252,7 +252,6 @@
     </div>
 </div>
 
-
 <script>
 $(document).ready(function(){
     /* 클릭시 팝업창 열기/닫기 */
@@ -293,6 +292,8 @@ function inputCheck(){
     }
 }
 </script>
+
+<script th:src="@{/js/roomview.js}"></script>
 
 </body>
 </html>

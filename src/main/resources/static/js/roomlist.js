@@ -14,10 +14,6 @@ alert(roomNo);
 
 }
 
-
-
-
-
 function activeupdate(roomNo, active) {
 alert(roomNo);
 alert(active);

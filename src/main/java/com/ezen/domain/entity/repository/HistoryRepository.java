@@ -1,4 +1,7 @@
 package com.ezen.domain.entity.repository;
 
-public interface HistoryRepository {
+import com.ezen.domain.entity.HistoryEntity;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface HistoryRepository extends JpaRepository<HistoryEntity, Integer> {
 }

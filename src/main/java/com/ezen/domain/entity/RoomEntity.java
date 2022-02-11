@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString(exclude = "roomImgEntities")
+@ToString
 public class RoomEntity extends BaseTimeEntity {
 
     // [클래스 고유 식별 번호]
@@ -39,10 +39,9 @@ public class RoomEntity extends BaseTimeEntity {
     private String roomDetail;
 
     // [클래스 진행 예정 날짜]
-    // 2021-01-30,15:00,17:00
-    // 날짜, 시작 시간, 끝나는 시간을 한번에 저장합니다.
-    @Column(name = "roomDate")
-    private String roomDate;
+    // TimeTable 에 역할을 위임했으므로 여기서 제거합니다.
+//    @Column(name = "roomDate")
+//    private String roomDate;
 
     // [클래스 주소]
     // [도로명 주소],[위도],[경도]
@@ -79,14 +78,25 @@ public class RoomEntity extends BaseTimeEntity {
 
     // timetable 과의 관계
     @OneToMany(mappedBy="roomEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<TimeTableEntity> timeTableEntity;
 
     // 이미지 관계
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
 
     // 문의글 리스트
     @OneToMany(mappedBy="roomEntity" , cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<NoteEntity> noteEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+    private List<ReplyEntity> replyEntities = new ArrayList<ReplyEntity>();
+
+    // 클래스 1개는 여러개의 예약 내역을 가질 수 있습니다.
+    @OneToMany(mappedBy="roomEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<HistoryEntity> historyEntities = new ArrayList<>();
 
 }

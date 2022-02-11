@@ -6,8 +6,6 @@
     <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>헤더 페이지</title>
-
-
     <!-- header css 가져오기 -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
 </head>
@@ -198,6 +196,25 @@
                 <!--                    닫기-->
                 <!--                </button>&ndash;&gt;-->
                 <!--            </div>-->
+                        </div>-->
+                        <!-- 검색 -->
+                        <div id="search" class="search d-flex justify-content-center">
+                            <input type="submit" id="classSearchBtn" class="btn btn-secondary" value="클래스검색">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="closesearch" class="row closesearch d-flex justify-content-start" style="width:70%">
+                <ul class="d-flex justify-content-start">
+                    <li class="recommand">위빙</li>
+                    <li class="recommand">향수</li>
+                    <li class="recommand">소잉</li>
+                    <li class="recommand">가죽</li>
+                    <li class="recommand">요가</li>
+                </ul>
+                <button class="btn-outline-dark col-1 offset-5 closesearch" style="text-align:center; height:1.5rem;">
+                    닫기
+                </button>
             </div>
         </header>
     </div>
@@ -313,6 +330,25 @@
             });
         });
     </script>
+    $(".closesearch").click(function () {
+        $("#togglesearch").hide();
+    });
+
+
+});
+
+// 검색 시 유효성 검사
+function inputCheck(){
+    var search = $("#roomSearch").val();
+    if(search == "") {
+        alert("검색어, 지역, 카테고리 중 적어도 1개는 선택해주세요.");
+        return false;
+    }
+}
+
+
+</script>
+
 
 </body>
 

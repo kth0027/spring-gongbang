@@ -1,4 +1,4 @@
-// 클래스 지우기
+
 function rdelete(roomNo){
 alert(roomNo);
     $.ajax({

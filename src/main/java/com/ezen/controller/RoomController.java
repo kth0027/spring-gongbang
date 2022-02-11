@@ -2,10 +2,12 @@ package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
+import com.ezen.domain.entity.ReplyEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.*;
 import com.ezen.service.MemberService;
+import com.ezen.service.ReplyService;
 import com.ezen.service.RoomLikeService;
 import com.ezen.service.RoomService;
 import org.json.simple.JSONArray;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -44,6 +47,9 @@ public class RoomController {
 
     @Autowired
     private TimeTableRepository timeTableRepository;
+
+    @Autowired
+    ReplyService replyService;
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
@@ -120,6 +126,7 @@ public class RoomController {
         return "room/room_list";
     }
 
+    // 룸보기 페이지 이동
     @GetMapping("/view/{roomNo}") // 이동
     public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
 
@@ -133,7 +140,7 @@ public class RoomController {
         return "room/room_view"; // 타임리프
     }
 
-    // [작성한 클래스 등록]
+    // [ 작성한 클래스 등록 ]
     @PostMapping("/classRegister")
     @Transactional
     public String classRegister(RoomEntity roomEntity,
@@ -147,8 +154,9 @@ public class RoomController {
         roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
-        boolean result = roomService.registerClass(roomEntity, files);
+        roomService.registerClass(roomEntity, files);
         return "index";
+
     }
 
     // [ room_update.html 페이지와 맵핑 ]
@@ -160,7 +168,13 @@ public class RoomController {
     // json 반환[지도에 띄우고자 하는 방 응답하기]
     @GetMapping("/gongbang.json")
     @ResponseBody
-    public JSONObject gongbang(@RequestParam("keyword") String keyword, @RequestParam("local") String local, @RequestParam("category") String category) {
+    public JSONObject gongbang() {
+
+        HttpSession session = request.getSession();
+
+        String keyword = (String) session.getAttribute("keyword");
+        String local = (String) session.getAttribute("local");
+        String category = (String) session.getAttribute("category");
 
         JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
         JSONArray jsonArray = new JSONArray(); // json 안에 들어가는 리스트
@@ -177,7 +191,6 @@ public class RoomController {
             data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
             jsonArray.add(data); //리스트에 저장
         }
-
         jsonObject.put("positions", jsonArray); // json 전체에 리스트 넣기
         return jsonObject;
     }
@@ -217,34 +230,65 @@ public class RoomController {
         return "member/member_class";
     }
 
-    // 메인 페이지에 등록한 클래스 가져와서 출력하기
-    // 모두 다 가져오지 말고, 가장 최근에 등록한 클래스 9개 출력한다.
-    @GetMapping("/mainRoomList")
-    public String mainRoomList(Model model){
-        // 만들어진 순서 X
-        // 강좌가 최근에 등록된 순서
-
-        return null;
-    }
-
-    // roomNo 를 이용해서 TimeTable 가져오는 메서드
+    // @Author : 김정진
+    // @Date : 2022-02-10
+    // @Note : 특정 roomNo 에 해당하는 TimeTable 정보만 가져오는 메소드
     @GetMapping("/timetable")
-    public String getTimeTableByRoomNo(@RequestParam("roomNo") int roomNo, Model model){
-
-
-
-        return "room/room_view";
+    @ResponseBody
+    public String getTimeTableByRoomNo(@RequestParam("roomNo") int roomNo) {
+        StringBuilder str = new StringBuilder();
+        List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomNo(roomNo);
+        for (TimeTableEntity time : timeTableEntities) {
+            str.append(time.getRoomDate()).append(",");
+        }
+        return str.toString();
     }
 
+    // @Author: 김정진
+    // @Date : 2022-02-10
+    // @Note : YYYY-MM-DD 값으로 RoomEntity 를 조회 후 데이터 뿌려주기
+    // JS 에서 Entity 를 읽을 수 없으니 JSON 형태로 변환해서 보낸다.
+    @GetMapping("/toJSON")
+    @ResponseBody
+    public JSONObject getRoomEntityByTimeTableToJson(@RequestParam("activeId") String roomDate, @RequestParam("roomNo") int roomNo) {
+        JSONObject jsonObject = new JSONObject(); // json
+        JSONArray jsonArray = new JSONArray(); // json
+        // roomNo 에 해당하는 TimeTable 엔티티만 리스트에 담아서 호출한다.
+        List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomNo(roomNo);
+        // roomNo 에 해당하는 개설된 강좌 전체를 for 문으로 조회한다.
+        for (TimeTableEntity timeTableEntity : timeTableEntities) {
+            RoomEntity roomEntity = roomRepository.findById(timeTableEntity.getRoomEntity().getRoomNo()).get();
+            // 선택한 date 에 해당하는 Room 정보만을 json 에 저장시킨다.
+            if (timeTableEntity.getRoomDate().equals(roomDate)) {
+                JSONObject data = new JSONObject(); // json
+                try {
+                    data.put("roomNo", roomEntity.getRoomNo());
+                    data.put("category", roomEntity.getRoomCategory());
+                    data.put("title", roomEntity.getRoomTitle());
+                    data.put("date", timeTableEntity.getRoomDate());
+                    data.put("beginTime", timeTableEntity.getRoomTime().split(",")[0]);
+                    data.put("endTime", timeTableEntity.getRoomTime().split(",")[1]);
+                    data.put("local", roomEntity.getRoomLocal());
+                    data.put("max", roomEntity.getRoomMax());
+                    jsonArray.add(data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        jsonObject.put("json", jsonArray);
+        return jsonObject;
+        // ajax 에서 받아온 stringify 된 데이터를 map 형태로 변환해서 model 에 출력한다.
+        // @GetMapping("/")
+    }
 
     // 문의 등록
     @GetMapping("/notewrite")
     @ResponseBody
-    public String notewrite(@RequestParam("roomNo") int roomNo, @RequestParam("noteContents") String noteContents){
+    public String notewrite(@RequestParam("roomNo") int roomNo, @RequestParam("noteContents") String noteContents) {
 
-        boolean result = roomService.notewrite(roomNo,noteContents);
+        boolean result = roomService.notewrite(roomNo, noteContents);
         if (result) {
-
             return "1";
         } else {
             return "2";
@@ -254,13 +298,16 @@ public class RoomController {
     // 읽음처리 업데이트
     @GetMapping("/nreadupdate")
     @ResponseBody // 페이지 전환하면 안되서 사용
-    public void nreadupdate(@RequestParam("noteNo") int noteNo){
+    public void nreadupdate(@RequestParam("noteNo") int noteNo) {
 
         roomService.nreadupdate(noteNo);
     }
 
-
-
-
+    // [ review 페이지 맵핑 ] 01-27 조지훈
+    @GetMapping("/review/{roomNo}")
+    public String review(@PathVariable("roomNo") int roomNo, Model model) {
+        model.addAttribute("roomNo", roomNo);
+        return "room/room_review";
+    }
 
 }

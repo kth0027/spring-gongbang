@@ -36,7 +36,7 @@ $(function () {
 			}
 		]
 	});
-	
+
 
 	$("#localBtn").on("click", function () {
 		$("#slider-div1").show();

@@ -88,7 +88,7 @@ function calendarInit() {
             // ajax 이용해서 roomNo 에 해당하는 데이터 불러옵니다.
             $.ajax({
                 url: "",
-                data: {},
+                data: {}.
                 success(function(data) {
 
 

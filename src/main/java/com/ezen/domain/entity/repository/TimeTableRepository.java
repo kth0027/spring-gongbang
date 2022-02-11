@@ -3,6 +3,7 @@ package com.ezen.domain.entity.repository;
 import com.ezen.domain.entity.TimeTableEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -14,4 +15,9 @@ public interface TimeTableRepository extends JpaRepository<TimeTableEntity, Inte
     // 1.2.1 service 에서 제어
     @Query(nativeQuery = true, value = "select * from timetable order by createdDate desc")
     List<TimeTableEntity> getByTimeSequence();
+
+    // 2. roomNo 에 해당하는 TimeTable 정보만 불러오기
+    @Query(nativeQuery = true, value = "select * from timetable where roomNo = :roomNo")
+    List<TimeTableEntity> getTimeTableByRoomNo(@Param("roomNo") int roomNo);
+
 }

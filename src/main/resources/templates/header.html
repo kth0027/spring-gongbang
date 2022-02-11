@@ -85,7 +85,8 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-6 offset-1">
-                                <input onchange="inputCheck();" name="roomSearch" type="text" class="form-control form-control-dark col-6"
+                                <input onchange="inputCheck();" name="roomSearch" type="text"
+                                       class="form-control form-control-dark col-6"
                                        placeholder="검색어를 입력하세요!" id="roomSearch" aria-label="Search">
                             </div>
                         </div>
@@ -149,7 +150,7 @@
                             </ul>
                         </div>
                         <!-- 가격 슬라이더로 선택 -->
-                        <div class="slidecontainer col-5 d-flex p-1 m-1">
+                        <!--<div class="slidecontainer col-5 d-flex p-1 m-1">
                             <button
                                     class="btn btn-outline-dark btn-toggle align-items-center rounded collapsed"
                                     data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
@@ -159,7 +160,7 @@
                             <input type="range" min="1000" max="100000" value="1000" class="slider mx-3"
                                    id="myRange">
                             <p>가격 : <span id="demo"></span></p>
-                        </div>
+                        </div>-->
                         <!-- 검색 -->
                         <div id="search" class="search d-flex justify-content-center">
                             <input type="submit" id="classSearchBtn" class="btn btn-secondary" value="클래스검색">
@@ -264,6 +265,8 @@ $(document).ready(function(){
         $("#popup").fadeOut();
     });
 });
+
+
 </script>
 
 <script>
@@ -291,9 +294,10 @@ function inputCheck(){
         return false;
     }
 }
+
+
 </script>
 
-<script th:src="@{/js/roomview.js}"></script>
 
 </body>
 </html>

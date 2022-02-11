@@ -103,7 +103,6 @@ public class RoomService {
         return roomEntities;
     }
 
-
     // 검색 결과 room list
     public List<RoomEntity> getRoomEntityBySearch(String keyword, String local, String category) {
         // 1.1 검색이 없는 경우

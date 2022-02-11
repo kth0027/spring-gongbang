@@ -1,18 +1,27 @@
 package com.ezen.service;
 
 
+import com.ezen.domain.dto.IntergratedDto;
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class MemberService {
+public class MemberService implements UserDetailsService {
 
     @Autowired
     MemberRepository memberRepository;
@@ -126,4 +135,33 @@ public class MemberService {
         Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
         return entityOptional.get();
     }
+
+
+    @Autowired
+    private HttpServletRequest request;
+
+
+    @Override   // /member/logincontroller URL 호출시 실행되는 메소드 [ 로그인처리(인증처리) 메소드 ]
+    public UserDetails loadUserByUsername(String memberId ) throws UsernameNotFoundException {
+
+        // 회원 아이디로 회원엔티티 찾기
+        Optional<MemberEntity> entityOptional = memberRepository.findBymemberId( memberId );
+        MemberEntity memberEntity = entityOptional.orElse(null);
+        //   .orElse( null ) : 만약에 엔티티가 없으면 null
+
+        // 찾은 회원엔티티의 권한[키] 을 리스트에 담기
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add( new SimpleGrantedAuthority( memberEntity.getRolekey() ) ) ;
+        // GrantedAuthority : 권한 [ 키 저장 가능한 클래스 ]
+
+        // 세션 부여
+        MemberDto loginDto =   MemberDto.builder().memberId(memberEntity.getMemberId()).memberNo( memberEntity.getMemberNo()).build();
+        HttpSession session = request.getSession();   // 서버내 세션 가져오기
+        session.setAttribute( "logindto" , loginDto );    // 세션 설정
+
+        // 회원정보와 권한을 갖는 UserDetails 반환
+        return new IntergratedDto( memberEntity , authorities );
+    }
+
+
 }

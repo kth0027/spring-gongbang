@@ -206,8 +206,6 @@ public class RoomService {
     @Transactional
     public boolean activeupdate(int roomNo, String upactive) {
 
-        System.out.println(roomNo);
-        System.out.println(upactive);
         RoomEntity roomEntity = roomRepository.findById(roomNo).get(); // 엔티티 호출
         if (roomEntity.getRoomStatus().equals(upactive)) {
             // 선택 버튼의 상태와기존 룸 상태가 동일하면 업데이트X

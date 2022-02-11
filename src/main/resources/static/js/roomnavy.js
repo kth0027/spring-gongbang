@@ -9,7 +9,7 @@ initTmap();
         method : "POST",
         success:function(data){
             $("#modalnavy1").trigger('click');
-            $("#modalnavy2").html( data );
+            $("#modalnavy1").html( data );
         }
     });
 

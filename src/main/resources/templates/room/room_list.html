@@ -47,9 +47,9 @@
                     <div th:text="${room.roomStatus}"></div>
                     <div th:text="${#strings.listSplit(room.roomAddress,',')[0]}"></div>
                     <div>
-                        <button th:onclick="roomnavy([[${room.roomNo}]])">길찾기</button>
-                        <button style="display:none;" id="modalnavy1" data-bs-target="#modalnavy"
-                                data-bs-toggle="modal"></button>
+                        <button th:onclick="roomnavy([[${room.roomNo}]])" data-bs-target="#modalnavy"
+                                data-bs-toggle="modal">길찾기</button>
+
                     </div>
                 </div>
                 <br>
@@ -113,7 +113,7 @@
                         style="width:2rem;"></button>
                 <!-- 닫기 버튼 -->
             </div>
-            <div class="modal-body p-5 pt-0" id="modalnavy2">
+            <div class="modal-body p-5 pt-0" id="modalnavy1">
 
                 <div class="ft_area">
                     <div class="ft_select_wrap">

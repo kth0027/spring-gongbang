@@ -159,12 +159,20 @@ public class RoomController {
   // json 반환[지도에 띄우고자 하는 방 응답하기]
     @GetMapping("/gongbang.json")
     @ResponseBody
-    public JSONObject gongbang(@RequestParam("keyword") String keyword, @RequestParam("local") String local, @RequestParam("category") String category) {
+    public JSONObject gongbang() {
+//    public JSONObject gongbang(@RequestParam("keyword") String keyword, @RequestParam("local") String local, @RequestParam("category") String category) {
+
+        // 세션 호출
+        HttpSession session = request.getSession();
+
+        String keyword = (String) session.getAttribute("keyword");
+        String local = (String) session.getAttribute("local");
+        String category = (String) session.getAttribute("category");
 
         JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
-        JSONArray jsonArray = new JSONArray(); // json 안에 들어가는 리스트
-        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
-
+        JSONArray jsonArray = new JSONArray(); // json 안에 들어가   는 리스트
+   List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
+//List<RoomEntity> roomEntities = roomService.getroomlist();
         for (RoomEntity roomEntity : roomEntities) { //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
 

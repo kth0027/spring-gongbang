@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/history_list.css}">
+    <link rel="stylesheet" th:href="@{/css/member/rome.css}">
+
+
+</head>
+
+<body>
+<!--
+1. 회원이 신청한 클래스 내역을 출력합니다.
+2. 처음엔 어떤식으로 보여주겠다 정도로 틀만 잡고 작업자분이 적절히 수정하셔야 합니다.
+-->
+
+<div th:replace="common.html::common"></div>
+<div th:replace="header.html::header"></div>
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-md-8 col-8 offset-2 my-5" style="border: 2px solid #eeeeee; box-shadow= 3px 3px 3px #cccccc;">
+            <!-- 반복박스 -->
+            <div>
+                <div class="row my-3 d-flex border">
+                    <div class="col-md-4 text-center">
+                        <img src="/img/chim1.jpg" class="rounded img-fluid" width="250" height="250">
+                    </div>
+                    <div class="col-md-8 d-flex flex-column my-3">
+                        <div> 실용적인 바리스타 클래스</div>
+                        <div> Jeremy Joseph</div>
+                        <div> 2022.02.01 <span>15:00</span> <span>17:00</span></div>
+                        <div>
+                            <span>#바리스타</span>
+                            <span>#서울</span>
+                            <span>#재능기부</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row my-3 d-flex border">
+                    <div class="col-md-4 text-center">
+                        <img src="/img/chim1.jpg" class="rounded img-fluid" width="250" height="250">
+                    </div>
+                    <div class="col-md-8 d-flex flex-column my-3">
+                        <div> 실용적인 바리스타 클래스</div>
+                        <div> Jeremy Joseph</div>
+                        <div> 2022.02.01 <span>15:00</span> <span>17:00</span></div>
+                        <div>
+                            <span>#바리스타</span>
+                            <span>#서울</span>
+                            <span>#재능기부</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row my-3 d-flex border">
+                    <div class="col-md-4 text-center">
+                        <img src="/img/chim1.jpg" class="rounded img-fluid" width="250" height="250">
+                    </div>
+                    <div class="col-md-8 d-flex flex-column my-3">
+                        <div> 실용적인 바리스타 클래스</div>
+                        <div> Jeremy Joseph</div>
+                        <div> 2022.02.01 <span>15:00</span> <span>17:00</span></div>
+                        <div>
+                            <span>#바리스타</span>
+                            <span>#서울</span>
+                            <span>#재능기부</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 반복박스 종료 -->
+        </div>
+
+        <div class="col-md-4 col-4" id="calendar">
+
+        </div>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

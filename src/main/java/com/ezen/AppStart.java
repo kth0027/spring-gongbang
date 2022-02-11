@@ -11,6 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import java.util.List;
 
 @Controller
@@ -40,9 +42,6 @@ public class AppStart {
     public String error() {
         return "error";
     }
-
-    @Autowired
-    private RoomService roomService;
 
     // 안읽은 쪽지의 갯수 세기
     @GetMapping("/nreadcount")

@@ -66,7 +66,7 @@ public class RoomService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
-                String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
+                String dir = "C:\\Users\\505\\Desktop\\gongbang\\src\\main\\resources\\static\\roomimg";
 
                 /*
                  * 저장되는 경로를 상대경로로 지정합니다.
@@ -74,6 +74,7 @@ public class RoomService {
                  *
                  * */
                 // 상대 경로 지정
+
                 String newdir = "/static/roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로

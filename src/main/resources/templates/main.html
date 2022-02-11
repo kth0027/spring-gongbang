@@ -869,7 +869,7 @@
                 <div class="card cardboxinner" th:each="room : ${roomlist}">
                     <!-- 카드 헤더 -->
                     <div class="card-header"> <!--  style="background-image:url(/img/coffee.jpg); margin-top:0.5rem;" -->
-                        <img class="card-img" th:src="@{'/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
+                        <img class="card-img" th:src="@{'roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
                         <div class="card-header-is_closed">
                             <div class="card-header-text"> 모집중</div>
                             <div class="card-header-number"> 2 / 5</div>

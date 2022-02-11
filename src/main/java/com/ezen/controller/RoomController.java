@@ -5,8 +5,7 @@ import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.ReplyEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.TimeTableEntity;
-import com.ezen.domain.entity.repository.RoomRepository;
-import com.ezen.domain.entity.repository.TimeTableRepository;
+import com.ezen.domain.entity.repository.*;
 import com.ezen.service.MemberService;
 import com.ezen.service.ReplyService;
 import com.ezen.service.RoomLikeService;
@@ -155,8 +154,9 @@ public class RoomController {
         roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
-        boolean result = roomService.registerClass(roomEntity, files);
+        roomService.registerClass(roomEntity, files);
         return "index";
+
     }
 
     // [ room_update.html 페이지와 맵핑 ]

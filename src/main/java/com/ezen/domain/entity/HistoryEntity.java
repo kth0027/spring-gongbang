@@ -19,15 +19,17 @@ public class HistoryEntity extends BaseTimeEntity{
     * */
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int historyNo;
 
     // 1명의 회원이 여러 클래스를 신청할 수 있다.
     @ManyToOne()
+    @JoinColumn(name="memberNo")
     private MemberEntity memberEntity;
 
     // 1개의 강의가 여러 신청 내역을 가질 수 있다.
     @ManyToOne()
+    @JoinColumn(name="roomNo")
     private RoomEntity roomEntity;
 
 

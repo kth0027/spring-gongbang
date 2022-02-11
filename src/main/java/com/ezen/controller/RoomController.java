@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -127,9 +128,6 @@ public class RoomController {
         RoomEntity roomEntity = roomService.getroom(roomNo);
         model.addAttribute("roomEntity", roomEntity);
 
-        // 2. roomNo 이용해서 해당 강좌의 개설된 정보 (TimeTable) 을 불러온다.
-        List<TimeTableEntity> timeTableEntities = roomEntity.getTimeTableEntity();
-        model.addAttribute("timeTableEntities", timeTableEntities);
         return "room/room_view"; // 타임리프
     }
 
@@ -220,31 +218,73 @@ public class RoomController {
     // 메인 페이지에 등록한 클래스 가져와서 출력하기
     // 모두 다 가져오지 말고, 가장 최근에 등록한 클래스 9개 출력한다.
     @GetMapping("/mainRoomList")
-    public String mainRoomList(Model model){
+    public String mainRoomList(Model model) {
         // 만들어진 순서 X
         // 강좌가 최근에 등록된 순서
 
         return null;
     }
 
-    // roomNo 를 이용해서 TimeTable 가져오는 메서드
+
+    // @Author : 김정진
+    // @Date : 2022-02-10
+    // @Note : 특정 roomNo 에 해당하는 TimeTable 정보만 가져오는 메소드
     @GetMapping("/timetable")
-    public String getTimeTableByRoomNo(@RequestParam("roomNo") int roomNo, Model model){
-
-
-
-        return "room/room_view";
+    @ResponseBody
+    public String getTimeTableByRoomNo(@RequestParam("roomNo") int roomNo) {
+        StringBuilder str = new StringBuilder();
+        List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomNo(roomNo);
+        for (TimeTableEntity time : timeTableEntities) {
+            str.append(time.getRoomDate()).append(",");
+        }
+        return str.toString();
     }
 
+    // @Author: 김정진
+    // @Date : 2022-02-10
+    // @Note : YYYY-MM-DD 값으로 RoomEntity 를 조회 후 데이터 뿌려주기
+    // JS 에서 Entity 를 읽을 수 없으니 JSON 형태로 변환해서 보낸다.
+    @GetMapping("/toJSON")
+    @ResponseBody
+    public JSONObject getRoomEntityByTimeTableToJson(@RequestParam("activeId") String roomDate, @RequestParam("roomNo") int roomNo) {
+
+        JSONObject jsonObject = new JSONObject(); // json
+        JSONArray jsonArray = new JSONArray(); // json
+        // roomNo 에 해당하는 TimeTable 엔티티만 리스트에 담아서 호출한다.
+        List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomNo(roomNo);
+        // roomNo 에 해당하는 개설된 강좌 전체를 for 문으로 조회한다.
+        for (TimeTableEntity timeTableEntity : timeTableEntities) {
+            RoomEntity roomEntity = roomRepository.findById(timeTableEntity.getRoomEntity().getRoomNo()).get();
+            // 선택한 date 에 해당하는 Room 정보만을 json 에 저장시킨다.
+            if (timeTableEntity.getRoomDate().equals(roomDate)) {
+                JSONObject data = new JSONObject(); // json
+                try {
+                    data.put("roomNo", roomEntity.getRoomNo());
+                    data.put("category", roomEntity.getRoomCategory());
+                    data.put("title", roomEntity.getRoomTitle());
+                    data.put("time", timeTableEntity.getRoomTime().split(",")[0] + "-" + timeTableEntity.getRoomTime().split(",")[1]);
+                    data.put("local", roomEntity.getRoomLocal());
+                    data.put("max", roomEntity.getRoomMax());
+                    jsonArray.add(data);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        jsonObject.put("json", jsonArray);
+        return jsonObject;
+    }
+
+    // ajax 에서 받아온 stringify 된 데이터를 map 형태로 변환해서 model 에 출력한다.
+    // @GetMapping("/")
 
     // 문의 등록
     @GetMapping("/notewrite")
     @ResponseBody
-    public String notewrite(@RequestParam("roomNo") int roomNo, @RequestParam("noteContents") String noteContents){
+    public String notewrite(@RequestParam("roomNo") int roomNo, @RequestParam("noteContents") String noteContents) {
 
-        boolean result = roomService.notewrite(roomNo,noteContents);
+        boolean result = roomService.notewrite(roomNo, noteContents);
         if (result) {
-
             return "1";
         } else {
             return "2";
@@ -254,13 +294,10 @@ public class RoomController {
     // 읽음처리 업데이트
     @GetMapping("/nreadupdate")
     @ResponseBody // 페이지 전환하면 안되서 사용
-    public void nreadupdate(@RequestParam("noteNo") int noteNo){
+    public void nreadupdate(@RequestParam("noteNo") int noteNo) {
 
         roomService.nreadupdate(noteNo);
     }
-
-
-
 
 
 }

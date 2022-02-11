@@ -1,16 +1,38 @@
 @charset "UTF-8";
 /* 캐러셀2 */
-section {
+.carouselbtn input {
+  background-image: linear-gradient(to right, #a5a5a5, #ff90d4);
+  box-shadow: 0 4px 15px 0 rgba(0, 0, 0, 0.75);
+  color: white;
+  border: none;
+  border-radius: 2rem;
+  margin-top: -2rem;
+}
+
+.carouselbox section {
   width: 100%;
-  height: 25em;
+  height: 20em;
   margin: 0 auto;
   position: relative;
+}
+
+.carouselbox section ul {
+  margin-left: -2rem;
+}
+
+.carouselbox section span {
+  position: absolute;
+  top: 50%;
+ left: 50%;
+ transform: translate(-50%, -50%);
+ width: 100%;
+ z-index: 10;
+  
 }
 
 .items {
   width: 500px;
   height: 281px;
-  background: #333;
   display: inline-block;
   -webkit-transition: all .3s ease-in-out;
   -moz-transition: all .3s ease-in-out;
@@ -64,52 +86,79 @@ span {
 @Date : 2022-02-07
 */
 .slider-parent {
-  justify-content: center;
   display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+
+/*  */
 .slider-child {
-  width: 90%;
+  width: 100%;
+  height: 10rem;
+  overflow: hidden;
+  background-color: rgb(255, 182, 182);
+  display: flex;
+  padding: 0 1rem;
+  border-radius: 3rem;
+}
+
+/*  */
+.slider-child > div {
+  align-self: center;
+}
+
+.slider-child > div svg {
   
 }
 
-.slick-list {
-  height: 10rem;
-  width: 100%;
-  border: 1px solid #000;
+.slider-child svg path {
+  -webkit-filter: saturate(6);
+  filter: saturate(6);
 }
 
-.slick-track > .slick-slide {
-  display: flex;
-  justify-content: center;
+.slider-child svg:hover
+{
+  -webkit-filter: invert(.9);
+  filter: invert(.9);
+}
+
+/* 버튼 */
+.tabbutton {
+  margin: 1rem 0;
+}
+
+#localBtn:hover, #categoryBtn:hover {
+  transform: scale(1.1);
+  transition: 1s;
+}
+
+#localBtn svg, #categoryBtn  svg {
+  height: 1rem;
+  padding-top: -1rem;
+}
+
+#localBtn, #categoryBtn {
+  height: 2rem;
+  width: 10rem;
+  padding-top: -3rem;
+  margin: 0 1rem;
+  border-radius: 2rem;
+}
+
+.slick-slide {
+  margin: 0 5rem;
 }
 
 .slick-arrow {
-  background: rgb(0, 0, 0);
   border-radius: 1rem;
+  z-index: 5;
+  margin: 0 2rem;
+
 }
 
 .slick-arrow:hover {
   background: rgb(0, 0, 0);
-}
-
-.slick-prev {
-  
-}
-
-.slick-next {
-  
-}
-
-.slick-slide svg path{
-  -webkit-filter: saturate(6);
- filter: saturate(6);
- 
-}
-
-.slick-slide svg path:hover{
-  -webkit-filter: invert(.9);
-  filter: invert(.9);
 }
 
 
@@ -140,9 +189,12 @@ span {
 	width: 100%;
 	height: 270px;
 	border-radius: 15px 15px 0 0;
-	background-image: url(/img/coffee.jpg);
+	/* background-image: url(/img/coffee.jpg); */
 	background-size: 100% 280px;
 	background-repeat: no-repeat;
+}
+.card-img{
+height: 100%;
 }
 
 .card:hover .card-header  {

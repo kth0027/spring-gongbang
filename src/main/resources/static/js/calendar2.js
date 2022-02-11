@@ -1,3 +1,4 @@
+
 /*
 @Author : 김정진
 @Date : 2022-02-09~
@@ -11,44 +12,72 @@ $(document).ready(function() {
 
 // 여기서 클릭 이벤트를 관리한다.
 function daySelect(year , month , day, roomNo){
-    var date = year + "-" + (month + 1) + "-" + day; // 이 값이 개별 날짜 id
+    // 선택한 날짜의 아이디 : YYYY-MM-DD
+    var date = year + "-" + (month + 1) + "-" + day;
+    // view 에 선택한 날짜를 텍스트로 보여줍니다.
+    // 그리고 input 값으로 활용하기 위해서 하나는 hidden 으로 설정해두었습니다.
     $("#selectedDate").val(date);
     $("#roomDate").val(date);
-    // 1. .active 인 객체를 클릭 시 ajax 를 한번 더 실행시켜서 해당 날짜에 개설된 강좌 정보를 뿌려야한다.
+    // 해당 날짜를 선택했을 때의 이벤트를 부여합니다.
+    // DB 를 조회해서 선택한 날짜에 개설된 강좌 정보를 불러옵니다.
+    $.ajax({
+        url: "/room/toJSON", // RoomEntity 를 JSON 형태로 받아온다.
+        data: {"activeId" : date, "roomNo" : roomNo},
+        method: "GET",
+        async: false,
+        contentType: "application/json",
+        success: function(data){
+            $("#time-select-inner").empty();
+            // 받아온 정보들을 html 로 넘겨준다.
+            // 반복문을 돌아야하니, 다시 controller 로 정보를 넘겨준 뒤
+            // hashmap 형태로 받아서 model 로 넘겨준다.
+            var rooms = $(data.json).map(function(i, room) {
 
-        $.ajax({
-            url: "/room/toJSON", // RoomEntity 를 JSON 형태로 받아온다.
-            data: {"activeId" : date, "roomNo" : roomNo},
-            method: "GET",
-            contentType: "application/json",
-            success: function(data){
-                // 받아온 정보들을 html 로 넘겨준다.
-                // 반복문을 돌아야하니, 다시 controller 로 정보를 넘겨준 뒤
-                // hashmap 형태로 받아서 model 로 넘겨준다.
-                var rooms = $(data.json).map(function(i, room) {
-                    console.log(data);
-                    var roomNo = room.roomNo;
-                    var roomCategory = room.category;
-                    var roomTitle = room.title;
-                    var roomTime = room.time;
-                    var roomLocal = room.local;
-                    var roomMax = room.max;
+                var roomNo = room.roomNo;
+                var roomCategory = room.category;
+                var roomTitle = room.title;
+                var roomBeginTime = room.beginTime;
+                var roomEndTime = room.endTime;
+                var roomLocal = room.local;
+                var roomMax = room.max;
+                var roomDate = room.date;
 
-                    var roomhtml = "<div>";
-                    roomhtml += "<div>" + roomNo + "</div>";
-                    roomhtml += "<div>" + roomCategory + "</div>";
-                    roomhtml += "<div>" + roomTitle + "</div>";
-                    roomhtml += "<div>" + roomTime + "</div>";
-                    roomhtml += "<div>" + roomLocal + "</div>";
-                    roomhtml += "<div>" + roomMax + "</div>";
-                    roomhtml += "</div>";
+                var roomhtml = "<div class='col-sm-8'>";
+                roomhtml += "<div class='classContent'>";
+                roomhtml += "<div> 클래스 이름 : " + roomTitle + "</div>";
+                roomhtml += "<div> 시작시간 : " + roomBeginTime + "</div>";
+                roomhtml += "<div> 종료 : " + roomEndTime + "</div>";
+                roomhtml += "<div> 지역 : " + roomLocal + "</div>";
+                roomhtml += "<div> 최대 가능 인원 : " + roomMax + "</div>";
+                roomhtml += "</div>";
+                roomhtml += "</div>";
+                roomhtml += "<div class='col-sm-4'>";
+                roomhtml += "<button class='classBtn' onclick='registerClass("+roomNo+","+roomBeginTime+","+roomEndTime+","+roomDate+");'>";
+                roomhtml += "클래스신청";
+                roomhtml += "</button>";
+                roomhtml += "</div>";
 
-                    $("#time-select-inner").append(roomhtml);
+                $("#time-select-inner").append(roomhtml);
 
-                });
+            });
+        }
+    });
+}
+
+// 특정 날짜, 특정 시간 클래스를 신청한다.
+function registerClass(roomNo, beginTime, endTime, roomDate){
+    var classTime = beginTime + "," + endTime;
+    $.ajax({
+        url: "/member/registerClass",
+        data: {"roomNo" : roomNo, "classTime" : classTime, "roomDate" : roomDate},
+        method: "GET",
+        success: function(data){
+            if(data==1){
+                alert("성공");
             }
-        });
+        }
 
+    });
 
 }
 
@@ -63,7 +92,7 @@ function daySelect(year , month , day, roomNo){
 function getTimeTable(){
 
     // @Param roomNo : 게시물 상세 페이지에 해당하는 클래스 번호
-    var roomNo = $("#thisRoomNo").val();
+    let roomNo = $("#thisRoomNo").val();
 
     $.ajax({
         url: "/room/timetable",
@@ -71,8 +100,13 @@ function getTimeTable(){
         method: "GET",
         success: function(data) {
             calendarInit(data, roomNo);
+            // 캘린더 생성 후 버튼에 이벤트를 부여해야하나 ?
+            $("#2022-02-15").on("click", function(e) {
+                alert("hi");
+            })
         }
     });
+
 }
 
 // 캘린더 출력하는 함수
@@ -119,43 +153,47 @@ function calendarInit(data, roomNo) {
         calendar = document.querySelector('.dates');
         calendar.innerHTML = '';
 
-        // 지난달
+        // 지난달 달력 출력
         for (var i = prevDate - prevDay + 1; i <= prevDate; i++) {
             calendar.innerHTML = calendar.innerHTML + '<div class="day prev disable day-select">' + i + '</div>';
         }
 
+        // DB 에 등록되어 있는 값들을 불러와서 ',' 로 split 한다.
+        // [날짜1, 날짜2, ... , ] 식으로 불러오므로, 마지막에는 값이 없다.
+
         var dataSplit = data.split(",");
 
-        // 이번달
+        // 이번달 달력 출력하는 반복문
+
+
         for (var i = 1; i <= nextDate; i++) {
+            var flag = false;
             // id : YYYY-MM-DD
-            var dayId = currentYear + "-" + (currentMonth + 1) + "-" + i;
-            var count = dataSplit.length;
-
-             var j = 0;
-            // while 문을 돌면서 개설된 날짜에 해당하는 div 에만 클릭 이벤트를 부여한다.
-            while(j < count) {
+            let dayId = currentYear + "-" + (currentMonth + 1) + "-" + i;
+            let count = dataSplit.length;
+            // while 문 안에서 카운트
+            // 강좌가 개설되었으면, j++ 시키며 다음 날짜부터 검색한다.
+            let j = 0;
+            while( j < count ){
                 if(dayId == dataSplit[j]){
-                    // TimeTable 에 저장된 roomDate 과 일치하는 경우만 출력된다.
                     calendar.innerHTML = calendar.innerHTML + '<div style="color: orange;" onclick="daySelect('+currentYear+','+currentMonth+','+i+','+roomNo+')" class="day current day-select active" id="'+dayId+'">' + i + '</div>';
-                     j += 1;
-
-                  break;
+                    j = j + 1;
+                    flag = true;
+                    break;
                 } else {
-                     j += 1;
+
+                    j = j + 1;
                 }
             }
+            if(flag == true){
+            } else {
+                calendar.innerHTML = calendar.innerHTML + '<div style="color: gray;" class="day current" id="'+dayId+'">' + i + '</div>';
+            }
 
-            calendar.innerHTML = calendar.innerHTML + '<div style="color: gray;" class="day current day-select" id="'+dayId+'">' + i + '</div>';
 
-
-
-            var test = $(".active");
         }
 
-
-
-        // 다음달
+        // 다음달 달력 출력
         for (var i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
             calendar.innerHTML = calendar.innerHTML + '<div class="day next disable day-select">' + i + '</div>';
         }
@@ -182,3 +220,4 @@ function calendarInit(data, roomNo) {
         $(".dates").load(location.href + ".dates");
     });
 }
+

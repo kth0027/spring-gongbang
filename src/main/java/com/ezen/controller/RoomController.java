@@ -2,10 +2,12 @@ package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
+import com.ezen.domain.entity.ReplyEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.*;
 import com.ezen.service.MemberService;
+import com.ezen.service.ReplyService;
 import com.ezen.service.RoomLikeService;
 import com.ezen.service.RoomService;
 import org.json.simple.JSONArray;
@@ -46,6 +48,9 @@ public class RoomController {
 
     @Autowired
     private TimeTableRepository timeTableRepository;
+
+    @Autowired
+    ReplyService replyService;
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
@@ -122,6 +127,7 @@ public class RoomController {
         return "room/room_list";
     }
 
+    // 룸보기 페이지 이동
     @GetMapping("/view/{roomNo}") // 이동
     public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
 
@@ -129,10 +135,13 @@ public class RoomController {
         RoomEntity roomEntity = roomService.getroom(roomNo);
         model.addAttribute("roomEntity", roomEntity);
 
+        // 2. roomNo 이용해서 해당 강좌의 개설된 정보 (TimeTable) 을 불러온다.
+        List<TimeTableEntity> timeTableEntities = roomEntity.getTimeTableEntity();
+        model.addAttribute("timeTableEntities", timeTableEntities);
         return "room/room_view"; // 타임리프
     }
 
-    // [작성한 클래스 등록]
+    // [ 작성한 클래스 등록 ]
     @PostMapping("/classRegister")
     @Transactional
     public String classRegister(RoomEntity roomEntity,
@@ -146,8 +155,9 @@ public class RoomController {
         roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
-        boolean result = roomService.registerClass(roomEntity, files);
+        roomService.registerClass(roomEntity, files);
         return "index";
+
     }
 
     // [ room_update.html 페이지와 맵핑 ]
@@ -183,7 +193,6 @@ public class RoomController {
             data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
             jsonArray.add(data); //리스트에 저장
         }
-
         jsonObject.put("positions", jsonArray); // json 전체에 리스트 넣기
         return jsonObject;
     }
@@ -227,17 +236,6 @@ public class RoomController {
         return "member/member_class";
     }
 
-    // 메인 페이지에 등록한 클래스 가져와서 출력하기
-    // 모두 다 가져오지 말고, 가장 최근에 등록한 클래스 9개 출력한다.
-    @GetMapping("/mainRoomList")
-    public String mainRoomList(Model model) {
-        // 만들어진 순서 X
-        // 강좌가 최근에 등록된 순서
-
-        return null;
-    }
-
-
     // @Author : 김정진
     // @Date : 2022-02-10
     // @Note : 특정 roomNo 에 해당하는 TimeTable 정보만 가져오는 메소드
@@ -259,7 +257,6 @@ public class RoomController {
     @GetMapping("/toJSON")
     @ResponseBody
     public JSONObject getRoomEntityByTimeTableToJson(@RequestParam("activeId") String roomDate, @RequestParam("roomNo") int roomNo) {
-
         JSONObject jsonObject = new JSONObject(); // json
         JSONArray jsonArray = new JSONArray(); // json
         // roomNo 에 해당하는 TimeTable 엔티티만 리스트에 담아서 호출한다.
@@ -274,7 +271,9 @@ public class RoomController {
                     data.put("roomNo", roomEntity.getRoomNo());
                     data.put("category", roomEntity.getRoomCategory());
                     data.put("title", roomEntity.getRoomTitle());
-                    data.put("time", timeTableEntity.getRoomTime().split(",")[0] + "-" + timeTableEntity.getRoomTime().split(",")[1]);
+                    data.put("date", timeTableEntity.getRoomDate());
+                    data.put("beginTime", timeTableEntity.getRoomTime().split(",")[0]);
+                    data.put("endTime", timeTableEntity.getRoomTime().split(",")[1]);
                     data.put("local", roomEntity.getRoomLocal());
                     data.put("max", roomEntity.getRoomMax());
 
@@ -286,10 +285,9 @@ public class RoomController {
         }
         jsonObject.put("json", jsonArray);
         return jsonObject;
+        // ajax 에서 받아온 stringify 된 데이터를 map 형태로 변환해서 model 에 출력한다.
+        // @GetMapping("/")
     }
-
-    // ajax 에서 받아온 stringify 된 데이터를 map 형태로 변환해서 model 에 출력한다.
-    // @GetMapping("/")
 
     // 문의 등록
     @GetMapping("/notewrite")
@@ -312,5 +310,11 @@ public class RoomController {
         roomService.nreadupdate(noteNo);
     }
 
+    // [ review 페이지 맵핑 ] 01-27 조지훈
+    @GetMapping("/review/{roomNo}")
+    public String review(@PathVariable("roomNo") int roomNo, Model model) {
+        model.addAttribute("roomNo", roomNo);
+        return "room/room_review";
+    }
 
 }

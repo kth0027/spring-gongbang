@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        ul li{
+        list-style-type: none;
+        display: inline;
+        
+        }
+        #qnabox{
+        width: 96%;
+        height: auto;
+        display: flex;
+        padding: 2%;
+        margin-top: 20px;
+        border-color: #e0e0e0;
+        border-style: solid;
+        border-width: 1px;
+        border-radius: 7px;
+        flex-direction: column;
+        }
+
+    .carousel-item img{
+     border-radius: 3rem;
+
+     
+     }
+
+    </style>
+    <link rel="stylesheet" th:href="@{/css/room_view.css}">
+    <link rel="stylesheet" th:href="@{/css/calendar.css}">
+    <link rel="stylesheet" th:href="@{/css/member/rome.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+
+<div th:replace="header.html::header"></div>
+<script th:src="@{/js/class_registration.js}"></script>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="">
+            <button class="btn btn-warning">클래스 신청하기</button>
+            <div class="modal fade" tabindex="-1" id="notemodal" data-bs-keyword="false" data-bs-backdrop="static">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content rounded-4 shadow">
+                        <div class="modal-body p-4 text-center">
+                            <h5 class="mb-0"> 문의하기 </h5>
+                            <p class="mb-3" id="notemsg"> 공방 관련 정보를 문의하실 수 있습니다.</p>
+                            <textarea class="form-control" row="10" id="noteContents"></textarea>
+                        </div>
+                        <div class="modal-footer flex-nowrap p-0">
+                            <button th:onclick="notewrite([[${roomEntity.roomNo}]]);" type="button"
+                                    class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right">
+                                <strong>문의합니다.</strong></button>
+                            <button type="button"
+                                    class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                                    data-bs-dismiss="modal">나가기
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-7">
+            <div>
+                <div th:id="${'carousel' + roomEntity.roomNo}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
+                                 class="d-block w-100" alt="..." style="height: 40rem;">
+                        </div>
+                        <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
+                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="..." style="height: 40rem;">
+                        </div>
+                    </div>
+
+                    <button class="carousel-control-prev" type="button"
+                            th:data-bs-target="${'#carousel' + roomEntity.roomNo}"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                            data-bs-target="${'#carousel' + roomEntity.roomNo}"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <div class="Categorybox">
+                    <span class="Categoryp"th:text="${roomEntity.roomContent}"></span>
+                </div>
+                <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
+                <span class="subad" th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></span>
+            </div>
+            <ul class="viewnav">
+                <a href="#classinfo" class="btn btn-outline-primary">
+                    <li>클래스 소개</li>
+                </a>
+                <a href="#ETC" class="btn btn-outline-secondary">
+                    <li>편의사항</li>
+                </a>
+                <a href="#teacherinfo" class="btn btn-outline-success">
+                    <li>강사소개</li>
+                </a>
+                <a href="#position" class="btn btn-outline-danger">
+                    <li>위치</li>
+                </a>
+                <a href="#review" class="btn btn-outline-warning">
+                    <li>후기</li>
+                </a>
+                <button class="btn btn-outline-info" data-bs-target="#notemodal" data-bs-toggle="modal">
+                    <li>문의하기</li>
+                </button>
+                <a th:href="@{/member/channel}" class="btn btn-outline-dark">
+                    <li>채널보기</li>
+                </a>
+            </ul>
+            <hr>
+            <div>
+                <h3 id="classinfo" style="font-weight: bold;">클래스 소개</h3>
+                <div th:utext="${roomEntity.roomDetail}">
+
+                </div>
+                <hr>
+
+                <h3 id="ETC" style="font-weight: bold;">편의사항</h3>
+                <div>
+                    <span th:text="${roomEntity.roomETC}"></span>
+                </div>
+                <hr>
+                <h3 id="teacherinfo" style="font-weight: bold;">강사소개</h3>
+                <br><br>
+                <br><br>
+                <hr>
+
+                <h3 id="position" style="font-weight: bold;">위치</h3>
+                <div>
+                    <h5 th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></h5>
+                    <div id="map" style="width:100%;height:350px; border-radius: 0.5rem;"></div> <!-- 지도가 표시되는 구역 -->
+                    <!-- 히든으로 위도 경도 잘라서 js로 넘겨라 -->
+                    <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[1] }"
+                           id="roomaddress1">
+                    <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[2] }"
+                           id="roomaddress2">
+                </div>
+                <hr>
+            </div>
+
+            <h3  style="font-weight: bold;" id="review">후기</h3>
+            <a th:href="@{'/room/review/' + ${roomEntity.roomNo} }">
+                <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;">작성</button>
+            </a>
+            <br>
+            <div class="row" th:each="reply : ${roomEntity.replyEntities}">
+                <div class="col-md-2">
+                    <div style="width: 100%; height: 100%;">
+                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" style="width:100%; height: 100%;">
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-4" th:text="${reply.memberEntity.memberName}"> </div> <!-- 우선은 memberName으로 -->
+                        <div class="col-md-4" th:text="${#temporals.format(reply.createdDate,'yyyy-MM-dd hh:mm')}">날짜</div>
+                        <hr>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9" th:text="${reply.replyContent}"></div>
+                    </div>
+                </div>
+                <hr> <br>
+            </div>
+            <hr>
+        </div>
+
+        <div class="col-md-4 offset-md-1">
+            <!--
+            1. roomNo 에 해당하는 TimeTable 엔티티를 가져온다.
+            2. roomDate : YYYY-MM-DD
+            3. 각 날짜 Id : YYYY-MM-DD
+
+            -->
+
+            <!-- 달력 출력 시작 -->
+            <div style="width: 450px; height: 550px; box-shadow: 5px 5px 5px #cccccc;">
+                <div class="sec_cal">
+                    <div class="cal_nav">
+                        <a href="javascript:;" class="nav-btn go-prev">prev</a>
+                        <div class="year-month"></div>
+                        <a href="javascript:;" class="nav-btn go-next">next</a>
+                    </div>
+                    <div class="cal_wrap">
+                        <div class="days">
+                            <div class="day">MON</div>
+                            <div class="day">TUE</div>
+                            <div class="day">WED</div>
+                            <div class="day">THU</div>
+                            <div class="day">FRI</div>
+                            <div class="day">SAT</div>
+                            <div class="day">SUN</div>
+                        </div>
+                        <div class="dates"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 달력 출력 종료 -->
+
+            <div class="" style="margin: 15px 5px;">
+                <label for="selectedDate"> 선택한 날짜 </label>
+                <input type="text" id="selectedDate" class="form-control" value="" name="">
+            </div>
+
+            <!-- 날짜 선택 시 보여줄 화면-->
+            <!-- 해당 날짜에 등록된 클래스 정보 + 시간을 알려준다-->
+            <div class="container" style="background : green;">
+                <div class="time-selected-wrapper">
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<!-- 02-08 클래스 수강 모달 조지훈 -->
+<div class="modal" tabindex="-1" id="registration" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h2 class="fw-bold mb-0">클래스 수강 여부 확인</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- 닫기 -->
+            </div>
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0">클래스를 등록하시겠습니까??</h5>
+            </div>
+            <div class="modal-footer flex-nowrap p-0">
+                <button type="button"
+                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"
+                        th:onclick="classregistration([[${roomEntity.roomNo}]])"><strong>예</strong></button>
+                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                        data-bs-dismiss="modal">아니오
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/js/calendar.js}"></script>
+<script th:src="@{/js/nreply.js}"></script>
+
+<!-- 인증 스크립트 -->
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=84d555c388d3da38338a57c648112954&libraries=clusterer"></script>
+<script th:src="@{/js/roomview_jh.js}"></script>
+
+<div th:replace="footer.html :: footer"></div>
+
+</body>
+</html>

@@ -1,6 +1,15 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
+
+import com.ezen.domain.entity.HistoryEntity;
+import com.ezen.domain.entity.MemberEntity;
+import com.ezen.domain.entity.RoomEntity;
+import com.ezen.domain.entity.RoomImgEntity;
+import com.ezen.domain.entity.repository.HistoryRepository;
+import com.ezen.domain.entity.repository.MemberRepository;
+import com.ezen.domain.entity.repository.RoomImgRepository;
+import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.domain.entity.*;
 import com.ezen.domain.entity.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +66,7 @@ public class RoomService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
-                String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
+                String dir = "C:\\Users\\505\\Desktop\\gongbang\\src\\main\\resources\\static\\roomimg";
 
                 /*
                  * 저장되는 경로를 상대경로로 지정합니다.
@@ -65,6 +74,7 @@ public class RoomService {
                  *
                  * */
                 // 상대 경로 지정
+
                 String newdir = "/static/roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
@@ -102,7 +112,6 @@ public class RoomService {
         List<RoomEntity> roomEntities = memberRepository.findById(logindto.getMemberNo()).get().getRoomEntities();
         return roomEntities;
     }
-
 
     // 검색 결과 room list
     public List<RoomEntity> getRoomEntityBySearch(String keyword, String local, String category) {

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>헤더 페이지</title>
+
+
+    <!-- header css 가져오기 -->
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+</head>
+<body>
+<!-- 로그인 스크립트-->
+<script th:src="@{/js/login.js}"></script>
+
+<div id="wrap" class="border border-primary" style="width:100vw">
+    <!-- 헤더메뉴 -->
+    <header class="p-3 text-white" style="background-color: #fff1ed;">
+        <div class="container">
+            <div class="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <div class="col-md-1 d-flex justify-content-center">
+                    <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img th:src="@{/img/logo/logo.png}" alt="logo">
+                    </a>
+                </div>
+                <div class="col-md-7">
+                    <div class="row" style="padding: 0px; margin: 0px;">
+                        <div class="col-md-3">
+                            <button id="opensearch" type="button" class="opensearch btn"
+                                    style="background: #ffffff; border: 1px solid #374b73; width: 100%;">
+                                검색
+                            </button>
+                        </div>
+                        <div class="col-md-3 d-flex justify-content-center">
+                            <a th:href="@{/room/register}" class="nav-link px-2 text-white">
+                                <button type="button" class="btn" style="border: 2px solid #374b73; width: 100%;">
+                                    클래스 개설
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="justify-content-center">
+                        <button th:if="${session.logindto == null}" type="button"
+                                class="btn btn-secondary me-2 openlogin my-1" data-bs-target="#modallogin"
+                                data-bs-toggle="modal">로그인
+                        </button>
+                        <a class="my-1" th:if="${session.logindto == null}" th:href="@{/member/signup}">
+                            <button type="button" class="btn btn-secondary" data-target="#modalsignup"
+                                    data-toggle="modal">
+                                회원가입
+                            </button>
+                        </a>
+
+                        <!-- 로그인해서 들어오면 Dropdown 메뉴 출력 -->
+                        <div th:if="${session.logindto != null}" class="flex-shrink-0 dropdown">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
+                               id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="/img/default-profile-photo.png" alt="mdo" width="32" height="32"
+                                     class="rounded-circle">
+                            </a>
+                            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                                <li><a th:if="${session.logindto != null }" th:href="@{/member/info}"
+                                       style="text-decoration: none;"> 마이페이지 </a></li>
+                                <li><a th:href="@{/admin/adminlist}"> 관리리스트 </a></li>
+                                <li><a class="nav-link" th:href="@{/member/history}">예약내역</a></li>
+                                <li><a class="nav-link" th:href="@{/member/myclass}">내가등록한클래스</a></li>
+                                <li>
+                                    <a class="nav-link" th:href="@{/member/msg}" th:if="${ session.nreadcount==null }" th:text="${'Q&A(0)'}" ></a>
+
+                                </li>
+                                <li>
+                                    <a class="nav-link" th:href="@{/member/msg}" th:if="!${ session.nreadcount==null}" th:text="${'Q&A ('+session.nreadcount+')'}" ></a>
+
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a th:if="${session.logindto != null }" th:href="@{/member/logout}"
+                                       style="text-decoration: none;">로그아웃</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 헤더에 '검색' 버튼 클릭하면 검색창을 띄운다.  -->
+        <div id="togglesearch" class="togglesearch border">
+            <div class="row border togglesearchinner" style="width:70%">
+                <!-- 검색창 -->
+                <form class="w-75 my-3" th:action="@{/room/list}" method="get">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 offset-1">
+                                <input name="roomSearch" type="search" class="form-control form-control-dark col-6"
+                                       placeholder="검색어를 입력하세요! " aria-label="Search">
+                            </div>
+                        </div>
+                        <!-- 드롭다운 셀렉 -->
+                        <div class="dropdownmenu">
+                            <ul class="list-unstyled ps-0">
+                                <li class="mb-1 d-flex">
+                                    <div class="col-md-2 p-1 m-1">
+                                        <div>
+                                            <button class="btn btn-outline-dark btn-toggle align-items-center rounded collapsed"
+                                                    data-bs-toggle="collapse" data-bs-target="#home-collapse"
+                                                    aria-expanded="false" type="button">
+                                                지역
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 p-1 m-1">
+                                        <div class="collapse" id="home-collapse" style="">
+                                            <select name="classLocal" id="classLocal"
+                                                    class="form-select form-select-lg">
+                                                <option value="" selected>지역선택</option>
+                                                <option value="서울">서울</option>
+                                                <option value="경기">경기</option>
+                                                <option value="인천">인천</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-1 d-flex">
+                                    <div class="col-md-2 p-1 m-1">
+                                        <div>
+                                            <button
+                                                    class="btn btn-outline-dark btn-toggle align-items-center rounded collapsed"
+                                                    data-bs-toggle="collapse"
+                                                    data-bs-target="#dashboard-collapse"
+                                                    aria-expanded="false" type="button">
+                                                카테고리
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 p-1 m-1">
+                                        <div class="collapse" id="dashboard-collapse" style="">
+                                            <select name="classCategory" id="classCategory"
+                                                    class="form-select form-select-lg">
+                                                <option value="" selected>카테고리선택</option>
+                                                <option value="핸드메이드">핸드메이드</option>
+                                                <option value="쿠킹">쿠킹</option>
+                                                <option value="플라워">플라워</option>
+                                                <option value="드로잉">드로잉</option>
+                                                <option value="음악">음악</option>
+                                                <option value="요가/필라테스">필라테스</option>
+                                                <option value="스포츠">스포츠</option>
+                                                <option value="뷰티">뷰티</option>
+                                                <option value="애완동물">애완동물</option>
+                                                <option value="체험">체험</option>
+                                                <option value="자기계발">자기계발</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- 가격 슬라이더로 선택 -->
+                       <!-- <div class="slidecontainer col-5 d-flex p-1 m-1">
+                            <button
+                                    class="btn btn-outline-dark btn-toggle align-items-center rounded collapsed"
+                                    data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
+                                    aria-expanded="false" type="button">
+                                가격선택
+                            </button>
+                            <input type="range" min="1000" max="100000" value="1000" class="slider mx-3"
+                                   id="myRange">
+                            <p>가격 : <span id="demo"></span></p>
+                        </div>-->
+                        <!-- 검색 -->
+                        <div id="search" class="search d-flex justify-content-center">
+                            <input type="submit" class="btn btn-secondary" value="클래스검색">
+                            <button class="btn-outline-dark closesearch" style="text-align:center; margin-left:10px;">
+                                닫기
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+<!--            <div id="closesearch" class="row closesearch d-flex justify-content-start" style="width:70%">-->
+<!--                <ul class="d-flex justify-content-start">-->
+<!--                    <li class="recommand">위빙</li>-->
+<!--                    <li class="recommand">향수</li>-->
+<!--                    <li class="recommand">소잉</li>-->
+<!--                    <li class="recommand">가죽</li>-->
+<!--                    <li class="recommand">요가</li>-->
+<!--                </ul>-->
+<!--               &lt;!&ndash; <button class="btn-outline-dark col-1 offset-5 closesearch" style="text-align:center; height:1.5rem;">-->
+<!--                    닫기-->
+<!--                </button>&ndash;&gt;-->
+<!--            </div>-->
+        </div>
+    </header>
+</div>
+
+
+<!-- 헤더메뉴 END -->
+
+<!-- 로그인 모달 -->
+<div class="modal" id="modallogin" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-5 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h2 class="fw-bold mb-0 text-center w-100">
+                    <img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%">
+                    <p class="text-center">로그인</p></h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="width:2rem;"></button>
+                <!-- 닫기 버튼 -->
+            </div>
+
+            <div class="modal-body p-5 pt-0">
+                <div>
+                    <label for="login_memail">이메일</label>
+                    <input name="memberEmail" type="text" class="form-control rounded-4" id="login_memail"
+                           placeholder="이메일">
+                </div>
+                <div><label for="login_mpassword">비밀번호</label>
+                    <input name="memberPassword" type="password" class="form-control rounded-4" id="login_mpassword"
+                           placeholder="비밀번호">
+                </div>
+                <div id="loginfailmsg" class="text-danger text-center m-2"></div>       <!-- 로그인 실패시 메시지 -->
+                <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" onclick="login()">로그인</button>
+                <!-- 로그인 버튼 -->
+                <div><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이 아니신가요? 회원가입</a></div>
+                <a id="findbtn" th:href="@{/member/findemail}" data-dismiss="modal"><small class="text-muted px-2">회원정보찾기</small></a>
+
+                <hr class="my-4">
+                <h2 class="fs-5 fw-bold mb-3"> SNS 연동 로그인</h2>      <!-- ouath2 -->
+                <div class="d-flex justify-content-center">
+                    <button class="googlesignup w-75 py-2 mx-1 mb-2 btn-outline-dark rounded-4"
+                            type="submit"><a class="text-white" href="/oauth2/authorization/google"> 구글 로그인</a>
+                    </button>
+                    <button class="kakaosignup w-75 py-2 mx-1 mb-2 btn-outline-primary rounded-4"
+                            type="submit"><a class="text-white" href="/oauth2/authorization/naver"> 네이버 로그인</a>
+                    </button>
+                    <button class="naversignup w-75 py-2 mx-1 mb-2 btn-outline-secondary rounded-4"
+                            type="submit"><a class="text-white" href="/oauth2/authorization/kakao"> 카카오 로그인</a>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 로그인 모달종료 -->
+
+<div id="popup" style="display: none">
+    <div class="popupmodal">
+        <div class="modal-body p-5 pt-0 d-flex justify-content-center align-items-center" style="height:100%;">
+            <div class="col-md-6">  <!-- 아이디찾기  -->
+                <form action="/member/findemailcontroller" method="post">
+                    이름 : <input type="text" name="mname"> <br>
+                    핸드폰번호 : <input type="text" name="mphone"> <br>
+                    <input type="submit" value="이메일 찾기"> <br>
+                </form>
+                <div th:text="${findemailmsg}"></div>
+            </div>
+            <div class="col-md-6">  <!-- 패스워드찾기 -->
+                <form action="/member/findpasswordcontroller" method="post">
+                    이메일 : <input type="text" name="memail"> <br>
+                    핸드폰번호 : <input type="text" name="mphone"> <br>
+                    <input type="submit" value="비밀번호 찾기"> <br>
+                </form>
+                <div th:text="${findpwmsg}"></div>
+            </div>
+        </div>
+        <button>닫기</button>
+    </div>
+</div>
+
+
+<script>
+$(document).ready(function(){
+    /* 클릭시 팝업창 열기/닫기 */
+    $("#findbtn").click(function(){
+        $("#modallogin").fadeOut();
+        $("#popup").fadeIn();
+    });
+
+    $(".popupmodal>button").click(function(){
+        $("#popup").fadeOut();
+    });
+});
+</script>
+
+<script>
+    /* 검색칸 팝업 */
+$(document).ready(function () {
+
+    $("#togglesearch").hide();
+
+    $("#opensearch").click(function () {
+        $("#togglesearch").show();
+    });
+
+    $(".closesearch").click(function () {
+        $("#togglesearch").hide();
+    });
+});
+</script>
+
+</body>
+</html>

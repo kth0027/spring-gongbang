@@ -1,4 +1,3 @@
-
 /*
 @Author : 김정진
 @Date : 2022-02-09~
@@ -16,12 +15,7 @@ function daySelect(year , month , day, roomNo){
     $("#selectedDate").val(date);
     $("#roomDate").val(date);
     // 1. .active 인 객체를 클릭 시 ajax 를 한번 더 실행시켜서 해당 날짜에 개설된 강좌 정보를 뿌려야한다.
-    var dateId = "#" + date;
-    console.log("ajax 실행 전 " + dateId);
-    $(dateId).on("click", function(e){
-        e.preventDefault();
-        console.log("ajax 실행 후 ");
-        var activeId = e.target.id; // 해당 버튼의 id 값 : YYYY-MM-DD
+
         $.ajax({
             url: "/room/toJSON", // RoomEntity 를 JSON 형태로 받아온다.
             data: {"activeId" : date, "roomNo" : roomNo},
@@ -32,7 +26,7 @@ function daySelect(year , month , day, roomNo){
                 // 반복문을 돌아야하니, 다시 controller 로 정보를 넘겨준 뒤
                 // hashmap 형태로 받아서 model 로 넘겨준다.
                 var rooms = $(data.json).map(function(i, room) {
-
+                    console.log(data);
                     var roomNo = room.roomNo;
                     var roomCategory = room.category;
                     var roomTitle = room.title;
@@ -54,7 +48,7 @@ function daySelect(year , month , day, roomNo){
                 });
             }
         });
-    });
+
 
 }
 
@@ -138,19 +132,23 @@ function calendarInit(data, roomNo) {
             var dayId = currentYear + "-" + (currentMonth + 1) + "-" + i;
             var count = dataSplit.length;
 
-            var j = 0;
+             var j = 0;
             // while 문을 돌면서 개설된 날짜에 해당하는 div 에만 클릭 이벤트를 부여한다.
             while(j < count) {
                 if(dayId == dataSplit[j]){
                     // TimeTable 에 저장된 roomDate 과 일치하는 경우만 출력된다.
                     calendar.innerHTML = calendar.innerHTML + '<div style="color: orange;" onclick="daySelect('+currentYear+','+currentMonth+','+i+','+roomNo+')" class="day current day-select active" id="'+dayId+'">' + i + '</div>';
-                    j = j + 1;
+                     j += 1;
+
+                  break;
                 } else {
-                    j = j + 1;
+                     j += 1;
                 }
             }
 
             calendar.innerHTML = calendar.innerHTML + '<div style="color: gray;" class="day current day-select" id="'+dayId+'">' + i + '</div>';
+
+
 
             var test = $(".active");
         }
@@ -184,4 +182,3 @@ function calendarInit(data, roomNo) {
         $(".dates").load(location.href + ".dates");
     });
 }
-

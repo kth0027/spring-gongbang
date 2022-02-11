@@ -25,30 +25,8 @@
     <h3>개설중인 클래스 리스트</h3>
     <div class="row">
         <!-- 룸 1개당 반복문-->
-        <div th:each="room : ${roomEntities}" class="d-flex col-md-3">
-            <div class="row d-flex flex-direction-column justify-content-center align-items-center" style="width:100%;">
-                <div class="">
-                    <a th:href="@{ '/room/view/' + ${room.roomNo} }"
-                       class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                        <img th:src="@{ '/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }"
-                             style="width: 15.0rem; height: 15.0rem;">
-                    </a>
-                </div>
-                <div class="">
-                    <div th:text="${room.roomNo}"></div>
-                    <div th:text="${room.roomTitle}"></div>
-                    <div th:text="${room.roomCategory}"></div>
-                    <div th:text="${room.roomMax}"></div>
-                    <div th:text="${room.roomStatus}"></div>
-                    <div th:text="${#strings.listSplit(room.roomAddress,',')[0]}"></div>
-                    <div>
-                        <button th:onclick="roomnavy([[${room.roomNo}]])">길찾기</button>
-                        <button style="display:none;" id="modalnavy1" data-target="#modalnavy"
-                                data-toggle="modal"></button>
-                    </div>
-                </div>
-                <br>
-            </div>
+        <div class="d-flex col-md-3">
+
         </div>
         <!--
         1. 페이지 지도 최적화 시킨다음 페이지 네이션 출력

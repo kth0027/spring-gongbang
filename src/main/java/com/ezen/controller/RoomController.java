@@ -186,6 +186,11 @@ public class RoomController {
         return roomRepository.findById(roomNo).get().getRoomAddress();
     }
 
+    @GetMapping("/roomviewlist")
+    public String roomviewlist(){
+        return "room/room";
+    }
+
 
     // 내가 등록한 클래스 보기
     @GetMapping("/timeSelectPage/{roomNo}")
@@ -265,6 +270,7 @@ public class RoomController {
                     data.put("time", timeTableEntity.getRoomTime().split(",")[0] + "-" + timeTableEntity.getRoomTime().split(",")[1]);
                     data.put("local", roomEntity.getRoomLocal());
                     data.put("max", roomEntity.getRoomMax());
+
                     jsonArray.add(data);
                 } catch (Exception e) {
                     e.printStackTrace();

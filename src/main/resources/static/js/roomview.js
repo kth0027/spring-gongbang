@@ -149,7 +149,7 @@
         });
     });*/
 
-/*        $.get("/room/gongbang.json", function(data) {
+       $.get("/room/gongbang.json", function(data) {
             //alert(data); // json 객체
             // 데이터에서 좌표 값을 가지고 마커를 표시합니다
             // 마커 클러스터러로 관리할 마커 객체는 생성할 때 지도 객체를 설정하지 않습니다
@@ -175,25 +175,25 @@
             });
             // 클러스터러에 마커들을 추가합니다
             clusterer.addMarkers(markers);
-        });*/
+        });
 
-    /*});*/
+    });
 
 
     // 마커 클러스터러에 클릭이벤트를 등록합니다
     // 마커 클러스터러를 생성할 때 disableClickZoom을 true로 설정하지 않은 경우
     // 이벤트 헨들러로 cluster 객체가 넘어오지 않을 수도 있습니다
-/*
 
-    kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
 
-    // 현재 지도 레벨에서 1레벨 확대한 레벨
-    var level = map2.getLevel()-1;
+//    kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
+//
+//    // 현재 지도 레벨에서 1레벨 확대한 레벨
+//    var level = map2.getLevel()-1;
+//
+//    // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
+//    map2.setLevel(level, {anchor: cluster.getCenter()});
+//    });
 
-    // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
-    map2.setLevel(level, {anchor: cluster.getCenter()});
-    });
-*/
     // 문의 버튼 클릭 이벤트
 function notewrite(roomNo){
    var noteContents =$("#noteContents").val();

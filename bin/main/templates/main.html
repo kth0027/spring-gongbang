@@ -8,14 +8,15 @@
     <title>메인페이지</title>
     <!-- main css 가져오기 -->
     <link th:href="@{/css/main.css}" rel="stylesheet">
-    <!-- slick -->
+    <!-- slick
     <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-    <script type="text/javascript" src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script type="text/javascript" src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> -->
     <style>
         .variable-width { position:relative;}
         .slick-list{
         height: 100%;
         }
+
     </style>
 </head>
 
@@ -864,12 +865,13 @@
 
             <!-- 등록된 리스트를 card 형식으로 출력하는 부분 시작-->
             <!-- 나중에 수정할 것-->
-            <div class="row border my-3">
+            <div class="row cardbox border my-3">
 
                 <!-- 등록된 리스트를 카드 형식으로 무한 스크롤 출력 -->
-                <div class="card">
+                <div class="card cardboxinner" th:each="room : ${roomlist}">
                     <!-- 카드 헤더 -->
-                    <div class="card-header" style="background-image:url(/img/coffee.jpg); margin-top:0.5rem;">
+                    <div class="card-header"> <!--  style="background-image:url(/img/coffee.jpg); margin-top:0.5rem;" -->
+                        <img class="card-img" th:src="@{'/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
                         <div class="card-header-is_closed">
                             <div class="card-header-text"> 모집중</div>
                             <div class="card-header-number"> 2 / 5</div>
@@ -879,15 +881,13 @@
                     <div class="card-body">
                         <!--  카드 바디 헤더 -->
                         <div class="card-body-header">
-                            <h1>4월 15일 순천만 동행구해요!</h1>
+                            <a th:href="@{'/room/view/' + ${room.roomNo} }"><h1 th:text="${room.roomTitle}"></h1></a>
                             <p class="card-body-hashtag">#여수 #순천 #광양</p>
-                            <p class="card-body-nickname">
-                                작성자: ENDORPHIN0710
-                            </p>
+                            <div class="d-flex">
+                                작성자: <p class="card-body-nickname" th:text="${room.memberEntity.memberName}"></p>
+                            </div>
                         </div>
-                        <p class="card-body-description">
-                            안녕하세요!
-                            4월 15일 순천만 동행구합니다!
+                        <p class="card-body-description" th:text="${room.roomContent}">
                         </p>
 
                         <!--  카드 바디 본문 -->
@@ -898,187 +898,7 @@
                             <hr style="margin-bottom: 8px; opacity: 0.5; border-color: #EF5A31">
                             <i class="icon icon-view_count"></i>조회 38회
                             <i class="icon icon-comments_count"></i>댓글 4개
-                            <i class="reg_date"> 2018/04/12 </i>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <!-- 카드 헤더 -->
-                    <div class="card-header" style="background-image:url(/img/cooking.png); margin-top:0.5rem;">
-
-                        <div class="card-header-is_closed">
-                            <div class="card-header-text"> 모집중</div>
-                            <div class="card-header-number"> 2 / 5</div>
-                        </div>
-                    </div>
-                    <!--  카드 바디 -->
-                    <div class="card-body">
-                        <!--  카드 바디 헤더 -->
-                        <div class="card-body-header">
-                            <h1>4월 15일 순천만 동행구해요!</h1>
-                            <p class="card-body-hashtag">#여수 #순천 #광양</p>
-                            <p class="card-body-nickname">
-                                작성자: ENDORPHIN0710
-                            </p>
-                        </div>
-                        <p class="card-body-description">
-                            안녕하세요!
-                            4월 15일 순천만 동행구합니다!
-                        </p>
-
-                        <!--  카드 바디 본문 -->
-
-
-                        <!--  카드 바디 푸터 -->
-                        <div class="card-body-footer">
-                            <hr style="margin-bottom: 8px; opacity: 0.5; border-color: #EF5A31">
-                            <i class="icon icon-view_count"></i>조회 38회
-                            <i class="icon icon-comments_count"></i>댓글 4개
-                            <i class="reg_date"> 2018/04/12 </i>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <!-- 카드 헤더 -->
-                    <div class="card-header" style="background-image:url(/img/chim2.png); margin-top:0.5rem;">
-
-                        <div class="card-header-is_closed">
-                            <div class="card-header-text"> 모집중</div>
-                            <div class="card-header-number"> 2 / 5</div>
-                        </div>
-                    </div>
-                    <!--  카드 바디 -->
-                    <div class="card-body">
-                        <!--  카드 바디 헤더 -->
-                        <div class="card-body-header">
-                            <h1>4월 15일 순천만 동행구해요!</h1>
-                            <p class="card-body-hashtag">#여수 #순천 #광양</p>
-                            <p class="card-body-nickname">
-                                작성자: ENDORPHIN0710
-                            </p>
-                        </div>
-                        <p class="card-body-description">
-                            안녕하세요!
-                            4월 15일 순천만 동행구합니다!
-                        </p>
-
-                        <!--  카드 바디 본문 -->
-
-
-                        <!--  카드 바디 푸터 -->
-                        <div class="card-body-footer">
-                            <hr style="margin-bottom: 8px; opacity: 0.5; border-color: #EF5A31">
-                            <i class="icon icon-view_count"></i>조회 38회
-                            <i class="icon icon-comments_count"></i>댓글 4개
-                            <i class="reg_date"> 2018/04/12 </i>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <!-- 카드 헤더 -->
-                    <div class="card-header" style="background-image:url(/img/chim1.jpg); margin-top:0.5rem;">
-
-                        <div class="card-header-is_closed">
-                            <div class="card-header-text"> 모집중</div>
-                            <div class="card-header-number"> 2 / 5</div>
-                        </div>
-                    </div>
-                    <!--  카드 바디 -->
-                    <div class="card-body">
-                        <!--  카드 바디 헤더 -->
-                        <div class="card-body-header">
-                            <h1>4월 15일 순천만 동행구해요!</h1>
-                            <p class="card-body-hashtag">#여수 #순천 #광양</p>
-                            <p class="card-body-nickname">
-                                작성자: ENDORPHIN0710
-                            </p>
-                        </div>
-                        <p class="card-body-description">
-                            안녕하세요!
-                            4월 15일 순천만 동행구합니다!
-                        </p>
-
-                        <!--  카드 바디 본문 -->
-
-
-                        <!--  카드 바디 푸터 -->
-                        <div class="card-body-footer">
-                            <hr style="margin-bottom: 8px; opacity: 0.5; border-color: #EF5A31">
-                            <i class="icon icon-view_count"></i>조회 38회
-                            <i class="icon icon-comments_count"></i>댓글 4개
-                            <i class="reg_date"> 2018/04/12 </i>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <!-- 카드 헤더 -->
-                    <div class="card-header" style="background-image:url(/img/chim1.jpg); margin-top:0.5rem;">
-
-                        <div class="card-header-is_closed">
-                            <div class="card-header-text"> 모집중</div>
-                            <div class="card-header-number"> 2 / 5</div>
-                        </div>
-                    </div>
-                    <!--  카드 바디 -->
-                    <div class="card-body">
-                        <!--  카드 바디 헤더 -->
-                        <div class="card-body-header">
-                            <h1>4월 15일 순천만 동행구해요!</h1>
-                            <p class="card-body-hashtag">#여수 #순천 #광양</p>
-                            <p class="card-body-nickname">
-                                작성자: ENDORPHIN0710
-                            </p>
-                        </div>
-                        <p class="card-body-description">
-                            안녕하세요!
-                            4월 15일 순천만 동행구합니다!
-                        </p>
-
-                        <!--  카드 바디 본문 -->
-
-
-                        <!--  카드 바디 푸터 -->
-                        <div class="card-body-footer">
-                            <hr style="margin-bottom: 8px; opacity: 0.5; border-color: #EF5A31">
-                            <i class="icon icon-view_count"></i>조회 38회
-                            <i class="icon icon-comments_count"></i>댓글 4개
-                            <i class="reg_date"> 2018/04/12 </i>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <!-- 카드 헤더 -->
-                    <div class="card-header" style="background-image:url(/img/chim1.jpg); margin-top:0.5rem;">
-
-                        <div class="card-header-is_closed">
-                            <div class="card-header-text"> 모집중</div>
-                            <div class="card-header-number"> 2 / 5</div>
-                        </div>
-                    </div>
-                    <!--  카드 바디 -->
-                    <div class="card-body">
-                        <!--  카드 바디 헤더 -->
-                        <div class="card-body-header">
-                            <h1>4월 15일 순천만 동행구해요!</h1>
-                            <p class="card-body-hashtag">#여수 #순천 #광양</p>
-                            <p class="card-body-nickname">
-                                작성자: ENDORPHIN0710
-                            </p>
-                        </div>
-                        <p class="card-body-description">
-                            안녕하세요!
-                            4월 15일 순천만 동행구합니다!
-                        </p>
-
-                        <!--  카드 바디 본문 -->
-
-
-                        <!--  카드 바디 푸터 -->
-                        <div class="card-body-footer">
-                            <hr style="margin-bottom: 8px; opacity: 0.5; border-color: #EF5A31">
-                            <i class="icon icon-view_count"></i>조회 38회
-                            <i class="icon icon-comments_count"></i>댓글 4개
-                            <i class="reg_date"> 2018/04/12 </i>
+                            <i class="reg_date" th:text="${#temporals.format(room.createdDate,'yyyy-MM-dd')}"></i>
                         </div>
                     </div>
                 </div>
@@ -1087,7 +907,7 @@
 
             <!-- 리뷰 후기 카드 출력 02-04 조지훈 작성중 -->
             <div class="row border">
-                <section class="variable-width">
+<!--                <section class="variable-width">-->
                     <div class="card" th:each="reply : ${replylist}" style="width: 20rem; margin-top: 10px; padding: 10px; height: 100%;">
                         <button type="button" class="btn btn-outline-primary me-2" th:data-bs-target="${'#modal'+reply.replyNo}" data-bs-toggle="modal">
                             <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" class="card-img-top">
@@ -1097,7 +917,7 @@
                             <p class="card-text" th:text="${reply.replyContent}"></p>
                         </div>
                         <!-- 리뷰카드 모달 -->
-                        <div class="modal fade" tabindex="1" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog" th:id="${'modal'+reply.replyNo}" aria-hidden="true">
+                        <div class="modal" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog" th:id="${'modal'+reply.replyNo}" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content rounded-5 shadow">
                                     <div class="modal-header p-5 pb-4 border-bottom-0">
@@ -1108,17 +928,28 @@
                                         <div th:id="${'carousel' +reply.replyNo}" class="carousel slide" data-bs-ride="carousel">
                                             <div class="carousel-inner"> <!-- 반복문 -->
                                                 <div class="carousel-item active">
-                                                    <img th:src="@{'/replyimg/'+${reply.replyImgEntities.get(0).replyImg} }" class="d-block w-100 h-100" alt="...">
+                                                    <img th:src="@{'/replyimg/'+${reply.replyImgEntities.get(0).replyImg} }" class="d-block w-100" alt="...">
                                                 </div>
                                                 <div class="carousel-item" th:each="replyimg : ${reply.replyImgEntities}">
-                                                    <img th:src="@{'/replyimg/'+${replyimg.replyImg} }"  class="d-block w-100 h-100" alt="...">
+                                                    <img th:src="@{'/replyimg/'+${replyimg.replyImg} }"  class="d-block w-100" alt="...">
                                                 </div>
                                             </div>
                                             <div>
-                                                <div class="mt-5 mb-5">
-                                                    <span class="fw-bold" th:text="${reply.roomEntity.roomTitle}"></span>
-                                                    <span th:text="${reply.memberEntity.memberName}"></span>
+                                                <div class="mt-3">
+                                                    <h3 class="fw-bold" th:text="${reply.roomEntity.roomTitle}"></h3>
+                                                    <hr>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <p class="mt-2" th:text="${reply.memberEntity.memberName}"></p>
+                                                        <p th:text="${#temporals.format(reply.createdDate,'yyyy-MM-dd')}"></p>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="mt-2" th:text="${reply.replyContent}"></div>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                                <a th:href="@{'/room/view/' +${reply.roomEntity.roomNo } }"><button class="btn btn-outline-primary">클래스 바로가기</button></a>
                                             </div>
                                             <button class="carousel-control-prev" type="button" th:data-bs-target="${'#carousel'+reply.replyNo}"
                                                     data-bs-slide="prev">
@@ -1134,7 +965,7 @@
                             </div>
                         </div>  <!-- 리뷰카드 모달 end -->
                     </div>
-                </section>
+<!--                </section>-->
             </div>
         </div>
     </main>
@@ -1143,19 +974,19 @@
 
 
 <!-- 조지훈 댓글 슬릭 js -->
-<script type="text/javascript">
-    $('.variable-width').slick({
-      dots: true,
-      infinite: true,
-      speed: 300,
-      slidesToShow: 4,
-      centerMode: true,
-      variableWidth: true
-    });
-</script>
+<!--<script type="text/javascript">-->
+<!--    $('.variable-width').slick({-->
+<!--      dots: true,-->
+<!--      infinite: true,-->
+<!--      speed: 300,-->
+<!--      slidesToShow: 4,-->
+<!--      centerMode: true,-->
+<!--      variableWidth: true-->
+<!--    });-->
+<!--</script>-->
 
 <!-- 개발자 js 가져오기 : 지역, 카테고리 slick 관련 스크립트 -->
-<script th:src="@{/js/main.js}"></script>
+<!-- <script th:src="@{/js/main.js}"></script> -->
 <!-- 메인캐러셀 js 가져오기 -->
 <script th:src="@{/js/maincarousel.js}"></script>
 <!-- 메인 탭 캐러셀 js 가져오기 -->
@@ -1166,7 +997,7 @@
 <!-- slick js 가져오기 -->
 <!-- common 에 일괄적으로 적용하면 상단에 선언되기 때문에, summernote 나 slick 을 common.html 에서 주석처리 하고 -->
 <!-- 각각의 페이지 하단에 선언해야한다. -->
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<!-- <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> -->
 
 <script>
     $(function(){

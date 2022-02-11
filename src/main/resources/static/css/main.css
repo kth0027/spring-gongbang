@@ -140,9 +140,12 @@ span {
 	width: 100%;
 	height: 270px;
 	border-radius: 15px 15px 0 0;
-	background-image: url(/img/coffee.jpg);
+	/* background-image: url(/img/coffee.jpg); */
 	background-size: 100% 280px;
 	background-repeat: no-repeat;
+}
+.card-img{
+height: 100%;
 }
 
 .card:hover .card-header  {

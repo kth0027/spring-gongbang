@@ -7,7 +7,7 @@
         ul li{
         list-style-type: none;
         display: inline;
-        margin-left: 20px;
+        
         }
         #qnabox{
         width: 96%;
@@ -22,8 +22,14 @@
         flex-direction: column;
         }
 
+    .carousel-item img{
+     border-radius: 3rem;
+
+     
+     }
 
     </style>
+    <link rel="stylesheet" th:href="@{/css/room_view.css}">
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
     <link rel="stylesheet" th:href="@{/css/member/rome.css}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,14 +41,11 @@
 
 <div th:replace="header.html::header"></div>
 <script th:src="@{/js/class_registration.js}"></script>
+
 <div class="container mt-5">
     <div class="row">
         <div class="">
-            <a th:href="@{/member/channel}">
-                <button class="btn btn-warning">채널보기</button>
-            </a>
             <button class="btn btn-warning">클래스 신청하기</button>
-            <button class="btn btn-warning" data-bs-target="#notemodal" data-bs-toggle="modal">문의하기</button>
             <div class="modal fade" tabindex="-1" id="notemodal" data-bs-keyword="false" data-bs-backdrop="static">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content rounded-4 shadow">
@@ -66,16 +69,16 @@
         </div>
 
 
-        <div class="col-md-9">
+        <div class="col-md-7">
             <div>
                 <div th:id="${'carousel' + roomEntity.roomNo}" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
-                                 class="d-block w-100" alt="...">
+                                 class="d-block w-100" alt="..." style="height: 40rem;">
                         </div>
                         <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
-                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="...">
+                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="..." style="height: 40rem;">
                         </div>
                     </div>
 
@@ -94,51 +97,57 @@
                 </div>
             </div>
             <div>
-                <h3 th:text="${roomEntity.roomTitle}"></h3>
-                <div>
-                    <h4 th:text="${roomEntity.roomContent}"></h4>
+                <div class="Categorybox">
+                    <span class="Categoryp"th:text="${roomEntity.roomContent}"></span>
                 </div>
-                <h5 th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></h5>
+                <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
+                <span class="subad" th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></span>
             </div>
-            <ul>
-                <a href="#classinfo">
+            <ul class="viewnav">
+                <a href="#classinfo" class="btn btn-outline-primary">
                     <li>클래스 소개</li>
                 </a>
-                <a href="#ETC">
+                <a href="#ETC" class="btn btn-outline-secondary">
                     <li>편의사항</li>
                 </a>
-                <a href="#teacherinfo">
+                <a href="#teacherinfo" class="btn btn-outline-success">
                     <li>강사소개</li>
                 </a>
-                <a href="#position">
+                <a href="#position" class="btn btn-outline-danger">
                     <li>위치</li>
                 </a>
-                <a href="#review">
+                <a href="#review" class="btn btn-outline-warning">
                     <li>후기</li>
+                </a>
+                <button class="btn btn-outline-info" data-bs-target="#notemodal" data-bs-toggle="modal">
+                    <li>문의하기</li>
+                </button>
+                <a th:href="@{/member/channel}" class="btn btn-outline-dark">
+                    <li>채널보기</li>
                 </a>
             </ul>
             <hr>
             <div>
-                <h3 id="classinfo">클래스 소개</h3>
+                <h3 id="classinfo" style="font-weight: bold;">클래스 소개</h3>
                 <div th:utext="${roomEntity.roomDetail}">
 
                 </div>
                 <hr>
 
-                <h3 id="ETC">편의사항</h3>
+                <h3 id="ETC" style="font-weight: bold;">편의사항</h3>
                 <div>
                     <span th:text="${roomEntity.roomETC}"></span>
                 </div>
                 <hr>
-                <h3 id="teacherinfo">강사소개</h3>
+                <h3 id="teacherinfo" style="font-weight: bold;">강사소개</h3>
                 <br><br>
                 <br><br>
                 <hr>
 
-                <h3 id="position">위치</h3>
+                <h3 id="position" style="font-weight: bold;">위치</h3>
                 <div>
                     <h5 th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></h5>
-                    <div id="map" style="width:100%;height:350px;"></div> <!-- 지도가 표시되는 구역 -->
+                    <div id="map" style="width:100%;height:350px; border-radius: 0.5rem;"></div> <!-- 지도가 표시되는 구역 -->
                     <!-- 히든으로 위도 경도 잘라서 js로 넘겨라 -->
                     <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[1] }"
                            id="roomaddress1">
@@ -148,7 +157,7 @@
                 <hr>
             </div>
 
-            <p style="font-size:24px;" id="review">후기</p>
+            <h3  style="font-weight: bold;" id="review">후기</h3>
             <a th:href="@{'/room/review/' + ${roomEntity.roomNo} }">
                 <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;">작성</button>
             </a>
@@ -174,7 +183,7 @@
             <hr>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4 offset-md-1">
             <!--
             1. roomNo 에 해당하는 TimeTable 엔티티를 가져온다.
             2. roomDate : YYYY-MM-DD

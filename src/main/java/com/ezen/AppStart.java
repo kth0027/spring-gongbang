@@ -1,7 +1,9 @@
 package com.ezen;
 
 import com.ezen.domain.entity.ReplyEntity;
+import com.ezen.domain.entity.RoomEntity;
 import com.ezen.service.ReplyService;
+import com.ezen.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,9 +24,13 @@ public class AppStart {
     @Autowired
     ReplyService replyService;
 
+    @Autowired
+    RoomService roomService;
     // 메인페이지 매핑[ 연결 ]
     @GetMapping("/") // 최상위 경로
     public String index(Model model) {
+        List<RoomEntity> roomlist = roomService.getroomlist();
+        model.addAttribute("roomlist", roomlist);
         List<ReplyEntity> replylist = replyService.replylist();
         model.addAttribute("replylist", replylist);
         return "index";

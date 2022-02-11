@@ -24,16 +24,12 @@ public class RoomService {
     private RoomRepository roomRepository;
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private HttpServletRequest request;
     @Autowired
     private MemberService memberService;
-
     @Autowired
     private TimeTableRepository timeTableRepository;
-
-
     @Autowired
     private NoteRepository noteRepository;
 

@@ -39,10 +39,9 @@ public class RoomEntity extends BaseTimeEntity {
     private String roomDetail;
 
     // [클래스 진행 예정 날짜]
-    // 2021-01-30,15:00,17:00
-    // 날짜, 시작 시간, 끝나는 시간을 한번에 저장합니다.
-    @Column(name = "roomDate")
-    private String roomDate;
+    // TimeTable 에 역할을 위임했으므로 여기서 제거합니다.
+//    @Column(name = "roomDate")
+//    private String roomDate;
 
     // [클래스 주소]
     // [도로명 주소],[위도],[경도]

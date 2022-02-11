@@ -7,15 +7,55 @@
 */
 
 $(document).ready(function() {
-    calendarInit();
+    getTimeTable();
 });
 
-function test(year , month , day){
-
-// 여기서 ajax
-    var date = year + "-" + (month + 1) + "-" + day;
+// 여기서 클릭 이벤트를 관리한다.
+function daySelect(year , month , day, roomNo){
+    var date = year + "-" + (month + 1) + "-" + day; // 이 값이 개별 날짜 id
     $("#selectedDate").val(date);
     $("#roomDate").val(date);
+    // 1. .active 인 객체를 클릭 시 ajax 를 한번 더 실행시켜서 해당 날짜에 개설된 강좌 정보를 뿌려야한다.
+    var dateId = "#" + date;
+    console.log("ajax 실행 전 " + dateId);
+    $(dateId).on("click", function(e){
+        e.preventDefault();
+        console.log("ajax 실행 후 ");
+        var activeId = e.target.id; // 해당 버튼의 id 값 : YYYY-MM-DD
+        $.ajax({
+            url: "/room/toJSON", // RoomEntity 를 JSON 형태로 받아온다.
+            data: {"activeId" : date, "roomNo" : roomNo},
+            method: "GET",
+            contentType: "application/json",
+            success: function(data){
+                // 받아온 정보들을 html 로 넘겨준다.
+                // 반복문을 돌아야하니, 다시 controller 로 정보를 넘겨준 뒤
+                // hashmap 형태로 받아서 model 로 넘겨준다.
+                var rooms = $(data.json).map(function(i, room) {
+
+                    var roomNo = room.roomNo;
+                    var roomCategory = room.category;
+                    var roomTitle = room.title;
+                    var roomTime = room.time;
+                    var roomLocal = room.local;
+                    var roomMax = room.max;
+
+                    var roomhtml = "<div>";
+                    roomhtml += "<div>" + roomNo + "</div>";
+                    roomhtml += "<div>" + roomCategory + "</div>";
+                    roomhtml += "<div>" + roomTitle + "</div>";
+                    roomhtml += "<div>" + roomTime + "</div>";
+                    roomhtml += "<div>" + roomLocal + "</div>";
+                    roomhtml += "<div>" + roomMax + "</div>";
+                    roomhtml += "</div>";
+
+                    $("#time-select-inner").append(roomhtml);
+
+                });
+            }
+        });
+    });
+
 }
 
 /*
@@ -25,9 +65,24 @@ function test(year , month , day){
     전월 마지막일 날짜와 요일
 */
 
-// 캘린더를 출력하는 함수
-function calendarInit() {
+// DB 연동해서 데이터 가져오는 함수
+function getTimeTable(){
 
+    // @Param roomNo : 게시물 상세 페이지에 해당하는 클래스 번호
+    var roomNo = $("#thisRoomNo").val();
+
+    $.ajax({
+        url: "/room/timetable",
+        data: {"roomNo" : roomNo},
+        method: "GET",
+        success: function(data) {
+            calendarInit(data, roomNo);
+        }
+    });
+}
+
+// 캘린더 출력하는 함수
+function calendarInit(data, roomNo) {
     // 날짜 정보 가져오기
     var date = new Date(); // 현재 날짜(로컬 기준) 가져오기
     var utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000); // uct 표준시 도출
@@ -41,15 +96,10 @@ function calendarInit() {
     var currentMonth = thisMonth.getMonth(); // 달력에서 표기하는 월
     var currentDate = thisMonth.getDate(); // 달력에서 표기하는 일
 
-    // kst 기준 현재시간
-    // console.log(thisMonth);
-
     // 캘린더 렌더링
     renderCalender(thisMonth);
 
-    // @Param thisMonth : 날짜 데이터 (연도, 월, 일)
-    // @Param roomNo : 게시물 상세 페이지에 해당하는 클래스 번호
-    function renderCalender(thisMonth, roomNo) {
+    function renderCalender(thisMonth) {
 
         // 렌더링을 위한 데이터 정리
         currentYear = thisMonth.getFullYear();
@@ -75,45 +125,37 @@ function calendarInit() {
         calendar = document.querySelector('.dates');
         calendar.innerHTML = '';
 
-        // YY-MM-DD 형태로 id 값을 부여한다.
-
         // 지난달
         for (var i = prevDate - prevDay + 1; i <= prevDate; i++) {
             calendar.innerHTML = calendar.innerHTML + '<div class="day prev disable day-select">' + i + '</div>';
         }
 
+        var dataSplit = data.split(",");
+
         // 이번달
         for (var i = 1; i <= nextDate; i++) {
+            // id : YYYY-MM-DD
+            var dayId = currentYear + "-" + (currentMonth + 1) + "-" + i;
+            var count = dataSplit.length;
 
-            // ajax 이용해서 roomNo 에 해당하는 데이터 불러옵니다.
-            $.ajax({
-                url: "",
-                data: {}.
-                success(function(data) {
+            var j = 0;
+            // while 문을 돌면서 개설된 날짜에 해당하는 div 에만 클릭 이벤트를 부여한다.
+            while(j < count) {
+                if(dayId == dataSplit[j]){
+                    // TimeTable 에 저장된 roomDate 과 일치하는 경우만 출력된다.
+                    calendar.innerHTML = calendar.innerHTML + '<div style="color: orange;" onclick="daySelect('+currentYear+','+currentMonth+','+i+','+roomNo+')" class="day current day-select active" id="'+dayId+'">' + i + '</div>';
+                    j = j + 1;
+                } else {
+                    j = j + 1;
+                }
+            }
 
+            calendar.innerHTML = calendar.innerHTML + '<div style="color: gray;" class="day current day-select" id="'+dayId+'">' + i + '</div>';
 
-                })
-
-            });
-            // id : 2022-02-22
-            var dayId = currentYear + "-" + (currentMonth+1) + "-" + i;
-            // var currentMonth = currentMonth + 1; for 문 안에서 사용하니 자꾸 숫자가 증가한다.
-            // var dayId = currentYear+"".concat(',', tmp, ',', i);
-            calendar.innerHTML = calendar.innerHTML + '<div onclick="test('+currentYear+','+currentMonth+','+i+')" class="day current day-select" id="'+dayId+'">' + i + '</div>';
-            /*
-            해당 버튼 id 를 부여해서 클릭 이벤트를 부여한다. -> 일단 실패
-            */
-
-            /*
-            addEventListener 가 먹히지 않는다. 왜 안먹히는지 원인을 찾는 중인데 일단 잠정 보류
-
-            날짜가 출력되는 html 내에 script 선언해서 테스트해봐야함
-
-            var dayPickedId = "#" + dayId;
-            var dayPicked = $(dayPickedId);
-            dayPicked.addEventListener("click", () => { alert("hi"); });
-            */
+            var test = $(".active");
         }
+
+
 
         // 다음달
         for (var i = 1; i <= (7 - nextDay == 7 ? 0 : 7 - nextDay); i++) {
@@ -125,25 +167,21 @@ function calendarInit() {
             var currentMonthDate = document.querySelectorAll('.dates .current');
             currentMonthDate[todayDate -1].classList.add('today');
         }
+
     }
 
     // 이전달로 이동
     $('.go-prev').on('click', function() {
         thisMonth = new Date(currentYear, currentMonth - 1, 1);
-        renderCalender(thisMonth, roomNo);
+        renderCalender(thisMonth);
         $(".dates").load(location.href + ".dates");
     });
 
     // 다음달로 이동
     $('.go-next').on('click', function() {
         thisMonth = new Date(currentYear, currentMonth + 1, 1);
-        renderCalender(thisMonth, roomNo);
+        renderCalender(thisMonth);
         $(".dates").load(location.href + ".dates");
     });
-
-    // 캘린더에 YYYY-MM-DD 데이터를 넘겨서 해당하는 day 값만 바꾸고 이벤트를 등록하는 함수
-
-
-
 }
 

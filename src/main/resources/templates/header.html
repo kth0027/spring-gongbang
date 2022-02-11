@@ -5,8 +5,6 @@
     <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>헤더 페이지</title>
-
-
     <!-- header css 가져오기 -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
 </head>
@@ -44,12 +42,12 @@
                 <div class="col-md-4">
                     <div class="justify-content-center">
                         <button th:if="${session.logindto == null}" type="button"
-                                class="btn btn-secondary me-2 openlogin my-1" data-target="#modallogin"
-                                data-toggle="modal">로그인
+                                class="btn btn-secondary me-2 openlogin my-1" data-bs-target="#modallogin"
+                                data-bs-toggle="modal">로그인
                         </button>
                         <a class="my-1" th:if="${session.logindto == null}" th:href="@{/member/signup}">
-                            <button type="button" class="btn btn-secondary" data-target="#modalsignup"
-                                    data-toggle="modal">
+                            <button type="button" class="btn btn-secondary" data-bs-target="#modalsignup"
+                                    data-bs-toggle="modal">
                                 회원가입
                             </button>
                         </a>
@@ -83,12 +81,12 @@
         <div id="togglesearch" class="togglesearch border">
             <div class="row border togglesearchinner" style="width:70%">
                 <!-- 검색창 -->
-                <form class="w-75 my-3" th:action="@{/room/list}" method="get">
+                <form class="w-75 my-3" th:action="@{/room/list}" method="get" onsubmit="return inputCheck()">
                     <div class="container">
                         <div class="row">
                             <div class="col-md-6 offset-1">
-                                <input name="roomSearch" type="search" class="form-control form-control-dark col-6"
-                                       placeholder="검색어를 입력하세요! " aria-label="Search">
+                                <input onchange="inputCheck();" name="roomSearch" type="text" class="form-control form-control-dark col-6"
+                                       placeholder="검색어를 입력하세요!" id="roomSearch" aria-label="Search">
                             </div>
                         </div>
                         <!-- 드롭다운 셀렉 -->
@@ -189,7 +187,7 @@
 <!-- 헤더메뉴 END -->
 
 <!-- 로그인 모달 -->
-<div class="modal fade" id="modallogin" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog"
+<div class="modal" id="modallogin" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" role="dialog"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content rounded-5 shadow">
@@ -197,7 +195,7 @@
                 <h2 class="fw-bold mb-0 text-center w-100">
                     <img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%">
                     <p class="text-center">로그인</p></h2>
-                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         style="width:2rem;"></button>
                 <!-- 닫기 버튼 -->
             </div>
@@ -216,7 +214,7 @@
                 <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" onclick="login()">로그인</button>
                 <!-- 로그인 버튼 -->
                 <div><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이 아니신가요? 회원가입</a></div>
-                <a id="findbtn" th:href="@{/member/findemail}" data-dismiss="modal"><small class="text-muted px-2">회원정보찾기</small></a>
+                <a id="findbtn" th:href="@{/member/findemail}" data-bs-dismiss="modal"><small class="text-muted px-2">회원정보찾기</small></a>
 
                 <hr class="my-4">
                 <h2 class="fs-5 fw-bold mb-3"> SNS 연동 로그인</h2>      <!-- ouath2 -->
@@ -270,8 +268,8 @@ $(document).ready(function(){
 </script>
 
 <script>
-    /* 검색칸 팝업 */
 $(document).ready(function () {
+    /* 검색 창 팝업 */
 
     $("#togglesearch").hide();
 
@@ -282,7 +280,18 @@ $(document).ready(function () {
     $(".closesearch").click(function () {
         $("#togglesearch").hide();
     });
+
+
 });
+
+// 검색 시 유효성 검사
+function inputCheck(){
+    var search = $("#roomSearch").val();
+    if(search == "") {
+        alert("검색어, 지역, 카테고리 중 적어도 1개는 선택해주세요.");
+        return false;
+    }
+}
 </script>
 
 </body>

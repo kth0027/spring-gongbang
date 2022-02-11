@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
 @Entity
 @Table(name = "member")
 @NoArgsConstructor
@@ -66,6 +67,8 @@ public class MemberRef extends BaseTimeEntity {
 
     // 룸 리스트
        @OneToMany(mappedBy="memberEntity", cascade = CascadeType.ALL)
-    private List<RoomEntity> roomEntities = new ArrayList<>();
+       @ToString.Exclude
+       private List<RoomEntity> roomEntities = new ArrayList<>();
 
 }
+*/

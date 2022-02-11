@@ -21,7 +21,6 @@ public class RoomDto {
                 .roomTitle(this.roomTitle)
                 .roomCategory(this.roomCategory)
                 .roomContent(this.roomContent)
-                .roomDate(this.roomDate)
                 .roomAddress(this.roomAddress)
                 .roomStatus(this.roomStatus)
                 .roomMax(this.roomMax)

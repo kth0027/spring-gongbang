@@ -42,17 +42,21 @@ public class MemberEntity extends BaseTimeEntity {
     // 회원이 여러개의 방을 등록할 수 있다.
     // RoomEntity 와 1 : N 관계를 맺는다.
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<RoomEntity> roomEntities = new ArrayList<>();
 
     // 문의 리스트
     @OneToMany(mappedBy="memberEntity")
+    @ToString.Exclude
     private List<NoteEntity> noteEntities = new ArrayList<>();
 
     // 리뷰 리스트
     @OneToMany(mappedBy = "memberEntity")
     private List<ReplyEntity> replyEntities = new ArrayList<>();
 
-    // 히스토리관계 // 02-08 클래스 수강 조지훈
+    // 회원은 여러개의 예약 내역을 가질 수 있습니다.
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
     private List<HistoryEntity> historyEntities = new ArrayList<>();
+
+
 }

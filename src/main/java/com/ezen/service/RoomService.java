@@ -29,27 +29,18 @@ import java.util.UUID;
 public class RoomService {
     @Autowired
     private RoomImgRepository roomImgRepository;
-
     @Autowired
     private RoomRepository roomRepository;
-
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
     private HttpServletRequest request;
-
     @Autowired
     private MemberService memberService;
-
     @Autowired
     private TimeTableRepository timeTableRepository;
-
     @Autowired
     private NoteRepository noteRepository;
-
-    @Autowired
-    HistoryRepository historyRepository;
 
     @Transactional
     public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files) {
@@ -75,7 +66,7 @@ public class RoomService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
-                String dir = "C:\\Users\\505\\Desktop\\gongbang\\src\\main\\resources\\static\\roomimg";
+                String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
 
                 /*
                  * 저장되는 경로를 상대경로로 지정합니다.
@@ -120,7 +111,6 @@ public class RoomService {
         List<RoomEntity> roomEntities = memberRepository.findById(logindto.getMemberNo()).get().getRoomEntities();
         return roomEntities;
     }
-
 
     // 검색 결과 room list
     public List<RoomEntity> getRoomEntityBySearch(String keyword, String local, String category) {
@@ -310,23 +300,5 @@ public class RoomService {
         return true;
     }
 
-    // 02-08 클래스 수강 조지훈
-    public boolean classregistration(int roomNo) {
-        RoomEntity roomEntity = roomRepository.findById(roomNo).get();
 
-        HttpSession session = request.getSession();
-        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
-        MemberEntity memberEntity = memberService.getMember(memberDto.getMemberNo());
-
-        HistoryEntity historyEntity = HistoryEntity.builder()
-                .roomEntity(roomEntity)
-                .memberEntity(memberEntity)
-                .build();
-         historyRepository.save(historyEntity);
-
-
-         memberEntity.getHistoryEntities().add(historyEntity);
-         roomEntity.getHistoryEntities().add(historyEntity);
-        return true;
-    }
 }

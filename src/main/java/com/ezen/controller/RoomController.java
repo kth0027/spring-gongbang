@@ -12,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -155,7 +156,7 @@ public class RoomController {
         return "room/room_update";
     }
 
-    // json 반환[지도에 띄우고자 하는 방 응답하기]
+  // json 반환[지도에 띄우고자 하는 방 응답하기]
     @GetMapping("/gongbang.json")
     @ResponseBody
     public JSONObject gongbang(@RequestParam("keyword") String keyword, @RequestParam("local") String local, @RequestParam("category") String category) {
@@ -166,8 +167,7 @@ public class RoomController {
 
         for (RoomEntity roomEntity : roomEntities) { //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
-            System.out.println("위도 : " + roomEntity.getRoomAddress().split(",")[1]);
-            System.out.println("경도 : " + roomEntity.getRoomAddress().split(",")[2]);
+
             data.put("lat", roomEntity.getRoomAddress().split(",")[1]); // 위도
             data.put("lng", roomEntity.getRoomAddress().split(",")[2]); // 경도
             data.put("roomTitle", roomEntity.getRoomTitle());
@@ -180,16 +180,15 @@ public class RoomController {
         return jsonObject;
     }
 
+
+
+
     @GetMapping("/addressXY")
     @ResponseBody
     public String addressXY(@RequestParam("roomNo") int roomNo) {
         return roomRepository.findById(roomNo).get().getRoomAddress();
     }
 
-    @GetMapping("/roomviewlist")
-    public String roomviewlist(){
-        return "room/room";
-    }
 
 
     // 내가 등록한 클래스 보기

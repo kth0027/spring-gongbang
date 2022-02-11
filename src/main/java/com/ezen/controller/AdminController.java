@@ -17,7 +17,7 @@ public class AdminController {
     private RoomService roomService;
 
     @GetMapping("/adminlist")
-    public String adminlist(Model model ) {
+    public String adminlist(Model model) {
         List<RoomEntity> roomEntities = roomService.getroomlist();
         model.addAttribute("roomEntities",roomEntities);
         return "admin/adminlist";

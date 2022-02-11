@@ -36,6 +36,7 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
     @Query(nativeQuery = true, value="select * from room where roomDate = :roomDate")
     List<RoomEntity> findRoomByRoomDate(@Param("roomDate") String roomDate);
 
+
     // 6. roomNo 로
 
 }

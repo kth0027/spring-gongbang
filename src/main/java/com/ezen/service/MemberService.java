@@ -122,10 +122,10 @@ public class MemberService {
         // 5. 만약에 동일한 정보가 없으면
         return null;
     }
+    public MemberEntity getMemberEntity(int memberNo){
+        Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
+        return entityOptional.get();
+    }
 
-    // 내가등록한 클래스
-//    public List<RoomEntity> getMyClass(int memberNo) {
-//
-//    }
 
 }

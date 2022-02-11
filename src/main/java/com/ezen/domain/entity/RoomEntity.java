@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString(exclude = "roomImgEntities")
+@ToString
 public class RoomEntity extends BaseTimeEntity {
 
     // [클래스 고유 식별 번호]
@@ -35,14 +35,13 @@ public class RoomEntity extends BaseTimeEntity {
     private String roomContent;
 
     // [클래스 상세 설명]
-    @Column(name = "roomDetail")
+    @Column(name = "roomDetail", columnDefinition = "LONGTEXT")
     private String roomDetail;
 
     // [클래스 진행 예정 날짜]
-    // 2021-01-30,15:00,17:00
-    // 날짜, 시작 시간, 끝나는 시간을 한번에 저장합니다.
-    @Column(name = "roomDate")
-    private String roomDate;
+    // TimeTable 에 역할을 위임했으므로 여기서 제거합니다.
+//    @Column(name = "roomDate")
+//    private String roomDate;
 
     // [클래스 주소]
     // [도로명 주소],[위도],[경도]
@@ -54,14 +53,13 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomLocal")
     private String roomLocal;
 
-
     // [클래스 상태]
     // 0 : 승인 대기 중
     // 1 : 승인, 모집 중
     // 2 : 시작하지 않았지만 정원이 꽉 찼음
     // 3 : 지정된 시간이 끝나서 더 이상 참여 및 수정이 불가능함
     @Column(name = "roomStatus")
-    private int roomStatus;
+    private String roomStatus;
 
     // [클래스 정원]
     // 개발자 마음대로 1명~6명으로 제한을 걸겠습니다.
@@ -71,13 +69,31 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomETC")
     private String roomETC;
 
+    // 날짜, 시간과 N : M 맵핑
+
     // 회원번호 관계
     @ManyToOne
     @JoinColumn(name = "memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
     private MemberEntity memberEntity;
 
+    // timetable 과의 관계
+    @OneToMany(mappedBy="roomEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<TimeTableEntity> timeTableEntity;
+
     // 이미지 관계
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
-    private List<RoomImgEntity> roomImgEntities = new ArrayList<RoomImgEntity>();
+    @ToString.Exclude
+    private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
+
+    // 문의글 리스트
+    @OneToMany(mappedBy="roomEntity" , cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<NoteEntity> noteEntities = new ArrayList<>();
+
+    // 클래스 1개는 여러개의 예약 내역을 가질 수 있습니다.
+    @OneToMany(mappedBy="roomEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<HistoryEntity> historyEntities = new ArrayList<>();
 
 }

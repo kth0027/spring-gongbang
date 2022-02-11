@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/history_list.css}">
+    <link rel="stylesheet" th:href="@{/css/member/rome.css}">
+
+
 </head>
+
 <body>
 <!--
 1. 회원이 신청한 클래스 내역을 출력합니다.
@@ -18,7 +23,7 @@
 
     <div class="row">
 
-        <div class="col-md-8" style="border: 2px solid #eeeeee; box-shadow= 3px 3px 3px #cccccc;">
+        <div class="col-md-8 col-8" style="border: 2px solid #eeeeee; box-shadow= 3px 3px 3px #cccccc;">
             <div>
                 <div class="row my-3">
                     <div class="col-md-4">
@@ -118,18 +123,15 @@
             </div>
         </div>
 
-        <div class="col-md-4 " id="calendar">
-            <!--
-            1. 캘린더를 출력합니다.
-            2. 이전 히스토리가 남아 있는 날짜만 날짜 색깔을 다르게 해서 표시합니다.
-            3. 이전 히스토리가 있는 날짜만 클릭할 수 있게 합니다.
-            -->
-            <div class="position-fixed"
-                 style="background: green; width: 30rem; height: 40rem; box-shadow: 5px 5px 5px #cccccc;"></div>
+        <div class="col-md-4 col-4" id="calendar">
+
         </div>
+
     </div>
 
 
 </div>
+
 </body>
+
 </html>

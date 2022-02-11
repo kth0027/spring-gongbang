@@ -8,10 +8,20 @@
 </head>
 <body>
 <div id="wrap">
+
     <div th:replace="common.html::common"></div>
-    <header><div th:replace="header.html::header"></div></header>
-    <main><div th:replace="main.html::main"></div></main>
-    <footer><div th:replace="footer.html::footer"></div></footer>
+    <header>
+        <div th:replace="header.html::header"></div>
+    </header>
+    <main>
+        <div th:replace="main.html::main"></div>
+    </main>
+    <footer>
+        <div th:replace="footer.html::footer"></div>
+    </footer>
+
+    <script th:src="@{/js/roomview.js}"></script>
+
 </div>
 </body>
 </html>

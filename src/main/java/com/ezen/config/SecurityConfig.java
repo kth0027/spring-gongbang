@@ -40,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin() // 로그인페이지 보안설정
                 .loginPage("/header") // header.html 에서 아이디, 비밀번호를 입력받습니다.
-                .loginProcessingUrl("/member/logincontroller") // 로그인 처리할 url
+                .loginProcessingUrl("/loginController") // 로그인 처리할 url
                 .defaultSuccessUrl("/") // 로그인 성공시 이동할 url
                 .usernameParameter("memberId") // 시큐리티 로그인[아이디] 기본값은 :username => mid로 변수명 사용
                 .passwordParameter("memberPassword") // 시큐리티 로그인[password] 기본값은 : password => m_pw로 변수명 사용

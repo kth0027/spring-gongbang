@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -30,7 +31,12 @@ public class MemberService implements UserDetailsService {
     MemberRepository memberRepository;
 
     // 회원등록 메소드
-    public boolean membersignup(MemberDto memberDto) {
+    public boolean memberSignup(MemberDto memberDto) {
+        // 패스워드 암호화 [ BCryptPasswordEncoder ]
+        // 1. 암호화 클래스 객체 생성
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // 2. 입력받은 memberDto내 패스워드 재설정 [ 암호화객체명.encode( 입력받은 패스워드 )   ]
+        memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));
         memberRepository.save(memberDto.toentity());  // save(entity) : insert / update :  Entity를 DB에 저장
         return true;
     }
@@ -48,8 +54,9 @@ public class MemberService implements UserDetailsService {
         }
         return false; // 중복 없음
     }
+
     // 아이디 중복체크
-    public boolean idcheck(String memberId) {
+    public boolean idCheck(String memberId) {
         // 1. 모든 엔티티 가져오기
         List<MemberEntity> memberEntities = memberRepository.findAll();
         // 2. 모든 엔티티 반복문 돌려서 엔티티 하나씩 가쟈오기
@@ -77,40 +84,40 @@ public class MemberService implements UserDetailsService {
 //    }
 
     // 회원 번호로 회원 entity 가져오기
-    public MemberEntity getMember(int memberNo){
+    public MemberEntity getMember(int memberNo) {
         Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
         return entityOptional.get();
     }
 
     // 회원번호 -> 회원정보 반환
-    public MemberDto getmemberDto( int memberNo ){
+    public MemberDto getmemberDto(int memberNo) {
         // memberRepository.findAll(); : 모든 엔티티 호출
         // memberRepository.findById( pk값 ) : 해당 pk값의 엔티티 호출
         // 1. 해당 회원번호[pk] 만 엔티티 호출
         Optional<MemberEntity> memberEntity = memberRepository.findById(memberNo);
         // 2. 찾은 entity를 dto 변경후 반환 [ 패스워드 , 수정날짜 제외 ]
         return MemberDto.builder()
-                .memberName( memberEntity.get().getMemberName() )
-                .memberId( memberEntity.get().getMemberId() )
-                .memberEmail( memberEntity.get().getMemberEmail() )
-                .memberPhone( memberEntity.get().getMemberPhone() )
-                .memberPoint( memberEntity.get().getMemberPoint() )
-                .memberGender( memberEntity.get().getMemberGender() )
-                .memberGrade( memberEntity.get().getMemberGrade() )
-                .createdDate( memberEntity.get().getCreatedDate() )
+                .memberName(memberEntity.get().getMemberName())
+                .memberId(memberEntity.get().getMemberId())
+                .memberEmail(memberEntity.get().getMemberEmail())
+                .memberPhone(memberEntity.get().getMemberPhone())
+                .memberPoint(memberEntity.get().getMemberPoint())
+                .memberGender(memberEntity.get().getMemberGender())
+                .memberGrade(memberEntity.get().getMemberGrade())
+                .createdDate(memberEntity.get().getCreatedDate())
                 .build();
     }
 
     // 회원탈퇴
     @Transactional
-    public boolean delete( int memberNo , String passwordconfirm ){
+    public boolean delete(int memberNo, String passwordconfirm) {
         // 1. 로그인된 회원번호의 엔티티[레코드] 호출
         Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
         // Optional 클래스 :  null 포함 객체 저장
         // 2. 해당 엔티티내 패스워드가 확인패스워드와 동일하면
-        if( entityOptional.get().getMemberPassword().equals( passwordconfirm) ){
+        if (entityOptional.get().getMemberPassword().equals(passwordconfirm)) {
             // Optional 클래스 -> memberEntity.get()  :  Optional 내 객체 호출
-            memberRepository.delete( entityOptional.get() );
+            memberRepository.delete(entityOptional.get());
             return true;    // 회원탈퇴
         }
         return false;  // 회원탈퇴 X
@@ -149,33 +156,35 @@ public class MemberService implements UserDetailsService {
         // 5. 만약에 동일한 정보가 없으면
         return null;
     }
-    public MemberEntity getMemberEntity(int memberNo){
+
+    public MemberEntity getMemberEntity(int memberNo) {
         Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
         return entityOptional.get();
     }
 
     @Autowired
     private HttpServletRequest request;
+
     @Override   // /member/logincontroller URL 호출시 실행되는 메소드 [ 로그인처리(인증처리) 메소드 ]
-    public UserDetails loadUserByUsername(String memberId ) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
 
         // 회원 아이디로 회원엔티티 찾기
-        Optional<MemberEntity> entityOptional = memberRepository.findBymemberId( memberId );
+        Optional<MemberEntity> entityOptional = memberRepository.findBymemberId(memberId);
         MemberEntity memberEntity = entityOptional.orElse(null);
         // .orElse( null ) : 만약에 엔티티가 없으면 null
 
         // 찾은 회원엔티티의 권한[키] 을 리스트에 담기
         List<GrantedAuthority> authorities = new ArrayList<>();
         assert memberEntity != null;
-        authorities.add( new SimpleGrantedAuthority( memberEntity.getRolekey()));
+        authorities.add(new SimpleGrantedAuthority(memberEntity.getRolekey()));
         // GrantedAuthority : 권한 [ 키 저장 가능한 클래스 ]
 
         // 세션 부여
-        MemberDto loginDto =   MemberDto.builder().memberEmail(memberEntity.getMemberEmail()).memberNo( memberEntity.getMemberNo() ).build();
+        MemberDto loginDto = MemberDto.builder().memberEmail(memberEntity.getMemberEmail()).memberNo(memberEntity.getMemberNo()).build();
         HttpSession session = request.getSession();   // 서버내 세션 가져오기
-        session.setAttribute( "logindto" , loginDto );    // 세션 설정
+        session.setAttribute("logindto", loginDto);    // 세션 설정
 
         // 회원정보와 권한을 갖는 UserDetails 반환
-        return new IntergratedDto( memberEntity , authorities );
+        return new IntergratedDto(memberEntity, authorities);
     }
 }

@@ -52,22 +52,34 @@ public class MemberController { // C S
     }
 
     // 회원가입 처리 연결
-    @PostMapping("/signupcontroller") // 회원가입 처리 연결
-    public String signupcontroller(MemberDto memberDto
+    @PostMapping("/signupController") // 회원가입 처리 연결
+    public String signupController(MemberDto memberDto
     ) {
-        memberService.membersignup(memberDto);
+        memberService.memberSignup(memberDto);
         return "redirect:/";  // 회원가입 성공시 메인페이지 연결
     }
 
     // 이메일 중복체크
     @GetMapping("/emailcheck")
     @ResponseBody
-    public String emailcheck(@RequestParam("memail") String memail) {
+    public String emailcheck(@RequestParam("memberEmail") String memail) {
         boolean result = memberService.emailcheck(memail);
         if (result) {
             return "1"; // 중복
         } else {
             return "2"; // 중복x
+        }
+    }
+
+    // 아이디 중복체크
+    @GetMapping("idCheck")
+    @ResponseBody
+    public String idCheck(@RequestParam("memberId") String memberId){
+        boolean result = memberService.idCheck(memberId);
+        if(result){
+            return "1";
+        } else {
+            return "2";
         }
     }
 

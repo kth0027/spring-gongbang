@@ -69,20 +69,6 @@ public class MemberService implements UserDetailsService {
         return false; // 중복 없음
     }
 
-//    // 회원 로그인 메소드
-//    public MemberDto login(MemberDto memberDto) {
-//        List<MemberEntity> memberEntityList = memberRepository.findAll();
-//        for (MemberEntity memberEntity : memberEntityList) {
-//            if (memberEntity.getMemberEmail().equals(memberDto.getMemberEmail()) &&
-//                    memberEntity.getMemberPassword().equals(memberDto.getMemberPassword())) {
-//                return MemberDto.builder()
-//                        .memberEmail(memberEntity.getMemberEmail())
-//                        .memberNo(memberEntity.getMemberNo()).build();
-//            }
-//        }
-//        return null;
-//    }
-
     // 회원 번호로 회원 entity 가져오기
     public MemberEntity getMember(int memberNo) {
         Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);

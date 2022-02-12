@@ -22,12 +22,16 @@ import java.util.Collections;
 @Service
 public class OauthService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
+    @Autowired
+    private HttpServletRequest request;
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Override // 소셜 로그인후 회원정보 가져오기 메소드
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
 
         OAuth2UserService oAuth2UserService = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = oAuth2UserService.loadUser( userRequest );  // perperties에 요청 uri로부터  인증, 토큰, 회원정보 등등
+        OAuth2User oAuth2User = oAuth2UserService.loadUser(userRequest);  // perperties에 요청 uri로부터  인증, 토큰, 회원정보 등등
 
         // 회원정보 속성 가져오기
         String nameattributekey = userRequest.getClientRegistration()
@@ -39,43 +43,35 @@ public class OauthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         String registrationid = userRequest.getClientRegistration().getRegistrationId();
 
         // DTO
-        Oauth2Dto oauth2Dto = Oauth2Dto.of( registrationid , nameattributekey  , oAuth2User.getAttributes() );
+        Oauth2Dto oauth2Dto = Oauth2Dto.of(registrationid, nameattributekey, oAuth2User.getAttributes());
         // DB 저장
-        MemberEntity memberEntity= saveorupdate(oauth2Dto);
+        MemberEntity memberEntity = saveorupdate(oauth2Dto);
         // 세션 할당
         // 소셜 로그인시 id가 없기 때문에 이메일에서 @뒤를 제거한 아이디를 세션에 담기
         String snsid = memberEntity.getMemberEmail().split("@")[0];
-        MemberDto loginDto =   MemberDto.builder().memberId(snsid).memberNo( memberEntity.getMemberNo() ).build();
+        MemberDto loginDto = MemberDto.builder().memberId(snsid).memberNo(memberEntity.getMemberNo()).build();
         HttpSession session = request.getSession();   // 서버내 세션 가져오기
-        session.setAttribute( "logindto" , loginDto );    // 세션 설정
+        session.setAttribute("logindto", loginDto);    // 세션 설정
 
         // 리턴 ( 회원정보와 권한[키] )
         return new DefaultOAuth2User(
-                Collections.singleton( new SimpleGrantedAuthority(  memberEntity.getRolekey()  )) ,
-                oauth2Dto.getAttribute() ,
-                oauth2Dto.getNameattributekey()  );
+                Collections.singleton(new SimpleGrantedAuthority(memberEntity.getRolekey())),
+                oauth2Dto.getAttribute(),
+                oauth2Dto.getNameattributekey());
     }
-
-    @Autowired
-    private HttpServletRequest request;
-    @Autowired
-    private MemberRepository memberRepository;
-
-
 
 
     // 동일한 이메일이 있을경우 업데이트 동일한 이메일 없으면 저장
-    public MemberEntity saveorupdate(  Oauth2Dto oauth2Dto ){
+    public MemberEntity saveorupdate(Oauth2Dto oauth2Dto) {
 
         // 1. memberRepository 이용한 동일한 이메일찾기. [ findBy필드명 -> 반환타입 : Optional
-        MemberEntity memberEntity = memberRepository.findBymemberEmail( oauth2Dto.getEmail() )
-                .map( entity -> entity.update( oauth2Dto.getName() ) )
+        MemberEntity memberEntity = memberRepository.findBymemberEmail(oauth2Dto.getEmail())
+                .map(entity -> entity.update(oauth2Dto.getName()))
                 // map( 임시객체명 => 임시객체명.메소드) : 동일한 이메일이 있을 경우 => 특정 이벤트 수정
-                .orElse( oauth2Dto.toentity() );    // orElse(  )  : 동일한 이메일이 없을경우 dto->entity
+                .orElse(oauth2Dto.toentity());    // orElse(  )  : 동일한 이메일이 없을경우 dto->entity
 
 
-
-        return memberRepository.save( memberEntity );
+        return memberRepository.save(memberEntity);
     }
 
 }

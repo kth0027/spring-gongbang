@@ -69,8 +69,6 @@ public class Oauth2Dto {
                 .attribute(attribute)
                 .nameattributekey(nameattributekey)
                 .build();
-
-
     }
 
     // 구글 정보 dto 변환 메소드

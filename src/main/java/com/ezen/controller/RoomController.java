@@ -159,7 +159,8 @@ public class RoomController {
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         roomService.registerClass(roomEntity, files);
-        return "index";
+        // 2. 등록 완료 후, 내가 등록한 클래스 페이지로 이동
+        return "member/member_class";
 
     }
 

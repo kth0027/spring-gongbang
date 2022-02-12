@@ -28,7 +28,7 @@ public class MemberController { // C S
     private MemberRepository memberRepository;
 
     @Autowired
-    private HttpServletRequest request; // 요청 객체    [ jsp : 내장객체(request)와 동일  ]
+    private HttpServletRequest request; // 요청 객체 [ jsp : 내장객체(request)와 동일 ]
 
     @Autowired
     private RoomService roomService;
@@ -53,10 +53,9 @@ public class MemberController { // C S
 
     // 회원가입 처리 연결
     @PostMapping("/signupcontroller") // 회원가입 처리 연결
-    public String signupcontroller(MemberDto memberDto
-    ) {
+    public String signupcontroller(MemberDto memberDto) {
         memberService.membersignup(memberDto);
-        return "redirect:/";  // 회원가입 성공시 메인페이지 연결
+        return "redirect:/"; // 회원가입 성공시 메인페이지 연결
     }
 
     // 이메일 중복체크
@@ -84,22 +83,22 @@ public class MemberController { // C S
 
         MemberDto loginDto = memberService.login(memberDto);
         if (loginDto != null) {
-            HttpSession session = request.getSession();   // 서버내 세션 가져오기
-            session.setAttribute("logindto", loginDto);    // 세션 설정
+            HttpSession session = request.getSession(); // 서버내 세션 가져오기
+            session.setAttribute("logindto", loginDto); // 세션 설정
             // session.getAttribute("logindto") ; // 세션 호출
             return "1";
         } else {
             return "2";
         }
-        // 타임리프를 설치했을경우  RETRUN URL , HTML
-        // html 혹은 url 아닌 값 반환할때  @ResponseBody
+        // 타임리프를 설치했을경우 RETRUN URL , HTML
+        // html 혹은 url 아닌 값 반환할때 @ResponseBody
     }
 
     // 로그아웃 처리
     @GetMapping("/logout")
     public String logout() {
         HttpSession session = request.getSession();
-        session.setAttribute("logindto", null);   // 기존 세션을 null 로 변경
+        session.setAttribute("logindto", null); // 기존 세션을 null 로 변경
         return "redirect:/"; // 로그아웃 성공시 메인페이지로 이동
     }
 
@@ -138,11 +137,11 @@ public class MemberController { // C S
         }
     }
 
-    // 회원정보찾기 페이지로 연결
-    @GetMapping("/findemail")
-    public String findemail() {
-        return "member/findemail";
-    }
+    // 회원정보찾기 페이지로 연결 (일단 보류 >> 페이지전환할지 모달로 처리할지 검토 후 :: 22.02.13 - 김태호)
+    // @GetMapping("/findemail")
+    // public String findemail() {
+    // return "member/findemail";
+    // }
 
     // 이메일 찾기
     @PostMapping("/findemailcontroller")
@@ -180,8 +179,8 @@ public class MemberController { // C S
     @GetMapping("/registerClass")
     @ResponseBody
     public String registerClass(@RequestParam("roomNo") int roomNo,
-                                @RequestParam("classTime") String classTime,
-                                @RequestParam("roomDate") String roomDate) {
+            @RequestParam("classTime") String classTime,
+            @RequestParam("roomDate") String roomDate) {
 
         MemberEntity memberEntity = null;
         // 0. 로그인된 회원 정보를 불러온다.
@@ -229,7 +228,6 @@ public class MemberController { // C S
         return "1";
     }
 
-
     // [예약내역(히스토리) 페이지와 맵핑]
     @GetMapping("/history")
     public String history() {
@@ -239,7 +237,6 @@ public class MemberController { // C S
     // [내가 개설한 클래스와 맵핑]
     @GetMapping("/myclass")
     public String myclass(Model model) {
-
 
         List<RoomEntity> roomDtos = roomService.getroomlist();
 
@@ -260,7 +257,7 @@ public class MemberController { // C S
     @GetMapping("/notereplywrite")
     @ResponseBody
     public String notereplywrite(@RequestParam("noteNo") int noteNo,
-                                 @RequestParam("noteReply") String noteReply) {
+            @RequestParam("noteReply") String noteReply) {
 
         roomService.notereplywrite(noteNo, noteReply);
 
@@ -272,6 +269,5 @@ public class MemberController { // C S
     public String calculate() {
         return "member/calculate_page";
     }
-
 
 }

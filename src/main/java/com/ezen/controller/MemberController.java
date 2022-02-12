@@ -78,22 +78,22 @@ public class MemberController { // C S
     }
 
     // 로그인처리
-    @PostMapping("/logincontroller")
-    @ResponseBody
-    public String logincontroller(@RequestBody MemberDto memberDto) {
-
-        MemberDto loginDto = memberService.login(memberDto);
-        if (loginDto != null) {
-            HttpSession session = request.getSession();   // 서버내 세션 가져오기
-            session.setAttribute("logindto", loginDto);    // 세션 설정
-            // session.getAttribute("logindto") ; // 세션 호출
-            return "1";
-        } else {
-            return "2";
-        }
-        // 타임리프를 설치했을경우  RETRUN URL , HTML
-        // html 혹은 url 아닌 값 반환할때  @ResponseBody
-    }
+//    @PostMapping("/logincontroller")
+//    @ResponseBody
+//    public String logincontroller(@RequestBody MemberDto memberDto) {
+//
+//        MemberDto loginDto = memberService.login(memberDto);
+//        if (loginDto != null) {
+//            HttpSession session = request.getSession();   // 서버내 세션 가져오기
+//            session.setAttribute("logindto", loginDto);    // 세션 설정
+//            // session.getAttribute("logindto") ; // 세션 호출
+//            return "1";
+//        } else {
+//            return "2";
+//        }
+//        // 타임리프를 설치했을경우  RETRUN URL , HTML
+//        // html 혹은 url 아닌 값 반환할때  @ResponseBody
+//    }
 
     // 로그아웃 처리
     @GetMapping("/logout")
@@ -155,7 +155,6 @@ public class MemberController { // C S
             String msg = " 동일한 회원정보가 없습니다.";
             model.addAttribute("findemailmsg", msg);
         }
-
         return "member/findemail";
     }
 

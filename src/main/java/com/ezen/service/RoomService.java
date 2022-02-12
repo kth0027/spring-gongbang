@@ -2,16 +2,11 @@ package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
 
-import com.ezen.domain.entity.HistoryEntity;
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.RoomImgEntity;
-import com.ezen.domain.entity.repository.HistoryRepository;
-import com.ezen.domain.entity.repository.MemberRepository;
-import com.ezen.domain.entity.repository.RoomImgRepository;
-import com.ezen.domain.entity.repository.RoomRepository;
-import com.ezen.domain.entity.*;
 import com.ezen.domain.entity.repository.*;
+import com.ezen.domain.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -113,49 +108,54 @@ public class RoomService {
         return roomEntities;
     }
 
-    // 검색 결과 room list
+    // header.html 에서 검색한 결과를 db 에서 받아오는 메소드
+    // @Param keyword : 검색창 입력값
+    // @Param local : 검색창에서 선택한 지역
+    // @Param category : 검색창에서 선택한 카테고리
     public List<RoomEntity> getRoomEntityBySearch(String keyword, String local, String category) {
         // 1.1 검색이 없는 경우
-        if (keyword.equals("")) {
-            // 1.2 지역은 선택하고 카테고리는 선택하지 않았을 경우
-            if (local != null && category.equals("")) {
-                // 1.2.1 지역만을 인수로 넘긴다.
+        if (keyword.isEmpty()) {
+            // 1.2 검색 X 지역 O 카테고리 X
+            if (!local.isEmpty() && category.isEmpty()) {
                 return roomRepository.findRoomByLocal(local);
             }
-            // 1.3 지역은 선택하지 않고 카테고리는 선택했을 경우
-            else if (local.equals("") && category != null) {
-                // 1.3.1 카테고리만을 인수로 넘긴다.
+            // 1.3 검색 X 지역 X 카테고리 X
+            else if (local.isEmpty() && category.isEmpty()) {
+                return roomRepository.findAll();
+            }
+            // 1.3 검색 X 지역 X 카테고리 O
+            // 더 줄일 수 있지만 혼선이 있을 수 있어 길게 나열해둡니다.
+            else if (local.isEmpty() && !category.isEmpty()) {
                 return roomRepository.findRoomByCategory(category);
             }
-            // 1.4 지역과 카테고리를 모두 선택했을 경우
-            else if (local != null && category != null) {
-                // 1.4.1 지역, 카테고리를 인수로 넘긴다.
+            // 1.4 검색 X 지역 O 카테고리 O
+            else if (!local.isEmpty() && !category.isEmpty()) {
                 return roomRepository.findRoomByLocalAndCategory(local, category);
-            }
-            // 1.5 검색 X 카테고리 X 지역 X 인 경우에는 등록된 클래스 전체를 리턴한다.
-            else if (local.equals("") && category.equals("")) {
-                return roomRepository.findAll();
             }
         }
         // 2. 검색이 있는 경우
         else {
             // 검색 O 지역 O 카테고리 X
-            if (local != null && category.equals("")) {
-                return roomRepository.findRoomByKeyword(keyword);
+            if (!local.isEmpty() && category.isEmpty()) {
+                return roomRepository.findRoomByLocalAndKeyword(keyword, local);
             }
             // 검색 O 지역 X 카테고리 O
-            else if (local.equals("") && category != null) {
-                return roomRepository.findRoomByKeyword(keyword);
+            else if (local.isEmpty() && !category.isEmpty()) {
+                return roomRepository.findRoomByCategoryAndKeyword(keyword, category);
             }
             // 검색 O 지역 O 카테고리 O
-            else if (local != null && category != null) {
-                return roomRepository.findRoomByKeyword(keyword);
+            else if (!local.isEmpty() && !category.isEmpty()) {
+                return roomRepository.findRoomByCategoryAndLocalAndKeyword(keyword, category, local);
             }
             // 검색 O 지역 X 카테고리 X
-            else if (local.equals("") && category.equals("")) {
+            else if (local.isEmpty() && category.isEmpty()) {
                 return roomRepository.findRoomByKeyword(keyword);
             }
         }
+
+        // 위의 경우 중 아무것도 해당하지 않는다면 null 리턴
+        // 위 조건문을 모두 통과했다면 비정상적인 접근이라고 볼 수 있음
+        // null 값에 대한 처리가 되어있는가?
         return null;
     }
 
@@ -261,7 +261,6 @@ public class RoomService {
     //답변등록
     @Transactional
     public boolean notereplywrite(int noteNo, String noteReply) {
-
         noteRepository.findById(noteNo).get().setNoteReply(noteReply);
         return true;
     }
@@ -282,15 +281,10 @@ public class RoomService {
             if (noteEntity.getRoomEntity().getMemberEntity().getMemberNo() == memberDto.getMemberNo() && noteEntity.getNoteRead() == 0) { // 받는사람 == 로그인된 번호 && 읽음이 0이면
                 // 문의 엔티티. 방엔티티. 멤버엔티티. 멤버번호
                 nreadcount++;
-
             }
-
         }
-
         // 세션에 저장하기
         session.setAttribute("nreadcount", nreadcount);
-
-
     }
 
     //읽음처리 서비스

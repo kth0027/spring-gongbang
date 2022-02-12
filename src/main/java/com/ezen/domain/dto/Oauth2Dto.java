@@ -58,7 +58,6 @@ public class Oauth2Dto {
                 .nameattributekey(nameattributekey)
                 .build();
 
-
     }
 
     // 네이버 정보 dto 변환 메소드
@@ -84,19 +83,16 @@ public class Oauth2Dto {
                 .nameattributekey(nameattributekey) // 구글 인증키
                 .build();
 
-
     }
 
 
     // 첫 로그인시 회원가입 dto => entity변환 => DB
     public MemberEntity toentity() {
-
         return MemberEntity.builder()
                 .memberName(this.name)
                 .memberEmail(this.email)
                 .memberId(email.split("@")[0])
                 .memberGrade(Role.MEMBER).build();
-
 
     }
 }

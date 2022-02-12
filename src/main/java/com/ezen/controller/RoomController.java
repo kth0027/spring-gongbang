@@ -91,23 +91,26 @@ public class RoomController {
         // 세션 호출
         HttpSession session = request.getSession();
 
-        // 1. 검색 X 지역 X 카테고리 X
-        if (keyword.equals("") && local.equals("") && category.equals("")) {
-            // 1.1 검색이 없는 경우 세션 처리
-            keyword = (String) session.getAttribute("keyword");
-            local = (String) session.getAttribute("local");
-            category = (String) session.getAttribute("category");
-        }
-        // 2. 검색, 지역, 카테고리 셋 중 하나라도 선택 했을 경우
-        else {
+        // 1. 검색, 지역, 카테고리 셋 중 하나라도 선택 했을 경우
+        if (keyword != null || local != null || category != null) {
             session.setAttribute("keyword", keyword);
             session.setAttribute("local", local);
             session.setAttribute("category", category);
         }
+        // 2. 아무것도 선택하지 않았을 경우, 이전 검색한 세션을 그대로 활용한다.
+        else {
+            keyword = (String) session.getAttribute("keyword");
+            local = (String) session.getAttribute("local");
+            category = (String) session.getAttribute("category");
+        }
 
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
-        model.addAttribute("roomEntities", roomEntities);
-
+        if (roomEntities != null) {
+            model.addAttribute("roomEntities", roomEntities);
+        } else {
+            // 비정상적인 경로로 접근하면 error 페이지를 띄운다.
+            return "error";
+        }
         return "room/room_list";  // 타임리프를 통한 html 반환
     }
 
@@ -166,7 +169,7 @@ public class RoomController {
         return "room/room_update";
     }
 
-  // json 반환[지도에 띄우고자 하는 방 응답하기]
+    // json 반환[지도에 띄우고자 하는 방 응답하기]
     @GetMapping("/gongbang.json")
     @ResponseBody
     public JSONObject gongbang() {
@@ -181,8 +184,7 @@ public class RoomController {
 
         JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
         JSONArray jsonArray = new JSONArray(); // json 안에 들어가   는 리스트
-   List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
-//List<RoomEntity> roomEntities = roomService.getroomlist();
+        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
         for (RoomEntity roomEntity : roomEntities) { //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
 
@@ -198,14 +200,11 @@ public class RoomController {
     }
 
 
-
-
     @GetMapping("/addressXY")
     @ResponseBody
     public String addressXY(@RequestParam("roomNo") int roomNo) {
         return roomRepository.findById(roomNo).get().getRoomAddress();
     }
-
 
 
     // 내가 등록한 클래스 보기

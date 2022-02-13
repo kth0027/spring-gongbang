@@ -32,14 +32,16 @@
                         <div class="col-12 col-sm-7 col-md-8">
                             <!--
                             1. '검색' 버튼을 클릭하면 검색할 수 있는 <div> 가 보입니다.
-
                             -->
                             <button id="opensearch" type="button" class="opensearch btn"
                                     style="background: #ffffff; border: 1px solid #374b73; width: 100%;">
                                 검색
                             </button>
                         </div>
-                        <div class="col-12 col-sm-5 col-md-4">
+                        <!--
+                        1. '클래스 개설'은 로그인 해야만 보이게 제한을 걸어둡니다.
+                        -->
+                        <div sec:authorize="isAuthenticated()" class="col-12 col-sm-5 col-md-4">
                             <a th:href="@{/room/register}">
                                 <button type="button" class="btn"
                                         style="border: 2px solid #374b73; width: 100%; height: 2.5rem;">
@@ -61,8 +63,8 @@
                                 회원가입
                             </button>
                         </a>
-                        <!-- 로그인해서 들어오면 Dropdown 메뉴 출력 -->
-                        <div th:if="${session.logindto != null}" class="flex-shrink-0 dropdown">
+
+                        <div sec:authorize="isAuthenticated()" th:if="${session.logindto != null}" class="flex-shrink-0 dropdown">
                             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
                                id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="/img/default-profile-photo.png" alt="mdo" width="32" height="32"
@@ -74,10 +76,10 @@
                                        style="text-decoration: none;" class="dropdown-item"> 마이페이지 </a>
                                 </li>
                                 <li>
-                                    <a th:href="@{/admin/adminlist}" class="dropdown-item"> 관리리스트 </a>
+                                    <a th:href="@{/admin/adminlist}" class="dropdown-item">관리리스트</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" th:href="@{/member/history}">예약내역</a>
+                                    <a class="dropdown-item" th:href="@{/member/reservationListController}">예약내역</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/member/myclass}">내가등록한클래스</a>
@@ -302,6 +304,7 @@ $(document).ready(function() {
 $(".closesearch").click(function() {
     $("#togglesearch").hide();
 });
+
 
 </script>
 

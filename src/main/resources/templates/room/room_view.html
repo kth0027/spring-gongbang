@@ -4,29 +4,29 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
+
         ul li{
         list-style-type: none;
         display: inline;
         margin-left: 20px;
+
         }
         #qnabox{
-        width: 96%;
-        height: auto;
-        display: flex;
-        padding: 2%;
-        margin-top: 20px;
-        border-color: #e0e0e0;
-        border-style: solid;
-        border-width: 1px;
-        border-radius: 7px;
-        flex-direction: column;
+            width: 96%;
+            height: auto;
+            display: flex;
+            padding: 2%;
+            margin-top: 20px;
+            border-color: #e0e0e0;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 7px;
+            flex-direction: column;
         }
 
-    .carousel-item img{
-     border-radius: 3rem;
-
-
-     }
+        .carousel-item img{
+            border-radius: 3rem;
+        }
 
         .classBtn{
             border: 1px solid #374b73;
@@ -41,12 +41,10 @@
             color: #ff9a9a;
             padding: 5px;
         }
-
-
     </style>
     <link rel="stylesheet" th:href="@{/css/room_view.css}">
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -95,7 +93,8 @@
                                  class="d-block w-100" alt="..." style="height: 40rem;">
                         </div>
                         <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
-                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="..." style="height: 40rem;">
+                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="..."
+                                 style="height: 40rem;">
                         </div>
                     </div>
 
@@ -115,7 +114,7 @@
             </div>
             <div>
                 <div class="Categorybox">
-                    <span class="Categoryp"th:text="${roomEntity.roomContent}"></span>
+                    <span class="Categoryp" th:text="${roomEntity.roomContent}"></span>
                 </div>
                 <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
                 <span class="subad" th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></span>
@@ -174,7 +173,7 @@
                 <hr>
             </div>
 
-            <h3  style="font-weight: bold;" id="review">후기</h3>
+            <h3 style="font-weight: bold;" id="review">후기</h3>
             <a th:href="@{'/room/review/' + ${roomEntity.roomNo} }">
                 <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;">작성</button>
             </a>
@@ -182,20 +181,23 @@
             <div class="row" th:each="reply : ${roomEntity.replyEntities}">
                 <div class="col-md-2">
                     <div style="width: 100%; height: 100%;">
-                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" style="width:100%; height: 100%;">
+                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}"
+                             style="width:100%; height: 100%;">
                     </div>
                 </div>
                 <div class="col-md-10">
                     <div class="row">
-                        <div class="col-md-4" th:text="${reply.memberEntity.memberName}"> </div> <!-- 우선은 memberName으로 -->
-                        <div class="col-md-4" th:text="${#temporals.format(reply.createdDate,'yyyy-MM-dd hh:mm')}">날짜</div>
+                        <div class="col-md-4" th:text="${reply.memberEntity.memberName}"></div><!-- 우선은 memberName으로 -->
+                        <div class="col-md-4" th:text="${#temporals.format(reply.createdDate,'yyyy-MM-dd hh:mm')}">날짜
+                        </div>
                         <hr>
                     </div>
                     <div class="row">
                         <div class="col-md-9" th:text="${reply.replyContent}"></div>
                     </div>
                 </div>
-                <hr> <br>
+                <hr>
+                <br>
             </div>
             <hr>
         </div>
@@ -249,37 +251,10 @@
         </div>
     </div>
 </div>
-</div>
-</div>
-
-<!-- 02-08 클래스 수강 모달 조지훈 -->
-<div class="modal" tabindex="-1" id="registration" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog">
-    <div class="modal-dialog  modal-lg" role="document">
-        <div class="modal-content rounded-4 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h2 class="fw-bold mb-0">클래스 수강 여부 확인</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> <!-- 닫기 -->
-            </div>
-            <div class="modal-body p-4 text-center">
-                <h5 class="mb-0">클래스를 등록하시겠습니까??</h5>
-            </div>
-            <div class="modal-footer flex-nowrap p-0">
-                <button type="button"
-                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"
-                        th:onclick="classregistration([[${roomEntity.roomNo}]])"><strong>예</strong></button>
-                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
-                        data-bs-dismiss="modal">아니오
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <script th:src="@{/js/calendar2.js}"></script>
 <script th:src="@{/js/nreply.js}"></script>
-
-<div th:replace="footer.html :: footer"></div>
 
 <!-- 인증 스크립트 -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=84d555c388d3da38338a57c648112954&libraries=clusterer"></script>

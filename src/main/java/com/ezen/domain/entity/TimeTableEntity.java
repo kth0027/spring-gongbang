@@ -3,6 +3,7 @@ package com.ezen.domain.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "timetable")
@@ -28,8 +29,12 @@ public class TimeTableEntity extends BaseTimeEntity {
 
     // RoomEntity 와 1 : N 관계
     @ManyToOne
-    @JoinColumn(name="roomNo")
+    @JoinColumn(name = "roomNo")
     private RoomEntity roomEntity;
 
+    // TimeTable Entity 에는 History Entity 가 다수 들어갈 수 있다.
+    // mappedBy 는 '부모' 가 갖는다.
+    @OneToMany(mappedBy = "timeTableEntity", cascade = CascadeType.ALL)
+    private List<HistoryEntity> historyEntity;
 
 }

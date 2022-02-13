@@ -28,7 +28,7 @@ public class MemberController { // C S
     private MemberRepository memberRepository;
 
     @Autowired
-    private HttpServletRequest request; // 요청 객체    [ jsp : 내장객체(request)와 동일  ]
+    private HttpServletRequest request;
 
     @Autowired
     private RoomService roomService;
@@ -74,9 +74,9 @@ public class MemberController { // C S
     // 아이디 중복체크
     @GetMapping("idCheck")
     @ResponseBody
-    public String idCheck(@RequestParam("memberId") String memberId){
+    public String idCheck(@RequestParam("memberId") String memberId) {
         boolean result = memberService.idCheck(memberId);
-        if(result){
+        if (result) {
             return "1";
         } else {
             return "2";
@@ -191,14 +191,16 @@ public class MemberController { // C S
         // 2.1 TimeTable 내에서 roomTime 에 해당하는 것만 등록한다.
         List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomNo(roomNo);
         for (TimeTableEntity timeTableEntity : timeTableEntities) {
-            if (timeTableEntity.equals(classTime)) {
+            if (timeTableEntity.getRoomTime().equals(classTime)) {
                 timeTableTmp = timeTableEntity;
             }
         }
+
         // 3. HistoryEntity 에 멤버 정보, 클래스 정보를 들록합니다.
         HistoryEntity historyEntity = HistoryEntity.builder()
                 .memberEntity(memberEntity)
                 .roomEntity(roomEntity)
+                .timeTableEntity(timeTableTmp)
                 .build();
 
         // 4. 예약내역 저장하고 저장번호 받아오기
@@ -207,7 +209,12 @@ public class MemberController { // C S
         // 5. 위에서 저장한 예약내역 가져오기
         HistoryEntity savedHistoryEntity = historyRepository.findById(savedHistoryEntityNo).get();
 
+        // 6. historyEntity 를 TimeTable Entity 에 선언한 List<HistoryEntity> 에 추가한다.
+        assert timeTableTmp != null;
+        timeTableTmp.getHistoryEntity().add(savedHistoryEntity);
+
         memberEntity.getHistoryEntities().add(savedHistoryEntity);
+
         assert roomEntity != null;
         roomEntity.getHistoryEntities().add(savedHistoryEntity);
 
@@ -215,22 +222,48 @@ public class MemberController { // C S
     }
 
 
-    // [예약내역(히스토리) 페이지와 맵핑]
-    @GetMapping("/history")
-    public String history() {
+    // [회원 예약 내역 페이지와 맵핑]
+    // @Param memberNo : 회원 번호를 넘겨받는다.
+    @GetMapping("/reservationListController")
+    public String reservationListController(Model model) {
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        // 로그인 세션에 저장되어 있는 세션을 이용해 memberNo 를 불러옵니다.
+        int memberNo = loginDto.getMemberNo();
+        // memberNo 에 해당하는 예약 내역을 불러옵니다.
+        List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
+
+        model.addAttribute("histories", historyEntities);
+
         return "member/history_list";
     }
 
     // [내가 개설한 클래스와 맵핑]
     @GetMapping("/myclass")
     public String myclass(Model model) {
-
-
         List<RoomEntity> roomDtos = roomService.getroomlist();
-
         model.addAttribute("roomDtos", roomDtos);
-
         return "member/member_class";
+    }
+
+    // [내가 예약한 클래스와 맵핑]
+    @GetMapping("/reservation")
+    @ResponseBody
+    public String reservationList() {
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        // 로그인 세션에 저장되어 있는 세션을 이용해 memberNo 를 불러옵니다.
+        int memberNo = loginDto.getMemberNo();
+        // memberNo -> history -> timetable -> roomDate 순서로 접근해야한다.
+        StringBuilder str = new StringBuilder();
+        // 1. memberNo 사용해 History 엔티티를 List 형태로 호출한다.
+        List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
+        // 2. history 엔티티와 맵핑되어있는 timetable 엔티티를 가져와서 roomDate 를 str 에 담는다.
+        for(HistoryEntity history : historyEntities){
+            str.append(history.getTimeTableEntity().getRoomDate()).append(",");
+            System.out.println(str);
+        }
+        return str.toString();
     }
 
     // [메시지 페이지와 맵핑]
@@ -241,7 +274,7 @@ public class MemberController { // C S
         return "member/member_msg";
     }
 
-    // 쪽지 쓰기
+    // [쪽지 쓰기]
     @GetMapping("/notereplywrite")
     @ResponseBody
     public String notereplywrite(@RequestParam("noteNo") int noteNo,

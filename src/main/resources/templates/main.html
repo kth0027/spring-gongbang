@@ -1010,13 +1010,16 @@
 
             <!-- 등록된 리스트를 card 형식으로 출력하는 부분 시작-->
             <!-- 나중에 수정할 것-->
-            <div class="row cardbox border my-3">
+            <div class="row cardbox border my-3 justify-content-start">
                 <!-- 등록된 리스트를 카드 형식으로 무한 스크롤 출력 -->
                 <div class="card cardboxinner" th:each="room : ${roomlist}">
                     <!-- 카드 헤더 -->
                     <div class="card-header">
                         <!--  style="background-image:url(/img/coffee.jpg); margin-top:0.5rem;" -->
-                        <img class="card-img" th:src="@{'roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
+
+                        <img th:if="${room.roomImgEntities != null}" class="card-img"
+                             th:src="@{'roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
+
                         <div class="card-header-is_closed">
                             <div class="card-header-text"> 모집중</div>
                             <div class="card-header-number"> 2 / 5</div>
@@ -1027,22 +1030,20 @@
                         <!--  카드 바디 헤더 -->
                         <div class="card-body-header">
                             <a th:href="@{'/room/view/' + ${room.roomNo} }"><h1 th:text="${room.roomTitle}"></h1></a>
-                            <p class="card-body-hashtag">#여수 #순천 #광양</p>
+                            <p class="card-body-hashtag">태그 어떻게 구현할래?</p>
                             <div class="d-flex">
                                 작성자: <p class="card-body-nickname" th:text="${room.memberEntity.memberName}"></p>
                             </div>
                         </div>
                         <p class="card-body-description" th:text="${room.roomContent}">
                         </p>
-
                         <!--  카드 바디 본문 -->
-
 
                         <!--  카드 바디 푸터 -->
                         <div class="card-body-footer">
                             <hr style="margin-bottom: 8px; opacity: 0.5; border-color: #EF5A31">
-                            <i class="icon icon-view_count"></i>조회 38회
-                            <i class="icon icon-comments_count"></i>댓글 4개
+                            <i class="icon icon-view_count"></i>조회수 어떻게 구현할래?
+                            <i class="icon icon-comments_count"></i> 댓글 개수 어떻게 가져올래?
                             <i class="reg_date" th:text="${#temporals.format(room.createdDate,'yyyy-MM-dd')}"></i>
                         </div>
                     </div>
@@ -1139,6 +1140,7 @@
             centerMode: true,
             variableWidth: true
         });
+
 
 
 

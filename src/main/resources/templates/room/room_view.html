@@ -6,10 +6,9 @@
     <style>
 
         ul li{
-        list-style-type: none;
-        display: inline;
-        margin-left: 20px;
-
+            list-style-type: none;
+            display: inline;
+            margin-left: 20px;
         }
         #qnabox{
             width: 96%;
@@ -41,6 +40,7 @@
             color: #ff9a9a;
             padding: 5px;
         }
+
     </style>
     <link rel="stylesheet" th:href="@{/css/room_view.css}">
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
@@ -55,11 +55,14 @@
     <input type="hidden" th:value="${roomEntity.roomNo}" name="" id="thisRoomNo">
     <div class="row">
         <!-- 상단 버튼-->
+        <!--
+        1. 홈페이지 테마에 맞게 상단 버튼 다시 꾸며야함
+        2. 부트스트랩 스타일 쓰기 XXX 통일성이 다 깨짐
+        -->
         <div class="my-3">
             <a href="#" style="text-decoration: none;">
                 <button class="btn btn-warning">채널보기</button>
             </a>
-            <button class="btn btn-warning">클래스 신청하기</button>
             <button class="btn btn-warning" data-bs-target="#notemodal" data-bs-toggle="modal">문의하기</button>
             <div class="modal fade" tabindex="-1" id="notemodal" data-bs-keyword="false" data-bs-backdrop="static">
                 <div class="modal-dialog modal-lg" role="document">
@@ -81,6 +84,7 @@
                     </div>
                 </div>
             </div>
+            <button>강의 찜하기</button>
         </div>
 
 
@@ -180,7 +184,7 @@
             <br>
             <div class="row" th:each="reply : ${roomEntity.replyEntities}">
                 <div class="col-md-2">
-                    <div style="width: 100%; height: 100%;">
+                    <div>
                         <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}"
                              style="width:100%; height: 100%;">
                     </div>

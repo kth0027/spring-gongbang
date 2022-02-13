@@ -104,6 +104,7 @@ public class RoomController {
             category = (String) session.getAttribute("category");
         }
 
+        assert keyword != null;
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
         if (roomEntities != null) {
             model.addAttribute("roomEntities", roomEntities);
@@ -117,7 +118,17 @@ public class RoomController {
     // 메인 화면에서 지역 아이콘 선택했을 때 검색 후 결과 출력 페이지로 이동
     @GetMapping("/byLocal/{local}")
     public String roomListByLocal(@PathVariable("local") String local, Model model) {
+
+        // 세션 호출
+        HttpSession session = request.getSession();
+        session.setAttribute("keyword", "");
+        session.setAttribute("local", local);
+        session.setAttribute("category", "");
+
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", local, "");
+        if(roomEntities == null){
+            return "error";
+        }
         model.addAttribute("roomEntities", roomEntities);
         return "room/room_list";
     }
@@ -125,7 +136,17 @@ public class RoomController {
     // 메인 화면에서 카테고리 선택했을 때 검색 후 결과 출력 페이지로 이동
     @GetMapping("/byCategory/{category}")
     public String roomListByCategory(@PathVariable("category") String category, Model model) {
+
+        // 세션 호출
+        HttpSession session = request.getSession();
+        session.setAttribute("keyword", "");
+        session.setAttribute("local", "");
+        session.setAttribute("category", category);
+
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", "", category);
+        if(roomEntities == null){
+            return "error";
+        }
         model.addAttribute("roomEntities", roomEntities);
         return "room/room_list";
     }
@@ -306,7 +327,6 @@ public class RoomController {
     @GetMapping("/nreadupdate")
     @ResponseBody // 페이지 전환하면 안되서 사용
     public void nreadupdate(@RequestParam("noteNo") int noteNo) {
-
         roomService.nreadupdate(noteNo);
     }
 
@@ -316,5 +336,17 @@ public class RoomController {
         model.addAttribute("roomNo", roomNo);
         return "room/room_review";
     }
+
+    // [조회수 증가]
+    // @Date : 2022-02-14
+    @GetMapping("/viewCount")
+    public String viewCount(){
+
+        return "";
+    }
+
+    // [댓글 갯수 카운트]
+    // @Date : 2022-02-14
+
 
 }

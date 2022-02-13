@@ -48,7 +48,10 @@ public class RoomService {
         // 3. room entity 저장 후 roomNo 를 가져온다.
         int roomNo = roomRepository.save(roomEntity).getRoomNo();
         // 4. member entity 에 room entity 저장
-        RoomEntity roomEntitySaved = roomRepository.findById(roomNo).get();
+        RoomEntity roomEntitySaved = null;
+        if(roomRepository.findById(roomNo).isPresent()){
+            roomEntitySaved = roomRepository.findById(roomNo).get();
+        }
         // 4.1 member entity 에 방금 저장된 room entity 를 저장시킨다.
         // 4.2 memberEntity 에는 @OneToMany 형태로 맵핑되어있다.
         // 4.3 member 1명이 여러개의 room 을 등록할 수 있고, 등록할 시 맵핑을 시켜주는 역할이다.
@@ -87,6 +90,7 @@ public class RoomService {
                 int roomImgNo = roomImgRepository.save(roomImgEntity).getRoomImgNo();
                 RoomImgEntity roomImgEntitySaved = roomImgRepository.findById(roomImgNo).get();
                 // 6.2 각각의 이미지를 room entity 에 선언된 list 에 저장시킨다.
+                assert roomEntitySaved != null;
                 roomEntitySaved.getRoomImgEntities().add(roomImgEntitySaved);
             }
         }

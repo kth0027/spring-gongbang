@@ -1018,7 +1018,7 @@
                         <!--  style="background-image:url(/img/coffee.jpg); margin-top:0.5rem;" -->
 
                         <img th:if="${room.roomImgEntities != null}" class="card-img"
-                             th:src="@{'roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
+                             th:src="@{ 'roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
 
                         <div class="card-header-is_closed">
                             <div class="card-header-text"> 모집중</div>

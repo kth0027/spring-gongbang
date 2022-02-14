@@ -41,6 +41,7 @@
             padding: 5px;
         }
 
+
     </style>
     <link rel="stylesheet" th:href="@{/css/room_view.css}">
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
@@ -60,10 +61,6 @@
         2. 부트스트랩 스타일 쓰기 XXX 통일성이 다 깨짐
         -->
         <div class="my-3">
-            <a href="#" style="text-decoration: none;">
-                <button class="btn btn-warning">채널보기</button>
-            </a>
-            <button class="btn btn-warning" data-bs-target="#notemodal" data-bs-toggle="modal">문의하기</button>
             <div class="modal fade" tabindex="-1" id="notemodal" data-bs-keyword="false" data-bs-backdrop="static">
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content rounded-4 shadow">
@@ -84,7 +81,6 @@
                     </div>
                 </div>
             </div>
-            <button>강의 찜하기</button>
         </div>
 
 
@@ -263,6 +259,7 @@
 <!-- 인증 스크립트 -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=84d555c388d3da38338a57c648112954&libraries=clusterer"></script>
 <script th:src="@{/js/roomview_jh.js}"></script>
+<script th:src="@{/js/roomview.js}"></script>
 
 <div th:replace="footer.html :: footer"></div>
 

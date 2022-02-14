@@ -2,19 +2,16 @@ package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
-import com.ezen.domain.entity.ReplyEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.*;
 import com.ezen.service.MemberService;
 import com.ezen.service.ReplyService;
-import com.ezen.service.RoomLikeService;
 import com.ezen.service.RoomService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -37,8 +33,6 @@ public class RoomController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private RoomLikeService roomLikeService;
 
     @Autowired
     private HttpServletRequest request;
@@ -67,13 +61,6 @@ public class RoomController {
         MemberEntity memberEntity = memberService.getMember(loginDto.getMemberNo());
         model.addAttribute("member", memberEntity);
         return "room/room_register_detail";
-    }
-
-    // [클래스 개설하는 컨트롤러]
-    // 클래스 만든 후에는 room_view.js.html 와 맵핑시킨다.
-    @PostMapping("/registerClassController")
-    public String registerClassController() {
-        return "room/room_view";
     }
 
     /*
@@ -106,6 +93,7 @@ public class RoomController {
 
         assert keyword != null;
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
+
         if (roomEntities != null) {
             model.addAttribute("roomEntities", roomEntities);
         } else {
@@ -126,7 +114,7 @@ public class RoomController {
         session.setAttribute("category", "");
 
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", local, "");
-        if(roomEntities == null){
+        if (roomEntities == null) {
             return "error";
         }
         model.addAttribute("roomEntities", roomEntities);
@@ -144,7 +132,7 @@ public class RoomController {
         session.setAttribute("category", category);
 
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", "", category);
-        if(roomEntities == null){
+        if (roomEntities == null) {
             return "error";
         }
         model.addAttribute("roomEntities", roomEntities);
@@ -162,6 +150,20 @@ public class RoomController {
         // 2. roomNo 이용해서 해당 강좌의 개설된 정보 (TimeTable) 을 불러온다.
         List<TimeTableEntity> timeTableEntities = roomEntity.getTimeTableEntity();
         model.addAttribute("timeTableEntities", timeTableEntities);
+
+        // 3. 조회수를 증가시킵니다.
+        // 3.1 세션 확인해서 동일한 세션이 없으면 조회수를 증가시킨다.
+        // 3.2 조회수를 증가시키고, 24시간 유지되는 세션을 부여한다.
+        HttpSession session = request.getSession();
+
+        if (session.getAttribute(String.valueOf(roomNo)) == null) {
+            // 조회수 증가
+            roomEntity.setRoomView(roomEntity.getRoomView() + 1);
+            // 세션 부여
+            session.setAttribute(String.valueOf(roomNo), 1);
+            session.setMaxInactiveInterval(60 * 60 * 24);
+        }
+
         return "room/room_view"; // 타임리프
     }
 
@@ -179,6 +181,7 @@ public class RoomController {
         roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
+        roomEntity.setRoomView(0);
         roomService.registerClass(roomEntity, files);
         // 2. 등록 완료 후, 내가 등록한 클래스 페이지로 이동
         return "member/member_class";
@@ -195,7 +198,6 @@ public class RoomController {
     @GetMapping("/gongbang.json")
     @ResponseBody
     public JSONObject gongbang() {
-//    public JSONObject gongbang(@RequestParam("keyword") String keyword, @RequestParam("local") String local, @RequestParam("category") String category) {
 
         // 세션 호출
         HttpSession session = request.getSession();
@@ -207,7 +209,9 @@ public class RoomController {
         JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
         JSONArray jsonArray = new JSONArray(); // json 안에 들어가   는 리스트
         List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
+
         for (RoomEntity roomEntity : roomEntities) { //모든 방에서 하나씩 반복문 돌리기
+
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
 
             data.put("lat", roomEntity.getRoomAddress().split(",")[1]); // 위도
@@ -337,13 +341,6 @@ public class RoomController {
         return "room/room_review";
     }
 
-    // [조회수 증가]
-    // @Date : 2022-02-14
-    @GetMapping("/viewCount")
-    public String viewCount(){
-
-        return "";
-    }
 
     // [댓글 갯수 카운트]
     // @Date : 2022-02-14

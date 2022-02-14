@@ -69,6 +69,9 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomETC")
     private String roomETC;
 
+    @Column(name = "roomView")
+    private int roomView;
+
     // 날짜, 시간과 N : M 맵핑
 
     // 회원번호 관계

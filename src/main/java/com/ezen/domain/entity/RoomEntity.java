@@ -99,4 +99,6 @@ public class RoomEntity extends BaseTimeEntity {
     @ToString.Exclude
     private List<HistoryEntity> historyEntities = new ArrayList<>();
 
+    @OneToOne(mappedBy = "roomEntity")
+    private RoomLikeEntity roomLikeEntity;
 }

@@ -21,7 +21,7 @@ public class MemberEntity extends BaseTimeEntity {
     @Column(name = "memberNo")
     private int memberNo;
 
-    @Column(name="memberEmail")
+    @Column(name = "memberEmail")
     private String memberEmail;
 
     @Column(name = "memberPassword")
@@ -33,13 +33,13 @@ public class MemberEntity extends BaseTimeEntity {
     @Column(name = "memberPhone")
     private String memberPhone;
 
-    @Column(name="memberGender")
+    @Column(name = "memberGender")
     private String memberGender;
 
-    @Column(name="memberPoint")
+    @Column(name = "memberPoint")
     private int memberPoint;
 
-    @Column(name="memberId")
+    @Column(name = "memberId")
     private String memberId;
 
 
@@ -50,19 +50,20 @@ public class MemberEntity extends BaseTimeEntity {
     private List<RoomEntity> roomEntities = new ArrayList<>();
 
     // 문의 리스트
-    @OneToMany(mappedBy="memberEntity")
+    @OneToMany(mappedBy = "memberEntity")
     @ToString.Exclude
     private List<NoteEntity> noteEntities = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column
     private Role memberGrade; // 회원등급
-    public String getRolekey(){
+
+    public String getRolekey() {
         return this.memberGrade.getKey();
     }
 
     // oauth2에서 동일한 이메일이면 업데이트 처리 메소드
-    public MemberEntity update(String name){
+    public MemberEntity update(String name) {
         this.memberName = name;
         return this;
     }
@@ -77,5 +78,7 @@ public class MemberEntity extends BaseTimeEntity {
     @ToString.Exclude
     private List<HistoryEntity> historyEntities = new ArrayList<>();
 
+    @OneToOne(mappedBy = "roomEntity")
+    private RoomLikeEntity roomLikeEntity;
 
 }

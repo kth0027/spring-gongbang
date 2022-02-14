@@ -13,6 +13,7 @@ import com.ezen.service.RoomService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
@@ -86,7 +87,11 @@ public class RoomController {
     // [개설된 강좌 출력]
     // 검색이 있는 경우 / 검색이 없는 경우 구분 짓는다.
     @GetMapping("/list")
-    public String roomlist(@RequestParam("roomSearch") String keyword, @RequestParam("classLocal") String local, @RequestParam("classCategory") String category, Model model) {
+    public String roomlist( Model model, @PageableDefault Pageable pageable) {
+
+        String keyword = request.getParameter("roomSearch");
+        String local =request.getParameter("classLocal");
+        String category = request.getParameter("classCategory");
 
         // 세션 호출
         HttpSession session = request.getSession();
@@ -105,19 +110,21 @@ public class RoomController {
         }
 
         assert keyword != null;
-        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
+        Page<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
         if (roomEntities != null) {
             model.addAttribute("roomEntities", roomEntities);
         } else {
             // 비정상적인 경로로 접근하면 error 페이지를 띄운다.
             return "error";
         }
+
+
         return "room/room_list";  // 타임리프를 통한 html 반환
     }
 
     // 메인 화면에서 지역 아이콘 선택했을 때 검색 후 결과 출력 페이지로 이동
     @GetMapping("/byLocal/{local}")
-    public String roomListByLocal(@PathVariable("local") String local, Model model) {
+    public String roomListByLocal(@PathVariable("local") String local, Model model, @PageableDefault Pageable pageable) {
 
         // 세션 호출
         HttpSession session = request.getSession();
@@ -125,7 +132,7 @@ public class RoomController {
         session.setAttribute("local", local);
         session.setAttribute("category", "");
 
-        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", local, "");
+        Page<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(pageable,"", local, "");
         if(roomEntities == null){
             return "error";
         }
@@ -135,7 +142,7 @@ public class RoomController {
 
     // 메인 화면에서 카테고리 선택했을 때 검색 후 결과 출력 페이지로 이동
     @GetMapping("/byCategory/{category}")
-    public String roomListByCategory(@PathVariable("category") String category, Model model) {
+    public String roomListByCategory(@PathVariable("category") String category, Model model,@PageableDefault Pageable pageable) {
 
         // 세션 호출
         HttpSession session = request.getSession();
@@ -143,7 +150,7 @@ public class RoomController {
         session.setAttribute("local", "");
         session.setAttribute("category", category);
 
-        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch("", "", category);
+        Page<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(pageable,"", "", category);
         if(roomEntities == null){
             return "error";
         }
@@ -194,7 +201,7 @@ public class RoomController {
     // json 반환[지도에 띄우고자 하는 방 응답하기]
     @GetMapping("/gongbang.json")
     @ResponseBody
-    public JSONObject gongbang() {
+    public JSONObject gongbang(@PageableDefault Pageable pageable) {
 //    public JSONObject gongbang(@RequestParam("keyword") String keyword, @RequestParam("local") String local, @RequestParam("category") String category) {
 
         // 세션 호출
@@ -203,10 +210,11 @@ public class RoomController {
         String keyword = (String) session.getAttribute("keyword");
         String local = (String) session.getAttribute("local");
         String category = (String) session.getAttribute("category");
+       /* Pageable pageable = (Pageable) session.getAttribute("roomNo");*/
 
         JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
         JSONArray jsonArray = new JSONArray(); // json 안에 들어가   는 리스트
-        List<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(keyword, local, category);
+        Page<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
         for (RoomEntity roomEntity : roomEntities) { //모든 방에서 하나씩 반복문 돌리기
             JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
 

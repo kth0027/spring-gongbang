@@ -8,6 +8,11 @@ import com.ezen.domain.entity.RoomImgEntity;
 import com.ezen.domain.entity.repository.*;
 import com.ezen.domain.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -64,7 +69,7 @@ public class RoomService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
-                String dir = "C:\\Users\\re_mu\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
+                String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
 
                 // 상대 경로 지정
                 // String newdir = "/static/roomimg";
@@ -109,44 +114,53 @@ public class RoomService {
     // @Param keyword : 검색창 입력값
     // @Param local : 검색창에서 선택한 지역
     // @Param category : 검색창에서 선택한 카테고리
-    public List<RoomEntity> getRoomEntityBySearch(String keyword, String local, String category) {
+    public Page<RoomEntity> getRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local, String category) {
+
+
+        //페이지번호
+        int page = 0;
+        if(pageable.getPageNumber()==0) page=0; // 0이면1페이지
+        else page = pageable.getPageNumber()-1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
+        //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
+        pageable = PageRequest.of(page,3, Sort.by(Sort.Direction.DESC,"roomNo")); // 변수 페이지 10개 출력
+
         // 1.1 검색이 없는 경우
         if (keyword.isEmpty()) {
             // 1.2 검색 X 지역 O 카테고리 X
             if (!local.isEmpty() && category.isEmpty()) {
-                return roomRepository.findRoomByLocal(local);
+                return roomRepository.findRoomByLocal(local,pageable);
             }
             // 1.3 검색 X 지역 X 카테고리 X
             else if (local.isEmpty() && category.isEmpty()) {
-                return roomRepository.findAll();
+                return roomRepository.findAll(pageable);
             }
             // 1.3 검색 X 지역 X 카테고리 O
             // 더 줄일 수 있지만 혼선이 있을 수 있어 길게 나열해둡니다.
             else if (local.isEmpty() && !category.isEmpty()) {
-                return roomRepository.findRoomByCategory(category);
+                return roomRepository.findRoomByCategory(category,pageable);
             }
             // 1.4 검색 X 지역 O 카테고리 O
             else if (!local.isEmpty() && !category.isEmpty()) {
-                return roomRepository.findRoomByLocalAndCategory(local, category);
+                return roomRepository.findRoomByLocalAndCategory(local, category,pageable);
             }
         }
         // 2. 검색이 있는 경우
         else {
             // 검색 O 지역 O 카테고리 X
             if (!local.isEmpty() && category.isEmpty()) {
-                return roomRepository.findRoomByLocalAndKeyword(keyword, local);
+                return roomRepository.findRoomByLocalAndKeyword(keyword, local,pageable);
             }
             // 검색 O 지역 X 카테고리 O
             else if (local.isEmpty() && !category.isEmpty()) {
-                return roomRepository.findRoomByCategoryAndKeyword(keyword, category);
+                return roomRepository.findRoomByCategoryAndKeyword(keyword, category,pageable);
             }
             // 검색 O 지역 O 카테고리 O
             else if (!local.isEmpty() && !category.isEmpty()) {
-                return roomRepository.findRoomByCategoryAndLocalAndKeyword(keyword, category, local);
+                return roomRepository.findRoomByCategoryAndLocalAndKeyword(keyword, category, local,pageable);
             }
             // 검색 O 지역 X 카테고리 X
             else if (local.isEmpty() && category.isEmpty()) {
-                return roomRepository.findRoomByKeyword(keyword);
+                return roomRepository.findRoomByKeyword(keyword, pageable);
             }
         }
 
@@ -162,8 +176,14 @@ public class RoomService {
     }
 
     // 모든 룸 가져오기
-    public List<RoomEntity> getroomlist() {
-        return roomRepository.findAll();
+    public Page<RoomEntity> getroomlist(@PageableDefault Pageable pageable) {
+        int page = 0;
+        if(pageable.getPageNumber()==0) page=0; // 0이면1페이지
+        else page = pageable.getPageNumber()-1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
+        //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
+        pageable = PageRequest.of(page,3, Sort.by(Sort.Direction.DESC,"roomNo")); // 변수 페이지 10개 출력
+
+        return roomRepository.findAll(pageable);
     }
 
     // 룸에 날짜, 시간 지정하기

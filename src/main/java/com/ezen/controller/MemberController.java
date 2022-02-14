@@ -11,6 +11,9 @@ import com.ezen.service.RoomService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -243,8 +246,8 @@ public class MemberController { // C S
 
     // [내가 개설한 클래스와 맵핑]
     @GetMapping("/myclass")
-    public String myclass(Model model) {
-        List<RoomEntity> roomDtos = roomService.getroomlist();
+    public String myclass(Model model, @PageableDefault Pageable pageable) {
+        Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
         model.addAttribute("roomDtos", roomDtos);
         return "member/member_class";
     }

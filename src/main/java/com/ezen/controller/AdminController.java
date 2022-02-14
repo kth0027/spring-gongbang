@@ -3,6 +3,9 @@ package com.ezen.controller;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +20,8 @@ public class AdminController {
     private RoomService roomService;
 
     @GetMapping("/adminlist")
-    public String adminlist(Model model) {
-        List<RoomEntity> roomEntities = roomService.getroomlist();
+    public String adminlist(Model model, @PageableDefault Pageable pageable) {
+        Page<RoomEntity> roomEntities = roomService.getroomlist(pageable);
         model.addAttribute("roomEntities",roomEntities);
         return "admin/adminlist";
     }

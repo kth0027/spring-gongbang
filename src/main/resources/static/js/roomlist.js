@@ -15,8 +15,6 @@ alert(roomNo);
 }
 
 
-
-
 // 클래스 상태변경
 function activeupdate(roomNo, active) {
     $.ajax({

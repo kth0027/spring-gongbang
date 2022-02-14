@@ -82,6 +82,7 @@ public class MemberService implements UserDetailsService {
         // 1. 해당 회원번호[pk] 만 엔티티 호출
         Optional<MemberEntity> memberEntity = memberRepository.findById(memberNo);
         // 2. 찾은 entity를 dto 변경후 반환 [ 패스워드 , 수정날짜 제외 ]
+
         return MemberDto.builder()
                 .memberName(memberEntity.get().getMemberName())
                 .memberId(memberEntity.get().getMemberId())

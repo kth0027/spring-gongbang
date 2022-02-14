@@ -73,11 +73,11 @@ public class RoomController {
     // [개설된 강좌 출력]
     // 검색이 있는 경우 / 검색이 없는 경우 구분 짓는다.
     @GetMapping("/list")
-    public String roomlist(@PageableDefault Pageable pageable, @RequestParam("roomSearch") String keyword, @RequestParam("classLocal") String local, @RequestParam("classCategory") String category, Model model) {
+    public String roomlist(@PageableDefault Pageable pageable, Model model) {
 
-//        String keyword = request.getParameter("roomSearch");
-//        String local =request.getParameter("classLocal");
-//        String category = request.getParameter("classCategory");
+        String keyword = request.getParameter("roomSearch");
+        String local = request.getParameter("classLocal");
+        String category = request.getParameter("classCategory");
 
         // 세션 호출
         HttpSession session = request.getSession();
@@ -104,7 +104,6 @@ public class RoomController {
             // 비정상적인 경로로 접근하면 error 페이지를 띄운다.
             return "error";
         }
-
         return "room/room_list";  // 타임리프를 통한 html 반환
     }
 
@@ -168,29 +167,32 @@ public class RoomController {
             session.setAttribute(String.valueOf(roomNo), 1);
             session.setMaxInactiveInterval(60 * 60 * 24);
         }
-
         return "room/room_view"; // 타임리프
     }
 
     // [ 작성한 클래스 등록 ]
     @PostMapping("/classRegister")
     @Transactional
-    public String classRegister(RoomEntity roomEntity,
+    public String classRegister(Model model,
+                                RoomEntity roomEntity,
                                 @RequestParam("roomImageInput") List<MultipartFile> files,
                                 @RequestParam("addressX") double addressX,
                                 @RequestParam("addressY") double addressY,
                                 @RequestParam("checkBox1") String checkBox1,
                                 @RequestParam("checkBox2") String checkBox2,
-                                @RequestParam("checkBox3") String checkBox3) {
+                                @RequestParam("checkBox3") String checkBox3,
+                                @PageableDefault Pageable pageable) {
         // 1. roomStatus : 0 --> 검토중으로 설정
         roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         roomEntity.setRoomView(0);
         roomService.registerClass(roomEntity, files);
-        // 2. 등록 완료 후, 내가 등록한 클래스 페이지로 이동
-        return "member/member_class";
 
+        // 2. 등록 완료 후, 내가 등록한 클래스 페이지로 이동
+        Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
+        model.addAttribute("roomDtos", roomDtos);
+        return "member/member_class";
     }
 
     // [ room_update.html 페이지와 맵핑 ]
@@ -199,35 +201,40 @@ public class RoomController {
         return "room/room_update";
     }
 
-    // json 반환[지도에 띄우고자 하는 방 응답하기]
+    // json 반환 [지도에 띄우고자 하는 방 응답하기]
     @GetMapping("/gongbang.json")
     @ResponseBody
     public JSONObject gongbang(@PageableDefault Pageable pageable) {
 
-        // 세션 호출
         HttpSession session = request.getSession();
+
+
 
         String keyword = (String) session.getAttribute("keyword");
         String local = (String) session.getAttribute("local");
         String category = (String) session.getAttribute("category");
 
-        JSONObject jsonObject = new JSONObject(); // json 전체(응답용)
-        JSONArray jsonArray = new JSONArray(); // json 안에 들어가   는 리스트
-        Page<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
-        for (RoomEntity roomEntity : roomEntities) { //모든 방에서 하나씩 반복문 돌리기
-            JSONObject data = new JSONObject(); // 리스트안에 들어가는 키:값 // 주소 =0 / 위도 =1 / 경도 =2
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
 
-            data.put("lat", roomEntity.getRoomAddress().split(",")[1]); // 위도
-            data.put("lng", roomEntity.getRoomAddress().split(",")[2]); // 경도
+        Page<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
+
+        for (RoomEntity roomEntity : roomEntities) {
+
+            JSONObject data = new JSONObject();
+
+            data.put("lat", roomEntity.getRoomAddress().split(",")[1]);
+            data.put("lng", roomEntity.getRoomAddress().split(",")[2]);
             data.put("roomTitle", roomEntity.getRoomTitle());
             data.put("roomNo", roomEntity.getRoomNo());
             data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
+
             jsonArray.add(data); //리스트에 저장
         }
+
         jsonObject.put("positions", jsonArray); // json 전체에 리스트 넣기
         return jsonObject;
     }
-
 
     @GetMapping("/addressXY")
     @ResponseBody
@@ -240,7 +247,6 @@ public class RoomController {
     @GetMapping("/timeSelectPage/{roomNo}")
     public String timeSelectController(@PathVariable("roomNo") int roomNo, Model model) {
         // 1. 등록된 클래스 가져오기
-        // List<RoomEntity> roomEntities = roomService.getmyroomlist();
         RoomEntity roomEntity = roomService.getroom(roomNo);
         model.addAttribute("room", roomEntity);
         return "member/member_timeselect";
@@ -257,7 +263,6 @@ public class RoomController {
                                        @RequestParam("roomNo") int roomNo,
                                        Model model, @PageableDefault Pageable pageable) {
         timeTableEntity.setRoomTime(beginTime + "," + endTime);
-
         boolean result = roomService.registerTimeToClass(timeTableEntity, roomNo);
         List<RoomEntity> roomDtos = roomService.getmyroomlist();
         model.addAttribute("roomDtos", roomDtos);

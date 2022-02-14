@@ -31,6 +31,7 @@ public class AppStart {
 
     @Autowired
     RoomService roomService;
+
     // 메인페이지 매핑[ 연결 ]
     @GetMapping("/") // 최상위 경로
     public String index(Model model, @PageableDefault Pageable pageable) {

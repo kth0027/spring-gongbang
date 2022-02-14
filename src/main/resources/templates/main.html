@@ -71,7 +71,7 @@
                 <!-- 캐러셀 지역 / 카테고리 -->
 
                 <div class="tabbutton">
-                    <button id="localBtn" type="button" class="btn btn-outline-secondary">
+                    <button id="localBtn" type="button" class="btn">
                                                 <svg class="MuiSvgIcon-root sc-jNMdTA eJCOeE MuiSvgIcon-fontSizeSmall"
                                                         focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                                                         <path
@@ -81,7 +81,7 @@
                                                 </svg>
                                                 지역
                                         </button>
-                    <button id="categoryBtn" type="button" class="btn btn-outline-secondary">
+                    <button id="categoryBtn" type="button" class="btn">
                                                 <svg class="MuiSvgIcon-root sc-dOSReg eWtntv MuiSvgIcon-fontSizeSmall"
                                                         focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                                                         <path
@@ -95,7 +95,7 @@
                 <div class="slider-parent">
                     <!-- 카테고리1 -->
                     <div class="slider-child" style="" id="slider-div1">
-                        <div class="" id="서울">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="서울">
                             <a th:href="@{'/room/byLocal/'+${'서울'}}">
                                 <svg width="103" height="103" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -146,8 +146,9 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">서울</div>
                         </div>
-                        <div class="" id="경기">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="경기">
                             <a th:href="@{'/room/byLocal/'+${'경기'}}">
                                 <svg width="103" height="103" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -225,8 +226,9 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">경기</div>
                         </div>
-                        <div class="" id="인천">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="인천">
                             <a th:href="@{'/room/byLocal/'+${'인천'}}">
                                 <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -288,8 +290,9 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">인천</div>
                         </div>
-                        <div class="" id="부산">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="부산">
                             <a th:href="@{'/room/byLocal/' + ${'부산'}}">
                                 <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -341,8 +344,9 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">부산</div>
                         </div>
-                        <div class="" id="대구">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="대구">
                             <a th:href="@{'/room/byLocal/' + ${'대구'}}">
                                 <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -404,12 +408,14 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">대구</div>
                         </div>
+
                     </div>
                     <!-- 카테고리1 종료 -->
                     <!-- 카테고리2 시작 -->
                     <div class="slider-child" style="display: none" id="slider-div2">
-                        <div class="" id="미용">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="미용">
                             <a th:href="@{'/room/byCategory/' + ${'미용'}}">
                                 <svg width="103" height="103" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d_7549_26451)">
@@ -520,8 +526,9 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">미용</div>
                         </div>
-                        <div class="" id="쿠킹">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="쿠킹">
                             <a th:href="@{'/room/byCategory/' + ${'쿠킹'}}">
                                 <svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -615,8 +622,10 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">쿠킹</div>
                         </div>
-                        <div class="" id="공예">
+
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="공예">
                             <a th:href="@{'/room/byCategory/' + ${'공예'}}">
                                 <svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -716,8 +725,9 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">공예</div>
                         </div>
-                        <div class="" id="드로잉">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="드로잉">
                             <a th:href="@{'/room/byCategory/' + ${'드로잉'}}">
                                 <svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -819,8 +829,9 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">드로잉</div>
                         </div>
-                        <div class="" id="음악">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="음악">
                             <a th:href="@{'/room/byCategory/' + ${'음악'}}">
                                 <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -919,8 +930,10 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">음악</div>
                         </div>
-                        <div class="" id="펫">
+
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="펫">
                             <a th:href="@{'/room/byCategory/' + ${'펫'}}">
                                 <svg width="104" height="103" viewBox="0 0 104 103" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -1015,8 +1028,9 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">펫</div>
                         </div>
-                        <div class="" id="스포츠">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="스포츠">
                             <a th:href="@{'/room/byCategory/' + ${'스포츠'}}">
                                 <svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -1087,8 +1101,9 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">스포츠</div>
                         </div>
-                        <div class="" id="건강">
+                        <div class="d-flex flex-column justify-content-center align-items-center" id="건강">
                             <a th:href="@{'/room/byCategory/' + ${'건강'}}">
                                 <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
@@ -1214,6 +1229,7 @@
                                                                         </defs>
                                                                 </svg>
                             </a>
+                            <div class="">건강</div>
                         </div>
                         <!-- 카테고리2 종료 -->
                     </div>
@@ -1379,5 +1395,7 @@
     <!-- 메인 탭 캐러셀 js 가져오기 -->
     <script th:src="@{/js/maintabcarousel.js}"></script>
 </body>
+
+</html>
 
 </html>

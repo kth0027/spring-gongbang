@@ -10,47 +10,44 @@
         body {
             border: solid 1px #000;
         }
-
         /*
                         768px 이하 (모바일폰)
                         768px 이상 너비부터 olive>yellow
                         992px 이상 너비부터 yellow -> lime
                         1200px 이상 너비부터 lime -> orange
                     */
-
         /* xs col- */
-        @media screen and (max-width : 767px) {
+        
+        @media screen and (max-width: 767px) {
             body {
                 background-color: cyan;
             }
-
-            .formbox {
-                
-            }
-            
+            .formbox {}
         }
-
         /* sm col-sm- */
-        @media screen and (min-width : 768px) {
+        
+        @media screen and (min-width: 768px) {
             body {
                 background-color: yellow;
             }
         }
-
         /* md */
-        @media screen and (min-width : 992px) {
+        
+        @media screen and (min-width: 992px) {
             body {
                 background-color: lime;
             }
         }
-
         /* lg */
-        @media screen and (min-width : 1200px) {
+        
+        @media screen and (min-width: 1200px) {
             body {
                 background-color: orange;
             }
         }
     </style>
+
+
 </head>
 
 <body>
@@ -63,76 +60,106 @@
         <div class="container d-flex align-items-center justify-content-center">
             <div class="formbox col-10 col-sm-8 sm-offet-2 outline">
                 <form class="p-2 outlineinner p-5" method="post" th:action="@{/member/signupcontroller}">
-                    <h3>공방 :: 회원가입</h3>
+                    <h3 style="color: #374b73; font-weight: bold;">공방 :: 회원가입</h3>
                     <div class="form-floating mb-1">
-                        <input type="text" class="form-control rounded-4" id="memberEmail" name="memberEmail"
-                            placeholder="이메일">
+                        <input type="text" class="form-control rounded-4" id="memberEmail" name="memberEmail" placeholder="이메일">
                         <label for="floatingInput" id="emailcheck">이메일</label>
                     </div>
                     <div class="form-floating mb-1">
-                        <input type="text" class="form-control rounded-4" id="memberId" name="memberId"
-                            placeholder="아이디">
+                        <input type="text" class="form-control rounded-4" id="memberId" name="memberId" placeholder="아이디">
                         <label for="floatingInput" id="idcheck">아이디</label>
                     </div>
 
                     <div class="form-floating mb-1">
-                        <input type="password" class="form-control rounded-4" id="memberPassword" name="memberPassword"
-                            placeholder="비밀번호">
+                        <input type="password" class="form-control rounded-4" id="memberPassword" name="memberPassword" placeholder="비밀번호">
                         <label for="floatingInput" id="passwordcheck">비밀번호</label>
                     </div>
 
                     <div class="form-floating mb-1">
-                        <input type="password" class="form-control rounded-4" id="memberPasswordConfirm"
-                            name="memberPasswordConfirm" placeholder="비밀번호확인">
+                        <input type="password" class="form-control rounded-4" id="memberPasswordConfirm" name="memberPasswordConfirm" placeholder="비밀번호확인">
                         <label for="floatingInput">비밀번호확인</label>
                     </div>
 
                     <div class="form-floating mb-1">
-                        <input type="text" class="form-control rounded-4" id="memberName" name="memberName"
-                            placeholder="이름">
+                        <input type="text" class="form-control rounded-4" id="memberName" name="memberName" placeholder="이름">
                         <label for="floatingInput" id="namecheck">이름</label>
                     </div>
 
                     <div class="form-floating mb-1">
-                        <input type="text" class="form-control rounded-4" id="memberPhone" name="memberPhone"
-                            placeholder="연락처">
+                        <input type="text" class="form-control rounded-4" id="memberPhone" name="memberPhone" placeholder="연락처">
                         <label for="floatingInput" id="phonecheck">연락처</label>
                     </div>
 
-                    <div class=" mb-3 text-left">
+                    <div class=" my-2 text-left">
                         <label for="">성별 : </label>
                         <input type="radio" name="memberGender" id="msex1" value="남" checked="checked">남자
                         <input type="radio" name="memberGender" id="msex2" value="여">여자
                     </div>
 
-                    <div><input type="checkbox" class="m-3" name="signupsign"> * <span
-                            class="text-success fw-bold"><u>이용약관</u></span>에
-                        동의 합니다 . *
+                    <div><input type="checkbox" class="m-3" name="signupsign"> * <span class="text-success fw-bold"><u>이용약관</u></span>에 동의 합니다 . *
                     </div>
 
-                    <div><input type="checkbox" class="m-3" name="infosign"> * <span
-                            class="text-success fw-bold"><u>개인정보수집·이용</u></span>에 동의합니다. *
+                    <div><input type="checkbox" class="m-3" name="infosign"> * <span class="text-success fw-bold"><u>개인정보수집·이용</u></span>에 동의합니다. *
                     </div>
 
 
                     <div class="col-4 offset-4">
-                        <input id="formsubmit" type="button" class="form-control mt-2" value="회원가입"
-                            style="background-color: grey; color: white;">
+                        <input id="formsubmit" type="button" class="form-control mt-2" value="회원가입">
                     </div>
                     <hr>
                     <div class="d-flex flex-column justify-content-center align-items-center">
                         <p class="align-self-start"><label for="">SNS계정으로 시작하기</label></p>
                         <div class="text-center" style="">
-                            <button class="googlesignup py-2 mx-2 my-2 btn-outline-dark rounded-4"
-                                type="submit" style="width: 10rem;"><a class="text-white"
-                                    href="/oauth2/authorization/google"> 구글 로그인</a>
-                            </button>
-                            <button class="kakaosignup py-2 mx-2 my-2 btn-outline-primary rounded-4" type="submit"
-                                style="width: 10rem;"><a class="text-white" href="/oauth2/authorization/naver"> 네이버
+                            <button class="googlesignup py-2 mx-2 my-2  rounded-4" type="submit" style="width: 10rem;"><a class="text-dark text-decoration-none"
+                                    href="/oauth2/authorization/google">
+                                    <i class="fa-brands fa-google mx-1"></i>구글
                                     로그인</a>
                             </button>
-                            <button class="naversignup py-2 mx-2 my-2 btn-outline-secondary rounded-4" type="submit"
-                                style="width: 10rem;"><a class="text-white" href="/oauth2/authorization/kakao"> 카카오
+                            <button class="naversignup py-2 mx-2 my-2  rounded-4" type="submit" style="width: 10rem;"><a
+                                    class="text-dark text-decoration-none" href="/oauth2/authorization/naver"><span><svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                                            enable-background="new 0 0 512 512" height="" id="Layer_1" version="1.1"
+                                            viewBox="0 0 512 512" width="" xml:space="preserve" style="width: 1.5rem;">
+                                            <g>
+                                                <circle cx="255.999" cy="256" r="246.455" />
+                                            </g>
+                                            <g>
+                                                <path
+                                                    d="M55.486,231.011h28.315c0,0,25.719,38.858,26.483,39.905c0.769,1.041,0.861,0,0.861,0   c-1.184-6.02-2.473-8.717-2.473-18.328v-21.577h28.205v71.977h-28.205c0,0-25.189-36.781-25.952-37.801   c-0.759-1.018-0.862,0-0.862,0c0.971,4.969,1.832,5.795,1.832,14.416v23.385H55.484L55.486,231.011L55.486,231.011z"
+                                                    fill="#FFFFFF" />
+                                                <path
+                                                    d="M181.342,276.93l3.85-14.607c0.829-2.959,1.4-7.21,1.4-7.21c0.122-0.653,1.025-0.653,1.18,0.032   c0.185,1.002,0.635,4.063,1.496,7.114l3.924,14.672H181.342z M176.064,294.018h22.299l2.688,8.969h31.222l-28.962-71.975h-32.623   l-28.211,71.977h31.228L176.064,294.018z"
+                                                    fill="#FFFFFF" />
+                                                <path
+                                                    d="M306.575,231.011l-31.436,71.977h-24.981l-31.438-71.977h30.792l10.769,32.743   c1.184,3.531,2.044,11.287,2.044,11.287c0.203,0.611,0.924,0.57,1.041,0c0,0,0.861-7.756,2.048-11.287l10.368-32.743H306.575z"
+                                                    fill="#FFFFFF" />
+                                                <path
+                                                    d="M312.71,231.011h54.595v19.669H342.43v6.869h22.721v18.709H342.43v7.066h25.733v19.664H312.71V231.011   L312.71,231.011z"
+                                                    fill="#FFFFFF" />
+                                                <path
+                                                    d="M409.026,250.68h2.267c5.059,0,9.47,0.661,9.47,6.202c0,5.342-4.845,6.015-9.692,6.015h-2.044V250.68z    M380.175,302.992h28.851v-23.106c0,0,0.188-0.82,0.738,0l12.725,23.104h34.027l-17.662-23.393c-1.62-2.096-4.344-3.895-4.953-4.29   c-0.607-0.405,0-0.581,0-0.581c10.979-3.244,15.72-7.821,15.72-18.708c0-18.136-15.509-25.01-33.81-25.01h-35.636V302.992   L380.175,302.992z"
+                                                    fill="#FFFFFF" />
+                                            </g>
+                                        </svg></span> 네이버
+                                    로그인</a>
+                            </button>
+                            <button class="kakaosignup py-2 mx-2 my-2  rounded-4" type="submit" style="width: 10rem;"><a
+                                    class="text-dark text-decoration-none" href="/oauth2/authorization/kakao"><span><svg
+                                            xmlns="http://www.w3.org/2000/svg" data-name="Layer 1" id="Layer_1"
+                                            viewBox="0 0 512 512" style="width: 1.5rem;">
+                                            <title />
+                                            <path
+                                                d="M235.178,216.211a10.855,10.855,0,0,0-20.323,0L193.93,272.2a6.971,6.971,0,0,0,13.059,4.88l3.341-10.085h28.046a6.464,6.464,0,0,0,1.284-.129l3.384,10.214A6.97,6.97,0,1,0,256.1,272.2ZM216.5,254.425l9.921-29.945,9.921,29.945Z" />
+                                            <path
+                                                d="M202.965,216.239a6.971,6.971,0,0,0-6.97-6.971H153.423a6.971,6.971,0,0,0,0,13.942h14.315v51.427a6.97,6.97,0,1,0,13.94,0V223.21H196A6.971,6.971,0,0,0,202.965,216.239Z" />
+                                            <path
+                                                d="M297.1,267.065H277.3V216.239a6.97,6.97,0,1,0-13.94,0v56.37a8.406,8.406,0,0,0,8.4,8.4H297.1a6.97,6.97,0,1,0,0-13.94Z" />
+                                            <path
+                                                d="M338.962,241.494,359.6,221.548a6.873,6.873,0,0,0-9.554-9.882L324.311,238.43V216.239a7.363,7.363,0,1,0-14.726,0v58.4a7.363,7.363,0,1,0,14.726,0V255.656l4.723-4.566,20.433,27.487a7.265,7.265,0,0,0,11.456-8.938Z" />
+                                            <path
+                                                d="M256,0C114.615,0,0,114.615,0,256S114.615,512,256,512,512,397.385,512,256,397.385,0,256,0Zm0,358.935a185.433,185.433,0,0,1-28.708-2.225l-57.987,40.667a3.674,3.674,0,0,1-5.663-3.941l13.779-52.516c-40.928-20.55-68.088-56.675-68.088-97.814C109.333,179.135,175,127.277,256,127.277s146.667,51.858,146.667,115.829S337,358.935,256,358.935Z" />
+                                        </svg></span> 카카오
                                     로그인</a>
                             </button>
                         </div>
@@ -143,16 +170,18 @@
                 </form>
             </div>
 
-            
+
         </div>
         <video class="video" autoplay muted loop>
             <source src="http://www.georgewpark.com/video/blurred-street.webm" type="video/webm" />
-</video>
+        </video>
 
-      
+
 
     </div>
 
+    <!-- 폰트어썸 스크립트  -->
+    <script src="https://kit.fontawesome.com/8ebdf2f8e8.js" crossorigin="anonymous"></script>
 
 </body>
 

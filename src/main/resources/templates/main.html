@@ -1012,8 +1012,6 @@
                 <div class="card cardboxinner" th:each="room : ${roomlist}">
                     <!-- 카드 헤더 -->
                     <div class="card-header">
-                        <!--  style="background-image:url(/img/coffee.jpg); margin-top:0.5rem;" -->
-
                         <img th:if="${room.roomImgEntities != null}" class="card-img"
                              th:src="@{ 'roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
 

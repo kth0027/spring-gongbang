@@ -1,13 +1,9 @@
 package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
-import com.ezen.domain.entity.MemberEntity;
-import com.ezen.domain.entity.RoomEntity;
-import com.ezen.domain.entity.TimeTableEntity;
+import com.ezen.domain.entity.*;
 import com.ezen.domain.entity.repository.*;
-import com.ezen.service.MemberService;
-import com.ezen.service.ReplyService;
-import com.ezen.service.RoomService;
+import com.ezen.service.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +75,9 @@ public class RoomController {
         String local = request.getParameter("classLocal");
         String category = request.getParameter("classCategory");
 
+        Page<RoomEntity> roomEntities = null;
+        List<RoomEntity> rooms = null;
+
         // 세션 호출
         HttpSession session = request.getSession();
 
@@ -87,19 +86,30 @@ public class RoomController {
             session.setAttribute("keyword", keyword);
             session.setAttribute("local", local);
             session.setAttribute("category", category);
+            roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
         }
         // 2. 아무것도 선택하지 않았을 경우, 이전 검색한 세션을 그대로 활용한다.
         else {
-            keyword = (String) session.getAttribute("keyword");
-            local = (String) session.getAttribute("local");
-            category = (String) session.getAttribute("category");
-        }
+            // 1. 이전 세션이 없는 경우
+                // 1. Page 가 아니라
+            if (session.getAttribute("keyword") == null && session.getAttribute("local") == null && session.getAttribute("category") == null) {
+                rooms = roomRepository.findAll();
+                roomEntities = roomService.getRoomEntityBySearch(pageable, "", "", "");
+            } else {
+                // 2. 이전 세션이 있는 경우
+                keyword = (String) session.getAttribute("keyword");
+                local = (String) session.getAttribute("local");
+                category = (String) session.getAttribute("category");
+            }
 
-        assert keyword != null;
-        Page<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
+        }
 
         if (roomEntities != null) {
             model.addAttribute("roomEntities", roomEntities);
+            // 1. roomview.js 에서 사용하기 위해서 검색 관련 변수들을 front 로 넘겨줍니다.
+            model.addAttribute("keyword", keyword);
+            model.addAttribute("category", category);
+            model.addAttribute("local", local);
         } else {
             // 비정상적인 경로로 접근하면 error 페이지를 띄운다.
             return "error";
@@ -182,7 +192,6 @@ public class RoomController {
                                 @RequestParam("checkBox2") String checkBox2,
                                 @RequestParam("checkBox3") String checkBox3,
                                 @PageableDefault Pageable pageable) {
-        // 1. roomStatus : 0 --> 검토중으로 설정
         roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
@@ -207,9 +216,6 @@ public class RoomController {
     public JSONObject gongbang(@PageableDefault Pageable pageable) {
 
         HttpSession session = request.getSession();
-
-
-
         String keyword = (String) session.getAttribute("keyword");
         String local = (String) session.getAttribute("local");
         String category = (String) session.getAttribute("category");
@@ -218,22 +224,42 @@ public class RoomController {
         JSONArray jsonArray = new JSONArray();
 
         Page<RoomEntity> roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
-
         for (RoomEntity roomEntity : roomEntities) {
-
             JSONObject data = new JSONObject();
-
             data.put("lat", roomEntity.getRoomAddress().split(",")[1]);
             data.put("lng", roomEntity.getRoomAddress().split(",")[2]);
             data.put("roomTitle", roomEntity.getRoomTitle());
             data.put("roomNo", roomEntity.getRoomNo());
             data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
+            jsonArray.add(data);
+        }
+        jsonObject.put("positions", jsonArray);
+        return jsonObject;
+    }
 
-            jsonArray.add(data); //리스트에 저장
+    // 검색 값이 없는 경우에는 리스트 전체를 출력해야합니다.
+    @GetMapping("/gongbangAll.json")
+    @ResponseBody
+    public JSONObject gongbangAll() {
+
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        List<RoomEntity> roomEntities = roomRepository.findAll();
+
+        for (RoomEntity roomEntity : roomEntities) {
+            JSONObject data = new JSONObject();
+            data.put("lat", roomEntity.getRoomAddress().split(",")[1]);
+            data.put("lng", roomEntity.getRoomAddress().split(",")[2]);
+            data.put("roomTitle", roomEntity.getRoomTitle());
+            data.put("roomNo", roomEntity.getRoomNo());
+            data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
+            jsonArray.add(data);
         }
 
-        jsonObject.put("positions", jsonArray); // json 전체에 리스트 넣기
+        jsonObject.put("positions", jsonArray);
         return jsonObject;
+
     }
 
     @GetMapping("/addressXY")

@@ -38,11 +38,6 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomDetail", columnDefinition = "LONGTEXT")
     private String roomDetail;
 
-    // [클래스 진행 예정 날짜]
-    // TimeTable 에 역할을 위임했으므로 여기서 제거합니다.
-//    @Column(name = "roomDate")
-//    private String roomDate;
-
     // [클래스 주소]
     // [도로명 주소],[위도],[경도]
     // 위 조합으로 한꺼번에 db에 저장합니다.
@@ -95,6 +90,7 @@ public class RoomEntity extends BaseTimeEntity {
     private List<NoteEntity> noteEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<ReplyEntity> replyEntities = new ArrayList<ReplyEntity>();
 
     // 클래스 1개는 여러개의 예약 내역을 가질 수 있습니다.

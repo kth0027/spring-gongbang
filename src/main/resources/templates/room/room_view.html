@@ -27,21 +27,31 @@
             border-radius: 3rem;
         }
 
+        <!-- '예약' 버튼 -->
         .classBtn{
-            border: 1px solid #374b73;
+            border: 1px solid #ff9a9a;
             background-color: rgb(0, 0, 0, 0);
             color: #ff9a9a;
             padding: 5px;
+            width: 100%;
         }
 
+        .classBtn:hover{
+            cursor: pointer;
+            color: #fff1ed;
+        }
+
+        <!-- 개설 내역 출력-->
         .classContent{
-            border: 1px solid #374b73;
+            border: 1px solid #ff9a9a;
             background-color: rgb(0, 0, 0, 0);
             color: #ff9a9a;
             padding: 5px;
+            width: 100%;
         }
 
     </style>
+
     <link rel="stylesheet" th:href="@{/css/room_view.css}">
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
 
@@ -206,11 +216,10 @@
             1. roomNo 에 해당하는 TimeTable 엔티티를 가져온다.
             2. roomDate : YYYY-MM-DD
             3. 각 날짜 Id : YYYY-MM-DD
-
             -->
 
             <!-- 달력 출력 시작 -->
-            <div style="width: 450px; height: 550px; box-shadow: 5px 5px 5px #cccccc;">
+            <div style="width: 28.0rem; height: 32.0rem; box-shadow: 5px 5px 5px #cccccc;">
                 <div class="sec_cal">
                     <div class="cal_nav">
                         <a href="javascript:;" class="nav-btn go-prev">prev</a>
@@ -240,7 +249,7 @@
 
             <!-- 날짜 선택 시 보여줄 화면-->
             <!-- 해당 날짜에 등록된 클래스 정보 + 시간을 알려준다-->
-            <div class="container" style="width: 300px;">
+            <div class="container" style="width: 28.0rem;">
                 <div class="row time-selected-wrapper">
                     <!-- 반복문을 돌면서 -->
                     <div id="time-select-inner"></div>

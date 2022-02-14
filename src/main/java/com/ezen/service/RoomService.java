@@ -69,7 +69,7 @@ public class RoomService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
-                String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
+                String dir = "C:\\Users\\re_mu\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
 
                 // 상대 경로 지정
                 // String newdir = "/static/roomimg";
@@ -124,7 +124,6 @@ public class RoomService {
             page = pageable.getPageNumber() - 1;
         }
 
-        System.out.println("########    current page is " + page + "   #######");
         // 페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
         pageable = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
 

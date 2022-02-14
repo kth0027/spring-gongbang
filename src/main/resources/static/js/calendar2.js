@@ -42,7 +42,7 @@ function daySelect(year , month , day, roomNo){
                 var roomMax = room.max;
                 var roomDate = room.date;
 
-                var roomhtml = "<div class='col-sm-8'>";
+                var roomhtml = "<div class='col-8'>";
                 roomhtml += "<div class='classContent'>";
                 roomhtml += "<div> 클래스 이름 : " + roomTitle + "</div>";
                 roomhtml += "<div> 시작시간 : " + roomBeginTime + "</div>";
@@ -51,7 +51,7 @@ function daySelect(year , month , day, roomNo){
                 roomhtml += "<div> 최대 가능 인원 : " + roomMax + "</div>";
                 roomhtml += "</div>";
                 roomhtml += "</div>";
-                roomhtml += "<div class='col-sm-4'>";
+                roomhtml += "<div class='col-4'>";
                 roomhtml += "<button class='classBtn' onclick='registerClass("+roomNo+","+roomBeginTime+","+roomEndTime+","+roomDate+");'>";
                 roomhtml += "클래스신청";
                 roomhtml += "</button>";

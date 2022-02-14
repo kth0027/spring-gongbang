@@ -2,6 +2,7 @@
 $(function(){
 
     $("ul.tabs li").click(function(){
+
         var tabId = $(this).attr("data-tab");
 
         $("ul.tabs li").removeClass("current");
@@ -13,7 +14,7 @@ $(function(){
 
     $('#summernote').summernote({
         lang: 'ko-KR',  // 메뉴 한글 버전 ,
-        minHeight: 400, // 최z소 높이
+        minHeight: 400, // 최소 높이
         maxHeight: null,
         placeholder: "내용 입력"
 
@@ -35,133 +36,123 @@ $(function(){
             $("#checkBox3").val("주차공간을 제공합니다");
         }
     });
-
 });
 
-
 // 사진 미리보기 및 업로드 js 시작
+var input = document.getElementById("image-input");
+var initLabel = document.getElementById("image-label");
 
-// var input = document.getElementById("rinput");
-var initLabel = document.getElementById("rlabel");
-
-$("#rinput")[0].addEventListener("change", classinput);
-
-function classinput(e){
-    const files = changeEvent(e);
+$("#image-input")[0].addEventListener("change", (event) => {
+    const files = changeEvent(event);
     handleUpdate(files);
-}
+});
 
 initLabel.addEventListener("mouseover", (event) => {
-  event.preventDefault();
-  const label = document.getElementById("plabel");
-  label?.classList.add("plabel--hover");
+    event.preventDefault();
+    const label = document.getElementById("image-label");
+    label?.classList.add("image-label--hover");
 });
 
 initLabel.addEventListener("mouseout", (event) => {
-  event.preventDefault();
-  const label = document.getElementById("plabel");
-  label?.classList.remove("plabel--hover");
+    event.preventDefault();
+    const label = document.getElementById("image-label");
+    label?.classList.remove("image-label--hover");
 });
 
 document.addEventListener("dragenter", (event) => {
-  event.preventDefault();
-  console.log("dragenter");
-  if (event.target.className === "inner") {
-    event.target.style.background = "#616161";
-  }
+    event.preventDefault();
+        console.log("dragenter");
+        if (event.target.className === "inner") {
+        event.target.style.background = "#fff1ed";
+    }
 });
 
 document.addEventListener("dragover", (event) => {
-  console.log("dragover");
-  event.preventDefault();
+    console.log("dragover");
+    event.preventDefault();
 });
 
 document.addEventListener("dragleave", (event) => {
-  event.preventDefault();
-  console.log("dragleave");
-  if (event.target.className === "pinner") {
-    event.target.style.background = "#3a3a3a";
-  }
+    event.preventDefault();
+    console.log("dragleave");
+    if (event.target.className === "inner") {
+        event.target.style.background = "#fff1ed";
+    }
 });
 
 document.addEventListener("drop", (event) => {
-  event.preventDefault();
-  console.log("drop");
-  if (event.target.className === "pinner") {
-    const files = event.dataTransfer?.files;
-    event.target.style.background = "#3a3a3a";
-    handleUpdate([...files]);
-  }
+    event.preventDefault();
+    console.log("drop");
+    if (event.target.className === "inner") {
+        const files = event.dataTransfer?.files;
+        event.target.style.background = "#fff1ed";
+        handleUpdate([...files]);
+    }
 });
 
 function changeEvent(event){
-  const { target } = event;
-  return [...target.files];
+    const { target } = event;
+    return [...target.files];
 };
 
 function handleUpdate(fileList){
-  const preview = document.getElementById("preview");
-
-  fileList.forEach((file) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", (event) => {
-      const img = el("img", {
-        className: "embed-img img-fluid",
-        src: event.target?.result,
-      });
-      const imgContainer = el("div", { className: "container-img" }, img);
-      preview.append(imgContainer);
+    const preview = document.getElementById("preview");
+    fileList.forEach((file) => {
+        const reader = new FileReader();
+        reader.addEventListener("load", (event) => {
+            const img = el("img", {
+                className: "embed-img img-fluid",
+                src: event.target?.result,
+            });
+            const imgContainer = el("div", { className: "container-img" }, img);
+                preview.append(imgContainer);
+            });
+        reader.readAsDataURL(file);
     });
-    reader.readAsDataURL(file);
-  });
 };
 
 function el(nodeName, attributes, ...children) {
-  const node =
+    const node =
     nodeName === "fragment"
-      ? document.createDocumentFragment()
-      : document.createElement(nodeName);
+    ? document.createDocumentFragment()
+    : document.createElement(nodeName);
 
-  Object.entries(attributes).forEach(([key, value]) => {
-    if (key === "events") {
-      Object.entries(value).forEach(([type, listener]) => {
-        node.addEventListener(type, listener);
-      });
-    } else if (key in node) {
-      try {
-        node[key] = value;
-      } catch (err) {
+    Object.entries(attributes).forEach(([key, value]) => {
+        if (key === "events") {
+            Object.entries(value).forEach(([type, listener]) => {
+            node.addEventListener(type, listener);
+            });
+        } else if (key in node) {
+            try {
+            node[key] = value;
+            } catch (err) {
+            node.setAttribute(key, value);
+            }
+        } else {
         node.setAttribute(key, value);
-      }
-    } else {
-      node.setAttribute(key, value);
-    }
-  });
+        }
+    });
 
-  children.forEach((childNode) => {
-    if (typeof childNode === "string") {
-      node.appendChild(document.createTextNode(childNode));
-    } else {
-      node.appendChild(childNode);
-    }
-  });
+    children.forEach((childNode) => {
+        if (typeof childNode === "string") {
+            node.appendChild(document.createTextNode(childNode));
+        } else {
+            node.appendChild(childNode);
+        }
+    });
 
   return node;
 }
 // 사진 미리보기 및 업로드 js 종료
 
 // 다음 주소 등록 api 시작
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+var mapContainer = document.getElementById('map'),
     mapOption = {
-        center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
-        level: 5 // 지도의 확대 레벨
+        center: new daum.maps.LatLng(37.537187, 127.005476),
+        level: 5
     };
-
-//지도를 미리 생성
 var map = new daum.maps.Map(mapContainer, mapOption);
-//주소-좌표 변환 객체를 생성
 var geocoder = new daum.maps.services.Geocoder();
-//마커를 미리 생성
 var marker = new daum.maps.Marker({
     position: new daum.maps.LatLng(37.537187, 127.005476),
     map: map

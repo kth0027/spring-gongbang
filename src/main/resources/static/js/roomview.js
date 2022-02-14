@@ -58,65 +58,6 @@
 
 
 
-//
-//         $("#classSearchBtn").on("click", function(){
-//
-//                 // 검색어, 지역, 카테고리 를 인수로 넘겨받는다.
-//                 var keyword = $("#roomSearch").val();
-//                 var local = $("#classLocal").val();
-//                 var category = $("#classCategory").val();
-//
-//
-//                 $.ajax({
-//                     url : "/room/gongbang.json",
-//                     data : {"keyword" : keyword, "local" : local, "category" : category},
-//                     method : "GET",
-//                     async: false,
-//                     success: function(data){
-//                         alert( data );
-//                         var markers = $(data.positions).map(function(i, position) {
-//
-//                            alert( position.lat );
-//                            alert( position.lng );
-//                             var marker = new kakao.maps.Marker({ // return 막기
-//                                 position : new kakao.maps.LatLng(position.lat, position.lng)
-//                             });
-//                             // 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
-//                             kakao.maps.event.addListener(marker, 'click', function() {
-//                             // 커스텀 오버레이를 생성하고 지도에 표시한다
-//                                   var customOverlay = new kakao.maps.CustomOverlay({
-//                                      map: map2,
-//                                      content: "<div style='padding:0 5px;background:#fff;'>"+position.roomNo+","+position.roomImg+"<br><a href='/room/view/"+position.roomNo+"'>바로가기</a></div>", // 내용물
-//                                      position: new kakao.maps.LatLng(position.lat, position.lng) , // 커스텀 오버레이를 표시할 좌표
-//                                       xAnchor: 0.5, // 컨텐츠의 x 위치
-//                                       yAnchor: 0 // 컨텐츠의 y 위치
-//                                   });
-//                                   alert(JSON.stringify(marker));
-//                                   return marker;
-//                             });
-//
-//                             clusterer.addMarkers(markers);
-//                         });
-//
-//                         kakao.maps.event.addListener(clusterer, 'clusterclick', function(cluster) {
-//
-//                         // 현재 지도 레벨에서 1레벨 확대한 레벨
-//                         var level = map2.getLevel()-1;
-//
-//                         // 지도를 클릭된 클러스터의 마커의 위치를 기준으로 확대합니다
-//                         map2.setLevel(level, {anchor: cluster.getCenter()});
-//                         });
-//                     }
-//                 });
-//
-//
-//             });
-//     });
-//
-
-
-
-
     // 문의 버튼 클릭 이벤트
 function notewrite(roomNo){
    var noteContents =$("#noteContents").val();

@@ -169,6 +169,11 @@ public class RoomController {
         // 2. roomNo 이용해서 해당 강좌의 개설된 정보 (TimeTable) 을 불러온다.
         List<TimeTableEntity> timeTableEntities = roomEntity.getTimeTableEntity();
         model.addAttribute("timeTableEntities", timeTableEntities);
+
+        // 3. 좋아요 상태보내기
+        int count= roomEntity.getRoomLikeEntities().size();
+        model.addAttribute("count",count);
+
         return "room/room_view"; // 타임리프
     }
 
@@ -338,12 +343,7 @@ public class RoomController {
         roomService.nreadupdate(noteNo);
     }
 
-    // [ review 페이지 맵핑 ] 01-27 조지훈
-    @GetMapping("/review/{roomNo}")
-    public String review(@PathVariable("roomNo") int roomNo, Model model) {
-        model.addAttribute("roomNo", roomNo);
-        return "room/room_review";
-    }
+
 
     // [조회수 증가]
     // @Date : 2022-02-14

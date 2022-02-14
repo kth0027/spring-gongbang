@@ -56,7 +56,7 @@ public class ReplyService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-");
 
-                String dir = "C:\\Users\\505\\Desktop\\gongbang\\src\\main\\resources\\static\\replyimg";
+                String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\replyimg";
                 String filepath = dir + "\\" + uuidfile;
                 try{
                     file.transferTo(new File(filepath));
@@ -72,6 +72,13 @@ public class ReplyService {
                 replyEntitysaved.getReplyImgEntities().add(replyImgRepository.findById(replyImgNo).get());
 
             }
+        } else{
+            ReplyImgEntity replyImgEntity = ReplyImgEntity.builder()
+                    .replyImg(null)
+                    .replyEntity(replyEntitysaved)
+                    .build();
+            int replyImgNo = replyImgRepository.save(replyImgEntity).getReplyImgNo();
+            replyEntitysaved.getReplyImgEntities().add(replyImgRepository.findById(replyImgNo).get());
         }
         return true;
     }

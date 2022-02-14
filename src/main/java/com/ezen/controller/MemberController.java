@@ -294,5 +294,9 @@ public class MemberController { // C S
         return "member/calculate_page";
     }
 
+    @GetMapping("/channel")
+    public String channel() {
+        return "member/channel";
+    }
 
 }

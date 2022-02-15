@@ -294,9 +294,45 @@ public class MemberController { // C S
         return "member/calculate_page";
     }
 
+    // 채널 맵핑
     @GetMapping("/channel")
     public String channel() {
         return "member/channel";
     }
+
+    // 충전소 페이지 맵핑
+    @GetMapping("/member_payment")
+    public String payment(Model model) {
+        // 1. 로그인 세션 호출
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberDto memberDto = memberService.getmemberDto(loginDto.getMemberNo());
+        model.addAttribute("memberDto", memberDto);
+
+        return "member/member_payment";
+    }
+
+
+    // 충전 처리 컨트롤러
+    @GetMapping("/paymentcontroller")
+    @ResponseBody
+    public String paymentcontroller(@RequestParam("totalpay")int totalpay) {
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        int memberNo = loginDto.getMemberNo();
+        MemberEntity member = memberService.getMemberEntity(loginDto.getMemberNo());
+
+        int memberPoint = member.getMemberPoint();
+
+        boolean result = memberService.payment(memberNo, memberPoint,totalpay );
+        if(result){
+            return "1";
+        } else{
+            return "2";
+        }
+
+
+    }
+
 
 }

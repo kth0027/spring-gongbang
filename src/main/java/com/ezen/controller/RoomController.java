@@ -356,5 +356,10 @@ public class RoomController {
     // [댓글 갯수 카운트]
     // @Date : 2022-02-14
 
+    // 결제기능
+    // @Date : 2022-02-15
+
+
+
 
 }

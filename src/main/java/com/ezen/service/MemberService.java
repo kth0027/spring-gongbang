@@ -4,6 +4,8 @@ package com.ezen.service;
 import com.ezen.domain.dto.IntergratedDto;
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
+import com.ezen.domain.entity.RoomEntity;
+import com.ezen.domain.entity.RoomLikeEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -173,4 +175,39 @@ public class MemberService implements UserDetailsService {
         // 회원정보와 권한을 갖는 UserDetails 반환
         return new IntergratedDto(memberEntity, authorities);
     }
+
+
+    // 충전금액 증가
+    @Transactional
+    public boolean payment(int memberNo, int memberPoint, int totalpay){
+        try {
+            // 1. 수정할 엔티티 찾는다
+            Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
+            // 2. 엔티티를 수정한다[엔티티변화=>DB변경]
+
+            entityOptional.get().setMemberPoint(memberPoint+totalpay);
+
+            return true;
+        }
+        catch ( Exception e ){
+
+            System.out.println( e );
+            return false;
+        }
+
+
+    }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+

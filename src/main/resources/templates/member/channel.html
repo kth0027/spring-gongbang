@@ -14,6 +14,15 @@
         border-radius: 7px;
         flex-direction: column;
         }
+
+        .menubar li{ 
+        font-size: 1.5rem;
+        margin-right: 2rem;
+        }
+        
+        .container{
+            margin-bottom: 3rem;
+        }
     </style>
 </head>
 <body>
@@ -26,11 +35,11 @@
         <div style="height:200px;">
 
         </div>
-        <h3 th:text="${memberEntity.channelTitle}"></h3>
+        <h3 th:text="${memberEntity.channelTitle}" style="font-weight: bold;"></h3>
         <div sec:authorize="isAuthenticated()" th:if="${session.logindto.memberNo == memberEntity.memberNo}">
             <a th:href="@{'/member/channelupdate/' + ${memberEntity.memberNo} }"><button>채널 정보 수정</button></a>
         </div>
-        <ul class="nav col-12 col-md-auto mb-2 mt-3 justify-content-center">
+        <ul class="nav col-12 col-md-auto mb-2 mt-3 justify-content-center menubar">
             <li>홈</li>
             <li>오프라인 클래스</li>
             <li>라이브 클래스</li>
@@ -53,7 +62,7 @@
                 </div>
             </div>
             <hr>
-            <div>
+            <div style="height: 500px;">
                 <h3><strong>강사 소개</strong></h3>
                 <div th:utext="${memberEntity.channelContent}"></div>
             </div>

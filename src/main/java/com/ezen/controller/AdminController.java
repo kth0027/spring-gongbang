@@ -22,7 +22,7 @@ public class AdminController {
     @GetMapping("/adminlist")
     public String adminlist(Model model, @PageableDefault Pageable pageable) {
         Page<RoomEntity> roomEntities = roomService.getroomlist(pageable);
-        model.addAttribute("roomEntities",roomEntities);
+        model.addAttribute("roomEntities", roomEntities);
         return "admin/adminlist";
     }
 
@@ -34,31 +34,21 @@ public class AdminController {
         return "1";
     }
 
-// 방번호를 이용한 방 상태변경
-@GetMapping("/activeupdate")
-@ResponseBody
-public String activeupdate(@RequestParam("roomNo") int roomNo,
-                           @RequestParam("active") String update){
-    boolean result = roomService.activeupdate(roomNo, update);
-    if(result){
-        return "1";
-    } else{
-        return "2";
+    // 방번호를 이용한 방 상태변경
+    // '검토중' '승인중' '승인완료' '승인거부' '정원마감'
+    @GetMapping("/activeupdate")
+    @ResponseBody
+    public String activeupdate(@RequestParam("roomNo") int roomNo,
+                               @RequestParam("active") String update) {
+        boolean result = roomService.activeupdate(roomNo, update);
+        if (result) {
+            return "1";
+        } else {
+            return "2";
+        }
+
+
     }
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

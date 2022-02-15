@@ -8,6 +8,8 @@ import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.*;
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomService;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RequestMapping("/member")
@@ -47,6 +50,10 @@ public class MemberController { // C S
     // 예약 내역과 관련된 것은 모두 MemberController, ServiceController 에 선언합니다.
     @Autowired
     private HistoryRepository historyRepository;
+
+    // 클래스 장바구니
+    @Autowired
+    private RoomLikeRepository roomLikeRepository;
 
     // 회원가입페이지 연결
     @GetMapping("/signup")
@@ -167,9 +174,11 @@ public class MemberController { // C S
     // 1. 회원이 신청한 정보를 DB에 등록하면서 예약 처리하는 메소드입니다.
     @GetMapping("/registerClass")
     @ResponseBody
+    @Transactional
     public String registerClass(@RequestParam("roomNo") int roomNo,
-                                @RequestParam("classTime") String classTime,
-                                @RequestParam("roomDate") String roomDate) {
+                                @RequestParam("roomTime") String classTime,
+                                @RequestParam("roomDate") String roomDate,
+                                @RequestParam("person") int person) {
 
         MemberEntity memberEntity = null;
         // 0. 로그인된 회원 정보를 불러온다.
@@ -185,10 +194,17 @@ public class MemberController { // C S
 
         RoomEntity roomEntity = null;
         TimeTableEntity timeTableTmp = null;
+
         // 1. roomNo 에 해당하는 room 엔티티를 호출한다.
         // 1.1 history 저장 후 room 엔티티에 선언된 list 에 histroy 를 추가시켜야한다.
         if (roomRepository.findById(roomNo).isPresent()) {
             roomEntity = roomRepository.findById(roomNo).get();
+        }
+
+        // 1.2 클래스에 등록된 최대 인원을 넘어가면 등록을 막는다.
+        assert roomEntity != null;
+        if (roomEntity.getRoomMax() < person) {
+            return "2";
         }
         // 2. 받아온 시간으로 TimeTable 을 가져온다.
         // 2.1 TimeTable 내에서 roomTime 에 해당하는 것만 등록한다.
@@ -199,6 +215,7 @@ public class MemberController { // C S
             }
         }
 
+
         // 3. HistoryEntity 에 멤버 정보, 클래스 정보를 들록합니다.
         HistoryEntity historyEntity = HistoryEntity.builder()
                 .memberEntity(memberEntity)
@@ -206,8 +223,15 @@ public class MemberController { // C S
                 .timeTableEntity(timeTableTmp)
                 .build();
 
+
         // 4. 예약내역 저장하고 저장번호 받아오기
         int savedHistoryEntityNo = historyRepository.save(historyEntity).getHistoryNo();
+        // 신청한 정원만큼 클래스 수용 인원을 감소시킵니다. 
+        roomEntity.setRoomMax(roomEntity.getRoomMax() - person);
+        // 수용 가능 인원이 '0' 명이 된다면, 클래스 상태를 '모집완료' 로 바꿉니다. 
+        if(roomEntity.getRoomMax() == 0){
+            roomEntity.setRoomStatus("모집완료");
+        }
 
         // 5. 위에서 저장한 예약내역 가져오기
         HistoryEntity savedHistoryEntity = historyRepository.findById(savedHistoryEntityNo).get();
@@ -215,15 +239,11 @@ public class MemberController { // C S
         // 6. historyEntity 를 TimeTable Entity 에 선언한 List<HistoryEntity> 에 추가한다.
         assert timeTableTmp != null;
         timeTableTmp.getHistoryEntity().add(savedHistoryEntity);
-
         memberEntity.getHistoryEntities().add(savedHistoryEntity);
-
-        assert roomEntity != null;
         roomEntity.getHistoryEntities().add(savedHistoryEntity);
 
         return "1";
     }
-
 
     // [회원 예약 내역 페이지와 맵핑]
     // @Param memberNo : 회원 번호를 넘겨받는다.
@@ -235,9 +255,7 @@ public class MemberController { // C S
         int memberNo = loginDto.getMemberNo();
         // memberNo 에 해당하는 예약 내역을 불러옵니다.
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
-
         model.addAttribute("histories", historyEntities);
-
         return "member/history_list";
     }
 
@@ -249,7 +267,7 @@ public class MemberController { // C S
         return "member/member_class";
     }
 
-    // [내가 예약한 클래스와 맵핑]
+    // [내가 예약한 클래스 날짜에 대한 정보를 달력에 뿌려주기 위한 메소드]
     @GetMapping("/reservation")
     @ResponseBody
     public String reservationList() {
@@ -262,11 +280,66 @@ public class MemberController { // C S
         // 1. memberNo 사용해 History 엔티티를 List 형태로 호출한다.
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
         // 2. history 엔티티와 맵핑되어있는 timetable 엔티티를 가져와서 roomDate 를 str 에 담는다.
-        for(HistoryEntity history : historyEntities){
+        for (HistoryEntity history : historyEntities) {
             str.append(history.getTimeTableEntity().getRoomDate()).append(",");
             System.out.println(str);
         }
         return str.toString();
+    }
+
+    // [내가 예약한 RoomEntity 에 관한 정보를 캘린더에 뿌려주기 위한 메소드]
+    @GetMapping("/memberHistoryJSON")
+    @ResponseBody
+    public JSONObject getRoomEntityByMemberNo(@RequestParam("date") String date) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        int memberNo = loginDto.getMemberNo();
+
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        // memberNo 를 사용해서 History 엔티티를 불러옵니다.
+        List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
+        // HistoryEntity 에는 memberEntity, roomEntity, timeTableEntity 가 모두 맵핑되어있습니다.
+
+        TimeTableEntity timeTableEntity = null;
+        RoomEntity roomEntity = null;
+
+        // JSON 에 넘겨줄 정보는 다음과 같다
+        // 1. title : 클래스 이름
+        // 2. date : 클래스 개설 날짜
+        // 3. beginTime, endTime : 클래스 시작 시간, 끝나는 시간
+        // 4. category : 클래스 카테고리
+        // 5. local : 클래스 지역
+        // 6. address : 클래스 도로명 주소
+
+        // History 엔티티를 for 문을 돌면서 JSON 에 저장시킨다.
+        for (HistoryEntity historyEntity : historyEntities) {
+            // for 문 안에서 data 에 정보를 누적시킵니다.
+            JSONObject data = new JSONObject();
+
+            // historyEntity 안에서 캘린더에서 클릭한 날짜와 동일한 정보만을 담아야합니다.
+            if (historyEntity.getTimeTableEntity().getRoomDate().equals(date)) {
+                if (timeTableRepository.findById(historyEntity.getTimeTableEntity().getTimeTableNo()).isPresent()) {
+                    timeTableEntity = timeTableRepository.findById(historyEntity.getTimeTableEntity().getTimeTableNo()).get();
+                    data.put("beginTime", timeTableEntity.getRoomTime().split(",")[0]);
+                    data.put("endTime", timeTableEntity.getRoomTime().split(",")[1]);
+                    data.put("date", timeTableEntity.getRoomDate());
+                }
+                if (roomRepository.findById(historyEntity.getRoomEntity().getRoomNo()).isPresent()) {
+                    roomEntity = roomRepository.findById(historyEntity.getRoomEntity().getRoomNo()).get();
+                    data.put("category", roomEntity.getRoomCategory());
+                    data.put("local", roomEntity.getRoomLocal());
+                    data.put("title", roomEntity.getRoomTitle());
+                    data.put("address", roomEntity.getRoomAddress());
+                    data.put("roomNo", roomEntity.getRoomNo());
+                }
+                jsonArray.add(data);
+            }
+        }
+        jsonObject.put("json", jsonArray);
+        return jsonObject;
     }
 
     // [메시지 페이지와 맵핑]

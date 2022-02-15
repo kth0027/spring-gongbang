@@ -17,21 +17,17 @@ function notereplywrite(){
    var noteReply = $("#noteReply").val();
    var noteNo = $("#noteNo").val();
 
-
    $.ajax({
         url: "/member/notereplywrite",
         data: {"noteReply":noteReply, "noteNo":noteNo},
         success: function(data){
             if(data==1){
-                       alert("정상적으로 답변하셧습니다.");
+                alert("정상적으로 답변하셧습니다.");
 
-                        $("#notereplymodal").val(""); // 내용물 초기화
-                        $("#notereplymodal").modal("hide"); // 모달 종료
-                   }
-
-
+                $("#notereplymodal").val(""); // 내용물 초기화
+                $("#notereplymodal").modal("hide"); // 모달 종료
+            }
         }
-
    });
 
 }

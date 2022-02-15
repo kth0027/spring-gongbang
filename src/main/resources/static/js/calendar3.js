@@ -3,40 +3,35 @@
 @Author : 김정진
 @Date : 2022-02-09~
 @Note :
-    1. 인수를 전달받고 개설된 강좌만 선택되도록 하는 달력을 출력합니다.
+    1. calendar2 와 달리 calendar3 에서는 로그인된 회원의 전체 예약 내역을 출력해야합니다.
+    2. roomNo 가 아닌 memberNo 받고 History, TimeTable, Room 에 접근해야 합니다.
+    3.
 */
 
 $(document).ready(function() {
     getTimeTable();
 });
 
-// [클래스 예약 진행하는 함수]
-// [해당 날짜를 클릭하면 개설된 강좌와 신청 버튼을 출력합니다]
-// 1.
-function daySelect(year , month , day, roomNo){
-    // 선택한 날짜의 아이디 : YYYY-MM-DD
+
+// memberNo 는 로그인 세션에서 받습니다.
+function daySelect(year , month , day){
     var date = year + "-" + (month + 1) + "-" + day;
-    // view 에 선택한 날짜를 텍스트로 보여줍니다.
-    // 그리고 input 값으로 활용하기 위해서 하나는 hidden 으로 설정해두었습니다.
-    $("#selectedDate").val(date);
-    $("#roomDate").val(date);
-    // 해당 날짜를 선택했을 때의 이벤트를 부여합니다.
-    // DB 를 조회해서 선택한 날짜에 개설된 강좌 정보를 불러옵니다.
+    // 세션에 저장되어 있는 memberNo 를 활용해서 History List 를 불러옵니다.
+
+    // 날짜 클릭 시, 기존에 출력이 되어있던 영역을 숨겨야합니다.
+    $(".reservation-content").hide();
+
     $.ajax({
-        url: "/room/toJSON", // RoomEntity 를 JSON 형태로 받아온다.
-        data: {"activeId" : date, "roomNo" : roomNo},
+        url: "/member/memberHistoryJSON", // RoomEntity 를 JSON 형태로 받아온다.
+        data: {"date" : date},
         method: "GET",
         async: false,
         contentType: "application/json",
         success: function(data){
-            if(data == 1){
-                // 1. 본인은 자신이 개설한 강의를 신청할 수 없습니다.
-                // 2. 리턴된 data 값이 '1' 일 때는 선택할 수 없도록 합니다.
-            }
-            $("#time-select-inner").empty();
-            // 받아온 정보들을 html 로 넘겨준다.
-            // 반복문을 돌아야하니, 다시 controller 로 정보를 넘겨준 뒤
-            // hashmap 형태로 받아서 model 로 넘겨준다.
+            // 기존에 있던 데이터를 지운다.
+            $(".reservation-content").empty();
+            $(".reservation-date-select").empty();
+            // json 으로 받아온 데이터를 html 태그에 추가시킨다.
             var rooms = $(data.json).map(function(i, room) {
 
                 var roomNo = room.roomNo;
@@ -45,82 +40,42 @@ function daySelect(year , month , day, roomNo){
                 var roomBeginTime = room.beginTime;
                 var roomEndTime = room.endTime;
                 var roomLocal = room.local;
-                var roomMax = room.max;
                 var roomDate = room.date;
 
-                var roomhtml = "<div class='col-md-8'>";
-                roomhtml += "<div class='classContent' style='border: 3px solid #374b73; background-color: #ffffff; color: #374b73; padding: 0.5rem;'>";
+                var roomhtml = "<div class='class-selected-wrapper'>";
+                roomhtml += "<div class='class-selected-content'>";
                 roomhtml += "<div> 클래스 이름 : " + roomTitle + "</div>";
-                roomhtml += "<div> <span> 시작시간 : " + roomBeginTime + "</span>  <span> 종료시간 : " + roomEndTime + "</span> </div>";
+                roomhtml += "<div> 시작시간 : " + roomBeginTime + "</div>";
+                roomhtml += "<div> 종료 : " + roomEndTime + "</div>";
                 roomhtml += "<div> 지역 : " + roomLocal + "</div>";
-                roomhtml += "<div> 수용 가능 인원 : " + roomMax + "</div>";
+                roomhtml += "<div> 카테고리 : " + roomCategory + "</div>";
+                roomhtml += "<div> 날짜 : " + roomDate + "</div>";
                 roomhtml += "</div>";
-                roomhtml += "</div>";
-                roomhtml += "<div class='col-md-4'>";
-                roomhtml += "<button style='border: 3px solid ##374b73; color: #374b73; padding: 0.5rem;' onclick='registerClass("+roomNo+","+roomBeginTime+","+roomEndTime+","+roomDate+");'>";
-                roomhtml += "선택";
-                roomhtml += "</button>";
                 roomhtml += "</div>";
 
-                $("#time-select-inner").append(roomhtml);
+                $(".reservation-date-select").append(roomhtml);
+
             });
+
+
         }
     });
 }
 
-// [클래스 신청]
-// [예외 처리]
-// 1. 개설한 본인은 클래스를 신청할 수 없다.
-// 2. 클래스를 신청하면 정원이 줄어야한다.
-// roomNo : 개설된 클래스 식별 번호
-// beginTime : 강좌가 시작되는 시간
-// endTime : 강좌가 종료되는 시간
-// roomDate : 강좌과 열린 시간
+// 특정 날짜, 특정 시간 클래스를 신청한다.
 function registerClass(roomNo, beginTime, endTime, roomDate){
-
-    $("#time-select-inner").empty();
-    var roomTime = beginTime + "," + endTime;
-
-    var jjtest = $("#selectedDate").val();
-    // 1. 최종 선택 이전에 '클래스 선택 사항' 을 출력해야한다.
-    // time-selected-wrapper 에 뿌려줘야한다.
-    var roomhtml = "<div class='container'>";
-    roomhtml += "<div> 날짜 : " + jjtest + "</div>";
-    roomhtml += "<div> <span> 시작시간 : " + beginTime + "</span>  <span> 종료시간 : " + endTime + "</span> </div>";
-    roomhtml += "<div> <span> 최대 수강 신청 인원 : 3명 </span> </div>";
-    roomhtml += "<select onchange='personTest();' class='form-select' id='class-register-person'>";
-    roomhtml += "<option value='1'> 1명 </option>";
-    roomhtml += "<option value='2'> 2명 </option>";
-    roomhtml += "<option value='3'> 3명 </option>";
-    roomhtml += "</select>";
-    roomhtml += "<div> 선택한 인원 수 : <input id='input-person'> </div>";
-    // 인원 수를 클릭 한 뒤에야, 신청 버튼이 나오도록 한다.
-    // 신청을 누를 때는 roomNo, roomDate, roomTime 값이 넘어가야한다.
-    roomhtml += "<input type='hidden' id='register-room-date' value = " + jjtest + ">";
-    roomhtml += "<input type='hidden' id='register-room-time' value = " + roomTime + ">";
-    roomhtml += "<input type='hidden' id='register-room-no' value = " + roomNo + ">";
-    roomhtml += "</div>";
-
-    $("#time-select-inner").append(roomhtml);
-
-
-//    var classTime = beginTime + "," + endTime;
-//
-//
-//
-//    $.ajax({
-//        url: "/member/registerClass",
-//        data: {"roomNo" : roomNo, "classTime" : classTime, "roomDate" : roomDate},
-//        method: "GET",
-//        success: function(data){
-//            if(data==1){
-//                //
-//                alert("신청완료되었습니다. ");
-//            }
-//        }
-//    });
+    var classTime = beginTime + "," + endTime;
+    $.ajax({
+        url: "/member/registerClass",
+        data: {"roomNo" : roomNo, "classTime" : classTime, "roomDate" : roomDate},
+        method: "GET",
+        success: function(data){
+            if(data==1){
+                alert("성공");
+            }
+        }
+    });
 }
-
 
 /*
     달력 렌더링 할 때 필요한 정보 목록
@@ -131,22 +86,17 @@ function registerClass(roomNo, beginTime, endTime, roomDate){
 
 // DB 연동해서 데이터 가져오는 함수
 function getTimeTable(){
-
-    // @Param roomNo : 게시물 상세 페이지에 해당하는 클래스 번호
-    let roomNo = $("#thisRoomNo").val();
-
     $.ajax({
-        url: "/room/timetable",
-        data: {"roomNo" : roomNo},
+        url: "/member/reservation",
         method: "GET",
         success: function(data) {
-            calendarInit(data, roomNo);
+            calendarInit(data);
         }
     });
 }
 
 // 캘린더 출력하는 함수
-function calendarInit(data, roomNo) {
+function calendarInit(data) {
     // 날짜 정보 가져오기
     var date = new Date(); // 현재 날짜(로컬 기준) 가져오기
     var utc = date.getTime() + (date.getTimezoneOffset() * 60 * 1000); // uct 표준시 도출
@@ -198,10 +148,7 @@ function calendarInit(data, roomNo) {
         // [날짜1, 날짜2, ... , ] 식으로 불러오므로, 마지막에는 값이 없다.
 
         var dataSplit = data.split(",");
-
         // 이번달 달력 출력하는 반복문
-
-
         for (var i = 1; i <= nextDate; i++) {
             var flag = false;
             // id : YYYY-MM-DD
@@ -212,11 +159,12 @@ function calendarInit(data, roomNo) {
             let j = 0;
             while( j < count ){
                 if(dayId == dataSplit[j]){
-                    calendar.innerHTML = calendar.innerHTML + '<div style="color: orange;" onclick="daySelect('+currentYear+','+currentMonth+','+i+','+roomNo+')" class="day current day-select active" id="'+dayId+'">' + i + '</div>';
+                    calendar.innerHTML = calendar.innerHTML + '<div style="color: orange;" onclick="daySelect(' + currentYear + ',' + currentMonth + ',' + i + ')" class="day current day-select active" id="'+dayId+'">' + i + '</div>';
                     j = j + 1;
                     flag = true;
                     break;
                 } else {
+
                     j = j + 1;
                 }
             }
@@ -224,6 +172,8 @@ function calendarInit(data, roomNo) {
             } else {
                 calendar.innerHTML = calendar.innerHTML + '<div style="color: gray;" class="day current" id="'+dayId+'">' + i + '</div>';
             }
+
+
         }
 
         // 다음달 달력 출력

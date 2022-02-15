@@ -16,8 +16,9 @@ public interface TimeTableRepository extends JpaRepository<TimeTableEntity, Inte
     @Query(nativeQuery = true, value = "select * from timetable order by createdDate desc")
     List<TimeTableEntity> getByTimeSequence();
 
-    // 2. roomNo 에 해당하는 TimeTable 정보만 불러오기
+    // 2. roomNo 에 해당하는 TimeTable 엔티티를 List 형태로 리턴
     @Query(nativeQuery = true, value = "select * from timetable where roomNo = :roomNo")
     List<TimeTableEntity> getTimeTableByRoomNo(@Param("roomNo") int roomNo);
 
+    // 3. roomNo 에 해당하는 Time
 }

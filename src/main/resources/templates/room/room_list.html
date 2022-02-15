@@ -22,15 +22,13 @@
 
 1. 검색해서 들어오면 리스트로 출력
 2. '지도 표시하기' 버튼을 클릭하면 화면 전환 후 지도 출력
-
-
 -->
 
 <div class="container">
-    <h3>개설중인 클래스 리스트</h3>
+
     <div class="row">
         <!-- 룸 1개당 반복문-->
-        <div class="col-md-4" style="overflow-y: auto; height:700px;" >
+        <div class="col-md-4" style="overflow-y: auto; height:700px; margin-top: 2.5rem;">
             <div th:each="room : ${roomEntities}">
                 <div class="row">
                     <div class="col-md-5">
@@ -56,44 +54,49 @@
                     <br>
                 </div>
             </div>
+
+            <input type="hidden" th:value="${ roomEntities.number + 1 }" id="current-page">
+            <input type="hidden" th:value="${keyword}" id="room-list-keyword">
+            <input type="hidden" th:value="${category}" id="room-list-category">
+            <input type="hidden" th:value="${local}" id="room-list-local">
+
+            <!-- 페이징 처리 -->
             <ul class="pagination justify-content-center"
-                th:with="start=${T(Math).floor(roomEntities.number/10) * 10 + 1 } ,
-                                 last=(${start + 9 < roomEntities.totalPages ?  start + 9 : roomEntities.totalPages })">
-                <!-- &lt;!&ndash; 첫페이지이동 &ndash;&gt;-->
+                th:with="start = ${ T(Math).floor( roomEntities.number / 10 ) * 10 + 1 } ,
+                                 last = ( ${ start + 9 < roomEntities.totalPages ?  start + 9 : roomEntities.totalPages } )">
+                <!-- 첫페이지이동 -->
                 <li class="page-item">
-                    <a class="page-link" th:href="@{/room/list(page=1)}"> << </a>
+                    <a class="page-link" th:href="@{ /room/list( page = 1 ) }"> 처음 </a>
                 </li>
-                <!--   &lt;!&ndash; 이전페이지이동 &ndash;&gt;-->
-                <li class="page-item" th:class="${roomEntities.first}?'disabled'">
-                    <!--&lt;!&ndash; 첫번페이지에서 이전페이지이동 표시 x &ndash;&gt;-->
+                <!-- 이전페이지이동 -->
+                <li class="page-item" th:class="${roomEntities.first} ? 'disabled' ">
+                    <!-- 첫번페이지에서 이전페이지이동 표시 x -->
                     <a class="page-link"
-                       th:href="${roomEntities.first} ? '#' : @{/room/list(page=${ roomEntities.number })}"> < </a>
+                       th:href="${roomEntities.first} ? '#' : @{ /room/list( page = ${ roomEntities.number } ) }">
+                        이전 </a>
                 </li>
-                <!--     &lt;!&ndash; 페이지번호 &ndash;&gt;-->
+                <!-- 페이지번호 -->
                 <li class="page-item" th:each="page : ${#numbers.sequence( start , last ) }">
-                    <a class="page-link" th:href="@{/room/list(page=${page})}" th:text="${page}"> </a>
+                    <a class="page-link" th:href="@{ /room/list( page = ${page} ) }" th:text="${page}"></a>
                 </li>
-                <!-- &lt;!&ndash; 다음페이지이동 &ndash;&gt;-->
-                <li class="page-item" th:class="${roomEntities.last}?'disabled'">
+                <!-- 다음페이지이동 -->
+                <li class="page-item" th:class="${roomEntities.last} ? 'disabled' ">
                     <a class="page-link"
-                       th:href="${roomEntities.last} ? '#' : @{/room/list(page=${roomEntities.number+2})}"> > </a>
+                       th:href="${roomEntities.last} ? '#' : @{ /room/list( page = ${roomEntities.number+2} ) }">
+                        다음
+                    </a>
                 </li>
-                <!--  &lt;!&ndash; 마지막페이지 이동 &ndash;&gt;-->
+                <!-- 마지막페이지 이동 -->
                 <li class="page-item">
-                    <a class="page-link" th:href="@{/room/list(page=${roomEntities.totalPages})}"> >> </a>
+                    <a class="page-link" th:href="@{ /room/list( page=${roomEntities.totalPages} ) }"> 마지막 </a>
                 </li>
             </ul>
         </div>
 
-        <!--
-        1. '지도 표시하기' 버튼 클릭 시 화면에 있는 결과물들을 지도에 출력
-        2. 아무 검색도 없이 들어온 경우
-        3.
-        -->
-        <div class="col-md-8">
-            <div id="map" style="width:100%;height:700px; "></div>
-        </div>
 
+        <div class="col-md-8" id="map-default-wrapper">
+            <div id="map" style="width: 100%; height: 700px; margin-top: 2.5rem;"></div>
+        </div>
 
     </div>
 </div>
@@ -149,10 +152,12 @@
     </div>
 </div>
 
-
+<!--
 <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx1a649f9e9e5642ed82f72ada2ff00e9d"></script>
+-->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c4b311c12f156511eb9b89bf63938e65&libraries=clusterer"></script>
 <script th:src="@{/js/roomview.js}"></script>
 <script th:src="@{/js/roomnavy.js}"></script>
+
 </body>
 </html>

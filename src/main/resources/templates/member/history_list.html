@@ -3,7 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
-    <link rel="stylesheet" th:href="@{/css/member/history_list.css}">
+    <style>
+        body{
+        padding: 0px;
+        margin: 0px;
+        }
+
+        .reservation-wrapper{
+            padding: 0.7rem;
+            margin: 5.0rem;
+        }
+
+        .reservation-content{
+            padding: 0.5rem;
+            margin-left: 0.5rem;
+            box-shadow: 3px 3px 3px #cccccc;
+        }
+
+        #reservation-calendar{
+            width: 12.0rem;
+            height: 12.0rem;
+            padding: 0.5rem;
+            margin-top: 15.0rem;
+        }
+
+        .class-selected-wrapper{
+            padding: 0.5rem;
+            margin: 5.0rem;
+        }
+
+        .class-selected-content{
+            padding: 0.5rem;
+            margin-left: 0.5rem;
+            box-shadow: 3px 3px 3px #cccccc;
+        }
+    </style>
 </head>
 <body>
 <!--
@@ -19,7 +53,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-8 reservation-wrapper">
-            <!-- 예약 내역 반복문으로 출력 시작 -->
+            <!-- 처음 화면 진입 시 예약 내역 전체를 출력 -->
             <div class="reservation-content" th:each=" history : ${histories}">
                 <div class="row my-3 d-flex border">
                     <div class="col-md-4 text-center">
@@ -34,6 +68,11 @@
                         <div th:text="${history.timeTableEntity.roomTime}"></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- 캘린더에서 선택한 날짜에 대한 예약 내역을 출력 -->
+            <div class="reservation-date-select">
+
             </div>
             <!-- 예약 내역 반복문으로 출력 종료 -->
         </div>

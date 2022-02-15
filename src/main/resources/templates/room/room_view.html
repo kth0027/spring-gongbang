@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <style>
 
         ul li{
@@ -27,21 +26,10 @@
             border-radius: 3rem;
         }
 
-        .classBtn{
-            border: 1px solid #374b73;
-            background-color: rgb(0, 0, 0, 0);
-            color: #ff9a9a;
-            padding: 5px;
-        }
 
-        .classContent{
-            border: 1px solid #374b73;
-            background-color: rgb(0, 0, 0, 0);
-            color: #ff9a9a;
-            padding: 5px;
-        }
 
     </style>
+
     <link rel="stylesheet" th:href="@{/css/room_view.css}">
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
 
@@ -190,11 +178,18 @@
             1. roomNo 에 해당하는 TimeTable 엔티티를 가져온다.
             2. roomDate : YYYY-MM-DD
             3. 각 날짜 Id : YYYY-MM-DD
-
             -->
+            <div class="row">
+                <div class="col-6">
+                    <button>클래스 일정</button>
+                </div>
+                <div class="col-6">
+                    <button>클래스 선택 사항</button>
+                </div>
+            </div>
 
             <!-- 달력 출력 시작 -->
-            <div style="width: 450px; height: 550px; box-shadow: 5px 5px 5px #cccccc;">
+            <div style="width: 28.0rem; height: 32.0rem; box-shadow: 5px 5px 5px #cccccc;">
                 <div class="sec_cal">
                     <div class="cal_nav">
                         <a href="javascript:;" class="nav-btn go-prev">prev</a>
@@ -224,7 +219,7 @@
 
             <!-- 날짜 선택 시 보여줄 화면-->
             <!-- 해당 날짜에 등록된 클래스 정보 + 시간을 알려준다-->
-            <div class="container" style="width: 300px;">
+            <div class="container" style="width: 28.0rem;">
                 <div class="row time-selected-wrapper">
                     <!-- 반복문을 돌면서 -->
                     <div id="time-select-inner"></div>
@@ -289,7 +284,54 @@
 <script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/roomview_jh.js}"></script>
 <script th:src="@{/js/roomview.js}"></script>
+
 <div th:replace="footer.html :: footer"></div>
+
+<script>
+
+    function personTest(){
+
+        var person = $("#class-register-person").val();
+        $("#input-person").val(person);
+
+        roomhtml = "<button id='myClassRegisterBtn'> 신청하기 </button>";
+        $("#time-select-inner").append(roomhtml);
+
+        $("#myClassRegisterBtn").on("click", function(){
+            var person = $("#input-person").val();
+            var roomNo = $("#register-room-no").val();
+            var roomDate = $("#register-room-date").val();
+            var roomTime = $("#register-room-time").val();
+            alert(roomNo + "," + roomDate + "," + roomTime);
+            // person : 선택한 인원 수
+            // roomNo : 클래스 식별 번호
+            // roomDate : 날짜
+            // roomTime : 시작시간, 끝나는시간 (TimeTable 에 있는 것과 동일)
+            $.ajax({
+                url: "/member/registerClass",
+                data: {"roomNo" : roomNo, "roomDate" : roomDate, "roomTime" : roomTime, "person" : person},
+                method: "GET",
+                success: function(data){
+                    // ajax 통신 확인
+                    if(data == 2){
+                        // 등록 에러 혹은 정원을 초과한 신청일 경우 등록을 못하게 막는다.
+                        alert(" 신청 가능한 정원을 초과했습니다");
+
+                    } else {
+                        // 클래스 신청 성공일 경우
+                        alert("성공적으로 신청되었습니다.");
+                        location.href = "/member/reservationListController";
+                    }
+                }
+
+            });
+        });
+
+    }
+
+
+
+</script>
 
 </body>
 </html>

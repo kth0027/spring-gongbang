@@ -75,8 +75,9 @@
                                     <a th:if="${session.logindto != null }" th:href="@{/member/info}"
                                        style="text-decoration: none;" class="dropdown-item"> 마이페이지 </a>
                                 </li>
+                                <!-- 관리 리스트는 관리자만 접근할 수 있습니다. -->
                                 <li>
-                                    <a th:href="@{/admin/adminlist}" class="dropdown-item">관리리스트</a>
+                                    <a sec:authorize="hasRole('ADMIN')" href="@{/admin/adminlist}" class="dropdown-item">관리리스트</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/member/reservationListController}">예약내역</a>
@@ -156,7 +157,7 @@
                                                     data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
                                                     aria-expanded="false" type="button"
                                                     style="background-color: #374b73 ;border:1px solid #000000; border-radius: 3rem; color: white;">
-                                                카테고리1
+                                                카테고리
                                             </button>
                                         </div>
                                     </div>
@@ -308,10 +309,7 @@ $(".closesearch").click(function() {
     $("#togglesearch").hide();
 });
 
-
 </script>
 
-
 </body>
-
 </html>

@@ -5,7 +5,6 @@
     <title>클래스 개설</title>
     <link rel="stylesheet" th:href="@{/css/register.css}">
     <link rel="stylesheet" th:href="@{/css/summernote/summernote-lite.css}">
-
 </head>
 <body>
 <div th:replace="common.html::common"></div>
@@ -19,20 +18,18 @@
 <div class="container" style="margin-top: 2rem;">
 
     <div class="row">
-        <div class="col-md-4">
-            <span style="color: pink;">클래스 정보</span>
-        </div>
+        <div class="col-md-4">클래스 정보</div>
         <div class="col-md-4">클래스 소개</div>
         <div class="col-md-4">클래스 위치</div>
     </div>
 
     <div class="row">
-        <span style="background-color: #fff1ed;">작성 유의 사항</span>
+        <span>작성 유의 사항</span>
         <div>
             <ul class="list-group">
                 <li class="list-group-item">최종 등록하지 않은 내용은 전부 사라집니다.</li>
                 <li class="list-group-item">등록 후 자유롭게 수정이 가능합니다.</li>
-                <li class="list-group-item"><span>(*)</span>필수 작성 사항을 기입하지 않으면 등록할 수 없습니다.</li>
+                <li class="list-group-item"><span class="required-content">(*)</span>필수 작성 사항을 기입하지 않으면 등록할 수 없습니다.</li>
             </ul>
         </div>
     </div>
@@ -59,11 +56,13 @@
                 <div>
                     <div> 강사님 기본 정보</div>
                     <div class="my-2">
-                        <div th:text="${member.memberName}" style="background-color:#ffffff"></div>
+                        <div th:text="${member.memberName}"
+                             style="background-color:#ffffff; margin-left: 1.0rem;"></div>
                     </div>
                     <div> 강사님 연락처</div>
                     <div class="my-2">
-                        <div th:text="${member.memberPhone}" style="background-color:#ffffff"></div>
+                        <div th:text="${member.memberPhone}"
+                             style="background-color:#ffffff; margin-left: 1.0rem;"></div>
                     </div>
                 </div>
 
@@ -72,30 +71,31 @@
                     1. 클래스 이름 입력
                     2. 50자 안으로 입력할 수 있도록 유효성 검사 적용 해야한다.
                     -->
-                    <label for="roomTitle" class="form-label">클래스 이름<span style="color:red;">[필수]</span>
-                        <span>글자수(1/50)</span></label>
+                    <label for="roomTitle" class="form-label">클래스 이름<span class="required-content">[필수]</span>
+                        <span>글자수(1/50)</span>
+                    </label>
                     <input type="text" class="form-control" id="roomTitle" aria-describedby="addClassName"
                            name="roomTitle">
                     <!--
                         1. 작성 tip 을 아래에 출력한다.
                         2. 현재 내용은 mocha class 에 있는 내용과 거의 동일하다.
                     -->
-                    <div class="" style="font-size:0.6rem;">
+                    <div class="register-tip">
                         <small>작성 TIP</small>
-                        <div class="list-group">
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">
+                        <ul class="list-group">
+                            <li class="list-group-item">
                                 어떤 수업인지 한 눈에 알 수 있는 클래스 이름을 등록해주세요
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">
+                            </li>
+                            <li class="list-group-item">
                                 스튜디오 또는 공방 및 강습소의 이름이 포함 되어도 좋습니다
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">
+                            </li>
+                            <li class="list-group-item">
                                 지역 또는 클래스 성격 (원데이 클래스 / 정규 클래스) 등을 뒤에 적어 주셔도 좋습니다
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">
+                            </li>
+                            <li class="list-group-item">
                                 등록 이후 언제나 자유롭게 수정이 가능하므로 부담없이 작성해 주세요
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -107,21 +107,16 @@
                     -->
                     <label for="addClassInfo" class="form-label">클래스 간단소개 <span style="color:red;">[필수]</span> <span>글자수(1/150)</span></label><br>
                     <textarea name="roomContent" id="addClassInfo" cols="30" rows="5" style="width:100%;"></textarea>
-                    <div class="" style="font-size:0.6rem;">
+                    <div class="register-tip">
                         <small>작성 TIP</small>
-                        <div class="list-group list-group-flush">
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">클래스 요약 설명 작성란
-                                입니다
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">제목을 보완해 줄 수 있는
-                                설명을
-                                적어주세요
-                            </div>
-                            <div class="list-group-item list-group-item-action list-group-item-secondary">다음 스텝에서 자세한
-                                클래스
-                                소개란이 있으므로 간단히 작성해 주셔도 좋습니다
-                            </div>
-                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                클래스 요약 설명 작성란입니다
+                            </li>
+                            <li class="list-group-item">
+                                제목을 보완해 줄 수 있는 설명을 적어주세요
+                            </li>
+                        </ul>
                     </div>
                 </div>
 
@@ -130,18 +125,18 @@
                     1. 클래스 카테고리는 미리 정해져있고, 관리자만이 추가 및 삭제, 수정이 가능하다.
                     -->
                     <label for="classCategory" class="form-label">클래스 카테고리<span style="color:red;">[필수]</span></label>
-                    <div id="classCategory" class="container">
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="핸드메이드">핸드메이드
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="쿠킹">쿠킹
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="플라워">플라워
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="드로잉">드로잉
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="음악">음악
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="요가/필라테스">필라테스
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="스포츠">스포츠
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="뷰티">뷰티
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="애완동물">애완동물
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="체험">체험
-                        <input type="radio" name="roomCategory" class="form-check-input mt-0" value="자기계발">자기계발
+                    <div id="classCategory" class="register-category">
+                        <input type="radio" name="roomCategory" class="form-check-input" value="핸드메이드">핸드메이드
+                        <input type="radio" name="roomCategory" class="form-check-input" value="쿠킹">쿠킹
+                        <input type="radio" name="roomCategory" class="form-check-input" value="플라워">플라워
+                        <input type="radio" name="roomCategory" class="form-check-input" value="드로잉">드로잉
+                        <input type="radio" name="roomCategory" class="form-check-input" value="음악">음악
+                        <input type="radio" name="roomCategory" class="form-check-input" value="요가/필라테스">필라테스
+                        <input type="radio" name="roomCategory" class="form-check-input" value="스포츠">스포츠
+                        <input type="radio" name="roomCategory" class="form-check-input" value="뷰티">뷰티
+                        <input type="radio" name="roomCategory" class="form-check-input" value="애완동물">애완동물
+                        <input type="radio" name="roomCategory" class="form-check-input" value="체험">체험
+                        <input type="radio" name="roomCategory" class="form-check-input" value="자기계발">자기계발
                     </div>
                 </div>
 
@@ -149,12 +144,13 @@
                 1. 이미지를 여러 장 드래그 앤 드롭, 혹은 클릭해서 업로드하는 부분이다.
                 2. 현재 누가 뭘 만졌는지 고장나서 클릭 후 업로드밖에 먹히지 않는다.
                 -->
-                <div class="image-drag-wrapper1" style="width: 100%;">
-                    <label class="label" id="rlabel" for="rinput">
+                <div class="image-drag-wrapper">
+                    <label class="image-label" id="image-label" for="image-input">
                         <div class="inner" id="inner">드래그하거나 클릭해서 업로드</div>
                     </label>
-                    <input id="rinput" name="roomImageInput" class="input" accept="image/*" type="file" required="true"
-                           multiple="true" hidden="true">
+                    <input id="image-input" class="image-input" accept="image/*" type="file"
+                           required="true" multiple="true" hidden="true" name="roomImageInput">
+                    <p class="preview-title">이미지 미리보기</p>
                     <div class="preview" id="preview"></div>
                 </div>
 
@@ -163,31 +159,28 @@
             <!--두번 째 탭-->
             <div id="tab-2" class="tab-content">
                 <div> 클래스 상세내용 <span>(필수)</span></div>
-
                 <div class="mb-3">
-                    <label for=""> 클래스 소개</label>
+                    <label for="summernote"> 클래스 소개</label>
                     <!-- SummerNote 첨부하기 -->
                     <div>
                         <textarea id="summernote" name="roomDetail"></textarea>
                     </div>
                 </div>
 
-                <div> 태그 입력</div>
-                <div><input type="text" class="form-control">
-                    <button type="button" class="btn btn-secondary">태그등록</button>
-                </div>
 
             </div>
 
             <!--세번 째 탭-->
             <div id="tab-3" class="tab-content">
-
                 <div>
-                    <div> 지역 선택</div>
-                    <div id="classLocalCategory" class="">
-                        <input type="radio" name="roomLocal" class="form-check-input mt-0" value="서울">서울
-                        <input type="radio" name="roomLocal" class="form-check-input mt-0" value="경기">경기
-                        <input type="radio" name="roomLocal" class="form-check-input mt-0" value="인천">인천
+                    <div>지역 선택</div>
+                    <div id="classLocalCategory" class="register-local-category">
+                        <input type="radio" name="roomLocal" class="form-check-input" value="서울">서울
+                        <input type="radio" name="roomLocal" class="form-check-input" value="경기">경기
+                        <input type="radio" name="roomLocal" class="form-check-input" value="인천">인천
+                        <input type="radio" name="roomLocal" class="form-check-input" value="대구">대구
+                        <input type="radio" name="roomLocal" class="form-check-input" value="부산">부산
+                        <input type="radio" name="roomLocal" class="form-check-input" value="광주">광주
                     </div>
                 </div>
 
@@ -210,18 +203,24 @@
                     <!-- 입력한 좌표의 위도, 경도를 input-hidden 으로 넘겨줍니다. -->
                     <input type="hidden" name="addressX" id="addressX">
                     <input type="hidden" name="addressY" id="addressY">
+
                 </div>
 
-                <div>
-                    <select class="form-control" name="roomMax" id="">
-                        <option selected>선택</option>
-                        <option value="1">1명</option>
-                        <option value="2">2명</option>
-                        <option value="3">3명</option>
-                        <option value="4">4명</option>
-                        <option value="5">5명</option>
-                        <option value="6">6명</option>
-                    </select>
+                <div class="row">
+                    <div class="col-4">
+                        <label for="register-capacity"> 최대 수용 인원 선택 </label>
+                    </div>
+                    <div class="col-4">
+                        <select class="form-control" name="roomMax" id="register-capacity">
+                            <option selected>선택</option>
+                            <option value="1">1명</option>
+                            <option value="2">2명</option>
+                            <option value="3">3명</option>
+                            <option value="4">4명</option>
+                            <option value="5">5명</option>
+                            <option value="6">6명</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div>
@@ -285,7 +284,6 @@
               placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
         });
     });
-
 
 </script>
 

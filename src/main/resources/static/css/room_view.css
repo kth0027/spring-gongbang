@@ -46,3 +46,26 @@ body{
     display: inline;
 }
 /* 캘린더 CSS 종료 */
+
+<!-- '예약' 버튼 -->
+.classBtn{
+    border: 1px solid #ff9a9a;
+    background-color: #ffffff;
+    color: #ff9a9a;
+    padding: 5px;
+    width: 100%;
+}
+
+.classBtn:hover{
+    cursor: pointer;
+    color: #fff1ed;
+}
+
+<!-- 개설 내역 출력-->
+.classContent{
+    border: 1px solid #ff9a9a;
+    background-color: rgb(0, 0, 0, 0);
+    color: #ff9a9a;
+    padding: 5px;
+    width: 100%;
+}

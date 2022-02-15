@@ -31,7 +31,7 @@ public class MemberController { // C S
     private MemberRepository memberRepository;
 
     @Autowired
-    private HttpServletRequest request;
+    private HttpServletRequest request; // 요청 객체 [ jsp : 내장객체(request)와 동일 ]
 
     @Autowired
     private RoomService roomService;

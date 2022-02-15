@@ -1,43 +1,68 @@
 @charset "UTF-8";
-
-.logo img{
-    height : 50px;
+.logo img {
+    height: 50px;
 }
+
+.navbtn button {
+    border: #374b73 1px solid;
+    font-weight: bold;
+    color: #374b73;
+}
+
+.navbtn button:hover {
+    background: #374b73;
+    color: white;
+}
+
 .modal {
-display: none;
+    display: none;
 }
 
 #popup {
-position : relative;
-width:100vw;
-height:100vh;
-background:rgba(0,0,0,0.8);
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
 }
 
 .popupmodal {
-border-radius: 5rem;
-z-index:100;
-position : absolute;
-background:white;
-width:60%;
-height:60%;
-top: 20%;
-left: 50%;
-transform: translate(-50%, -50%);
+    border-radius: 5rem;
+    z-index: 100;
+    position: absolute;
+    background: white;
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+/* 회원가입 버튼 */
+
+#formsubmit:hover {
+    background-color: #ff9a9a;
+    color: white;
+    transform: scale(1.1);
 }
 
 .googlesignup {
-    background: rgb(61, 139, 255);
-    color: white;
+    background: rgba(171, 201, 255, 0.6);
+    color: black;
     font-weight: bold;
     border: none;
     border-radius: 3rem;
     box-shadow: 3px 3px 3px black;
+    text-decoration: none;
+}
 
+.googlesignup:hover {
+    background: rgba(171, 201, 255, 1);
+    transform: scale(1.1);
 }
 
 .kakaosignup {
-    background: rgb(255, 174, 0);
+    background: rgba(253, 216, 1, 0.6);
     color: rgb(0, 0, 0);
     font-weight: bold;
     border: none;
@@ -45,13 +70,139 @@ transform: translate(-50%, -50%);
     box-shadow: 3px 3px 3px black;
 }
 
+.kakaosignup:hover {
+    background: rgba(253, 216, 1, 1);
+    transform: scale(1.1);
+}
+
 .naversignup {
-    background: rgb(21, 148, 59);
-    color: white;
+    background: rgba(45, 190, 83, 0.6);
+    color: rgb(0, 0, 0);
     font-weight: bold;
     border: none;
     border-radius: 3rem;
     box-shadow: 3px 3px 3px black;
 }
 
-/* 주석 */
+.naversignup:hover {
+    background: rgba(45, 190, 83, 1);
+    transform: scale(1.1);
+}
+
+
+/* 검색칸 */
+
+.opensearchbox button {
+    background: #ffffff;
+    border: 2px solid #374b73;
+    width: 100%;
+    border-radius: 3rem;
+}
+
+.opensearchbox button:hover {
+    background: #ff9a9a;
+    color: white;
+    transform: scale(0.95);
+    transition: all 1s;
+}
+
+.classregistbtn {
+    border-radius: 2rem;
+    width: 70%;
+    border: #ff9a9a 3px solid;
+    background-color: #374b73;
+    color: white;
+    height: 2.5rem;
+    cursor: pointer;
+}
+
+.classregistbtn:hover {
+    background: #ff9a9a;
+    transition: 1s;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    border: #374b73 3px solid;
+}
+
+.regionbtn,
+.categorybtn {
+    background-color: #ffffff;
+    border: 3px solid #616161;
+    border-radius: 1rem;
+    color: black;
+}
+
+.searchtext label {
+    background-color: #ffffff;
+    border: 3px solid #616161;
+    border-radius: 1rem;
+    color: black;
+    height: 2.5rem;
+    line-height: 2rem;
+    text-align: center;
+    width: 6rem;
+    cursor: pointer;
+}
+
+.searchtext input {
+    width: 70%;
+    margin-left: 10rem;
+    border-radius: 1.5rem;
+    height: 2.5rem;
+}
+
+#classLocal,
+#classCategory {
+    border-radius: 1rem;
+    font-size: 1rem;
+    height: 2.7rem;
+}
+
+.search .searchbtn {
+    background-color: #374b73;
+    border-radius: 5rem;
+    width: 20rem;
+    color: white;
+    font-weight: bold;
+    border: 3px solid #ff9a9a;
+}
+
+.search .closesearch {
+    background-color: #ff9a9a;
+    border-radius: 3rem;
+    width: 5rem;
+    border: 3px solid #374b73;
+}
+
+.search input:hover {
+    transform: scale(1.1);
+    transition: 1s;
+}
+
+.dropdown-menu {}
+
+.dropdown-menu li:hover {
+    background-color: #374b73;
+    color: white;
+}
+
+.dropdown-menu a:hover {
+    color: white;
+}
+
+.dropdown-menu li a {
+    text-decoration: none;
+    color: #374b73;
+    font-weight: bold;
+}
+
+.dropdown-menu svg {
+    width: 1.5rem;
+    fill: #ff9a9a;
+}
+
+.dropdown-menu i {
+    color: #ff9a9a;
+    transform: scale(1.1);
+    margin-left: 1.25rem;
+}

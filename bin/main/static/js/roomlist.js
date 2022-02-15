@@ -17,10 +17,8 @@ alert(roomNo);
 
 
 
-
+// 클래스 상태변경
 function activeupdate(roomNo, active) {
-alert(roomNo);
-alert(active);
     $.ajax({
             url:"/admin/activeupdate",
             data:{"roomNo":roomNo, "active":active},
@@ -32,9 +30,5 @@ alert(active);
                 }
 
             }
-
-
         });
-
-
 }

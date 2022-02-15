@@ -183,7 +183,7 @@ public class RoomService {
         return roomRepository.findById(roomNo).get();
     }
 
-    // 모든 룸 가져오기
+    // 모든 룸 가져오기(멤버용)
     public Page<RoomEntity> getroomlist(@PageableDefault Pageable pageable) {
 
         // 1. 룸 엔티티 Page 타입 변수 선언 및 초기화
@@ -202,6 +202,27 @@ public class RoomService {
         return roomEntities;
 
     }
+
+    // 모든 룸 가져오기(어드민용)
+    public Page<RoomEntity> getroomlistadmin(@PageableDefault Pageable pageable) {
+
+        // 1. 룸 엔티티 Page 타입 변수 선언 및 초기화
+        Page<RoomEntity> roomEntities = null;
+
+        int page = -1;
+        if (pageable.getPageNumber() == 0) {
+            page = 0;
+        } else {
+            page = pageable.getPageNumber() - 1;
+        }
+        pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+
+        // 1. 승인 완료된 클래스만 가져와야합니다.
+        roomEntities = roomRepository.findAll(pageable);
+        return roomEntities;
+
+    }
+    
 
     // 룸에 날짜, 시간 지정하기
     @Transactional

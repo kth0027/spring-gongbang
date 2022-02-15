@@ -21,7 +21,7 @@ public class AdminController {
 
     @GetMapping("/adminlist")
     public String adminlist(Model model, @PageableDefault Pageable pageable) {
-        Page<RoomEntity> roomEntities = roomService.getroomlist(pageable);
+        Page<RoomEntity> roomEntities = roomService.getroomlistadmin(pageable);
         model.addAttribute("roomEntities", roomEntities);
         return "admin/adminlist";
     }

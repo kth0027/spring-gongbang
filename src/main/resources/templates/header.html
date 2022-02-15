@@ -77,7 +77,7 @@
                                 </li>
                                 <!-- 관리 리스트는 관리자만 접근할 수 있습니다. -->
                                 <li>
-                                    <a sec:authorize="hasRole('ADMIN')" href="@{/admin/adminlist}" class="dropdown-item">관리리스트</a>
+                                    <a th:href="@{/admin/adminlist}" class="dropdown-item">관리리스트</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" th:href="@{/member/reservationListController}">예약내역</a>

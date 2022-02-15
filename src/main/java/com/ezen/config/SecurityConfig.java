@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception { // 웹 URL 접근 보안
         //  super.configure(http); 직접 입력할거라 사용X
         http.authorizeRequests() // URL 인증요청
-//              .antMatchers("/admin/**").hasRole("ADMIN") // .antMatchers("URL").hasRole("권한명(ADMIN)") : 권한이 ADMIN이면 접근가능
+                .antMatchers("/admin/**").hasRole("ADMIN") // .antMatchers("URL").hasRole("권한명(ADMIN)") : 권한이 ADMIN이면 접근가능
                 .antMatchers("/member/info").hasRole("MEMBER") // info 페이지는 권한이 MEMBER인 경우에만 접근 가능
                 .antMatchers("/**").permitAll() // .antMatchers("/**").permitAll(); : 모든 권한이 접근 가능
                 .and()

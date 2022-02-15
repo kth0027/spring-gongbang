@@ -71,5 +71,12 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
     @Query(nativeQuery = true, value="SELECT * FROM room WHERE roomDate = :roomDate")
     List<RoomEntity> findRoomByRoomDate(@Param("roomDate") String roomDate);
 
+    // 6. 특정 roomStatus 에 해당하는 Room 엔티티 찾기
+    @Query(nativeQuery = true, value="SELECT * FROM room WHERE roomStatus = :roomStatus")
+    Page<RoomEntity> findRoomByRoomStatus(@Param("roomStatus") String roomStatus, Pageable pageable);
+
+    // 7. roomStatus, roomNo 로 Room 엔티티 조회하기
+    @Query(nativeQuery = true, value="SELECT * FROM room WHERE roomStatus = :roomStatus AND roomNo = :roomNo")
+    RoomEntity findRoomByStatusAndNo(@Param("roomStatus") String roomStatus, @Param("roomNo") int roomNo);
 
 }

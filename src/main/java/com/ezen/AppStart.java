@@ -32,7 +32,9 @@ public class AppStart {
     @Autowired
     RoomService roomService;
 
-    // 메인페이지 매핑[ 연결 ]
+    // 메인 페이지 맵핑
+    // 메인 페이지 실행되면서 개설된 강의, 작성된 리뷰를 Model 로 뿌려줍니다.
+
     @GetMapping("/") // 최상위 경로
     public String index(Model model, @PageableDefault Pageable pageable) {
         Page<RoomEntity> roomlist = roomService.getroomlist(pageable);
@@ -50,7 +52,7 @@ public class AppStart {
     // 안읽은 쪽지의 갯수 세기
     @GetMapping("/nreadcount")
     @ResponseBody
-    public void nreadcount(){
+    public void nreadcount() {
         roomService.nreadcount();
     }
 }

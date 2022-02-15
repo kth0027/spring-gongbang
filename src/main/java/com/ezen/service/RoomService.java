@@ -69,13 +69,13 @@ public class RoomService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
-                String dir = "C:\\Users\\re_mu\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
+                // 2.1 수업 때 배웠던 방식은 프로젝트에 올리는 것[현재 작업폴더]
+                // 2.2 Spring 은 Tomcat 이 내장 서버라서, 실행할 때 마다 경로가 바뀐다. (내부적으로 로테이션을 돌면서)
 
-                // 상대 경로 지정
-                // String newdir = "/static/roomimg";
-                // String newFilePath = newdir + "/" + uuidfile;
+                String dir = "C:\\gongbang\\gongbang\\build\\resources\\main\\static\\roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
+                // 3.1 프로젝트 경로를 맞춘다.
                 String filepath = dir + "\\" + uuidfile;
 
                 try {
@@ -185,12 +185,21 @@ public class RoomService {
 
     // 모든 룸 가져오기
     public Page<RoomEntity> getroomlist(@PageableDefault Pageable pageable) {
-        int page = 0;
-        if (pageable.getPageNumber() == 0) page = 0; // 0이면1페이지
-        else page = pageable.getPageNumber() - 1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
-        //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-        pageable = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
-        return roomRepository.findAll(pageable);
+
+        // 1. 룸 엔티티 Page 타입 변수 선언 및 초기화
+        Page<RoomEntity> roomEntities = null;
+
+        int page = -1;
+        if (pageable.getPageNumber() == 0) {
+            page = 0;
+        } else {
+            page = pageable.getPageNumber() - 1;
+        }
+        pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+
+        // 1. 승인 완료된 클래스만 가져와야합니다.
+        roomEntities = roomRepository.findRoomByRoomStatus("승인완료", pageable);
+        return roomEntities;
 
     }
 
@@ -219,32 +228,28 @@ public class RoomService {
         List<TimeTableEntity> roomEntities = timeTableRepository.getByTimeSequence();
         // 2. RoomEntity 를 저장하는 리스트를 생성해서 집어넣습니다. 9개가 되면 종료 !
         int count = 0;
-
         return null;
     }
 
-
     // 특정 룸 삭제
     public boolean delete(int roomNo) {
-
         roomRepository.delete(roomRepository.findById(roomNo).get());
         return true;
     }
 
-
     // 특정 룸 상태변경
+    // '검토중' '승인중' '승인완료' '승인거부'
     @Transactional
     public boolean activeupdate(int roomNo, String upactive) {
 
         RoomEntity roomEntity = roomRepository.findById(roomNo).get(); // 엔티티 호출
         if (roomEntity.getRoomStatus().equals(upactive)) {
-            // 선택 버튼의 상태와기존 룸 상태가 동일하면 업데이트X
+            // 선택 버튼의 상태와 기존 룸 상태가 동일하면 업데이트X
             return false;
         } else {
             roomEntity.setRoomStatus(upactive);
             return true;
         }
-
     }
 
 

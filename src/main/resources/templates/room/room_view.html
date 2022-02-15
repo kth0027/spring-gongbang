@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <style>
 
         ul li{
@@ -27,28 +26,7 @@
             border-radius: 3rem;
         }
 
-        <!-- '예약' 버튼 -->
-        .classBtn{
-            border: 1px solid #ff9a9a;
-            background-color: rgb(0, 0, 0, 0);
-            color: #ff9a9a;
-            padding: 5px;
-            width: 100%;
-        }
 
-        .classBtn:hover{
-            cursor: pointer;
-            color: #fff1ed;
-        }
-
-        <!-- 개설 내역 출력-->
-        .classContent{
-            border: 1px solid #ff9a9a;
-            background-color: rgb(0, 0, 0, 0);
-            color: #ff9a9a;
-            padding: 5px;
-            width: 100%;
-        }
 
     </style>
 
@@ -217,6 +195,14 @@
             2. roomDate : YYYY-MM-DD
             3. 각 날짜 Id : YYYY-MM-DD
             -->
+            <div class="row">
+                <div class="col-6">
+                    <button>클래스 일정</button>
+                </div>
+                <div class="col-6">
+                    <button>클래스 선택 사항</button>
+                </div>
+            </div>
 
             <!-- 달력 출력 시작 -->
             <div style="width: 28.0rem; height: 32.0rem; box-shadow: 5px 5px 5px #cccccc;">
@@ -270,6 +256,52 @@
 <script th:src="@{/js/roomview.js}"></script>
 
 <div th:replace="footer.html :: footer"></div>
+
+<script>
+
+    function personTest(){
+
+        var person = $("#class-register-person").val();
+        $("#input-person").val(person);
+
+        roomhtml = "<button id='myClassRegisterBtn'> 신청하기 </button>";
+        $("#time-select-inner").append(roomhtml);
+
+        $("#myClassRegisterBtn").on("click", function(){
+            var person = $("#input-person").val();
+            var roomNo = $("#register-room-no").val();
+            var roomDate = $("#register-room-date").val();
+            var roomTime = $("#register-room-time").val();
+            alert(roomNo + "," + roomDate + "," + roomTime);
+            // person : 선택한 인원 수
+            // roomNo : 클래스 식별 번호
+            // roomDate : 날짜
+            // roomTime : 시작시간, 끝나는시간 (TimeTable 에 있는 것과 동일)
+            $.ajax({
+                url: "/member/registerClass",
+                data: {"roomNo" : roomNo, "roomDate" : roomDate, "roomTime" : roomTime, "person" : person},
+                method: "GET",
+                success: function(data){
+                    // ajax 통신 확인
+                    if(data == 2){
+                        // 등록 에러 혹은 정원을 초과한 신청일 경우 등록을 못하게 막는다.
+                        alert(" 신청 가능한 정원을 초과했습니다");
+
+                    } else {
+                        // 클래스 신청 성공일 경우
+                        alert("성공적으로 신청되었습니다.");
+                        location.href = "/member/reservationListController";
+                    }
+                }
+
+            });
+        });
+
+    }
+
+
+
+</script>
 
 </body>
 </html>

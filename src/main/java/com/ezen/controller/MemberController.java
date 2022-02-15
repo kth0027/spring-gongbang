@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @RequestMapping("/member")
@@ -173,9 +174,11 @@ public class MemberController { // C S
     // 1. 회원이 신청한 정보를 DB에 등록하면서 예약 처리하는 메소드입니다.
     @GetMapping("/registerClass")
     @ResponseBody
+    @Transactional
     public String registerClass(@RequestParam("roomNo") int roomNo,
-                                @RequestParam("classTime") String classTime,
-                                @RequestParam("roomDate") String roomDate) {
+                                @RequestParam("roomTime") String classTime,
+                                @RequestParam("roomDate") String roomDate,
+                                @RequestParam("person") int person) {
 
         MemberEntity memberEntity = null;
         // 0. 로그인된 회원 정보를 불러온다.
@@ -191,10 +194,17 @@ public class MemberController { // C S
 
         RoomEntity roomEntity = null;
         TimeTableEntity timeTableTmp = null;
+
         // 1. roomNo 에 해당하는 room 엔티티를 호출한다.
         // 1.1 history 저장 후 room 엔티티에 선언된 list 에 histroy 를 추가시켜야한다.
         if (roomRepository.findById(roomNo).isPresent()) {
             roomEntity = roomRepository.findById(roomNo).get();
+        }
+
+        // 1.2 클래스에 등록된 최대 인원을 넘어가면 등록을 막는다.
+        assert roomEntity != null;
+        if (roomEntity.getRoomMax() < person) {
+            return "2";
         }
         // 2. 받아온 시간으로 TimeTable 을 가져온다.
         // 2.1 TimeTable 내에서 roomTime 에 해당하는 것만 등록한다.
@@ -205,6 +215,7 @@ public class MemberController { // C S
             }
         }
 
+
         // 3. HistoryEntity 에 멤버 정보, 클래스 정보를 들록합니다.
         HistoryEntity historyEntity = HistoryEntity.builder()
                 .memberEntity(memberEntity)
@@ -212,8 +223,15 @@ public class MemberController { // C S
                 .timeTableEntity(timeTableTmp)
                 .build();
 
+
         // 4. 예약내역 저장하고 저장번호 받아오기
         int savedHistoryEntityNo = historyRepository.save(historyEntity).getHistoryNo();
+        // 신청한 정원만큼 클래스 수용 인원을 감소시킵니다. 
+        roomEntity.setRoomMax(roomEntity.getRoomMax() - person);
+        // 수용 가능 인원이 '0' 명이 된다면, 클래스 상태를 '모집완료' 로 바꿉니다. 
+        if(roomEntity.getRoomMax() == 0){
+            roomEntity.setRoomStatus("모집완료");
+        }
 
         // 5. 위에서 저장한 예약내역 가져오기
         HistoryEntity savedHistoryEntity = historyRepository.findById(savedHistoryEntityNo).get();
@@ -221,10 +239,7 @@ public class MemberController { // C S
         // 6. historyEntity 를 TimeTable Entity 에 선언한 List<HistoryEntity> 에 추가한다.
         assert timeTableTmp != null;
         timeTableTmp.getHistoryEntity().add(savedHistoryEntity);
-
         memberEntity.getHistoryEntities().add(savedHistoryEntity);
-
-        assert roomEntity != null;
         roomEntity.getHistoryEntities().add(savedHistoryEntity);
 
         return "1";
@@ -351,8 +366,6 @@ public class MemberController { // C S
     public String calculate() {
         return "member/calculate_page";
     }
-
-
 
 
 }

@@ -71,42 +71,42 @@ public class RoomController {
     @GetMapping("/list")
     public String roomlist(@PageableDefault Pageable pageable, Model model) {
 
+        // 세션 호출
+        HttpSession session = request.getSession();
+
         String keyword = request.getParameter("roomSearch");
         String local = request.getParameter("classLocal");
         String category = request.getParameter("classCategory");
 
         Page<RoomEntity> roomEntities = null;
-        List<RoomEntity> rooms = null;
-
-        // 세션 호출
-        HttpSession session = request.getSession();
 
         // 1. 검색, 지역, 카테고리 셋 중 하나라도 선택 했을 경우
+        // 1. 선택한 결과값을 세션에 저장합니다.
+        // 2. 저장된 세션값을 이용해서
         if (keyword != null || local != null || category != null) {
             session.setAttribute("keyword", keyword);
             session.setAttribute("local", local);
             session.setAttribute("category", category);
-            roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
         }
         // 2. 아무것도 선택하지 않았을 경우, 이전 검색한 세션을 그대로 활용한다.
         else {
             // 1. 이전 세션이 없는 경우
-                // 1. Page 가 아니라
             if (session.getAttribute("keyword") == null && session.getAttribute("local") == null && session.getAttribute("category") == null) {
-                rooms = roomRepository.findAll();
                 roomEntities = roomService.getRoomEntityBySearch(pageable, "", "", "");
+                return "room/room_list";
             } else {
                 // 2. 이전 세션이 있는 경우
                 keyword = (String) session.getAttribute("keyword");
                 local = (String) session.getAttribute("local");
                 category = (String) session.getAttribute("category");
             }
-
         }
 
+        roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
         if (roomEntities != null) {
+            // 1. 개설된 강좌 리스트 정보를 넘겨줍니다.
             model.addAttribute("roomEntities", roomEntities);
-            // 1. roomview.js 에서 사용하기 위해서 검색 관련 변수들을 front 로 넘겨줍니다.
+            // 2. roomview.js 에서 사용하기 위해서 검색 관련 변수들을 front 로 넘겨줍니다.
             model.addAttribute("keyword", keyword);
             model.addAttribute("category", category);
             model.addAttribute("local", local);
@@ -316,13 +316,20 @@ public class RoomController {
     @GetMapping("/toJSON")
     @ResponseBody
     public JSONObject getRoomEntityByTimeTableToJson(@RequestParam("activeId") String roomDate, @RequestParam("roomNo") int roomNo) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        int memberNo = loginDto.getMemberNo();
+
         JSONObject jsonObject = new JSONObject(); // json
         JSONArray jsonArray = new JSONArray(); // json
         // roomNo 에 해당하는 TimeTable 엔티티만 리스트에 담아서 호출한다.
         List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomNo(roomNo);
         // roomNo 에 해당하는 개설된 강좌 전체를 for 문으로 조회한다.
         for (TimeTableEntity timeTableEntity : timeTableEntities) {
-            RoomEntity roomEntity = roomRepository.findById(timeTableEntity.getRoomEntity().getRoomNo()).get();
+            int roomNoFromTimeTable = timeTableEntity.getRoomEntity().getRoomNo();
+            // TimeTable 에 저장된 RoomNo 를 사용해서 Room Entity 를 호출하되, '승인완료' 인 클래스만 리턴한다.
+            RoomEntity roomEntity = roomRepository.findRoomByStatusAndNo("승인완료", roomNoFromTimeTable);
             // 선택한 date 에 해당하는 Room 정보만을 json 에 저장시킨다.
             if (timeTableEntity.getRoomDate().equals(roomDate)) {
                 JSONObject data = new JSONObject(); // json

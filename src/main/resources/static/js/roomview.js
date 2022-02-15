@@ -1,5 +1,13 @@
-$(function(){
+/*
+@Author : 김정진
+@Date : 2022-02-10 ~
+1. 초반 설계를 하지 않고 들어가서 현재 구조가 복잡합니다.
+2. room_list.html 왼쪽에는 Page<RoomEntity> 가 출력됩니다.
+3. 그와 동시에 페이지 전환마다 오른쪽에는 js 에서 지도가 출력됩니다.
 
+*/
+
+$(function(){
     var map2 = new kakao.maps.Map(document.getElementById('map'), {
         center : new kakao.maps.LatLng(36.2683, 127.6358),
         level : 14

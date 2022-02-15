@@ -58,7 +58,6 @@ function daySelect(year , month , day, roomNo){
                 roomhtml += "</div>";
 
                 $("#time-select-inner").append(roomhtml);
-
             });
         }
     });
@@ -76,9 +75,7 @@ function registerClass(roomNo, beginTime, endTime, roomDate){
                 alert("성공");
             }
         }
-
     });
-
 }
 
 /*
@@ -100,13 +97,8 @@ function getTimeTable(){
         method: "GET",
         success: function(data) {
             calendarInit(data, roomNo);
-            // 캘린더 생성 후 버튼에 이벤트를 부여해야하나 ?
-            $("#2022-02-15").on("click", function(e) {
-                alert("hi");
-            })
         }
     });
-
 }
 
 // 캘린더 출력하는 함수

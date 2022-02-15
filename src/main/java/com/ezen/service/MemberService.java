@@ -108,6 +108,28 @@ public class MemberService implements UserDetailsService {
         }
         return false;  // 회원탈퇴 X
     }
+    
+    // 회원정보 수정처리 :: 22.02.15 김태호
+    @Transactional
+    public boolean memberUpdate (MemberDto memberDto) {
+        try {
+            // 1. 수정할 엔티티 찾는다
+            Optional<MemberEntity> entityOptional = memberRepository.findById(memberDto.getMemberNo());
+
+            // 2. 엔티티를 수정한다 [ 엔티티 변화 -> DB 변경처리 ]
+            entityOptional.get().setMemberId(memberDto.getMemberId());
+            entityOptional.get().setMemberPassword(memberDto.getMemberPassword());
+            entityOptional.get().setMemberName(memberDto.getMemberName());
+            entityOptional.get().setMemberEmail(memberDto.getMemberEmail());
+            entityOptional.get().setMemberPhone(memberDto.getMemberPhone());
+            entityOptional.get().setMemberGender(memberDto.getMemberGender());
+            return true;
+        }
+        catch ( Exception e ){
+            System.out.println( e );
+            return false;
+        }
+    }
 
     // 회원 이메일 찾기
     public String findemail(MemberDto memberDto) {

@@ -108,7 +108,7 @@
 
 .classregistbtn {
     border-radius: 2rem;
-    width: 70%;
+    width: 100%;
     border: #ff9a9a 3px solid;
     background-color: #374b73;
     color: white;
@@ -132,6 +132,10 @@
     color: black;
 }
 
+.searchtext{
+    display: flex;
+} 
+
 .searchtext label {
     background-color: #ffffff;
     border: 3px solid #616161;
@@ -145,8 +149,6 @@
 }
 
 .searchtext input {
-    width: 70%;
-    margin-left: 10rem;
     border-radius: 1.5rem;
     height: 2.5rem;
 }

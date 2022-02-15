@@ -109,6 +109,30 @@ public class MemberController { // C S
         return "member/info";
     }
 
+    // 회원정보 업데이트 처리 :: 김태호(2022.02.15)
+    @PostMapping("/updatecontroller")
+    public String updatecontroller(
+            @RequestParam("memberNo") int memberNo,
+            @RequestParam("memberId") String memberId,
+            @RequestParam("memberPassword") String memberPassword,
+            @RequestParam("memberName") String memberName,
+            @RequestParam("memberEmail") String memberEmail,
+            @RequestParam("memberPone") String memberPhone,
+            @RequestParam("memberGender") String memberGender) {
+
+        memberService.memberUpdate(
+                MemberDto.builder()
+                        .memberNo(memberNo)
+                        .memberId(memberId)
+                        .memberPassword(memberPassword)
+                        .memberName(memberName)
+                        .memberEmail(memberEmail)
+                        .memberPhone(memberPhone)
+                        .memberGender(memberGender)
+                        .build());
+        return "member/info";
+    }
+
     // 회원삭제 처리
     @GetMapping("/mdelete")
     @ResponseBody
@@ -262,7 +286,7 @@ public class MemberController { // C S
         // 1. memberNo 사용해 History 엔티티를 List 형태로 호출한다.
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
         // 2. history 엔티티와 맵핑되어있는 timetable 엔티티를 가져와서 roomDate 를 str 에 담는다.
-        for(HistoryEntity history : historyEntities){
+        for (HistoryEntity history : historyEntities) {
             str.append(history.getTimeTableEntity().getRoomDate()).append(",");
             System.out.println(str);
         }

@@ -31,6 +31,10 @@
     font-weight: bold;
 }
 
+.snssignup a{
+    text-decoration: none;
+}
+
 video {
     position: absolute;
     top: 0;

@@ -8,7 +8,7 @@ function login(){
      $.ajax({
         url: "/member/logincontroller",             // 보내는곳
         data : JSON.stringify(memberdto)  ,   //  전송 데이터 값
-           //  JSON.stringify( JSON 자료형 -> 문자열 )
+        //  JSON.stringify( JSON 자료형 -> 문자열 )
         method: "post",        //  Get , Post 방식중 선택
         contentType: "application/json" ,  //  ajax 타입
         success: function(result){     // 성공시 반환값

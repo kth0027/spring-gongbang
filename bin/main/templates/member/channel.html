@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -26,7 +26,10 @@
         <div style="height:200px;">
 
         </div>
-        <h3>채널명</h3>
+        <h3 th:text="${memberEntity.channelTitle}"></h3>
+        <div sec:authorize="isAuthenticated()" th:if="${session.logindto.memberNo == memberEntity.memberNo}">
+            <a th:href="@{'/member/channelupdate/' + ${memberEntity.memberNo} }"><button>채널 정보 수정</button></a>
+        </div>
         <ul class="nav col-12 col-md-auto mb-2 mt-3 justify-content-center">
             <li>홈</li>
             <li>오프라인 클래스</li>
@@ -37,45 +40,37 @@
         <hr>
         <div class="col-md-8">
             <div class="row">
-                <div class="col-md-4">
-                    <img src="" alt="">
+                <div class="col-md-2">
+                    <img th:src="@{'/channelimg/' + ${memberEntity.channelImg}}" alt="" class="w-100"  style="height: 8rem; border-radius: 5rem;">
                 </div>
                 <div class="col-md-8">
                     <div>
-                        <span>클래스명</span>
+                        <span th:text="${memberEntity.channelTitle}"></span>
                     </div>
                     <div>
-                        <span>주소</span>
+                        <span th:text="${#strings.listSplit(memberEntity.RoomEntities.get(0).roomAddress,',')[0] }"></span>
                     </div>
                 </div>
             </div>
             <hr>
             <div>
-                <span><strong>강사 소개</strong></span>
+                <h3><strong>강사 소개</strong></h3>
+                <div th:utext="${memberEntity.channelContent}"></div>
             </div>
             <hr>
-            <div>
-                <h5><strong>공간 및 클래스 소개</strong></h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <img src="" alt="">
-                    </div>
-                    <div class="col-md-6">
-                        <span>내용</span>
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col-md-4" id="reviewbox">
             <h4><strong>클래스 후기</strong></h4>
-            <div class="row">
-                <div class="col-md-8">
-                    <h5><strong>클래스명</strong></h5><br>
-                    <span>날짜</span>
-                    <span>내용</span>
-                </div>
-                <div class="col-md-4">
-                    <img src="" alt="">
+            <div class="row" th:each="room : ${memberEntity.roomEntities}">
+                <div th:each="reply : ${room.replyEntities}">
+                    <div class="col-md-8">
+                            <h5 th:text="${reply.roomEntity.roomTitle}"></h5><br>
+                            <span th:text="${#temporals.format(reply.createdDate,'yyyy-MM-dd')}">날짜</span><br>
+                            <span th:text="${reply.replyContent}">내용</span>
+                    </div>
+                    <div class="col-md-4">
+                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" alt="" style="width: 100%">
+                    </div>
                 </div>
             </div>
             <hr>

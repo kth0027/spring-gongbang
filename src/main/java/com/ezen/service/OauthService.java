@@ -63,15 +63,11 @@ public class OauthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
 
     // 동일한 이메일이 있을경우 업데이트 동일한 이메일 없으면 저장
     public MemberEntity saveorupdate(Oauth2Dto oauth2Dto) {
-
         // 1. memberRepository 이용한 동일한 이메일찾기. [ findBy필드명 -> 반환타입 : Optional
         MemberEntity memberEntity = memberRepository.findBymemberEmail(oauth2Dto.getEmail())
                 .map(entity -> entity.update(oauth2Dto.getName()))
                 // map( 임시객체명 => 임시객체명.메소드) : 동일한 이메일이 있을 경우 => 특정 이벤트 수정
                 .orElse(oauth2Dto.toentity());    // orElse(  )  : 동일한 이메일이 없을경우 dto->entity
-
-
         return memberRepository.save(memberEntity);
     }
-
 }

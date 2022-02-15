@@ -89,7 +89,7 @@
             </div>
             <div>
                 <div class="Categorybox">
-                    <span class="Categoryp" th:text="${roomEntity.roomContent}"></span>
+                    <span class="Categoryp" th:text="${roomEntity.roomCategory}"></span>
                 </div>
                 <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
                 <div>
@@ -97,7 +97,7 @@
                     <button class="btn btn-outline-info" style="color:black;" data-bs-target="#notemodal" data-bs-toggle="modal">
                         문의하기
                     </button>
-                    <button class="btn btn-outline-info"> <a th:href="@{/member/channel}" style="text-decoration:none; color:black;">
+                    <button class="btn btn-outline-info"> <a th:href="@{'/member/channel/' + ${roomEntity.memberEntity.memberNo} }" style="text-decoration:none; color:black;">
                         채널보기
                     </a> </button>
                     <button th:onclick="roomLike([[${roomEntity.roomNo}]],[[${session.logindto.memberNo}]]);" class="btn btn-outline-info">

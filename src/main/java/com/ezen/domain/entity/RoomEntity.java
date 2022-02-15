@@ -101,4 +101,7 @@ public class RoomEntity extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     private List<RoomLikeEntity> roomLikeEntities =new ArrayList<>();
+
+//    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+//    private List<MemberImgEntity> channelEntities = new ArrayList<>();
 }

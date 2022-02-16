@@ -2,7 +2,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
 </head>
 <body>
@@ -23,38 +22,31 @@
     <input type="hidden" th:value="${room.roomNo}" name="roomNo">
     <div class="container">
         <div class="row">
-            <div class="col-md-7" style="box-shadow: 5px 5px 5px #cccccc;">
+            <div class="col-md-7">
                 <!-- 이미지 출력 -->
-                <div class="row m-1 p-3">
+                <div class="row">
                     <div class="col-6">
                         <img th:src="@{'/roomimg/' + ${room.roomImgEntities.get(0).roomImg}}" class="img-fluid"
                              style="width: 100%;">
                     </div>
-                    <div class="col-6" style="margin-top : 25px;">
+                    <div class="col-6">
                         <ul class="list-group">
-                            <li class="list-group-item" th:text="${room.roomNo}" style="display: none;"></li>
                             <li class="list-group-item" th:text="${room.roomTitle}"></li>
                             <li class="list-group-item" th:text="${room.roomContent}"></li>
-                            <li class="list-group-item" th:text="${room.roomAddress}"></li>
+                            <li class="list-group-item" th:text="${#strings.listSplit(room.roomAddress, ',')[0]}"></li>
                             <li class="list-group-item" th:text="${room.roomMax}"></li>
                             <li class="list-group-item" th:text="${room.roomCategory}"></li>
                         </ul>
                     </div>
                 </div>
-
             </div>
-
-
-
-
-
             <div class="col-md-5">
                 <!--
                 1. 캘린더 출력
                 2. 클릭 이벤트 발생 시 날짜 데이터 전달
                 3.
                 -->
-                <div style="width: 450px; height: 550px; box-shadow: 5px 5px 5px #cccccc;">
+                <div style="width: 450px; height: 550px;">
                     <div class="sec_cal">
                         <div class="cal_nav">
                             <a href="javascript:;" class="nav-btn go-prev">prev</a>
@@ -108,7 +100,7 @@
                     </div>
                 </div>
                 <div class="">
-                    <input type="submit" class="btn btn-secondary" value="클래스 시간 등록">
+                    <input type="submit" value="클래스 시간 등록">
                 </div>
             </div>
         </div>

@@ -3,56 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <style>
-        ul li{
-            list-style-type: none;
-            display: inline;
-            margin-left: 20px;
-        }
-        #qnabox{
-            width: 96%;
-            height: auto;
-            display: flex;
-            padding: 2%;
-            margin-top: 20px;
-            border-color: #e0e0e0;
-            border-style: solid;
-            border-width: 1px;
-            border-radius: 7px;
-            flex-direction: column;
-        }
-
-        .carousel-item img{
-            border-radius: 3rem;
-        }
-
-        .star_rating {
-            font-size:0; letter-spacing:-4px;
-        }
-        .star_rating a {
-            font-size:22px;
-            letter-spacing:0;
-            display:inline-block;
-            margin-left:5px;
-            color:#ccc;
-            text-decoration:none;
-        }
-        .star_rating a:first-child {
-            margin-left:0;
-        }
-        .star_rating a.on {
-            color:#777;
-        }
-
-
-
-
-
-
-
-
-
-
-
 
     </style>
 
@@ -81,18 +31,17 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
-                                 class="d-block w-100" alt="..." style="height: 30rem;">
+                                 class="d-block w-100" style="height: 30rem;">
                         </div>
                         <!-- 02-15 조지훈 -->
                         <div class="carousel-item"
                              th:each="num : ${#numbers.sequence( 1 , roomEntity.roomImgEntities.size()-1  )}">
-                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(num).roomImg} }"
-                                 class="d-block w-100" alt="..."
-                                 style="height: 40rem;">
+                            <img th:src="@{'/roomimg/' + ${roomEntity.roomImgEntities.get(num).roomImg} }"
+                                 class="d-block w-100"
+                                 style="height: 30rem;">
                         </div>
                         <!-- 02-15 조지훈 end -->
                     </div>
-
                     <button class="carousel-control-prev" type="button"
                             th:data-bs-target="${'#carousel' + roomEntity.roomNo}"
                             data-bs-slide="prev">
@@ -116,43 +65,43 @@
                 <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
                 <div class="d-flex justify-content-end">
                     <!-- 해당 클래스 리뷰 평균치를 출력하는 부분 -->
-                    <span id="review-avg">리뷰 평균</span> <i class="bi bi-star-fill"></i>
-                    <div th:text="${avg}"></div>
+                    <div id="review-avg">
+                        <span>리뷰 평균</span> <i class="bi bi-star-fill"></i> <span th:text="${avg}"></span>
+                    </div>
                 </div>
                 <div>
                     <span class="subad" th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></span>
-                    <button class="btn btn-outline-info" style="color:black;" data-bs-target="#notemodal"
+                    <button class="btn" data-bs-target="#notemodal"
                             data-bs-toggle="modal">
                         문의하기
                     </button>
-                    <button class="btn btn-outline-info"><a th:href="@{/member/channel}"
-                                                            style="text-decoration:none; color:black;">
-                        채널보기
-                    </a></button>
+                    <button class="btn">
+                        <a th:href="@{'/member/channel/' + ${roomEntity.memberEntity.memberNo} }">
+                            채널보기
+                        </a>
+                    </button>
                     <button sec:authorize="isAuthenticated()"
-                            th:onclick="roomLike([[${roomEntity.roomNo}]],[[${session.logindto.memberNo}]]);"
-                            class="btn btn-outline-info">
-
+                            th:onclick="roomLike( [[ ${roomEntity.roomNo} ]], [[ ${session.logindto.memberNo} ]] );"
+                            class="btn">
                         <span th:if="${count==1}" id="like">♥</span>
                         <span th:if="${count==0}" id="like">♡</span>
-
                     </button>
                 </div>
             </div>
             <ul class="viewnav">
-                <a href="#classinfo" class="btn btn-outline-primary">
+                <a href="#classinfo" class="btn">
                     <li>클래스 소개</li>
                 </a>
-                <a href="#ETC" class="btn btn-outline-secondary">
+                <a href="#ETC" class="btn">
                     <li>편의사항</li>
                 </a>
-                <a href="#teacherinfo" class="btn btn-outline-success">
+                <a href="#teacherinfo" class="btn">
                     <li>강사소개</li>
                 </a>
-                <a href="#position" class="btn btn-outline-danger">
+                <a href="#position" class="btn">
                     <li>위치</li>
                 </a>
-                <a href="#review" class="btn btn-outline-warning">
+                <a href="#review" class="btn">
                     <li>후기</li>
                 </a>
             </ul>
@@ -402,6 +351,9 @@
             return false;
         });
     });
+
+
+
 
 
 

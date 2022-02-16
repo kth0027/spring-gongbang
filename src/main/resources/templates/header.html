@@ -302,7 +302,6 @@
             </div>
             <form action="loginController" method="post">
 
-
                 <div class="modal-body p-5 pt-0">
                     <div>
                         <label for="memberId">아이디</label>
@@ -316,10 +315,8 @@
                                id="memberPassword" placeholder="비밀번호">
                     </div>
                     <div id="loginfailmsg" class="text-danger text-center m-2"></div> <!-- 로그인 실패시 메시지 -->
-                    <button type="button" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin"
-                            onclick="login();">로그인
-                    </button>
                     <!-- 로그인 버튼 -->
+                    <input type="submit" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" value="로그인">
                     <div><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이 아니신가요? 회원가입</a></div>
                     <a id="findbtn">
                         <small class="text-muted px-2 btn" th:if="${session.logindto == null}"
@@ -330,15 +327,15 @@
                     <!-- ouath2 -->
                     <div class="d-flex justify-content-center ">
                         <button class="googlesignup w-75 py-2 mx-1 mb-2 btn-outline-dark rounded-4 "
-                                type="submit "><a class="text-dark text-decoration-none"
+                                type="submit"><a class="text-dark text-decoration-none"
                                                   href="/oauth2/authorization/google "> 구글 로그인</a>
                         </button>
                         <button class="naversignup w-75 py-2 mx-1 mb-2 btn-outline-primary rounded-4 "
-                                type="submit "><a class="text-dark text-decoration-none"
+                                type="submit"><a class="text-dark text-decoration-none"
                                                   href="/oauth2/authorization/naver "> 네이버 로그인</a>
                         </button>
                         <button class="kakaosignup w-75 py-2 mx-1 mb-2 btn-outline-secondary rounded-4 "
-                                type="submit "><a class="text-dark text-decoration-none"
+                                type="submit"><a class="text-dark text-decoration-none"
                                                   href="/oauth2/authorization/kakao "> 카카오 로그인</a>
                         </button>
                     </div>

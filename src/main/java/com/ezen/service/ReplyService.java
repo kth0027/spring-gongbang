@@ -32,9 +32,9 @@ public class ReplyService {
     @Autowired
     RoomService roomService;
 
-    public boolean write(ReplyEntity replyEntity, List<MultipartFile> files, int roomNo) {
+    public boolean write(ReplyEntity replyEntity, List<MultipartFile> files, int roomNo, int replyStar) {
         HttpSession session = request.getSession();
-        MemberDto loginDto = (MemberDto)session.getAttribute("logindto");
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
 
         MemberEntity memberEntity = memberService.getMember(loginDto.getMemberNo());
         replyEntity.setMemberEntity(memberEntity);
@@ -42,6 +42,8 @@ public class ReplyService {
         RoomEntity roomEntity = roomService.getroom(roomNo);
         replyEntity.setRoomEntity(roomEntity);
 
+        //별점 추가
+        replyEntity.setReplyStar(replyStar);
 
         int replyNo = replyRepository.save(replyEntity).getReplyNo();
         ReplyEntity replyEntitysaved = replyRepository.findById(replyNo).get();
@@ -51,16 +53,16 @@ public class ReplyService {
 
         // 파일처리
         String uuidfile = null;
-        if(files.size() != 0 ) {
-            for(MultipartFile file : files) {
+        if (files.size() != 0) {
+            for (MultipartFile file : files) {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-");
 
                 String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\replyimg";
                 String filepath = dir + "\\" + uuidfile;
-                try{
+                try {
                     file.transferTo(new File(filepath));
-                }catch(Exception e) {
+                } catch (Exception e) {
                     System.out.println("파일 저장 실패 : " + e);
                 }
 
@@ -72,7 +74,7 @@ public class ReplyService {
                 replyEntitysaved.getReplyImgEntities().add(replyImgRepository.findById(replyImgNo).get());
 
             }
-        } else{
+        } else {
             ReplyImgEntity replyImgEntity = ReplyImgEntity.builder()
                     .replyImg(null)
                     .replyEntity(replyEntitysaved)
@@ -83,7 +85,7 @@ public class ReplyService {
         return true;
     }
 
-    public List<ReplyEntity> replylist () {
+    public List<ReplyEntity> replylist() {
         return replyRepository.findAll();
     }
 }

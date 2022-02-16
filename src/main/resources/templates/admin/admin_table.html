@@ -1,0 +1,20 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>번호</th>
+        <th>타이틀</th>
+        <th>내용</th>
+        <th>카테고리</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr th:each=" room : ${roomEntities}">
+        <td th:text="${room.roomNo}"></td>
+        <td th:text="${room.roomTitle}"></td>
+        <td th:text="${room.roomContent}"></td>
+        <td th:text="${room.roomCategory}"></td>
+    </tr>
+    </tbody>
+
+</table>

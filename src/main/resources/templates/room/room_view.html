@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <style>
-
         ul li{
             list-style-type: none;
             display: inline;
@@ -25,6 +24,29 @@
         .carousel-item img{
             border-radius: 3rem;
         }
+
+        .star_rating {
+            font-size:0; letter-spacing:-4px;
+        }
+        .star_rating a {
+            font-size:22px;
+            letter-spacing:0;
+            display:inline-block;
+            margin-left:5px;
+            color:#ccc;
+            text-decoration:none;
+        }
+        .star_rating a:first-child {
+            margin-left:0;
+        }
+        .star_rating a.on {
+            color:#777;
+        }
+
+
+
+
+
 
 
 
@@ -56,7 +78,7 @@
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
-                                 class="d-block w-100" alt="..." style="height: 40rem;">
+                                 class="d-block w-100" alt="..." style="height: 30rem;">
                         </div>
                         <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
                             <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="..."
@@ -83,6 +105,11 @@
                     <span class="Categoryp" th:text="${roomEntity.roomContent}"></span>
                 </div>
                 <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
+                <div class="d-flex justify-content-end">
+                    <!-- 해당 클래스 리뷰 평균치를 출력하는 부분 -->
+                    <span>리뷰 평균</span> <i class="bi bi-star-fill"></i>
+                    <div th:text="${avg}"></div>
+                </div>
                 <div>
                     <span class="subad" th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></span>
                     <button class="btn btn-outline-info" style="color:black;" data-bs-target="#notemodal"
@@ -169,19 +196,25 @@
                         <div class="col-md-4" th:text="${reply.memberEntity.memberName}"></div><!-- 우선은 memberName으로 -->
                         <div class="col-md-4" th:text="${#temporals.format(reply.createdDate,'yyyy-MM-dd hh:mm')}">날짜
                         </div>
+                        <div class="col-md-4">
+                            <span th:each="num : ${#numbers.sequence(1,5)}">
+                                <span th:if="${num<=reply.replyStar}">★</span>
+                                <span th:unless="${num<=reply.replyStar}">☆</span>
+                            </span>
+                        </div>
                         <hr>
                     </div>
-                    <div class="row">
-                        <div class="col-md-9" th:text="${reply.replyContent}"></div>
-                    </div>
+                    <hr>
                 </div>
-                <hr>
-                <br>
+                <div class="row">
+                    <div class="col-md-9" th:text="${reply.replyContent}"></div>
+                </div>
             </div>
             <hr>
+            <br>
         </div>
 
-        <div sec:authorize="isAuthenticated()" class="col-md-4 offset-md-1">
+        <div sec:authorize="isAuthenticated()" class="col-md-4">
             <!--
             1. roomNo 에 해당하는 TimeTable 엔티티를 가져온다.
             2. roomDate : YYYY-MM-DD
@@ -225,7 +258,6 @@
                     <div id="time-select-inner"></div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -258,6 +290,14 @@
                 <h5 class="mb-0"> 후기 남기기 </h5>
                 <p class="mb-3" id="reviewmsg"> 공방 관련 후기를 작성하실 수 있습니다.</p>
                 <form action="/reply/writecontroller" method="post" enctype="multipart/form-data">
+                    <div class="star_rating">
+                        <a href="#" class="on" id="1">★</a>
+                        <a href="#" id="2">★</a>
+                        <a href="#" id="3">★</a>
+                        <a href="#" id="4">★</a>
+                        <a href="#" id="5">★</a>
+                        <input type="hidden" id="review_star" name="review_star" value="1">
+                    </div>
                     <input type="hidden" id="roomNo" name="roomNo" th:value="${roomNo}">
                     <textarea class="form-control" placeholder="Leave a comment here" id="replyContent"
                               name="replyContent"
@@ -300,6 +340,7 @@
         let person = $("#class-register-person").val();
         $("#input-person").val(person);
 
+
         price = price * person;
 
         roomhtml = "<div class='d-flex justify-content-end' id='person-select-wrapper'>";
@@ -333,18 +374,33 @@
                     }
                     else if(data == 1){
                         // 등록이 가능한 경우에 페이지 이동
-                        $.ajax({
-                            url: "/member/memberPayment",
-                            data: {"roomNo" : roomNo, "roomDate" : roomDate, "roomTime" : roomTime, "person" : person, "price" : price},
-                            success:function(data){
-
-                            }
-                        });
+                        // room_payment.html 로 이동한다.
+                        location.href = "/member/memberPaymentController?roomNo=" + roomNo + "&roomDate=" + roomDate + "&roomTime=" + roomTime + "&person=" + person + "&price=" + price;
                     }
                 }
             });
         });
     }
+
+    <!--별점 보여주기 jquery -->
+    $( document ).ready(function() {
+        $( ".star_rating a" ).click(function() {
+            $(this).parent().children("a").removeClass("on");
+            $(this).addClass("on").prevAll("a").addClass("on");
+            var starRate = $(this).attr('id');
+            $("#review_star").val(starRate);
+            return false;
+        });
+    });
+
+
+
+
+
+
+
+
+
 
 </script>
 

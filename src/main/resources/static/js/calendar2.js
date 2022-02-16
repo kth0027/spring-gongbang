@@ -47,13 +47,14 @@ function daySelect(year , month , day, roomNo){
                 var roomLocal = room.local;
                 var roomMax = room.max;
                 var roomDate = room.date;
+                var realMax = room.timeMax;
 
                 var roomhtml = "<div class='col-md-8'>";
                 roomhtml += "<div class='classContent' style='border: 3px solid #374b73; background-color: #ffffff; color: #374b73; padding: 0.5rem;'>";
                 roomhtml += "<div> 클래스 이름 : " + roomTitle + "</div>";
                 roomhtml += "<div> <span> 시작시간 : " + roomBeginTime + "</span>  <span> 종료시간 : " + roomEndTime + "</span> </div>";
                 roomhtml += "<div> 지역 : " + roomLocal + "</div>";
-                roomhtml += "<div> 수용 가능 인원 : " + roomMax + "</div>";
+                roomhtml += "<div> 신청 가능한 인원 : " + realMax + "</div>";
                 roomhtml += "</div>";
                 roomhtml += "</div>";
                 roomhtml += "<div class='col-md-4'>";

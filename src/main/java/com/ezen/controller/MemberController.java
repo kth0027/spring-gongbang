@@ -1,6 +1,7 @@
 package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
+import com.ezen.domain.dto.RoomPaymentDto;
 import com.ezen.domain.entity.HistoryEntity;
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
@@ -171,7 +172,9 @@ public class MemberController { // C S
     // @Author : 김정진
     // @Date : 2022-02-11
     // @Note :
-    // 1. 회원이 신청한 정보를 DB에 등록하면서 예약 처리하는 메소드입니다.
+    // 1. room_view 에서 예약 버튼을 누르기까지 과정을 담당하는 메소드입니다.
+    // 2. 개설된 클래스에 남는 자리가 있는지, 회원의 포인트는 충분한지를 검사합니다.
+    // 3. 즉 유효성 검사하는 메소드입니다.
     @GetMapping("/registerClass")
     @ResponseBody
     @Transactional
@@ -215,6 +218,60 @@ public class MemberController { // C S
                 timeTableTmp = timeTableEntity;
             }
         }
+        // 신청한 정원만큼 클래스 수용 인원을 감소시킵니다. 
+        assert timeTableTmp != null;
+        if (timeTableTmp.getRoomMax() < person) {
+            return "2";
+        }
+        return "1";
+    }
+
+    // @Author : 김정진
+    // @Date : 2022-02-16
+    // 최종적으로 결제가 이루어지는 메소드입니다.
+    // 정원 차감 & 포인트 차감이 이루어집니다.
+    @PostMapping("/memberPay")
+    @Transactional
+    public String memberPay(Model model,
+                            @RequestParam("roomNo") int roomNo,
+                            @RequestParam("roomTime") String classTime,
+                            @RequestParam("roomDate") String roomDate,
+                            @RequestParam("person") int person,
+                            @RequestParam("price") int price) {
+
+        System.out.println(roomNo + "," + classTime + "," + roomDate + "," + person + "," + price);
+        MemberEntity memberEntity = null;
+        // 0. 로그인된 회원 정보를 불러온다.
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+
+        // 0.1 로그인 세션 정보가 없으면 메인 페이지로 이동해서 로그인을 요구한다.
+        if (loginDto == null) {
+            return "redirect: /index";
+        } else {
+            // 0.2 로그인 세션 정보가 존재하면 member Entity 를 호출한다.
+            memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
+        }
+
+        int memberNo = memberEntity.getMemberNo();
+
+        RoomEntity roomEntity = null;
+        TimeTableEntity timeTableTmp = null;
+
+        // 1. roomNo 에 해당하는 room 엔티티를 호출한다.
+        // 1.1 history 저장 후 room 엔티티에 선언된 list 에 histroy 를 추가시켜야한다.
+        if (roomRepository.findById(roomNo).isPresent()) {
+            roomEntity = roomRepository.findById(roomNo).get();
+        }
+
+        // 2. 받아온 시간으로 TimeTable 을 가져온다.
+        // 2.1 TimeTable 내에서 roomTime 에 해당하는 것만 등록한다.
+        List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomNo(roomNo);
+        for (TimeTableEntity timeTableEntity : timeTableEntities) {
+            if (timeTableEntity.getRoomTime().equals(classTime)) {
+                timeTableTmp = timeTableEntity;
+            }
+        }
 
         // 3. HistoryEntity 에 멤버 정보, 클래스 정보를 들록합니다.
         HistoryEntity historyEntity = HistoryEntity.builder()
@@ -225,40 +282,45 @@ public class MemberController { // C S
 
         // 4. 예약내역 저장하고 저장번호 받아오기
         int savedHistoryEntityNo = historyRepository.save(historyEntity).getHistoryNo();
-        // 신청한 정원만큼 클래스 수용 인원을 감소시킵니다. 
+
+        // 5. 신청한 정원만큼 클래스 수용 인원을 감소시킵니다.
         assert timeTableTmp != null;
-        if (timeTableTmp.getRoomMax() < person) {
-            return "2";
-        } else {
-            timeTableTmp.setRoomMax(timeTableTmp.getRoomMax() - person);
-            // 수용 가능 인원이 '0' 명이 된다면, 클래스 상태를 '모집완료' 로 바꿉니다.
-            if (timeTableTmp.getRoomMax() == 0) {
-                timeTableTmp.setRoomStatus("모집완료");
-            }
+        timeTableTmp.setRoomMax(timeTableTmp.getRoomMax() - person);
+        // 수용 가능 인원이 '0' 명이 된다면, 클래스 상태를 '모집완료' 로 바꿉니다.
+        if (timeTableTmp.getRoomMax() == 0) {
+            timeTableTmp.setRoomStatus("모집완료");
         }
 
-        // 5. 위에서 저장한 예약내역 가져오기
+        // 6. 위에서 저장한 예약내역 가져오기
         HistoryEntity savedHistoryEntity = historyRepository.findById(savedHistoryEntityNo).get();
 
-        // 6. historyEntity 를 TimeTable Entity 에 선언한 List<HistoryEntity> 에 추가한다.
-
+        // 7. History 엔티티와 @OneToMany 맵핑이 되어있는 엔티티에 History 엔티티를 추가시킵니다.
         timeTableTmp.getHistoryEntity().add(savedHistoryEntity);
         memberEntity.getHistoryEntities().add(savedHistoryEntity);
         assert roomEntity != null;
         roomEntity.getHistoryEntities().add(savedHistoryEntity);
 
-        return "1";
+        // 8. 최종적으로 회원이 가진 포인트를 감소시킵니다.
+        memberEntity.setMemberPoint(memberEntity.getMemberPoint() - price);
+
+        List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
+        model.addAttribute("histories", historyEntities);
+        return "member/history_list";
     }
 
-    // @Author : 김정진
-    // @Date : 2022-02-15
-    // room_view.html 에서 member_payment.html 로 넘어가는 맵핑
-    @GetMapping("/memberPayment")
-    public String memberPayment(Model model, @PathVariable("roomNo") int roomNo,
-                                @PathVariable("roomDate") String roomDate,
-                                @PathVariable("roomTime") String roomTime) {
 
-        System.out.println("##### roomNo : " + roomNo + " roomDate : " + roomDate + " roomTime : " + roomTime);
+    // @Author : 김정진
+    // @Date : 2022-02-15 ~ 2022-02-16
+    // room_view.html 에서 member_payment.html 로 넘어가는 맵핑
+    // 결제하려는 회원의 정보와 클래스 정보를 member_payment.html 에 전달하는 메소드입니다.
+    @GetMapping("/memberPaymentController")
+    public String memberPaymentController(Model model,
+                                          @RequestParam("roomNo") int roomNo,
+                                          @RequestParam("roomDate") String roomDate,
+                                          @RequestParam("roomTime") String roomTime,
+                                          @RequestParam("person") int person,
+                                          @RequestParam("price") int price) {
+
         MemberEntity memberEntity = null;
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
@@ -269,6 +331,23 @@ public class MemberController { // C S
             // 0.2 로그인 세션 정보가 존재하면 member Entity 를 호출한다.
             memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
         }
+
+        RoomEntity roomEntity = null;
+        if (roomRepository.findById(roomNo).isPresent()) {
+            roomEntity = roomRepository.findById(roomNo).get();
+        }
+
+        // 인수가 많아서 dto 를 새로 만들어서 넘깁니다.
+        RoomPaymentDto roomPaymentDto = RoomPaymentDto.builder()
+                .roomDate(roomDate)
+                .roomTime(roomTime)
+                .person(person)
+                .price(price)
+                .build();
+
+        model.addAttribute("info", roomPaymentDto);
+        model.addAttribute("member", memberEntity);
+        model.addAttribute("room", roomEntity);
 
         return "member/room_payment";
     }

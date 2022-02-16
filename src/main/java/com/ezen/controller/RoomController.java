@@ -43,6 +43,9 @@ public class RoomController {
     private TimeTableRepository timeTableRepository;
 
     @Autowired
+    private ReplyRepository replyRepository;
+
+    @Autowired
     ReplyService replyService;
 
     // [room_write.html 페이지와 맵핑]
@@ -157,6 +160,7 @@ public class RoomController {
     }
 
     // 룸보기 페이지 이동
+    // @Date : 2022-02-16 -> 리뷰 평균 구하는 부분 추가
     @GetMapping("/view/{roomNo}") // 이동
     @Transactional
     public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
@@ -170,8 +174,8 @@ public class RoomController {
         model.addAttribute("timeTableEntities", timeTableEntities);
 
         // 3. 좋아요 상태보내기
-        int count= roomEntity.getRoomLikeEntities().size();
-        model.addAttribute("count",count);
+        int count = roomEntity.getRoomLikeEntities().size();
+        model.addAttribute("count", count);
 
         // 4. 조회수를 증가시킵니다.
         // 3.1 세션 확인해서 동일한 세션이 없으면 조회수를 증가시킨다.
@@ -185,6 +189,26 @@ public class RoomController {
             session.setAttribute(String.valueOf(roomNo), 1);
             session.setMaxInactiveInterval(60 * 60 * 24);
         }
+
+        // 5. 리뷰 평균을 구해서 room_view.html 에 추가시킵니다.
+        float sum = 0;
+        float replyAvg = 0;
+        List<ReplyEntity> replyEntities;
+        // 5.1 해당 클래스에 등록된 댓글을 호출합니다.
+        if (!replyRepository.getReplyByRoomNo(roomNo).isEmpty()) {
+            replyEntities = replyRepository.getReplyByRoomNo(roomNo);
+            float replySize = replyEntities.size();
+            for (ReplyEntity reply : replyEntities) {
+                sum += reply.getReplyStar();
+            }
+            replyAvg = (sum / replySize);
+        }
+
+        String avg = String.format("%.2f", replyAvg);
+
+        // 리뷰 평균
+        model.addAttribute("avg", avg);
+
 
         return "room/room_view"; // 타임리프
     }
@@ -354,6 +378,7 @@ public class RoomController {
                     data.put("endTime", timeTableEntity.getRoomTime().split(",")[1]);
                     data.put("local", roomEntity.getRoomLocal());
                     data.put("max", roomEntity.getRoomMax());
+                    data.put("timeMax", timeTableEntity.getRoomMax());
 
                     jsonArray.add(data);
                 } catch (Exception e) {
@@ -388,12 +413,8 @@ public class RoomController {
     }
 
 
-
     // [댓글 갯수 카운트]
     // @Date : 2022-02-14
-
-
-
 
 
 }

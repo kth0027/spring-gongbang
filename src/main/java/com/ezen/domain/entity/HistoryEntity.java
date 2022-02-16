@@ -22,6 +22,9 @@ public class HistoryEntity extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int historyNo;
 
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
+
     // 1명의 회원이 여러 클래스를 신청할 수 있다.
     @ManyToOne()
     @JoinColumn(name = "memberNo")

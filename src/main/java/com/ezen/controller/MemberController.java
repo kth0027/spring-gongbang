@@ -309,11 +309,11 @@ public class MemberController { // C S
     }
 
     // 02-15 채널 정보 등록 페이지 맵핑 - 조지훈
-    @GetMapping("/channelupdate/{memberNo}")
-    public String channelupdate(@PathVariable("memberNo") int memberNo, Model model){
-        model.addAttribute("memberNo", memberNo);
-        return "member/channelupdate";
-    }
+//    @GetMapping("/channelupdate/{memberNo}")
+//    public String channelupdate(@PathVariable("memberNo") int memberNo, Model model){
+//        model.addAttribute("memberNo", memberNo);
+//        return "member/channelupdate";
+//    }
 
     // 02-15 채널 정보 등록  - 조지훈
     @PostMapping("/channelupdatecontroller")

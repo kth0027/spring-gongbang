@@ -5,48 +5,6 @@
     <title>클래스 개설</title>
     <link rel="stylesheet" th:href="@{/css/register.css}">
     <link rel="stylesheet" th:href="@{/css/summernote/summernote-lite.css}">
-
-    <style>
-        /* The slider itself */
-        .slider {
-            -webkit-appearance: none;  /* Override default CSS styles */
-            appearance: none;
-            width: 100%; /* Full-width */
-            height: 25px; /* Specified height */
-            background: #fff1ed; /* Grey background */
-            outline: none; /* Remove outline */
-            opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
-            -webkit-transition: .2s; /* 0.2 seconds transition on hover */
-            transition: opacity .2s;
-        }
-
-        /* Mouse-over effects */
-        .slider:hover {
-            opacity: 1; /* Fully shown on mouse-over */
-        }
-
-        /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-            .slider::-webkit-slider-thumb {
-            -webkit-appearance: none; /* Override default look */
-            appearance: none;
-            width: 25px; /* Set a specific slider handle width */
-            height: 25px; /* Slider handle height */
-            background: #374b73; /* Green background */
-            cursor: pointer; /* Cursor on hover */
-        }
-
-        .slider::-moz-range-thumb {
-            width: 25px; /* Set a specific slider handle width */
-            height: 25px; /* Slider handle height */
-            background: #374b73; /* Green background */
-            cursor: pointer; /* Cursor on hover */
-        }
-
-
-
-
-
-    </style>
 </head>
 <body>
 <div th:replace="common.html::common"></div>
@@ -57,15 +15,9 @@
 <!-- 다음우편api js -->
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-<div class="container">
+<div class="container register-detail-wrapper">
 
-    <div class="row">
-        <div class="col-md-4">클래스 정보</div>
-        <div class="col-md-4">클래스 소개</div>
-        <div class="col-md-4">클래스 위치</div>
-    </div>
-
-    <div class="row">
+    <div class="register-detail-inner">
         <span>작성 유의 사항</span>
         <div>
             <ul>
@@ -76,7 +28,7 @@
         </div>
     </div>
 
-    <div>
+    <div class="register-detail-inner">
         <!--
         1. @Author : 김정진
         2. @Date : 2022-01-27
@@ -294,7 +246,7 @@
                     </div>
                 </div>
                 <div class="row register-content-wrapper">
-                    <input type="submit" class="btn btn-secondary">
+                    <input type="submit" value="클래스 등록">
                 </div>
             </div>
         </form>

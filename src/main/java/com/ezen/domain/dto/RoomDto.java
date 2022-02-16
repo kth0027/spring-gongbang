@@ -12,7 +12,7 @@ public class RoomDto {
     private String roomContent;
     private String roomDate;
     private String roomAddress;
-    private int roomStatus;
+    private String roomStatus;
     private int roomMax;
 
     public RoomEntity toentity(){
@@ -21,7 +21,6 @@ public class RoomDto {
                 .roomTitle(this.roomTitle)
                 .roomCategory(this.roomCategory)
                 .roomContent(this.roomContent)
-                .roomDate(this.roomDate)
                 .roomAddress(this.roomAddress)
                 .roomStatus(this.roomStatus)
                 .roomMax(this.roomMax)

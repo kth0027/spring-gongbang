@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" th:fragment="header" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>헤더 페이지</title>
+    <!-- header css 가져오기 -->
+    <link th:href="@{/css/header.css}" rel="stylesheet">
+</head>
+
+<body>
+<!-- 로그인 스크립트는 사용하지 않습니다. -->
+<!-- OAuth 를 사용하기 때문에 비밀번호 encode, decode, login, logout 처리를 위임합니다. -->
+<!-- SecurityConfig, OauthDto, OauthService 를 참고하세요 -->
+<!--<script th:src="@{/js/login.js}"></script>-->
+
+<div id="wrap" class="border border-primary" style="width:100vw">
+    <!-- 헤더메뉴 -->
+    <header class="p-3 text-white" style="background-color: #fff1ed;">
+        <div class="container">
+            <div class="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <div class="col-1 d-flex justify-content-center">
+                    <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <img th:src="@{/img/logo/logo.png}" alt="logo">
+                    </a>
+                </div>
+                <div class="col-8">
+                    <div class="row d-flex justify-content-between align-items-center"
+                         style="padding: 0px; margin: 0px;">
+                        <div class="col-12 col-sm-7 col-md-8">
+                            <!--
+                            1. '검색' 버튼을 클릭하면 검색할 수 있는 <div> 가 보입니다.
+                            -->
+                            <button id="opensearch" type="button" class="opensearch btn"
+                                    style="background: #ffffff; border: 1px solid #374b73; width: 100%;">
+                                검색
+                            </button>
+                        </div>
+                        <!--
+                        1. '클래스 개설'은 로그인 해야만 보이게 제한을 걸어둡니다.
+                        -->
+                        <div sec:authorize="isAuthenticated()" class="col-12 col-sm-5 col-md-4">
+                            <a th:href="@{/room/register}">
+                                <button type="button" class="btn"
+                                        style="border: 2px solid #374b73; width: 100%; height: 2.5rem;">
+                                    클래스 개설
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="justify-content-center">
+                        <button th:if="${session.logindto == null}" type="button"
+                                class="btn btn-secondary me-2 openlogin my-1" data-bs-target="#modallogin"
+                                data-bs-toggle="modal">로그인
+                        </button>
+                        <a class="my-1" th:if="${session.logindto == null}" th:href="@{/member/signup}">
+                            <button type="button" class="btn btn-secondary" data-target="#modalsignup"
+                                    data-toggle="modal">
+                                회원가입
+                            </button>
+                        </a>
+
+                        <div sec:authorize="isAuthenticated()" th:if="${session.logindto != null}" class="flex-shrink-0 dropdown">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
+                               id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="/img/default-profile-photo.png" alt="mdo" width="32" height="32"
+                                     class="rounded-circle">
+                            </a>
+                            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                                <li>
+                                    <a th:if="${session.logindto != null }" th:href="@{/member/info}"
+                                       style="text-decoration: none;" class="dropdown-item"> 마이페이지 </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{/admin/adminlist}" class="dropdown-item">관리리스트</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/member/reservationListController}">예약내역</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/member/myclass}">내가등록한클래스</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="#">나의 채널 정보</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/member/msg}"
+                                       th:if="${ session.nreadcount==null }" th:text="${'Q&A(0)'}"></a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:href="@{/member/msg}"
+                                       th:if="!${ session.nreadcount==null}"
+                                       th:text="${'Q&A ('+session.nreadcount+')'}"></a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" th:if="${session.logindto != null }"
+                                       th:href="@{/member/logout}"
+                                       style="text-decoration: none;">로그아웃</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 헤더에 '검색' 버튼 클릭하면 검색창을 띄운다.  -->
+        <div id="togglesearch" class="togglesearch border">
+            <div class="row border togglesearchinner d-flex justify-content-center">
+                <!-- 검색창 -->
+                <form class="w-75 my-3" th:action="@{/room/list}" method="get">
+                    <div class="container">
+                        <div class="row my-3">
+                            <input name="roomSearch" type="search" class="form-control form-control-dark col-8 offset-2"
+                                   placeholder="검색어를 입력하세요! " aria-label="Search"
+                                   style="height: 5rem; text-align: left;">
+                        </div>
+                        <!-- 드롭다운 셀렉 -->
+                        <div class="dropdownmenu">
+                            <ul class="list-unstyled ps-0">
+                                <li class="mb-1 d-flex">
+                                    <div class="col-md-2 p-1 m-1">
+                                        <div>
+                                            <button
+                                                    class="btn btn-orange btn-toggle align-items-center rounded collapsed"
+                                                    data-bs-toggle="collapse" data-bs-target="#home-collapse"
+                                                    aria-expanded="false" type="button"
+                                                    style="background-color: #374b73 ;border:1px solid #000000; border-radius: 3rem; color: white;">
+                                                지역
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 p-1 m-1">
+                                        <div class="collapse" id="home-collapse" style="display: block;">
+                                            <select name="classLocal" id="classLocal"
+                                                    class="form-select form-select-lg">
+                                                <option value="" selected>지역선택</option>
+                                                <option value="서울">서울</option>
+                                                <option value="경기">경기</option>
+                                                <option value="인천">인천</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="mb-1 d-flex">
+                                    <div class="col-md-2 p-1 m-1">
+                                        <div>
+                                            <button
+                                                    class="btn btn-outline-dark btn-toggle align-items-center rounded collapsed"
+                                                    data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
+                                                    aria-expanded="false" type="button"
+                                                    style="background-color: #374b73 ;border:1px solid #000000; border-radius: 3rem; color: white;">
+                                                카테고리1
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 p-1 m-1">
+                                        <div class="collapse" id="dashboard-collapse" style="display: block;">
+                                            <select name="classCategory" id="classCategory"
+                                                    class="form-select form-select-lg">
+                                                <option value="" selected>카테고리선택</option>
+                                                <option value="핸드메이드">핸드메이드</option>
+                                                <option value="쿠킹">쿠킹</option>
+                                                <option value="플라워">플라워</option>
+                                                <option value="드로잉">드로잉</option>
+                                                <option value="음악">음악</option>
+                                                <option value="요가/필라테스">필라테스</option>
+                                                <option value="스포츠">스포츠</option>
+                                                <option value="뷰티">뷰티</option>
+                                                <option value="애완동물">애완동물</option>
+                                                <option value="체험">체험</option>
+                                                <option value="자기계발">자기계발</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div id="search" class="search d-flex justify-content-between">
+                            <input type="submit" class="col-8 btn btn-outline-secondary" value="클래스검색"
+                                   style="border: 1px solid #000; font-weight: bold; background: rgb(0, 255, 200); color: rgb(0, 0, 0);">
+                            <input type="text" class="col-4 closesearch btn btn-danger" value="닫기"
+                                   style="width: 10rem;">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>
+
+
+<!-- 헤더메뉴 END -->
+
+<!-- 로그인 모달 -->
+<div class="modal " id="modallogin" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-5 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <h2 class="fw-bold mb-0 text-center w-100">
+                    <img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%">
+                    <p class="text-center">로그인</p>
+                </h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="width:2rem;"></button>
+                <!-- 닫기 버튼 -->
+            </div>
+            <form action="loginController" method="post">
+                <div class="modal-body p-5 pt-0">
+                    <div>
+                        <!--
+                        @Author : 김정진
+                        @Date : 2022-02-13
+                        @Note :
+                            1. (SNS 연동 회원가입을 하지 않은 회원) 회원가입 시 입력한 아이디
+                            2. (SNS 연동 회원가입을 한 회원) 연동한 이메일 @ 앞에 있는 주소 (example@gmail.com) 시 example
+                            3. (SNS 연동 회원가입을 한 회원) 연동한 이메일 주소
+                                1. input value 를 검사해서 id, email 을 동시에 검사해야만 가능하다. [미완성]
+                        -->
+                        <label for="memberId">아이디</label>
+                        <input name="memberId" type="text" class="form-control rounded-4" id="memberId"
+                               placeholder="아이디">
+                    </div>
+                    <div>
+
+                        <label for="memberPassword">비밀번호</label>
+                        <input name="memberPassword" type="password" class="form-control rounded-4" id="memberPassword"
+                               placeholder="비밀번호">
+                    </div>
+                    <div id="loginfailmsg" class="text-danger text-center m-2"></div> <!-- 로그인 실패시 메시지 -->
+                    <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" onclick="login()">로그인</button>
+                    <!-- 로그인 버튼 -->
+                    <div><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이 아니신가요? 회원가입</a></div>
+                    <a id="findbtn" data-bs-dismiss="modal"><small
+                            class="text-muted px-2">회원정보찾기</small></a>
+
+                    <hr class="my-4">
+                    <h2 class="fs-5 fw-bold mb-3"> SNS 연동 로그인</h2> <!-- ouath2 -->
+                    <div class="d-flex justify-content-center">
+                        <button class="googlesignup w-75 py-2 mx-1 mb-2 btn-outline-dark rounded-4" type="submit"><a
+                                class="text-white" href="/oauth2/authorization/google"> 구글 로그인</a>
+                        </button>
+                        <button class="kakaosignup w-75 py-2 mx-1 mb-2 btn-outline-primary rounded-4" type="submit"><a
+                                class="text-white" href="/oauth2/authorization/naver"> 네이버 로그인</a>
+                        </button>
+                        <button class="naversignup w-75 py-2 mx-1 mb-2 btn-outline-secondary rounded-4" type="submit"><a
+                                class="text-white" href="/oauth2/authorization/kakao"> 카카오 로그인</a>
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 로그인 모달종료 -->
+
+<div id="popup" style="display: none">
+    <div class="popupmodal">
+        <div class="modal-body p-5 pt-0 d-flex justify-content-center align-items-center" style="height:100%;">
+            <div class="col-md-6">
+                <!-- 아이디찾기  -->
+                <form action="/member/findemailcontroller" method="post">
+                    이름 : <input type="text" name="mname"> <br>
+                    핸드폰번호 : <input type="text" name="mphone"> <br>
+                    <input type="submit" value="이메일 찾기"> <br>
+                </form>
+                <div th:text="${findemailmsg}"></div>
+            </div>
+            <div class="col-md-6">
+                <!-- 패스워드찾기 -->
+                <form action="/member/findpasswordcontroller" method="post">
+                    이메일 : <input type="text" name="memail"> <br>
+                    핸드폰번호 : <input type="text" name="mphone"> <br>
+                    <input type="submit" value="비밀번호 찾기"> <br>
+                </form>
+                <div th:text="${findpwmsg}"></div>
+            </div>
+        </div>
+        <button>닫기</button>
+    </div>
+</div>
+
+<script>
+/* 검색칸 팝업열기 */
+$(document).ready(function() {
+
+    $("#togglesearch").hide();
+
+    $("#opensearch").click(function() {
+        $("#togglesearch").show();
+    });
+
+    $(".closesearch").click(function() {
+        $("#togglesearch").hide();
+    });
+});
+
+/* 검색칸 팝업닫기 */
+$(".closesearch").click(function() {
+    $("#togglesearch").hide();
+});
+
+
+</script>
+
+
+</body>
+
+</html>

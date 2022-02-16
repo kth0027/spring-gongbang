@@ -1,0 +1,48 @@
+body{
+    padding: 0px;
+    margin: 0px;
+}
+
+.carousel slide{
+    height: 550px 100%;
+}
+
+.Categoryp {
+    font-weight: bold;
+    font-size: 2rem;
+    color: orange;
+    display: flex;
+    background-color: bisque;
+    width: auto;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.Categorybox {
+
+    display: flex;
+    position: relative;
+    margin : 10px;
+    flex-direction: row;
+    text-decoration: none;
+}
+
+.title{
+    font-weight: bold;
+    margin : 10px;
+}
+
+.subad{
+    margin: 10px;
+}
+
+.viewnav{
+    margin: 10px;
+    
+}
+
+.viewnav li {
+    list-style-type: none;
+    display: inline;
+}
+/* 캘린더 CSS 종료 */

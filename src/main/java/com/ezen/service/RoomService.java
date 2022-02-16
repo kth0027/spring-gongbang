@@ -4,24 +4,21 @@ import com.ezen.domain.dto.MemberDto;
 
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
-
 import com.ezen.domain.entity.RoomImgEntity;
-import com.ezen.domain.entity.repository.MemberRepository;
-import com.ezen.domain.entity.repository.RoomImgRepository;
-import com.ezen.domain.entity.repository.RoomRepository;
+import com.ezen.domain.entity.repository.*;
+import com.ezen.domain.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
-
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
@@ -36,17 +33,17 @@ public class RoomService {
     private RoomRepository roomRepository;
     @Autowired
     private MemberRepository memberRepository;
-
     @Autowired
-    HttpServletRequest request;
+    private HttpServletRequest request;
     @Autowired
     private MemberService memberService;
-    @Transactional
-    public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files){
-        System.out.println(roomEntity.getRoomNo());
-        System.out.println(roomEntity.getRoomAddress());
-        System.out.println(roomEntity.getRoomCategory());
+    @Autowired
+    private TimeTableRepository timeTableRepository;
+    @Autowired
+    private NoteRepository noteRepository;
 
+    @Transactional
+    public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files) {
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
@@ -56,27 +53,35 @@ public class RoomService {
         // 3. room entity 저장 후 roomNo 를 가져온다.
         int roomNo = roomRepository.save(roomEntity).getRoomNo();
         // 4. member entity 에 room entity 저장
-        RoomEntity roomEntitySaved = roomRepository.findById(roomNo).get();
+        RoomEntity roomEntitySaved = null;
+        if(roomRepository.findById(roomNo).isPresent()){
+            roomEntitySaved = roomRepository.findById(roomNo).get();
+        }
         // 4.1 member entity 에 방금 저장된 room entity 를 저장시킨다.
         // 4.2 memberEntity 에는 @OneToMany 형태로 맵핑되어있다.
         // 4.3 member 1명이 여러개의 room 을 등록할 수 있고, 등록할 시 맵핑을 시켜주는 역할이다.
         memberEntity.getRoomEntities().add(roomEntitySaved);
-
         // 5. 이미지 처리
         String uuidfile = null;
-        if(files.size()!=0){
-            for(MultipartFile file : files){
+        if (files.size() != 0) {
+            for (MultipartFile file : files) {
                 // 1. 난수 + '_' + 파일이름
                 UUID uuid = UUID.randomUUID();
-                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_","-");
+                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
-                String dir = "C:\\Users\\505\\IdeaProjects\\gongbang\\src\\main\\resources\\static\\roomimg";
+                String dir = "C:\\Users\\505\\Desktop\\gongbang\\src\\main\\resources\\static\\roomimg";
+
+                // 상대 경로 지정
+                // String newdir = "/static/roomimg";
+                // String newFilePath = newdir + "/" + uuidfile;
+
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 String filepath = dir + "\\" + uuidfile;
-                try{
+
+                try {
                     // 4. 지정한 경로에 파일을 저장시킨다.
                     file.transferTo(new File(filepath));
-                } catch(Exception e){
+                } catch (Exception e) {
                     System.out.println("오류 : " + e);
                 }
                 // 5.entity 에 파일 경로를 저장한다.
@@ -85,46 +90,85 @@ public class RoomService {
                         .roomImg(uuidfile)
                         .roomEntity(roomEntitySaved)
                         .build();
-
                 // 6. 각각의 파일을 repo 를 통해 db에 저장한다.
                 // 6.1 해당하는 파일의 roomImgNo 를 통해 해당하는 이미지를 불러온다.
                 int roomImgNo = roomImgRepository.save(roomImgEntity).getRoomImgNo();
                 RoomImgEntity roomImgEntitySaved = roomImgRepository.findById(roomImgNo).get();
                 // 6.2 각각의 이미지를 room entity 에 선언된 list 에 저장시킨다.
+                assert roomEntitySaved != null;
                 roomEntitySaved.getRoomImgEntities().add(roomImgEntitySaved);
             }
         }
         return true;
     }
-//    public Page<RoomEntity> getmyroomlist(Pageable pageable , String keyword , String search ){
-//
-//        //페이지번호
-//        int page = 0;
-//        if(pageable.getPageNumber()==0) page=0; // 0이면1페이지
-//        else page = pageable.getPageNumber()-1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
-//        //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-//        pageable = PageRequest.of(page,5, Sort.by(Sort.Direction.DESC,"roomNo")); // 변수 페이지 10개 출력
-//
-//        // 만약에 검색이 있을경우
-//        if (  keyword !=null && keyword.equals("none") ) return roomRepository.findAllnone( search , pageable );
-//       /* if (  keyword !=null && keyword.equals("handmade") ) return roomRepository.findAllhandmade( search , pageable );
-//        if (  keyword !=null && keyword.equals("cooking") ) return roomRepository.findAllcooking( search , pageable );
-//        if (  keyword !=null && keyword.equals("flower") ) return roomRepository.findAllflower( search , pageable );
-//        if (  keyword !=null && keyword.equals("drawing") ) return roomRepository.findAlldrawing( search , pageable );
-//        if (  keyword !=null && keyword.equals("music") ) return roomRepository.findAllmusic( search , pageable );
-//        if (  keyword !=null && keyword.equals("yoga") ) return roomRepository.findAllyoga( search , pageable );
-//        if (  keyword !=null && keyword.equals("leisure") ) return roomRepository.findAllleisure( search , pageable );
-//        if (  keyword !=null && keyword.equals("beauty") ) return roomRepository.findAllbeauty( search , pageable );
-//        if (  keyword !=null && keyword.equals("experience") ) return roomRepository.findAllexperience( search , pageable );
-//        if (  keyword !=null && keyword.equals("development") ) return roomRepository.findAlldevelopment( search , pageable );
-//        if (  keyword !=null && keyword.equals("pet") ) return roomRepository.findAllpet( search , pageable );*/
-//
-//        return roomRepository.findAll(pageable);
-//    }
+
+    // 내가 만든 room list 가져오기
+    public List<RoomEntity> getmyroomlist() {
+        HttpSession session = request.getSession();
+        MemberDto logindto = (MemberDto) session.getAttribute("logindto");
+        List<RoomEntity> roomEntities = memberRepository.findById(logindto.getMemberNo()).get().getRoomEntities();
+        return roomEntities;
+    }
+
+    // header.html 에서 검색한 결과를 db 에서 받아오는 메소드
+    // @Param keyword : 검색창 입력값
+    // @Param local : 검색창에서 선택한 지역
+    // @Param category : 검색창에서 선택한 카테고리
+    public Page<RoomEntity> getRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local, String category) {
 
 
+        //페이지번호
+        int page = 0;
+        if(pageable.getPageNumber()==0) page=0; // 0이면1페이지
+        else page = pageable.getPageNumber()-1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
+        //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
+        pageable = PageRequest.of(page,3, Sort.by(Sort.Direction.DESC,"roomNo")); // 변수 페이지 10개 출력
 
+        // 1.1 검색이 없는 경우
+        if (keyword.isEmpty()) {
+            // 1.2 검색 X 지역 O 카테고리 X
+            if (!local.isEmpty() && category.isEmpty()) {
+                return roomRepository.findRoomByLocal(local,pageable);
+            }
+            // 1.3 검색 X 지역 X 카테고리 X
+            else if (local.isEmpty() && category.isEmpty()) {
+                return roomRepository.findAll(pageable);
+            }
+            // 1.3 검색 X 지역 X 카테고리 O
+            // 더 줄일 수 있지만 혼선이 있을 수 있어 길게 나열해둡니다.
+            else if (local.isEmpty() && !category.isEmpty()) {
+                return roomRepository.findRoomByCategory(category,pageable);
+            }
+            // 1.4 검색 X 지역 O 카테고리 O
+            else if (!local.isEmpty() && !category.isEmpty()) {
+                return roomRepository.findRoomByLocalAndCategory(local, category,pageable);
+            }
+        }
+        // 2. 검색이 있는 경우
+        else {
+            // 검색 O 지역 O 카테고리 X
+            if (!local.isEmpty() && category.isEmpty()) {
+                return roomRepository.findRoomByLocalAndKeyword(keyword, local,pageable);
+            }
+            // 검색 O 지역 X 카테고리 O
+            else if (local.isEmpty() && !category.isEmpty()) {
+                return roomRepository.findRoomByCategoryAndKeyword(keyword, category,pageable);
+            }
+            // 검색 O 지역 O 카테고리 O
+            else if (!local.isEmpty() && !category.isEmpty()) {
+                return roomRepository.findRoomByCategoryAndLocalAndKeyword(keyword, category, local,pageable);
+            }
+            // 검색 O 지역 X 카테고리 X
+            else if (local.isEmpty() && category.isEmpty()) {
+                return roomRepository.findRoomByKeyword(keyword, pageable);
+            }
+        }
 
+        // 위의 경우 중 아무것도 해당하지 않는다면 null 리턴
+        // 위 조건문을 모두 통과했다면 비정상적인 접근이라고 볼 수 있음
+        // null 값에 대한 처리가 되어있는가?
+        return null;
+    }
 
     // room 상세페이지
     public RoomEntity getroom(int roomNo) {
@@ -132,10 +176,141 @@ public class RoomService {
     }
 
     // 모든 룸 가져오기
-    public List<RoomEntity> getroomlist(){
-        return roomRepository.findAll();
+    public Page<RoomEntity> getroomlist(@PageableDefault Pageable pageable) {
+        int page = 0;
+        if(pageable.getPageNumber()==0) page=0; // 0이면1페이지
+        else page = pageable.getPageNumber()-1; // 1이면 -1 => 1페이지  // 2이면-1 => 2페이지
+        //페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
+        pageable = PageRequest.of(page,3, Sort.by(Sort.Direction.DESC,"roomNo")); // 변수 페이지 10개 출력
+
+        return roomRepository.findAll(pageable);
+    }
+
+    // 룸에 날짜, 시간 지정하기
+    @Transactional
+    public boolean registerTimeToClass(TimeTableEntity timeTableEntity, int roomNo) {
+        if (roomRepository.findById(roomNo).isPresent()) {
+            RoomEntity roomEntity = roomRepository.findById(roomNo).get();
+            timeTableEntity.setRoomEntity(roomEntity);
+            // room 엔티티에 timeTableEntity 추가
+            roomEntity.getTimeTableEntity().add(timeTableEntity);
+            // room 리스트에 room 을 추가
+            // 작성된 시간 엔티티를 db 에 추가시킨다.
+            timeTableRepository.save(timeTableEntity);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // 메인 화면에 등록된 강좌 출력
+    // 가장 최근에 강의가 개설된 강좌 6개만 출력합니다.
+    // 아니 그냥 대칭으로 보기 이쁘게 9개 출력합니다.
+    public List<RoomEntity> getRoomEntityInMain() {
+        // 1. 가장 최근에 등록한 강좌를 TableEntity 에서 빼옵니다.
+        List<TimeTableEntity> roomEntities = timeTableRepository.getByTimeSequence();
+        // 2. RoomEntity 를 저장하는 리스트를 생성해서 집어넣습니다. 9개가 되면 종료 !
+        int count = 0;
+
+        return null;
+    }
+
+
+    // 특정 룸 삭제
+    public boolean delete(int roomNo) {
+
+        roomRepository.delete(roomRepository.findById(roomNo).get());
+        return true;
+    }
+
+
+    // 특정 룸 상태변경
+    @Transactional
+    public boolean activeupdate(int roomNo, String upactive) {
+
+        RoomEntity roomEntity = roomRepository.findById(roomNo).get(); // 엔티티 호출
+        if (roomEntity.getRoomStatus().equals(upactive)) {
+            // 선택 버튼의 상태와기존 룸 상태가 동일하면 업데이트X
+            return false;
+        } else {
+            roomEntity.setRoomStatus(upactive);
+            return true;
+        }
 
     }
+
+
+    // 로그인 된 회원이 등록한 문의 출력
+    public List<NoteEntity> getmynotelist() {
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = memberService.getMemberEntity(memberDto.getMemberNo());
+        return memberEntity.getNoteEntities();
+
+    }
+
+    //문의 등록
+    public boolean notewrite(int roomNo, String noteContents) {
+        //로그인된 회원정보를 가져온다[작성자]
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        // 만약에 로그인이 되어 있지 않으면
+        if (memberDto == null) {
+            return false; // 등록실패
+        }
+
+        // 문의 엔티티 생성
+        NoteEntity noteEntity = new NoteEntity();
+        noteEntity.setNoteContents(noteContents); // 작성내용
+        noteEntity.setMemberEntity(memberService.getMemberEntity(memberDto.getMemberNo())); // 작성자 엔티티
+        noteEntity.setRoomEntity(roomRepository.findById(roomNo).get()); // 방엔티티
+        // 문의 엔티티 저장
+        int NoteNo = noteRepository.save(noteEntity).getNoteNo();
+        // 해당 룸 엔티티의 문의 리스트에 문의 엔티티 저장
+        roomRepository.findById(roomNo).get().getNoteEntities().add(noteRepository.findById(NoteNo).get());
+        // 해당 회원엔티티의 문의 리스트에 문의 엔티티 저장
+        memberService.getMemberEntity(memberDto.getMemberNo()).getNoteEntities().add(noteRepository.findById(NoteNo).get());
+
+        return true;
+    }
+
+
+    //답변등록
+    @Transactional
+    public boolean notereplywrite(int noteNo, String noteReply) {
+        noteRepository.findById(noteNo).get().setNoteReply(noteReply);
+        return true;
+    }
+
+
+    // 쪽지 카운트 세기 // nread : 0 읽지 않음 / 1 읽음
+    // 모든페이지에서 쿠키나 세션으로 출력해야함. 굳이 반환타입을 사용할 필요 x
+    public void nreadcount() {
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+        if (memberDto == null) {
+            return;
+        } // 로그인이 되어 있지 않으면 제외
+
+        int nreadcount = 0; // 안읽은 쪽지의 갯수
+        // 로그인된 회원번호와 쪽지 받은 사람의 회원번호가 모두 동일하면
+        for (NoteEntity noteEntity : noteRepository.findAll()) {
+            if (noteEntity.getRoomEntity().getMemberEntity().getMemberNo() == memberDto.getMemberNo() && noteEntity.getNoteRead() == 0) { // 받는사람 == 로그인된 번호 && 읽음이 0이면
+                // 문의 엔티티. 방엔티티. 멤버엔티티. 멤버번호
+                nreadcount++;
+            }
+        }
+        // 세션에 저장하기
+        session.setAttribute("nreadcount", nreadcount);
+    }
+
+    //읽음처리 서비스
+    @Transactional // 업데이트처리에서 필수
+    public boolean nreadupdate(int noteNo) {
+        noteRepository.findById(noteNo).get().setNoteRead(1);
+        return true;
+    }
+
 
 
 

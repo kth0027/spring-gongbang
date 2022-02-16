@@ -67,10 +67,12 @@
                             <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
                                  class="d-block w-100" alt="..." style="height: 40rem;">
                         </div>
-                        <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
-                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="..."
-                                 style="height: 40rem;">
+                    
+                        <div class="carousel-item" th:each="num : ${#numbers.sequence( 1 , roomEntity.roomImgEntities.size()  )}" >
+                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(num).roomImg} }" class="d-block w-100" alt="..."
+                                style="height: 40rem;">
                         </div>
+                      
                     </div>
 
                     <button class="carousel-control-prev" type="button"
@@ -139,8 +141,9 @@
                 </div>
                 <hr>
                 <h3 id="teacherinfo" style="font-weight: bold;">강사소개</h3>
-                <br><br>
-                <br><br>
+                <div th:utext="${roomEntity.memberEntity.channelContent}">
+
+                </div>
                 <hr>
 
                 <h3 id="position" style="font-weight: bold;">위치</h3>

@@ -17,10 +17,14 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 @RequestMapping("/member")
 @Controller
@@ -352,6 +356,42 @@ public class MemberController { // C S
         return "member/calculate_page";
     }
 
+    
+    @GetMapping("/channel/{memberNo}")
+    public String channel(@PathVariable("memberNo") int memberNo, Model model) {
+        // 02-15 채널 정보 출력 - 조지훈
+        MemberEntity memberEntity = memberService.getMember(memberNo);
+
+        model.addAttribute("memberEntity", memberEntity);
+        return "member/channel";
+    }
+
+    // 02-15 채널 정보 등록 페이지 맵핑 - 조지훈
+//    @GetMapping("/channelupdate/{memberNo}")
+//    public String channelupdate(@PathVariable("memberNo") int memberNo, Model model){
+//        model.addAttribute("memberNo", memberNo);
+//        return "member/channelupdate";
+//    }
+
+    // 02-15 채널 정보 등록  - 조지훈
+    @PostMapping("/channelupdatecontroller")
+    public String channelupdatecontroller(@RequestParam("memberNo") int memberNo,
+                                          @RequestParam("channelContent") String channelContent,
+                                          @RequestParam("channelTitle") String channelTitle,
+                                          @RequestParam("memberImg") MultipartFile file) {
+        try {
+            UUID uuid = UUID.randomUUID();
+            String uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-");
+            String dir = "C:\\Users\\505\\Desktop\\gongbang\\src\\main\\resources\\static\\channelimg";
+            String filepath = dir + "\\" + uuidfile;
+            file.transferTo(new File(filepath));
+            memberService.channelupdate(
+                    MemberEntity.builder().memberNo(memberNo).channelTitle(channelTitle).channelContent(channelContent).channelImg(uuidfile).build());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return "redirect:/member/channel/"+memberNo;
+    }
 
 
 

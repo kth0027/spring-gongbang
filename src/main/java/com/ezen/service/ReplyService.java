@@ -72,6 +72,13 @@ public class ReplyService {
                 replyEntitysaved.getReplyImgEntities().add(replyImgRepository.findById(replyImgNo).get());
 
             }
+        } else{
+            ReplyImgEntity replyImgEntity = ReplyImgEntity.builder()
+                    .replyImg(null)
+                    .replyEntity(replyEntitysaved)
+                    .build();
+            int replyImgNo = replyImgRepository.save(replyImgEntity).getReplyImgNo();
+            replyEntitysaved.getReplyImgEntities().add(replyImgRepository.findById(replyImgNo).get());
         }
         return true;
     }

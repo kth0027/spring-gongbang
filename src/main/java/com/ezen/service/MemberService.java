@@ -174,4 +174,20 @@ public class MemberService implements UserDetailsService {
         // 회원정보와 권한을 갖는 UserDetails 반환
         return new IntergratedDto(memberEntity, authorities);
     }
+
+    // 02-15 채널 정보 등록하기 - 조지훈
+    @Transactional
+    public boolean channelupdate(MemberEntity memberEntity) {
+        try {
+            Optional<MemberEntity> entityOptional = memberRepository.findById(memberEntity.getMemberNo());
+            entityOptional.get().setChannelTitle(memberEntity.getChannelTitle());
+            entityOptional.get().setChannelContent(memberEntity.getChannelContent());
+            entityOptional.get().setChannelImg(memberEntity.getChannelImg());
+            return true;
+        } catch (Exception e) {
+            System.out.println("채널정보등록 실패 " + e);
+            return false;
+        }
+    }
+
 }

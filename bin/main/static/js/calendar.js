@@ -1,4 +1,3 @@
-
 /*
 @Author : 김정진
 @Date : 2022-02-06 ~ 2022-02-09
@@ -94,9 +93,7 @@ function calendarInit() {
 
             /*
             addEventListener 가 먹히지 않는다. 왜 안먹히는지 원인을 찾는 중인데 일단 잠정 보류
-
             날짜가 출력되는 html 내에 script 선언해서 테스트해봐야함
-
             var dayPickedId = "#" + dayId;
             var dayPicked = $(dayPickedId);
             dayPicked.addEventListener("click", () => { alert("hi"); });
@@ -137,4 +134,3 @@ function calendarInit() {
 
 
 }
-

@@ -85,6 +85,9 @@
                                     <a class="dropdown-item" th:href="@{/member/myclass}">내가등록한클래스</a>
                                 </li>
                                 <li>
+                                    <a class="dropdown-item" href="#">나의 채널 정보</a>
+                                </li>
+                                <li>
                                     <a class="dropdown-item" th:href="@{/member/msg}"
                                        th:if="${ session.nreadcount==null }" th:text="${'Q&A(0)'}"></a>
                                 </li>

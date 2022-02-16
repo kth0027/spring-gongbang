@@ -69,30 +69,6 @@
         1. 홈페이지 테마에 맞게 상단 버튼 다시 꾸며야함
         2. 부트스트랩 스타일 쓰기 XXX 통일성이 다 깨짐
         -->
-        <div class="my-3">
-            <div class="modal fade" tabindex="-1" id="notemodal" data-bs-keyword="false" data-bs-backdrop="static">
-                <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content rounded-4 shadow">
-                        <div class="modal-body p-4 text-center">
-                            <h5 class="mb-0"> 문의하기 </h5>
-                            <p class="mb-3" id="notemsg"> 공방 관련 정보를 문의하실 수 있습니다.</p>
-                            <textarea class="form-control" row="10" id="noteContents"></textarea>
-                        </div>
-                        <div class="modal-footer flex-nowrap p-0">
-                            <button th:onclick="notewrite([[${roomEntity.roomNo}]]);" type="button"
-                                    class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right">
-                                <strong>문의합니다.</strong></button>
-                            <button type="button"
-                                    class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
-                                    data-bs-dismiss="modal">나가기
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
         <div class="col-md-7">
             <div>
                 <div th:id="${'carousel' + roomEntity.roomNo}" class="carousel slide" data-bs-ride="carousel">
@@ -101,10 +77,12 @@
                             <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
                                  class="d-block w-100" alt="..." style="height: 40rem;">
                         </div>
-                        <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
-                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="..."
-                                 style="height: 40rem;">
+                    
+                        <div class="carousel-item" th:each="num : ${#numbers.sequence( 1 , roomEntity.roomImgEntities.size()-1  )}" >
+                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(num).roomImg} }" class="d-block w-100" alt="..."
+                                style="height: 40rem;">
                         </div>
+                      
                     </div>
 
                     <button class="carousel-control-prev" type="button"
@@ -114,7 +92,7 @@
                         <span class="visually-hidden">Previous</span>
                     </button>
                     <button class="carousel-control-next" type="button"
-                            data-bs-target="${'#carousel' + roomEntity.roomNo}"
+                            th:data-bs-target="${'#carousel' + roomEntity.roomNo}"
                             data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
@@ -123,10 +101,24 @@
             </div>
             <div>
                 <div class="Categorybox">
-                    <span class="Categoryp" th:text="${roomEntity.roomContent}"></span>
+                    <span class="Categoryp" th:text="${roomEntity.roomCategory}"></span>
                 </div>
                 <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
-                <span class="subad" th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></span>
+                <div>
+                    <span class="subad" th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></span>
+                    <button class="btn btn-outline-info" style="color:black;" data-bs-target="#notemodal" data-bs-toggle="modal">
+                        문의하기
+                    </button>
+                    <button class="btn btn-outline-info"> <a th:href="@{'/member/channel/' + ${roomEntity.memberEntity.memberNo} }" style="text-decoration:none; color:black;">
+                        채널보기
+                    </a> </button>
+                    <button th:onclick="roomLike([[${roomEntity.roomNo}]],[[${session.logindto.memberNo}]]);" class="btn btn-outline-info">
+
+                        <span th:if="${count==1}" id="like">♥</span>
+                        <span th:if="${count==0}" id="like">♡</span>
+
+                    </button>
+                </div>
             </div>
             <ul class="viewnav">
                 <a href="#classinfo" class="btn btn-outline-primary">
@@ -144,12 +136,6 @@
                 <a href="#review" class="btn btn-outline-warning">
                     <li>후기</li>
                 </a>
-                <button class="btn btn-outline-info" data-bs-target="#notemodal" data-bs-toggle="modal">
-                    <li>문의하기</li>
-                </button>
-                <a th:href="@{/member/channel}" class="btn btn-outline-dark">
-                    <li>채널보기</li>
-                </a>
             </ul>
             <hr>
             <div>
@@ -165,8 +151,9 @@
                 </div>
                 <hr>
                 <h3 id="teacherinfo" style="font-weight: bold;">강사소개</h3>
-                <br><br>
-                <br><br>
+                <div th:utext="${roomEntity.memberEntity.channelContent}">
+
+                </div>
                 <hr>
 
                 <h3 id="position" style="font-weight: bold;">위치</h3>
@@ -183,9 +170,9 @@
             </div>
 
             <h3 style="font-weight: bold;" id="review">후기</h3>
-            <a th:href="@{'/room/review/' + ${roomEntity.roomNo} }">
-                <button type="button" class="btn btn-outline-secondary mt-3" style="border: solid 1px;">작성</button>
-            </a>
+            <button class="btn btn-outline-info" style="color:black;" data-bs-target="#reviewmodal" data-bs-toggle="modal">
+                작성
+            </button>
             <br>
             <div class="row" th:each="reply : ${roomEntity.replyEntities}">
                 <div class="col-md-2">
@@ -259,6 +246,51 @@
         </div>
     </div>
 </div>
+<!-- 문의 모달-->
+<div class="modal fade" tabindex="-1" id="notemodal" data-bs-keyword="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0"> 문의하기 </h5>
+                <p class="mb-3" id="notemsg"> 공방 관련 정보를 문의하실 수 있습니다.</p>
+                <textarea class="form-control" row="10" id="noteContents"></textarea>
+            </div>
+            <div class="modal-footer flex-nowrap p-0">
+                <button th:onclick="notewrite([[${roomEntity.roomNo}]]);" type="button"
+                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right">
+                    <strong>문의합니다.</strong></button>
+                <button type="button"
+                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                        data-bs-dismiss="modal">나가기
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 리뷰 모달 -->
+<div class="modal fade" tabindex="-1" id="reviewmodal" data-bs-keyword="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0"> 후기 남기기 </h5>
+                <p class="mb-3" id="reviewmsg"> 공방 관련 후기를 작성하실 수 있습니다.</p>
+                <form action="/reply/writecontroller" method="post" enctype="multipart/form-data">
+                    <input type="hidden" id="roomNo" name="roomNo" th:value="${roomNo}">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="replyContent" name="replyContent"
+                                  style="height: 100px; resize: none;"></textarea>
+                    <input type="file" multiple="multiple" name="file" id="file"> <br>
+                    <div class="flex-nowrap p-0">
+                        <input type="submit" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" value="작성">
+                        <button type="button"
+                                class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                                data-bs-dismiss="modal">나가기
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script th:src="@{/js/calendar2.js}"></script>
@@ -266,6 +298,7 @@
 
 <!-- 인증 스크립트 -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=84d555c388d3da38338a57c648112954&libraries=clusterer"></script>
+<script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/roomview_jh.js}"></script>
 <script th:src="@{/js/roomview.js}"></script>
 

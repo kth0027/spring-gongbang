@@ -22,6 +22,15 @@ public class TimeTableEntity extends BaseTimeEntity {
     @Column(name = "roomDate")
     private String roomDate;
 
+    // 강의 수강할 수 있는 정원
+    @Column(name = "roomMax")
+    private int roomMax;
+
+    // 강의 상태
+    // [모집중] [모집완료] [기한종료]
+    @Column(name = "roomStatus")
+    private String roomStatus;
+
     // 시작시간, 끝나는 시간
     // ex) 15,17
     @Column(name = "roomTime")
@@ -31,6 +40,8 @@ public class TimeTableEntity extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "roomNo")
     private RoomEntity roomEntity;
+
+
 
     // TimeTable Entity 에는 History Entity 가 다수 들어갈 수 있다.
     // mappedBy 는 '부모' 가 갖는다.

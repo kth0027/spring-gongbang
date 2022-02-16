@@ -72,28 +72,28 @@
                             </a>
                             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                                 <li>
-                                    <a th:if="${session.logindto != null }" th:href="@{/member/info}"
+                                    <a sec:authorize="hasRole('MEMBER')" th:if="${session.logindto != null }" th:href="@{/member/info}"
                                        style="text-decoration: none;" class="dropdown-item"> 마이페이지 </a>
                                 </li>
-                                <!-- 관리 리스트는 관리자만 접근할 수 있습니다. -->
+                                <!-- 관리 리스트는 관리자만 접근할 수 있습니다. 대신 관리자는 다른 메뉴를 볼 수 없습니다 ( 필요없음 ) -->
                                 <li>
-                                    <a th:href="@{/admin/adminlist}" class="dropdown-item">관리리스트</a>
+                                    <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/adminlist}" class="dropdown-item">관리리스트</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" th:href="@{/member/reservationListController}">예약내역</a>
+                                    <a sec:authorize="hasRole('MEMBER')" class="dropdown-item" th:href="@{/member/reservationListController}">예약내역</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" th:href="@{/member/myclass}">내가등록한클래스</a>
+                                    <a sec:authorize="hasRole('MEMBER')" class="dropdown-item" th:href="@{/member/myclass}">내가등록한클래스</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" th:href="@{/member/member_payment}">충전소</a>
+                                    <a sec:authorize="hasRole('MEMBER')" class="dropdown-item" th:href="@{/member/member_payment}">충전소</a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" th:href="@{/member/msg}"
+                                    <a sec:authorize="hasRole('MEMBER')" class="dropdown-item" th:href="@{/member/msg}"
                                        th:if="${ session.nreadcount==null }" th:text="${'Q&A(0)'}"></a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" th:href="@{/member/msg}"
+                                    <a sec:authorize="hasRole('MEMBER')" class="dropdown-item" th:href="@{/member/msg}"
                                        th:if="!${ session.nreadcount==null}"
                                        th:text="${'Q&A ('+session.nreadcount+')'}"></a>
                                 </li>

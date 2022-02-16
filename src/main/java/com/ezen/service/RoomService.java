@@ -222,7 +222,6 @@ public class RoomService {
         return roomEntities;
 
     }
-    
 
     // 룸에 날짜, 시간 지정하기
     @Transactional
@@ -230,6 +229,9 @@ public class RoomService {
         if (roomRepository.findById(roomNo).isPresent()) {
             RoomEntity roomEntity = roomRepository.findById(roomNo).get();
             timeTableEntity.setRoomEntity(roomEntity);
+            // 정원은 따로 선택받지 않고 처음에 선택했던 그대로
+            // 바꾸려면 다 바꿔야해서 번거로워서 일단 이대로 둡니다.
+            timeTableEntity.setRoomMax(roomEntity.getRoomMax());
             // room 엔티티에 timeTableEntity 추가
             roomEntity.getTimeTableEntity().add(timeTableEntity);
             // room 리스트에 room 을 추가

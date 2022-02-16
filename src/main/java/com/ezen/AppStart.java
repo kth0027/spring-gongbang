@@ -37,10 +37,15 @@ public class AppStart {
 
     @GetMapping("/") // 최상위 경로
     public String index(Model model, @PageableDefault Pageable pageable) {
+
+        // 개설된 강의 중 '승인완료' 처리된 강의만 출력된다.
         Page<RoomEntity> roomlist = roomService.getroomlist(pageable);
         model.addAttribute("roomlist", roomlist);
+        //
+        // 댓글은 따로 상태가 없어서 모든 댓글이 출력된다.
         List<ReplyEntity> replylist = replyService.replylist();
         model.addAttribute("replylist", replylist);
+
         return "index";
     }
 

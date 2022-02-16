@@ -79,46 +79,31 @@ function daySelect(year , month , day, roomNo){
 function registerClass(roomNo, beginTime, endTime, roomDate){
 
     $("#time-select-inner").empty();
-    var roomTime = beginTime + "," + endTime;
 
-    var jjtest = $("#selectedDate").val();
+    var roomTime = beginTime + "," + endTime;
+    var selectedDate = $("#selectedDate").val();
+
     // 1. 최종 선택 이전에 '클래스 선택 사항' 을 출력해야한다.
     // time-selected-wrapper 에 뿌려줘야한다.
     var roomhtml = "<div class='container'>";
-    roomhtml += "<div> 날짜 : " + jjtest + "</div>";
-    roomhtml += "<div> <span> 시작시간 : " + beginTime + "</span>  <span> 종료시간 : " + endTime + "</span> </div>";
-    roomhtml += "<div> <span> 최대 수강 신청 인원 : 3명 </span> </div>";
+    roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> 날짜 : " + selectedDate + "</div>";
+    roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> <span> 시작시간 : " + beginTime + "</span>  <span> 종료시간 : " + endTime + "</span> </div>";
+    roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> <span> 최대 수강 신청 인원 : 3명 </span> </div>";
     roomhtml += "<select onchange='personTest();' class='form-select' id='class-register-person'>";
+    roomhtml += "<option selected='selected'> 인원선택 </option>";
     roomhtml += "<option value='1'> 1명 </option>";
     roomhtml += "<option value='2'> 2명 </option>";
     roomhtml += "<option value='3'> 3명 </option>";
     roomhtml += "</select>";
-    roomhtml += "<div> 선택한 인원 수 : <input id='input-person'> </div>";
+    roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> 선택한 인원 수 : <input id='input-person'> </div>";
     // 인원 수를 클릭 한 뒤에야, 신청 버튼이 나오도록 한다.
     // 신청을 누를 때는 roomNo, roomDate, roomTime 값이 넘어가야한다.
-    roomhtml += "<input type='hidden' id='register-room-date' value = " + jjtest + ">";
+    roomhtml += "<input type='hidden' id='register-room-date' value = " + selectedDate + ">";
     roomhtml += "<input type='hidden' id='register-room-time' value = " + roomTime + ">";
     roomhtml += "<input type='hidden' id='register-room-no' value = " + roomNo + ">";
     roomhtml += "</div>";
-
     $("#time-select-inner").append(roomhtml);
 
-
-//    var classTime = beginTime + "," + endTime;
-//
-//
-//
-//    $.ajax({
-//        url: "/member/registerClass",
-//        data: {"roomNo" : roomNo, "classTime" : classTime, "roomDate" : roomDate},
-//        method: "GET",
-//        success: function(data){
-//            if(data==1){
-//                //
-//                alert("신청완료되었습니다. ");
-//            }
-//        }
-//    });
 }
 
 

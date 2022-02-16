@@ -19,7 +19,7 @@ public class RoomEntity extends BaseTimeEntity {
     // [클래스 고유 식별 번호]
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="roomNo")
+    @Column(name = "roomNo")
     private int roomNo;
 
     // [클래스 명]
@@ -61,11 +61,18 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomMax")
     private int roomMax;
 
+    // [클래스 등록 시 선택하는 체크박스 정보]
+    // 좀 더 추가할 예정입니다 (현재 3개)
     @Column(name = "roomETC")
     private String roomETC;
 
+    // 강의 조회수
     @Column(name = "roomView")
     private int roomView;
+
+    // 강의 가격
+    @Column(name = "roomPrice")
+    private int roomPrice;
 
     // 날짜, 시간과 N : M 맵핑
 
@@ -75,7 +82,7 @@ public class RoomEntity extends BaseTimeEntity {
     private MemberEntity memberEntity;
 
     // timetable 과의 관계
-    @OneToMany(mappedBy="roomEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<TimeTableEntity> timeTableEntity;
 
@@ -85,7 +92,7 @@ public class RoomEntity extends BaseTimeEntity {
     private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
 
     // 문의글 리스트
-    @OneToMany(mappedBy="roomEntity" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<NoteEntity> noteEntities = new ArrayList<>();
 
@@ -94,10 +101,10 @@ public class RoomEntity extends BaseTimeEntity {
     private List<ReplyEntity> replyEntities = new ArrayList<ReplyEntity>();
 
     // 클래스 1개는 여러개의 예약 내역을 가질 수 있습니다.
-    @OneToMany(mappedBy="roomEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<HistoryEntity> historyEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
-    private List<RoomLikeEntity> roomLikeEntities =new ArrayList<>();
+    private List<RoomLikeEntity> roomLikeEntities = new ArrayList<>();
 }

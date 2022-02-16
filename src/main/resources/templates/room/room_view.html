@@ -28,6 +28,7 @@
 
 
 
+
     </style>
 
     <link rel="stylesheet" th:href="@{/css/room_view.css}">
@@ -41,6 +42,8 @@
 
 <div class="container mt-5">
     <input type="hidden" th:value="${roomEntity.roomNo}" name="" id="thisRoomNo">
+    <input type="hidden" th:value="${roomEntity.roomPrice}" id="roomPrice">
+
     <div class="row">
         <!-- 상단 버튼-->
         <!--
@@ -82,13 +85,17 @@
                 <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
                 <div>
                     <span class="subad" th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></span>
-                    <button class="btn btn-outline-info" style="color:black;" data-bs-target="#notemodal" data-bs-toggle="modal">
+                    <button class="btn btn-outline-info" style="color:black;" data-bs-target="#notemodal"
+                            data-bs-toggle="modal">
                         문의하기
                     </button>
-                    <button class="btn btn-outline-info"> <a th:href="@{/member/channel}" style="text-decoration:none; color:black;">
+                    <button class="btn btn-outline-info"><a th:href="@{/member/channel}"
+                                                            style="text-decoration:none; color:black;">
                         채널보기
-                    </a> </button>
-                    <button th:onclick="roomLike([[${roomEntity.roomNo}]],[[${session.logindto.memberNo}]]);" class="btn btn-outline-info">
+                    </a></button>
+                    <button sec:authorize="isAuthenticated()"
+                            th:onclick="roomLike([[${roomEntity.roomNo}]],[[${session.logindto.memberNo}]]);"
+                            class="btn btn-outline-info">
 
                         <span th:if="${count==1}" id="like">♥</span>
                         <span th:if="${count==0}" id="like">♡</span>
@@ -134,7 +141,7 @@
                 <h3 id="position" style="font-weight: bold;">위치</h3>
                 <div>
                     <h5 th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></h5>
-                    <div id="map" style="width:100%;height:350px; border-radius: 0.5rem;"></div> <!-- 지도가 표시되는 구역 -->
+                    <div id="map9" style="width:100%;height:350px; border-radius: 0.5rem;"></div> <!-- 지도가 표시되는 구역 -->
                     <!-- 히든으로 위도 경도 잘라서 js로 넘겨라 -->
                     <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[1] }"
                            id="roomaddress1">
@@ -145,7 +152,8 @@
             </div>
 
             <h3 style="font-weight: bold;" id="review">후기</h3>
-            <button class="btn btn-outline-info" style="color:black;" data-bs-target="#reviewmodal" data-bs-toggle="modal">
+            <button class="btn btn-outline-info" style="color:black;" data-bs-target="#reviewmodal"
+                    data-bs-toggle="modal">
                 작성
             </button>
             <br>
@@ -173,20 +181,12 @@
             <hr>
         </div>
 
-        <div class="col-md-4 offset-md-1">
+        <div sec:authorize="isAuthenticated()" class="col-md-4 offset-md-1">
             <!--
             1. roomNo 에 해당하는 TimeTable 엔티티를 가져온다.
             2. roomDate : YYYY-MM-DD
             3. 각 날짜 Id : YYYY-MM-DD
             -->
-            <div class="row">
-                <div class="col-6">
-                    <button>클래스 일정</button>
-                </div>
-                <div class="col-6">
-                    <button>클래스 선택 사항</button>
-                </div>
-            </div>
 
             <!-- 달력 출력 시작 -->
             <div style="width: 28.0rem; height: 32.0rem; box-shadow: 5px 5px 5px #cccccc;">
@@ -259,11 +259,14 @@
                 <p class="mb-3" id="reviewmsg"> 공방 관련 후기를 작성하실 수 있습니다.</p>
                 <form action="/reply/writecontroller" method="post" enctype="multipart/form-data">
                     <input type="hidden" id="roomNo" name="roomNo" th:value="${roomNo}">
-                    <textarea class="form-control" placeholder="Leave a comment here" id="replyContent" name="replyContent"
-                                  style="height: 100px; resize: none;"></textarea>
+                    <textarea class="form-control" placeholder="Leave a comment here" id="replyContent"
+                              name="replyContent"
+                              style="height: 100px; resize: none;"></textarea>
                     <input type="file" multiple="multiple" name="file" id="file"> <br>
                     <div class="flex-nowrap p-0">
-                        <input type="submit" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" value="작성">
+                        <input type="submit"
+                               class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"
+                               value="작성">
                         <button type="button"
                                 class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
                                 data-bs-dismiss="modal">나가기
@@ -291,10 +294,19 @@
 
     function personTest(){
 
-        var person = $("#class-register-person").val();
+        $("#person-select-wrapper").remove();
+
+        let price = $("#roomPrice").val();
+        let person = $("#class-register-person").val();
         $("#input-person").val(person);
 
-        roomhtml = "<button id='myClassRegisterBtn'> 신청하기 </button>";
+        price = price * person;
+
+        roomhtml = "<div class='d-flex justify-content-end' id='person-select-wrapper'>";
+        roomhtml += "<button style='padding: 0.5rem; background: #ffffff; border: 1px solid #374b73; '>" + price + "</button>";
+        roomhtml += "<button id='myClassRegisterBtn'> 신청하기 </button>";
+        roomhtml += "</div>";
+
         $("#time-select-inner").append(roomhtml);
 
         $("#myClassRegisterBtn").on("click", function(){
@@ -302,34 +314,37 @@
             var roomNo = $("#register-room-no").val();
             var roomDate = $("#register-room-date").val();
             var roomTime = $("#register-room-time").val();
-            alert(roomNo + "," + roomDate + "," + roomTime);
             // person : 선택한 인원 수
             // roomNo : 클래스 식별 번호
             // roomDate : 날짜
             // roomTime : 시작시간, 끝나는시간 (TimeTable 에 있는 것과 동일)
             $.ajax({
                 url: "/member/registerClass",
-                data: {"roomNo" : roomNo, "roomDate" : roomDate, "roomTime" : roomTime, "person" : person},
+                data: {"roomNo" : roomNo, "roomDate" : roomDate, "roomTime" : roomTime, "person" : person, "price" : price},
                 method: "GET",
                 success: function(data){
-                    // ajax 통신 확인
                     if(data == 2){
                         // 등록 에러 혹은 정원을 초과한 신청일 경우 등록을 못하게 막는다.
                         alert(" 신청 가능한 정원을 초과했습니다");
+                    }
+                    else if(data == 3){
+                        // 금액이 부족할 경우
+                        alert("보유하신 포인트가 부족합니다.");
+                    }
+                    else if(data == 1){
+                        // 등록이 가능한 경우에 페이지 이동
+                        $.ajax({
+                            url: "/member/memberPayment",
+                            data: {"roomNo" : roomNo, "roomDate" : roomDate, "roomTime" : roomTime, "person" : person, "price" : price},
+                            success:function(data){
 
-                    } else {
-                        // 클래스 신청 성공일 경우
-                        alert("성공적으로 신청되었습니다.");
-                        location.href = "/member/reservationListController";
+                            }
+                        });
                     }
                 }
-
             });
         });
-
     }
-
-
 
 </script>
 

@@ -158,6 +158,7 @@ public class RoomController {
 
     // 룸보기 페이지 이동
     @GetMapping("/view/{roomNo}") // 이동
+    @Transactional
     public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
 
         // 1. 선택된 클래스 엔티티를 불러와서 Model 로 전달한다.
@@ -297,6 +298,9 @@ public class RoomController {
                                        @RequestParam("roomNo") int roomNo,
                                        Model model, @PageableDefault Pageable pageable) {
         timeTableEntity.setRoomTime(beginTime + "," + endTime);
+        RoomEntity roomEntity = roomRepository.getById(roomNo);
+        timeTableEntity.setRoomMax(roomEntity.getRoomMax());
+        timeTableEntity.setRoomStatus("모집중");
         boolean result = roomService.registerTimeToClass(timeTableEntity, roomNo);
         List<RoomEntity> roomDtos = roomService.getmyroomlist();
         model.addAttribute("roomDtos", roomDtos);

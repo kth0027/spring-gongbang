@@ -39,7 +39,6 @@
 
 
 /* 회원가입 버튼 */
-
 #formsubmit:hover {
     background-color: #ff9a9a;
     color: white;
@@ -91,7 +90,6 @@
 
 
 /* 검색칸 */
-
 .opensearchbox button {
     background: #ffffff;
     border: 2px solid #374b73;
@@ -208,3 +206,22 @@
     transform: scale(1.1);
     margin-left: 1.25rem;
 }
+
+/* 회원찾기모달 */
+/* 버튼 */
+.searchinfo {
+display: flex;
+flex-direction: column;
+}
+
+.searchinfo input {
+width : 80%}
+
+.searchinfo button {
+    height: 2rem;
+    width: 80%;
+    background: #374b73;
+    border-radius: 1rem;
+    color: white;
+}
+

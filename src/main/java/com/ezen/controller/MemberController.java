@@ -92,6 +92,12 @@ public class MemberController { // C S
         return "member/login";
     }
 
+    // 로그인 유효성검사
+    @GetMapping("/logincontroller")
+    public String logincontroller() {
+        return "redirect:/";
+    }
+
     // 마이페이지 연결
     @GetMapping("/info")
     public String info(Model model) {
@@ -114,23 +120,32 @@ public class MemberController { // C S
     public String updatecontroller(
             @RequestParam("memberNo") int memberNo,
             @RequestParam("memberId") String memberId,
-            @RequestParam("memberPassword") String memberPassword,
+//            @RequestParam("memberPassword") String memberPassword,
             @RequestParam("memberName") String memberName,
             @RequestParam("memberEmail") String memberEmail,
-            @RequestParam("memberPone") String memberPhone,
-            @RequestParam("memberGender") String memberGender) {
+            @RequestParam("memberPone") String memberPhone
+//            @RequestParam("memberGender") String memberGender
+    ) {
+
+        System.out.println(memberNo);
+        System.out.println(memberId);
+//        System.out.println(memberPassword);
+        System.out.println(memberName);
+        System.out.println(memberEmail);
+        System.out.println(memberPhone);
+//        System.out.println(memberGender);
 
         memberService.memberUpdate(
                 MemberDto.builder()
                         .memberNo(memberNo)
                         .memberId(memberId)
-                        .memberPassword(memberPassword)
+//                        .memberPassword(memberPassword)
                         .memberName(memberName)
                         .memberEmail(memberEmail)
                         .memberPhone(memberPhone)
-                        .memberGender(memberGender)
+//                        .memberGender(memberGender)
                         .build());
-        return "member/info";
+        return "redirect:/member/info";
     }
 
     // 회원삭제 처리
@@ -152,37 +167,44 @@ public class MemberController { // C S
     }
 
     // 회원정보찾기 페이지로 연결
-    @GetMapping("/findemail")
-    public String findemail() {
-        return "member/findemail";
+    @GetMapping("/findid")
+    public String findid() {
+        return "member/findid";
     }
 
-    // 이메일 찾기
-    @PostMapping("/findemailcontroller")
-    public String findemailcontroller(MemberDto memberDto, Model model) {
-        String result = memberService.findemail(memberDto);
-        if (result != null) {
-            String msg = " 회원님의 이메일 : " + result;
-            model.addAttribute("findemailmsg", msg);
-        } else {
-            String msg = " 동일한 회원정보가 없습니다.";
-            model.addAttribute("findemailmsg", msg);
+    // 아이디 찾기
+    @PostMapping("/findMyIdcontroller")
+    public String findMyIdcontroller(MemberDto memberDto , Model model) {
+        String result = memberService.findid(memberDto);
+        if( result != null ){
+            return "1";
+        }else{
+            return "2";
         }
-        return "member/findemail";
     }
+//        if (result != null) {
+//            String msg = " 회원님의 이메일 : " + result;
+//            model.addAttribute("findemailmsg", msg);
+//
+//        } else {
+//            String msg = " 동일한 회원정보가 없습니다.";
+//            model.addAttribute("findemailmsg", msg);
+//        }
+//        return "member/findid";
+
 
     // 비밀번호 찾기
     @PostMapping("/findpasswordcontroller")
-    public String findpasswordcontroller(MemberDto memberDto, Model model) {
+    public String findpassword(MemberDto memberDto, Model model) {
         String result = memberService.findpassword(memberDto);
         if (result != null) {
-            String msg = " 회원님의 이메일 : " + result;
+            String msg = " 회원님의 비밀번호 : " + result;
             model.addAttribute("findpwmsg", msg);
         } else {
             String msg = " 동일한 회원정보가 없습니다.";
             model.addAttribute("findpwmsg", msg);
         }
-        return "member/findemail";
+        return "member/findid";
     }
 
     // @Author : 김정진

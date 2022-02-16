@@ -4,77 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        .navlist {
-            background-color: #374b73;
-            border-radius: 0.5rem;
-        }
-
-        .navlist button {
-            color: white;
-            font-weight: bold;
-        }
-
-        .navlist button:hover {
-            background-color: #ff9a9a;
-            border-radius: 1rem;
-            color: white;
-        }
-
-        .writeform {
-            position: relative;
-
-        }
-
-        .writebox {
-            position: absolute;
-            z-index: 5;
-        }
-
-        .writebox input {
-            background: #374b73;
-            color: white;
-            border-radius: 1rem;
-            height: 3rem;
-        }
-
-        .rewritebox {
-            position: absolute;
-            z-index: 10;
-            background: white;
-            display: none;
-        }
-
-        .btninput input:nth-child(1) {
-            background: #374b73;
-            color: white;
-            border-radius: 1rem;
-            height: 3rem;
-            width: 5rem;
-            margin: 0 1rem;
-        }
-
-        .btninput input {
-            background: #ff9a9a;
-            color: white;
-            border-radius: 1rem;
-            height: 3rem;
-            width: 5rem;
-            margin: 0 1rem;
-        }
-
-        table input {
-            width: 25rem;
-            background: #ffdbdb;
-            color: black;
-            border-radius: 1rem;
-            padding-left: 1rem;
-        }
-
-    
-    
-       
-    </style>
+    <link th:href="@{/css/info.css}" rel="stylesheet">
 </head>
 
 <body>
@@ -153,7 +83,7 @@
                                             </tr>
                                             <tr>
                                                 <td>가입날짜</td>
-                                                <td th:text="${memberDto.getCreatedDate}"></td>
+                                                <td th:text="${#temporals.format(memberDto.createdDate,'yyyy-MM-dd hh:mm')}"></td>
                                             </tr>
                                         </table>
                                         <div class="d-flex justify-content-center infosubmitbtn">
@@ -166,15 +96,17 @@
                                 <!-- 회원정보 수정 -->
                                 <div class="rewritebox">
                                     <div class="h3">회원 정보수정</div>
-                                    <form method="post" action="/updatecontroller">
+                                    <form action="/member/updatecontroller" method="post">
+                                        <input type="text" maxlength="15" placeholder="5~15자리" name="memberNo" th:value="${memberDto.getMemberNo}">
                                         <table class="table">
+
                                             <tr>
                                                 <td th:text="'(아이디) ' + ${memberDto.getMemberId}"></td>
                                                 <td><input type="text" maxlength="15" placeholder="5~15자리" name="memberId" th:value="${memberDto.memberId}"></td>
                                             </tr>
                                             <tr>
                                                 <td th:text="'(비밀번호) ' + ${memberDto.getMemberPassword}"></td>
-                                                <td><input type="text" maxlength="15" placeholder="8~16자리" name="memberPassword" th:value="${memberDto.memberPassword}"></td>
+                                                <td><input type="password" maxlength="15" placeholder="8~16자리" name="memberPassword" th:value="${memberDto.memberPassword}"></td>
                                             </tr>
                                             <tr>
                                                 <td th:text="'(이름) ' + ${memberDto.getMemberName}"></td>
@@ -203,13 +135,14 @@
                                                     <input class="gendercheck col-1" type="radio" name="memberGender" id="msex1" value="남" checked="checked" th:value="${memberDto.memberGender}">남자
                                                     <input class="gendercheck col-1" type="radio" name="memberGender" id="msex2" value="여" th:value="${memberDto.memberGender}">여자
                                                 </td>
-                                                
+
                                             </tr>
                                             <tr>
                                                 <td>가입날짜</td>
                                                 <td th:text="${memberDto.getCreatedDate}"></td>
                                             </tr>
                                         </table>
+
                                         <div class="d-flex justify-content-center btninput">
                                             <input class="form-control"
                                                 type="submit" value="확인">

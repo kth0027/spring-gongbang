@@ -83,6 +83,7 @@ public class MemberService implements UserDetailsService {
         Optional<MemberEntity> memberEntity = memberRepository.findById(memberNo);
         // 2. 찾은 entity를 dto 변경후 반환 [ 패스워드 , 수정날짜 제외 ]
         return MemberDto.builder()
+                .memberNo(memberEntity.get().getMemberNo())
                 .memberName(memberEntity.get().getMemberName())
                 .memberId(memberEntity.get().getMemberId())
                 .memberEmail(memberEntity.get().getMemberEmail())
@@ -131,8 +132,8 @@ public class MemberService implements UserDetailsService {
         }
     }
 
-    // 회원 이메일 찾기
-    public String findemail(MemberDto memberDto) {
+    // 회원 아이디 찾기
+     public String findid(MemberDto memberDto) {
         // 1. 모든 엔티티 호출
         List<MemberEntity> memberEntities = memberRepository.findAll();
         // 2. 반복문 이용한 모든 엔티티를 하나씩 꺼내보기
@@ -141,21 +142,21 @@ public class MemberService implements UserDetailsService {
             if (memberEntity.getMemberName().equals(memberDto.getMemberName()) &&
                     memberEntity.getMemberPhone().equals(memberDto.getMemberPhone())) {
                 // 4. 아이디를 반환한다
-                return memberEntity.getMemberEmail();
+                return memberEntity.getMemberId();
             }
         }
         // 5. 만약에 동일한 정보가 없으면
         return null;
     }
 
-    // 비밀번호
+    // 회원 비밀번호 찾기
     public String findpassword(MemberDto memberDto) {
         // 1. 모든 엔티티 호출
         List<MemberEntity> memberEntities = memberRepository.findAll();
         // 2. 반복문 이용한 모든 엔티티를 하나씩 꺼내보기
         for (MemberEntity memberEntity : memberEntities) {
             // 3. 만약에 해당 엔티티가 이름과 이메일이 동일하면
-            if (memberEntity.getMemberEmail().equals(memberDto.getMemberEmail()) &&
+            if (memberEntity.getMemberId().equals(memberDto.getMemberId()) &&
                     memberEntity.getMemberPhone().equals(memberDto.getMemberPhone())) {
                 // 4. 패스워드를 반환한다
                 return memberEntity.getMemberPassword();

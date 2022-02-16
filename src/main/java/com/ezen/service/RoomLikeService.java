@@ -35,15 +35,10 @@ public class RoomLikeService {
 
             // 2. 모든 좋아요 반복문
         for(RoomLikeEntity roomLike : roomLikeEntities){
-
             if( roomLike.getRoomEntity().getRoomNo() == roomNo && roomLike.getMemberEntity().getMemberNo() == memberNo  ){
-
                 roomLikeRepository.delete(roomLike);
-
                 return false;
             }
-
-
         }
         // 좋아요 등록하기
             // 1. 방번호의 엔티티 -> 클릭했을때 인수로 받은 roomNo 를 가지고 해당 엔티티 찾는다
@@ -59,8 +54,6 @@ public class RoomLikeService {
             // 4. 새로운 좋아요 엔티티를 저장 .
         roomLikeRepository.save( roomLikeEntity );
         return true;
-
     }
-
 
 }

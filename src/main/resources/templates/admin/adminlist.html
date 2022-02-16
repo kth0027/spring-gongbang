@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-    .adminlistwrap {
+    .admin-list-wrapper {
       margin-top: 3rem;
     }
 
@@ -70,11 +70,6 @@
         display: inherit;
     }
 
-
-
-
-
-
     </style>
 
 </head>
@@ -82,7 +77,7 @@
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
 
-<div class="container adminlistwrap">
+<div class="container admin-list-wrapper">
     <div class="row">
         <!-- 좌측 이미지 -->
         <div class="col-2">
@@ -99,18 +94,18 @@
             <!-- 검색창 -->
             <div id="tab-1" class="tab-content current">
                 <div class="row">
-                    <div class="col-6">
+                    <div class="col-4">
                         <select name="adminLocal" id="adminLocal"
-                                class="form-select form-select-lg">
+                                class="form-select">
                             <option value="" selected>지역선택</option>
                             <option value="서울">서울</option>
                             <option value="경기">경기</option>
                             <option value="인천">인천</option>
                         </select>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
                         <select name="adminCategory" id="adminCategory"
-                                class="form-select form-select-lg">
+                                class="form-select">
                             <option value="" selected>카테고리선택</option>
                             <option value="핸드메이드">핸드메이드</option>
                             <option value="쿠킹">쿠킹</option>
@@ -125,17 +120,21 @@
                             <option value="자기계발">자기계발</option>
                         </select>
                     </div>
-                    <div>
-                        <input name="adminSearch" id="adminSearch" type="search"
-                               placeholder="검색어 입력" aria-label="Search">
-                        <button id="search" onclick="adminSearch();" type="button">검색</button>
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-6">
+                                <input name="adminSearch" id="adminSearch" type="search"
+                                       placeholder="검색" class="form-control" aria-label="Search">
+                            </div>
+                            <div class="col-6">
+                                <button id="search" onclick="adminSearch();" type="button">검색</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="table-wrapper">
-
                     <div id="table-section">
-
                         <table class="table table-striped" id="admin-table">
                             <tr>
                                 <td>등록번호</td>
@@ -153,7 +152,7 @@
                                 <td>
                                     <a th:href="@{'/room/view/' + ${room.roomNo} }"
                                        class="logo d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                                        <span style=" color:pink;" th:text="${room.roomTitle}"></span>
+                                        <span style="color:pink;" th:text="${room.roomTitle}"></span>
                                     </a>
                                 </td>
                                 <td th:text="${room.roomCategory}"></td>
@@ -165,13 +164,13 @@
                                 <td th:text="${#temporals.format (room.createdDate,'MM-dd hh:mm')}"></td>
                                 <td>
                                     <button class="btn border w-100 px-1 my-2 slide"
-                                            th:data-bs-target="${'#active'+room.roomNo}"
+                                            th:data-bs-target="${'#active' + room.roomNo}"
                                             data-bs-toggle="modal">
                                         <span class="nav-link link-dark text-dark">상태변경</span></button>
                                 </td>
                                 <td>
                                     <button class="btn border w-100 px-1 my-2 slide"
-                                            th:data-bs-target="${'#delete'+room.roomNo}"
+                                            th:data-bs-target="${'#delete' + room.roomNo}"
                                             data-bs-toggle="modal"><span class="nav-link link-dark  text-dark">삭제</span>
                                     </button>
                                 </td>
@@ -243,9 +242,7 @@
                                 </div>
                             </tr>
                         </table>
-
                     </div>
-
                 </div>
                 <!--                페이징 처리
                                 <ul class="pagination justify-content-center"
@@ -285,15 +282,13 @@
             <div id="tab-3" class="tab-content">
                 통계
             </div>
-
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
 
- $("ul.tabs li").click(function(){
-
+    $("ul.tabs li").click(function(){
         var tabId = $(this).attr("data-tab");
 
         $("ul.tabs li").removeClass("current");
@@ -302,7 +297,6 @@
         $(this).addClass("current");
         $("#"+ tabId).addClass("current");
     });
-
 
 
 </script>

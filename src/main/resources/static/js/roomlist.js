@@ -25,6 +25,7 @@ function activeupdate(roomNo, active) {
     });
 }
 
+/* 관리자 페이지에서 검색 */
 function adminSearch(){
 
     var keyword = $("#adminSearch").val();
@@ -77,8 +78,6 @@ function adminSearch(){
 //
 //        });
 //    }
-
-
 }
 
 function isEmpty(str, defaultStr){

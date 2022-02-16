@@ -154,7 +154,6 @@ public class MemberService implements UserDetailsService {
         return entityOptional.get();
     }
 
-
     @Override   // /member/logincontroller URL 호출시 실행되는 메소드 [ 로그인처리(인증처리) 메소드 ]
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
 
@@ -192,7 +191,6 @@ public class MemberService implements UserDetailsService {
             System.out.println(e);
             return false;
         }
-
     }
 
     // 02-15 채널 정보 등록하기 - 조지훈
@@ -209,7 +207,6 @@ public class MemberService implements UserDetailsService {
             return false;
         }
     }
-
 
 }
 

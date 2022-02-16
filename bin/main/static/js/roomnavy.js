@@ -4,14 +4,15 @@ $("#modalnavy1").trigger('click');
 $("#road").val( roomNo );
 
 initTmap();
-/*    $.ajax({
+   $.ajax({
         url:"/room/roomnavy",
         method : "POST",
         success:function(data){
             $("#modalnavy1").trigger('click');
-            $("#modalnavy2").html( data );
+            $("#modalnavy1").html( data );
         }
-    });*/
+    });
+
 
 }
 

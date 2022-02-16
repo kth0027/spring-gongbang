@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -88,7 +90,6 @@ public class RoomController {
 
         // 1. 검색, 지역, 카테고리 셋 중 하나라도 선택 했을 경우
         // 1. 선택한 결과값을 세션에 저장합니다.
-        // 2. 저장된 세션값을 이용해서
         if (keyword != null || local != null || category != null) {
             session.setAttribute("keyword", keyword);
             session.setAttribute("local", local);
@@ -107,7 +108,6 @@ public class RoomController {
                 category = (String) session.getAttribute("category");
             }
         }
-
         roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
         if (roomEntities != null) {
             // 1. 개설된 강좌 리스트 정보를 넘겨줍니다.
@@ -203,14 +203,10 @@ public class RoomController {
             }
             replyAvg = (sum / replySize);
         }
-
         String avg = String.format("%.2f", replyAvg);
-
         // 리뷰 평균
         model.addAttribute("avg", avg);
-
-
-        return "room/room_view"; // 타임리프
+        return "room/room_view";
     }
 
     // [작성한 클래스 등록]
@@ -239,7 +235,6 @@ public class RoomController {
         } else {
             return "error";
         }
-
     }
 
     // [ room_update.html 페이지와 맵핑 ]
@@ -282,9 +277,7 @@ public class RoomController {
 
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
-
         List<RoomEntity> roomEntities = roomRepository.findAll();
-
         for (RoomEntity roomEntity : roomEntities) {
             JSONObject data = new JSONObject();
             data.put("lat", roomEntity.getRoomAddress().split(",")[1]);
@@ -294,10 +287,8 @@ public class RoomController {
             data.put("roomImg", roomEntity.getRoomImgEntities().get(0).getRoomImg());
             jsonArray.add(data);
         }
-
         jsonObject.put("positions", jsonArray);
         return jsonObject;
-
     }
 
     @GetMapping("/addressXY")
@@ -384,7 +375,6 @@ public class RoomController {
                     data.put("local", roomEntity.getRoomLocal());
                     data.put("max", roomEntity.getRoomMax());
                     data.put("timeMax", timeTableEntity.getRoomMax());
-
                     jsonArray.add(data);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -416,10 +406,6 @@ public class RoomController {
     public void nreadupdate(@RequestParam("noteNo") int noteNo) {
         roomService.nreadupdate(noteNo);
     }
-
-
-    // [댓글 갯수 카운트]
-    // @Date : 2022-02-14
 
 
 }

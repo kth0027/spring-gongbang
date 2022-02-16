@@ -8,12 +8,18 @@ function login(){
      $.ajax({
         url: "/member/logincontroller",             // 보내는곳
         data : JSON.stringify(memberdto)  ,   //  전송 데이터 값
-           //  JSON.stringify( JSON 자료형 -> 문자열 )
+        //  JSON.stringify( JSON 자료형 -> 문자열 )
         method: "post",        //  Get , Post 방식중 선택
         contentType: "application/json" ,  //  ajax 타입
         success: function(result){     // 성공시 반환값
             if( result == 1 ){
-                location.href="/"   // 로그인 성공시 메인페이지로 이동
+                $.ajax({
+                url: "/nreadcount",
+                success: function(data){
+                    location.href="/"   // 로그인 성공시 메인페이지로 이동
+                }
+                });
+
             }else{
                 $("#loginfailmsg").html("아이디 혹은 비밀번호가 다릅니다.");
                 //  $("#태그ID").html( ) ;   // 태그 안에 html 추가
@@ -22,3 +28,5 @@ function login(){
         }
      });
 }
+
+

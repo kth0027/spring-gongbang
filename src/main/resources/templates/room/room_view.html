@@ -49,7 +49,7 @@
                         <span class="visually-hidden">Previous</span>
                     </button>
                     <button class="carousel-control-next" type="button"
-                            data-bs-target="${'#carousel' + roomEntity.roomNo}"
+                            th:data-bs-target="${'#carousel' + roomEntity.roomNo}"
                             data-bs-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
@@ -138,8 +138,7 @@
             </div>
 
             <h3 style="font-weight: bold;" id="review">후기</h3>
-            <button class="btn btn-outline-info" style="color:black;" data-bs-target="#reviewmodal"
-                    data-bs-toggle="modal">
+            <button class="btn" style="color:black;" data-bs-target="#reviewmodal" data-bs-toggle="modal">
                 작성
             </button>
             <br>
@@ -351,20 +350,6 @@
             return false;
         });
     });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </script>

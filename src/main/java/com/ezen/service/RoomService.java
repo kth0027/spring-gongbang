@@ -98,23 +98,19 @@ public class RoomService {
                 assert roomEntitySaved != null;
                 roomEntitySaved.getRoomImgEntities().add(roomImgEntitySaved);
             }
-        } else{
+        } else {
             // 1. 첨부한 파일이 존재하지 않는 경우
             // 2. js 에서 검사해서 무조건 사진 파일을 등록하도록 합니다.
-
         }
-
         return true;
     }
 
     // 내가 만든 room list 가져오기
     public List<RoomEntity> getmyroomlist() {
-
         HttpSession session = request.getSession();
         MemberDto logindto = (MemberDto) session.getAttribute("logindto");
         List<RoomEntity> roomEntities = memberRepository.findById(logindto.getMemberNo()).get().getRoomEntities();
         return roomEntities;
-
     }
 
     // header.html 에서 검색한 결과를 db 에서 받아오는 메소드
@@ -123,12 +119,11 @@ public class RoomService {
     // @Param category : 검색창에서 선택한 카테고리
     public Page<RoomEntity> getRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local, String category) {
 
+        //페이지번호
         int page = 0;
-
         if (pageable.getPageNumber() != 0) {
             page = pageable.getPageNumber() - 1;
         }
-
         // 페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
         pageable = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
 
@@ -205,9 +200,7 @@ public class RoomService {
 
         // 1. 승인 완료된 클래스만 가져와야합니다.
         roomEntities = roomRepository.findRoomByRoomStatus("승인완료", pageable);
-
         return roomEntities;
-
     }
 
     // 모든 룸 가져오기(어드민용)
@@ -283,7 +276,6 @@ public class RoomService {
         }
     }
 
-
     // 로그인 된 회원이 등록한 문의 출력
     public List<NoteEntity> getmynotelist() {
         HttpSession session = request.getSession();
@@ -354,8 +346,6 @@ public class RoomService {
         noteRepository.findById(noteNo).get().setNoteRead(1);
         return true;
     }
-
-
 
 
 }

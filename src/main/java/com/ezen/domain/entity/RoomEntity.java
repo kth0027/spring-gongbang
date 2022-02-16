@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 public class RoomEntity extends BaseTimeEntity {
 
     // [클래스 고유 식별 번호]

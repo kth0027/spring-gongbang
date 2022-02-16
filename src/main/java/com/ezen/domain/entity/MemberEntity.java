@@ -42,6 +42,16 @@ public class MemberEntity extends BaseTimeEntity {
     @Column(name = "memberId")
     private String memberId;
 
+    // @Date : 2022-02-16 채널 관련 정보 추가
+    @Column(name = "channelTitle")
+    private String channelTitle;
+
+    @Column(name = "channelContent")
+    private String channelContent;
+
+    @Column(name = "channelImg")
+    private String channelImg;
+
 
     // 회원이 여러개의 방을 등록할 수 있다.
     // RoomEntity 와 1 : N 관계를 맺는다.
@@ -80,6 +90,6 @@ public class MemberEntity extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private  List<RoomLikeEntity> roomLikeEntities =new ArrayList<>();
+    private List<RoomLikeEntity> roomLikeEntities = new ArrayList<>();
 
 }

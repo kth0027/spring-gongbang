@@ -213,7 +213,7 @@ public class RoomController {
         return "room/room_view"; // 타임리프
     }
 
-    // [ 작성한 클래스 등록 ]
+    // [작성한 클래스 등록]
     @PostMapping("/classRegister")
     @Transactional
     public String classRegister(Model model,
@@ -229,12 +229,17 @@ public class RoomController {
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         roomEntity.setRoomView(0);
-        roomService.registerClass(roomEntity, files);
 
-        // 2. 등록 완료 후, 내가 등록한 클래스 페이지로 이동
-        Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
-        model.addAttribute("roomDtos", roomDtos);
-        return "member/member_class";
+        boolean result = roomService.registerClass(roomEntity, files);
+        if(result){
+            // 2. 등록 완료 후, 내가 등록한 클래스 페이지로 이동
+            Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
+            model.addAttribute("roomDtos", roomDtos);
+            return "member/member_class";
+        } else {
+            return "error";
+        }
+
     }
 
     // [ room_update.html 페이지와 맵핑 ]

@@ -32,6 +32,9 @@ public class MemberService implements UserDetailsService {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    private HttpServletRequest request;
+
     // 회원등록 메소드
     public boolean memberSignup(MemberDto memberDto) {
         // 패스워드 암호화 [ BCryptPasswordEncoder ]
@@ -151,8 +154,6 @@ public class MemberService implements UserDetailsService {
         return entityOptional.get();
     }
 
-    @Autowired
-    private HttpServletRequest request;
 
     @Override   // /member/logincontroller URL 호출시 실행되는 메소드 [ 로그인처리(인증처리) 메소드 ]
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
@@ -180,23 +181,33 @@ public class MemberService implements UserDetailsService {
 
     // 충전금액 증가
     @Transactional
-    public boolean payment(int memberNo, int memberPoint, int totalpay){
+    public boolean payment(int memberNo, int memberPoint, int totalpay) {
         try {
             // 1. 수정할 엔티티 찾는다
             Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
             // 2. 엔티티를 수정한다[엔티티변화=>DB변경]
-
-            entityOptional.get().setMemberPoint(memberPoint+totalpay);
-
+            entityOptional.get().setMemberPoint(memberPoint + totalpay);
             return true;
-        }
-        catch ( Exception e ){
-
-            System.out.println( e );
+        } catch (Exception e) {
+            System.out.println(e);
             return false;
         }
 
+    }
 
+    // 02-15 채널 정보 등록하기 - 조지훈
+    @Transactional
+    public boolean channelupdate(MemberEntity memberEntity) {
+        try {
+            Optional<MemberEntity> entityOptional = memberRepository.findById(memberEntity.getMemberNo());
+            entityOptional.get().setChannelTitle(memberEntity.getChannelTitle());
+            entityOptional.get().setChannelContent(memberEntity.getChannelContent());
+            entityOptional.get().setChannelImg(memberEntity.getChannelImg());
+            return true;
+        } catch (Exception e) {
+            System.out.println("채널정보등록 실패 " + e);
+            return false;
+        }
     }
 
 

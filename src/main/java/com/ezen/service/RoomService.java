@@ -98,7 +98,12 @@ public class RoomService {
                 assert roomEntitySaved != null;
                 roomEntitySaved.getRoomImgEntities().add(roomImgEntitySaved);
             }
+        } else{
+            // 1. 첨부한 파일이 존재하지 않는 경우
+            // 2. js 에서 검사해서 무조건 사진 파일을 등록하도록 합니다.
+
         }
+
         return true;
     }
 
@@ -184,6 +189,7 @@ public class RoomService {
     }
 
     // 모든 룸 가져오기(멤버용)
+    // 사용자는 '승인완료' 처리된 클래스만을 볼 수 있습니다.
     public Page<RoomEntity> getroomlist(@PageableDefault Pageable pageable) {
 
         // 1. 룸 엔티티 Page 타입 변수 선언 및 초기화
@@ -199,11 +205,13 @@ public class RoomService {
 
         // 1. 승인 완료된 클래스만 가져와야합니다.
         roomEntities = roomRepository.findRoomByRoomStatus("승인완료", pageable);
+
         return roomEntities;
 
     }
 
     // 모든 룸 가져오기(어드민용)
+    // 관리자는 모든 클래스를 볼 수 있습니다.
     public Page<RoomEntity> getroomlistadmin(@PageableDefault Pageable pageable) {
 
         // 1. 룸 엔티티 Page 타입 변수 선언 및 초기화

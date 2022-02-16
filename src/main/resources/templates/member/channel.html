@@ -1,81 +1,138 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/summernote/summernote-lite.css}">
+
+    <link rel="stylesheet" th:href="@{/css/channelcard.css}">
     <style>
-        #reviewbox{
-        height: auto;
-        display: flex;
-        padding: 2%;
-        border-color: #e0e0e0;
-        border-style: solid;
-        border-width: 1px;
-        border-radius: 7px;
-        flex-direction: column;
+        #reviewbox {
+            height: auto;
+            display: flex;
+            padding: 2%;
+            border-color: #e0e0e0;
+            border-style: solid;
+            border-width: 1px;
+            border-radius: 7px;
+            flex-direction: column;
         }
+
+        .nav {
+            margin-top: 2rem;
+
+        }
+
+        .nav-item {
+            font-size: 1.5rem;
+            margin-right: 4rem;
+        }
+
     </style>
 </head>
+
 <body>
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
-
+<!-- 섬머노트 -->
+<script th:src="@{/js/summernote/summernote-lite.js}"></script>
+<script th:src="@{/js/summernote/lang/summernote-ko-KR.js}"></script>
+<!-- 카드js -->
+<!-- <script th:src="@{/js/channelcard.js}"></script> -->
 <!-- 레이아웃 01-27 조지훈-->
 <div class="container">
     <div class="row">
         <div style="height:200px;">
 
         </div>
-        <h3>채널명</h3>
-        <ul class="nav col-12 col-md-auto mb-2 mt-3 justify-content-center">
-            <li>홈</li>
-            <li>오프라인 클래스</li>
-            <li>라이브 클래스</li>
-            <li>클래스 결과물</li>
-            <li>수강생 결과물</li>
-        </ul>
-        <hr>
-        <div class="col-md-8">
+        <div>
             <div class="row">
-                <div class="col-md-4">
-                    <img src="" alt="">
+                <div class="col-md-2">
+                    <img th:src="@{'/channelimg/' + ${memberEntity.channelImg}}" alt=""
+                         style="height: 8rem; width: 8rem; border-radius: 5rem;">
                 </div>
                 <div class="col-md-8">
                     <div>
-                        <span>클래스명</span>
-                    </div>
-                    <div>
-                        <span>주소</span>
+                            <span th:text="${memberEntity.channelTitle}"
+                                  style="font-weight: bold; font-size: 2.5rem;"></span>
+                        <div sec:authorize="isAuthenticated()"
+                             th:if="${session.logindto.memberNo == memberEntity.memberNo}" align="right">
+                            <!-- <a th:href="@{'/member/channelupdate/' + ${memberEntity.memberNo} }"> -->
+                            <button class="btn btn-outline-primary" data-bs-target="#channelmodal"
+                                    data-bs-toggle="modal">채널 정보 수정
+                            </button>
+                            <!-- </a> -->
+                        </div>
+                        <div>
+                                <span
+                                        th:text="${#strings.listSplit(memberEntity.RoomEntities.get(0).roomAddress,',')[0] }"></span>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- 02-15 조지훈 -->
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item" role="presentation" id="hoverli">
+                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                            aria-selected="true">홈
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                            aria-selected="false">클래스
+                    </button>
+                </li>
+            </ul>
             <hr>
-            <div>
-                <span><strong>강사 소개</strong></span>
-            </div>
-            <hr>
-            <div>
-                <h5><strong>공간 및 클래스 소개</strong></h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <img src="" alt="">
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                     aria-labelledby="pills-home-tab">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3><strong>강사 소개</strong></h3>
+                            <div th:utext="${memberEntity.channelContent}"></div>
+                        </div>
+                        <div class="col-md-4" id="reviewbox">
+                            <h4><strong>클래스 후기</strong></h4>
+                            <div class="row" th:each="room : ${memberEntity.roomEntities}">
+                                <div th:each="reply : ${room.replyEntities}">
+                                    <div class="col-md-8">
+                                        <h5 th:text="${reply.roomEntity.roomTitle}"></h5><br>
+                                        <span
+                                                th:text="${#temporals.format(reply.createdDate,'yyyy-MM-dd')}">날짜</span><br>
+                                        <span th:text="${reply.replyContent}">내용</span>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}"
+                                             alt="" style="width: 100%">
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                        </div>
                     </div>
-                    <div class="col-md-6">
-                        <span>내용</span>
+
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <div class="band">
+                        <div class="item" th:each="room : ${memberEntity.roomEntities}">
+                            <a th:href="@{'/room/view/' + ${room.roomNo}}" class="card">
+                                <div class="thumb">
+                                    <img th:src="@{'/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }" alt=""
+                                         style="width: 340px; height: 270px;">
+                                </div>
+                                <article>
+                                    <h2 th:text="${room.roomTitle}"></h2>
+                                    <p th:text="${room.roomContent}"></p>
+                                    <span th:text="${room.roomCategory}"></span>
+                                </article>
+                            </a>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4" id="reviewbox">
-            <h4><strong>클래스 후기</strong></h4>
-            <div class="row">
-                <div class="col-md-8">
-                    <h5><strong>클래스명</strong></h5><br>
-                    <span>날짜</span>
-                    <span>내용</span>
-                </div>
-                <div class="col-md-4">
-                    <img src="" alt="">
+
                 </div>
             </div>
             <hr>
@@ -83,6 +140,53 @@
     </div>
 </div>
 
+<div class="modal fade" tabindex="-1" id="channelmodal" data-bs-keyword="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0"> 채널 정보 수정 </h5>
+                <p class="mb-3" id="reviewmsg"> 채널 정보를 수정하실수 있습니다.</p>
+                <form action="/member/channelupdatecontroller" method="post" enctype="multipart/form-data">
+                    <input type="hidden" th:value="${memberEntity.memberNo}" name="memberNo">
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control rounded-4" name="channelTitle" placeholder="채널명">
+                        <label for="floatingInput" th:text="${memberEntity.channelTitle}"></label>
+                    </div>
+                    <div>
+                            <textarea id="summernote" name="channelContent"
+                                      th:utext="${memberEntity.channelContent}"></textarea>
+                    </div>
+                    <input type="file" name="memberImg" id="file"> <br>
+                    <div class="flex-nowrap p-0">
+                        <input type="submit"
+                               class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"
+                               value="수정">
+                        <button type="button"
+                                class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                                data-bs-dismiss="modal">나가기
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <div th:replace="footer.html :: footer"></div>
+
+<script th:src="@{/js/registerclass.js}"></script>
+
+<script src="">
+    $(document).ready(function () {
+        //여기 아래 부분
+        $('#summernote').summernote({
+            height: 200,                 // 에디터 높이
+            minHeight: null,             // 최소 높이
+            maxHeight: null,             // 최대 높이
+            focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
+            lang: "ko-KR",					// 한글 설정
+            placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
+        });
+    });
+</script>
 </body>
 </html>

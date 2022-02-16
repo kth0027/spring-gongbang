@@ -83,20 +83,20 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
 
     // 1. 검색이 존재하지 않을 때
 
-    // 1. 검색 X 지역 O 카테고리 X
-    @Query(nativeQuery = true, value = "SELECT * FROM room WHERE roomLocal = :roomLocal")
-    Page<RoomEntity> adminGetRoomByLocal(@Param("roomLocal") String roomLocal, Pageable pageable);
+        // 1. 검색 X 지역 O 카테고리 X
+        @Query(nativeQuery = true, value = "SELECT * FROM room WHERE roomLocal = :roomLocal")
+        Page<RoomEntity> adminGetRoomByLocal(@Param("roomLocal") String roomLocal, Pageable pageable);
 
-    // 2. 검색 X 지역 X 카테고리 O
-    @Query(nativeQuery = true, value = "SELECT * FROM room WHERE roomCategory = :roomCategory")
-    Page<RoomEntity> adminGetRoomByCategory(@Param("roomCategory") String roomCategory, Pageable pageable);
+        // 2. 검색 X 지역 X 카테고리 O
+        @Query(nativeQuery = true, value = "SELECT * FROM room WHERE roomCategory = :roomCategory")
+        Page<RoomEntity> adminGetRoomByCategory(@Param("roomCategory") String roomCategory, Pageable pageable);
 
-    // 3. 검색 X 지역 O 카테고리 O
-    @Query(nativeQuery = true, value = "SELECT * FROM (SELECT * FROM room WHERE roomCategory = :category) as R WHERE roomLocal = :local")
-    Page<RoomEntity> adminGetRoomByCategoryAndLocal(@Param("local") String local, @Param("category") String category, Pageable pageable);
+        // 3. 검색 X 지역 O 카테고리 O
+        @Query(nativeQuery = true, value = "SELECT * FROM (SELECT * FROM room WHERE roomCategory = :category) as R WHERE roomLocal = :local")
+        Page<RoomEntity> adminGetRoomByCategoryAndLocal(@Param("local") String local, @Param("category") String category, Pageable pageable);
 
     // 2. 검색이 존재하는 경우
 
-    // 1. 검색 O 지역 X 카테고리 X
+        // 1. 검색 O 지역 X 카테고리 X
 
 }

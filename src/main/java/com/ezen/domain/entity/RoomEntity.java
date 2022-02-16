@@ -13,7 +13,6 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-@ToString
 public class RoomEntity extends BaseTimeEntity {
 
     // [클래스 고유 식별 번호]
@@ -74,8 +73,6 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomPrice")
     private int roomPrice;
 
-    // 날짜, 시간과 N : M 맵핑
-
     // 회원번호 관계
     @ManyToOne
     @JoinColumn(name = "memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]
@@ -106,5 +103,6 @@ public class RoomEntity extends BaseTimeEntity {
     private List<HistoryEntity> historyEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private List<RoomLikeEntity> roomLikeEntities = new ArrayList<>();
 }

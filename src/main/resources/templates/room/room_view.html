@@ -51,6 +51,9 @@
 
 
 
+
+
+
     </style>
 
     <link rel="stylesheet" th:href="@{/css/room_view.css}">
@@ -80,10 +83,14 @@
                             <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
                                  class="d-block w-100" alt="..." style="height: 30rem;">
                         </div>
-                        <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
-                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="..."
+                        <!-- 02-15 조지훈 -->
+                        <div class="carousel-item"
+                             th:each="num : ${#numbers.sequence( 1 , roomEntity.roomImgEntities.size()-1  )}">
+                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(num).roomImg} }"
+                                 class="d-block w-100" alt="..."
                                  style="height: 40rem;">
                         </div>
+                        <!-- 02-15 조지훈 end -->
                     </div>
 
                     <button class="carousel-control-prev" type="button"
@@ -102,12 +109,14 @@
             </div>
             <div>
                 <div class="Categorybox">
-                    <span class="Categoryp" th:text="${roomEntity.roomContent}"></span>
+                    <!-- 02-15 조지훈 -->
+                    <span class="Category" th:text="${roomEntity.roomCategory}"></span>
+                    <!-- 02-15 조지훈 end -->
                 </div>
                 <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
                 <div class="d-flex justify-content-end">
                     <!-- 해당 클래스 리뷰 평균치를 출력하는 부분 -->
-                    <span>리뷰 평균</span> <i class="bi bi-star-fill"></i>
+                    <span id="review-avg">리뷰 평균</span> <i class="bi bi-star-fill"></i>
                     <div th:text="${avg}"></div>
                 </div>
                 <div>
@@ -159,11 +168,12 @@
                 <div>
                     <span th:text="${roomEntity.roomETC}"></span>
                 </div>
-                <hr>
+
+                <!-- 02-15 조지훈 -->
                 <h3 id="teacherinfo" style="font-weight: bold;">강사소개</h3>
-                <br><br>
-                <br><br>
+                <div th:utext="${roomEntity.memberEntity.channelContent}"></div>
                 <hr>
+                <!-- 02-15 조지훈 end -->
 
                 <h3 id="position" style="font-weight: bold;">위치</h3>
                 <div>
@@ -392,6 +402,9 @@
             return false;
         });
     });
+
+
+
 
 
 

@@ -1,8 +1,9 @@
 @charset "UTF-8";
 
-.navlist {
+
+  .navlist {
             background-color: #374b73;
-            border-radius: 0.5rem;
+            border-radius: 1rem;
         }
 
         .navlist button {

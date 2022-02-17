@@ -92,11 +92,11 @@ public class MemberController { // C S
         return "member/login";
     }
 
-    // 로그인 유효성검사
-    @GetMapping("/logincontroller")
-    public String logincontroller() {
-        return "redirect:/";
-    }
+//    // 로그인 유효성검사
+//    @GetMapping("/logincontroller")
+//    public String logincontroller() {
+//        return "redirect:/";
+//    }
 
     // 마이페이지 연결
     @GetMapping("/info")
@@ -120,30 +120,21 @@ public class MemberController { // C S
     public String updatecontroller(
             @RequestParam("memberNo") int memberNo,
             @RequestParam("memberId") String memberId,
-//            @RequestParam("memberPassword") String memberPassword,
+            @RequestParam("memberPassword") String memberPassword,
             @RequestParam("memberName") String memberName,
             @RequestParam("memberEmail") String memberEmail,
-            @RequestParam("memberPone") String memberPhone
-//            @RequestParam("memberGender") String memberGender
+            @RequestParam("memberPhone") String memberPhone,
+            @RequestParam("memberGender") String memberGender
     ) {
-
-        System.out.println(memberNo);
-        System.out.println(memberId);
-//        System.out.println(memberPassword);
-        System.out.println(memberName);
-        System.out.println(memberEmail);
-        System.out.println(memberPhone);
-//        System.out.println(memberGender);
-
         memberService.memberUpdate(
                 MemberDto.builder()
                         .memberNo(memberNo)
                         .memberId(memberId)
-//                        .memberPassword(memberPassword)
+                        .memberPassword(memberPassword)
                         .memberName(memberName)
                         .memberEmail(memberEmail)
                         .memberPhone(memberPhone)
-//                        .memberGender(memberGender)
+                        .memberGender(memberGender)
                         .build());
         return "redirect:/member/info";
     }
@@ -174,11 +165,11 @@ public class MemberController { // C S
 
     // 아이디 찾기
     @PostMapping("/findMyIdcontroller")
-    public String findMyIdcontroller(MemberDto memberDto , Model model) {
+    public String findMyIdcontroller(MemberDto memberDto, Model model) {
         String result = memberService.findid(memberDto);
-        if( result != null ){
+        if (result != null) {
             return "1";
-        }else{
+        } else {
             return "2";
         }
     }

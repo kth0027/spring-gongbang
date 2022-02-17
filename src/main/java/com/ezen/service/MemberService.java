@@ -118,6 +118,7 @@ public class MemberService implements UserDetailsService {
             Optional<MemberEntity> entityOptional = memberRepository.findById(memberDto.getMemberNo());
 
             // 2. 엔티티를 수정한다 [ 엔티티 변화 -> DB 변경처리 ]
+            entityOptional.get().setMemberNo(memberDto.getMemberNo());
             entityOptional.get().setMemberId(memberDto.getMemberId());
             entityOptional.get().setMemberPassword(memberDto.getMemberPassword());
             entityOptional.get().setMemberName(memberDto.getMemberName());

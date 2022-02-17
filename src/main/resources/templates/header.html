@@ -11,11 +11,10 @@
 </head>
 
 <body>
-<script th:src="@{/js/login.js}"></script>
-
-    <!-- 로그인 스크립트는 사용하지 않습니다. -->
-    <!-- OAuth 를 사용하기 때문에 비밀번호 encode, decode, login, logout 처리를 위임합니다. -->
-    <!-- SecurityConfig, OauthDto, OauthService 를 참고하세요 -->
+<!-- 로그인 스크립트는 사용하지 않습니다. -->
+<!-- OAuth 를 사용하기 때문에 비밀번호 encode, decode, login, logout 처리를 위임합니다. -->
+<!-- SecurityConfig, OauthDto, OauthService 를 참고하세요 -->
+<!--<script th:src="@{/js/login.js}"></script>-->
 
 
     <div id="wrap" class="border border-primary" style="width:100vw">
@@ -257,8 +256,9 @@
                                 id="memberPassword" placeholder="비밀번호">
                         </div>
                         <div id="loginfailmsg" class="text-danger text-center m-2"></div> <!-- 로그인 실패시 메시지 -->
-                        <button type="button" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" onclick="login()">로그인
-                        </button>
+<!--                        <button type="button" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" onclick="login()">로그인-->
+<!--                        </button>-->
+                        <input type="submit" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" value="로그인">
                         <!-- 로그인 버튼 -->
                         <div><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이 아니신가요? 회원가입</a></div>
                         <a id="findbtn">

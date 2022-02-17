@@ -58,11 +58,7 @@ public class AdminService {
                     return roomRepository.adminGetRoomByLocal(local, pageable);
 
                 }
-
             }
-
         }
-
-
     }
 }

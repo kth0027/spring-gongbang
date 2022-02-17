@@ -31,15 +31,15 @@
                          style="padding: 0px; margin: 0px;">
                         <div class="col-12 col-sm-6 col-md-7 opensearchbox">
                             <!--
-                            1. '검색' 버튼을 클릭하면 검색할 수 있는 <div> 가 보입니다.
-                            -->
+                        1. '검색' 버튼을 클릭하면 검색할 수 있는 <div> 가 보입니다.
+                        -->
                             <button id="opensearch" type="button" class="opensearch btn">
                                 <i class="fa-solid fa-magnifying-glass mx-1"></i>주변의 다양한 클래스를 검색해보세요!!
                             </button>
                         </div>
                         <!--
-                        1. '클래스 개설'은 로그인 해야만 보이게 제한을 걸어둡니다.
-                        -->
+                    1. '클래스 개설'은 로그인 해야만 보이게 제한을 걸어둡니다.
+                    -->
                         <div sec:authorize="isAuthenticated()" class="col-12 col-sm-6 col-md-5">
                             <a th:href="@{/room/register}">
                                 <!-- 02-17 강사소개 null이면 강사소개 작성 페이지로 이동 조지훈 -->
@@ -52,17 +52,14 @@
                 </div>
                 <div class="col-md-3">
                     <div class="justify-content-center navbtn">
-                        <button th:if="${session.logindto == null}" type="button"
-                                class="btn me-2 openlogin my-1" data-bs-target="#modallogin"
-                                data-bs-toggle="modal">로그인
+                        <button th:if="${session.logindto == null}" type="button" class="btn me-2 openlogin my-1"
+                                data-bs-target="#modallogin" data-bs-toggle="modal">로그인
                         </button>
-                        <a class="my-1" th:if="${session.logindto == null}">
-                            <button type="button" class="btn" data-target="#modalsignup"
-                                    data-toggle="modal">
+                        <a class="my-1" th:if="${session.logindto == null}" th:href="@{/member/signup}">
+                            <button type="button" class="btn" data-target="#modalsignup" data-toggle="modal">
                                 회원가입
                             </button>
                         </a>
-
                         <div sec:authorize="isAuthenticated()" th:if="${session.logindto != null}"
                              class="flex-shrink-0 dropdown">
                             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
@@ -73,13 +70,9 @@
                             </a>
                             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
                                 <li>
-                                    <!--<a sec:authorize="hasRole('MEMBER')" th:if="${session.logindto != null }" th:href="@{/member/info}"
-                                       style="text-decoration: none;" class="dropdown-item"> 마이페이지 </a>
-                                    -->
-
                                     <a sec:authorize="hasRole('MEMBER')" class="nav-link"
-                                       th:if="${session.logindto != null }"
-                                       th:href="@{/member/info}" style="text-decoration: none;">
+                                       th:if="${session.logindto != null }" th:href="@{/member/info}"
+                                       style="text-decoration: none;">
                                         <svg class="MuiSvgIcon-root MuiSvgIcon-colorPrimary" focusable="false"
                                              viewBox="0 0 24 24" aria-hidden="true" style="margin-right: 8px;">
                                             <circle cx="15.5" cy="9.5" r="1.5"></circle>
@@ -90,29 +83,15 @@
                                         </svg>
                                         마이페이지
                                     </a>
-
                                 </li>
-                                <!-- 관리 리스트는 관리자만 접근할 수 있습니다. 대신 관리자는 다른 메뉴를 볼 수 없습니다 ( 필요없음 ) -->
-                                <!--               <li>
-                                                   <a sec:authorize="hasRole('ADMIN')" th:href="@{/admin/adminlist}"
-                                                      class="dropdown-item">관리리스트</a>
-                                               </li>
-               -->
+
                                 <li class="d-flex align-items-center"><i class="fa-solid fa-gear"></i>
-                                    <a sec:authorize="hasRole('ADMIN')" class="nav-link" th:href="@{/admin/adminlist}">관리리스트 </a>
+                                    <a sec:authorize="hasRole('ADMIN')" class="nav-link"
+                                       th:href="@{/admin/adminlist}">관리리스트 </a>
                                 </li>
-
-
-                                <!--
-                                                                <li>
-                                                                    <a sec:authorize="hasRole('MEMBER')" class="dropdown-item"
-                                                                       th:href="@{/member/reservationListController}">예약내역</a>
-                                                                </li>
-
-                                -->
-
                                 <li>
-                                    <a sec:authorize="hasRole('MEMBER')" class="nav-link" th:href="@{/member/history}">
+                                    <a sec:authorize="hasRole('MEMBER')" class="nav-link"
+                                       th:href="@{/member/reservationListController}">
                                         <svg class="MuiSvgIcon-root MuiSvgIcon-colorPrimary" focusable="false"
                                              viewBox="0 0 24 24" aria-hidden="true" style="margin-right: 8px;">
                                             <path
@@ -123,16 +102,9 @@
                                     </a>
                                 </li>
 
-                                <!--
-                                                                <li>
-                                                                    <a sec:authorize="hasRole('MEMBER')" class="dropdown-item"
-                                                                       th:href="@{/member/myclass}">내가등록한클래스</a>
-                                                                </li>
-
-                                -->
-
                                 <li>
-                                    <a sec:authorize="hasRole('MEMBER')" class="nav-link" th:href="@{/member/myclass}">
+                                    <a sec:authorize="hasRole('MEMBER')" class="nav-link"
+                                       th:href="@{/member/myclass}">
                                         <svg class="MuiSvgIcon-root MuiSvgIcon-colorPrimary" focusable="false"
                                              viewBox="0 0 24 24" aria-hidden="true" style="margin-right: 8px;">
                                             <path
@@ -156,17 +128,6 @@
                                     </a>
                                 </li>
 
-                                <!--                              <li>
-                                                                  <a sec:authorize="hasRole('MEMBER')" class="dropdown-item" th:href="@{/member/msg}"
-                                                                     th:if="${ session.nreadcount==null }" th:text="${'Q&A(0)'}"></a>
-                                                              </li>-->
-
-                                <!--                                <li>
-                                                                    <a sec:authorize="hasRole('MEMBER')" class="dropdown-item" th:href="@{/member/msg}"
-                                                                       th:if="!${ session.nreadcount==null}"
-                                                                       th:text="${'Q&A ('+session.nreadcount+')'}"></a>
-                                                                </li>-->
-
                                 <li class="d-flex align-items-center">
                                     <a sec:authorize="hasRole('MEMBER')" class="nav-link" th:href="@{/member/msg}"
                                        th:if="!${ session.nreadcount==null}"
@@ -177,16 +138,12 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-                                <!--                                <li>
-                                                                    <a class="dropdown-item" th:if="${session.logindto != null }"
-                                                                       th:href="@{/member/logout}"
-                                                                       style="text-decoration: none;">로그아웃</a>
-                                                                </li>-->
+
 
                                 <li>
                                     <a sec:authorize="isAuthenticated()" class="nav-link"
-                                       th:if="${session.logindto != null }"
-                                       th:href="@{/member/logout}" style="text-decoration: none;">
+                                       th:if="${session.logindto != null }" th:href="@{/member/logout}"
+                                       style="text-decoration: none;">
                                         <svg class="MuiSvgIcon-root MuiSvgIcon-colorPrimary" focusable="false"
                                              viewBox="0 0 24 24" aria-hidden="true" style="margin-right: 8px;">
                                             <path
@@ -284,148 +241,148 @@
                 </form>
             </div>
         </div>
+
+        <!-- 로그인 모달 -->
+        <div class="modal fade" id="modallogin" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1"
+             role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content rounded-5 shadow">
+                    <div class="modal-header p-5 pb-4 border-bottom-0">
+                        <h2 class="fw-bold mb-0 text-center w-100">
+                            <img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%">
+                            <p class="text-center">로그인</p>
+                        </h2>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                                style="width:2rem;"></button>
+                        <!-- 닫기 버튼 -->
+                    </div>
+                    <form action="loginController" method="post">
+
+                        <div class="modal-body p-5 pt-0">
+                            <div>
+                                <label for="memberId">아이디</label>
+                                <input name="memberId" type="text" class="form-control rounded-4" id="memberId"
+                                       placeholder="아이디">
+                            </div>
+                            <div>
+                                <label for="memberPassword">비밀번호</label>
+                                <input name="memberPassword" type="password" class="form-control rounded-4"
+                                       id="memberPassword" placeholder="비밀번호">
+                            </div>
+                            <div id="loginfailmsg" class="text-danger text-center m-2"></div> <!-- 로그인 실패시 메시지 -->
+                            <!-- 로그인 버튼 -->
+                            <input type="submit" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin"
+                                   value="로그인">
+                            <div><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이 아니신가요? 회원가입</a>
+                            </div>
+                            <a id="findbtn">
+                                <small class="text-muted px-2 btn" th:if="${session.logindto == null}"
+                                       data-bs-target="#modalsearch" data-bs-toggle="modal">회원정보찾기</small></a>
+
+                            <hr class="my-4 ">
+                            <h2 class="fs-5 fw-bold mb-3 "> SNS 연동 로그인</h2>
+                            <!-- ouath2 -->
+                            <div class="d-flex justify-content-center ">
+                                <button class="googlesignup w-75 py-2 mx-1 mb-2 btn-outline-dark rounded-4 "
+                                        type="submit"><a class="text-dark text-decoration-none"
+                                                         href="/oauth2/authorization/google "> 구글 로그인</a>
+                                </button>
+                                <button class="naversignup w-75 py-2 mx-1 mb-2 btn-outline-primary rounded-4 "
+                                        type="submit"><a class="text-dark text-decoration-none"
+                                                         href="/oauth2/authorization/naver "> 네이버 로그인</a>
+                                </button>
+                                <button class="kakaosignup w-75 py-2 mx-1 mb-2 btn-outline-secondary rounded-4 "
+                                        type="submit"><a class="text-dark text-decoration-none"
+                                                         href="/oauth2/authorization/kakao "> 카카오 로그인</a>
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- 로그인 모달종료 -->
+
+        <!-- 회원정보 찾기 모달 -->
+        <div class="modal " id="modalsearch" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1"
+             role="dialog"
+             aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content rounded-5 shadow">
+                    <div class="modal-header p-5 pb-4 border-bottom-0">
+                        <h2 class="fw-bold mb-0 text-center w-100">
+                            <img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%">
+                            <p class="text-center">회원정보찾기</p>
+                        </h2>
+                    </div>
+                    <div class="modal-body p-5 pt-0 d-flex justify-content-center align-items-center"
+                         style="height:100%;">
+                        <!-- 아이디찾기  -->
+                        <div class="col-md-6 searchinfo">
+                            이름 : <input type="text" name="memberName" id="memberName"> <br>
+                            핸드폰번호 : <input type="text" name="memberPhone" id="memberPhone"><br>
+                            <button onclick="findMyIdController();" type="button" value="이메일 찾기">아이디찾기</button>
+                            <br>
+                            <div id="findMyIdResult"></div>
+                        </div>
+                        <!-- 패스워드찾기 -->
+                        <div class="col-md-6 searchinfo">
+                            이메일 : <input type="text" name="memberEmail"> <br>
+                            핸드폰번호 : <input type="text" name="memberPhone"> <br>
+                            <button onclick="findMyPassword();" type="button" value="비밀번호 찾기">비밀번호 찾기</button>
+                            <br>
+                            <div id="findMyPasswordResult"></div>
+                        </div>
+                    </div>
+                    <!-- 닫기 버튼 -->
+                    <div class="d-flex justify-content-center mb-3">
+                        <button type="button" class="btn-danger" data-bs-dismiss="modal" aria-label=""
+                                style="width:3rem;">닫기
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- 회원정보 찾기 종료 -->
     </header>
 </div>
 <!-- 헤더메뉴 END -->
 
-<!-- 로그인 모달 -->
-<div class="modal " id="modallogin" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content rounded-5 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h2 class="fw-bold mb-0 text-center w-100">
-                    <img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%">
-                    <p class="text-center">로그인</p>
-                </h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        style="width:2rem;"></button>
-                <!-- 닫기 버튼 -->
-            </div>
-            <form action="loginController" method="post">
-
-                <div class="modal-body p-5 pt-0">
-                    <div>
-                        <label for="memberId">아이디</label>
-                        <input name="memberId" type="text" class="form-control rounded-4" id="memberId"
-                               placeholder="아이디">
-                    </div>
-                    <div>
-
-                        <label for="memberPassword">비밀번호</label>
-                        <input name="memberPassword" type="password" class="form-control rounded-4"
-                               id="memberPassword" placeholder="비밀번호">
-                    </div>
-                    <div id="loginfailmsg" class="text-danger text-center m-2"></div> <!-- 로그인 실패시 메시지 -->
-                    <!-- 로그인 버튼 -->
-                    <input type="submit" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin" value="로그인">
-                    <div><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이 아니신가요? 회원가입</a></div>
-                    <a id="findbtn">
-                        <small class="text-muted px-2 btn" th:if="${session.logindto == null}"
-                               data-bs-target="#modalsearch" data-bs-toggle="modal">회원정보찾기</small></a>
-
-                    <hr class="my-4 ">
-                    <h2 class="fs-5 fw-bold mb-3 "> SNS 연동 로그인</h2>
-                    <!-- ouath2 -->
-                    <div class="d-flex justify-content-center ">
-                        <button class="googlesignup w-75 py-2 mx-1 mb-2 btn-outline-dark rounded-4 "
-                                type="submit"><a class="text-dark text-decoration-none"
-                                                  href="/oauth2/authorization/google "> 구글 로그인</a>
-                        </button>
-                        <button class="naversignup w-75 py-2 mx-1 mb-2 btn-outline-primary rounded-4 "
-                                type="submit"><a class="text-dark text-decoration-none"
-                                                  href="/oauth2/authorization/naver "> 네이버 로그인</a>
-                        </button>
-                        <button class="kakaosignup w-75 py-2 mx-1 mb-2 btn-outline-secondary rounded-4 "
-                                type="submit"><a class="text-dark text-decoration-none"
-                                                  href="/oauth2/authorization/kakao "> 카카오 로그인</a>
-                        </button>
-                    </div>
-
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- 로그인 모달종료 -->
-
-<!-- 회원정보 찾기 모달 -->
-<div class="modal " id="modalsearch" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content rounded-5 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h2 class="fw-bold mb-0 text-center w-100">
-                    <img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%">
-                    <p class="text-center">회원정보찾기</p>
-                </h2>
-            </div>
-            <div class="modal-body p-5 pt-0 d-flex justify-content-center align-items-center" style="height:100%;">
-                <!-- 아이디찾기  -->
-                <div class="col-md-6 searchinfo">
-                    이름 : <input type="text" name="memberName"> <br>
-                    핸드폰번호 : <input type="text" name="memberPhone"> <br>
-                    <button th:onclick="findMyIdcontroller();" type="button" value="이메일 찾기">아이디찾기</button>
-                    <br>
-                    <div id="findMyIdResult"></div>
-                    <!--                    <div th:text="${findemailmsg}"></div>-->
-                </div>
-                <!-- 패스워드찾기 -->
-                <div class="col-md-6 searchinfo">
-                    이메일 : <input type="text" name="memberEmail"> <br>
-                    핸드폰번호 : <input type="text" name="memberPhone"> <br>
-                    <!--                        <input class="" type="submit" value="비밀번호 찾기"> <br>-->
-                    <button th:onclick="findMyPassword();" type="button" value="비밀번호 찾기">비밀번호 찾기</button>
-                    <br>
-                    <div id="findMyPasswordResult"></div>
-                </div>
-            </div>
-            <!-- 닫기 버튼 -->
-            <div class="d-flex justify-content-center mb-3">
-                <button type="button" class="btn-danger" data-bs-dismiss="modal" aria-label=""
-                        style="width:3rem;">닫기
-                </button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!-- 회원정보 찾기 종료 -->
 <!-- 02-17 강사소개 ajax 조지훈 -->
 <script th:src="@{/js/header.js}"></script>
 <script>
-/* 검색칸 팝업 */
-$(document).ready(function () {
-    $("#togglesearch ").hide();
-    $("#opensearch ").click(function () {
-        $("#togglesearch ").fadeIn();
-    });
-    $(".closesearch ").click(function () {
-        $("#togglesearch ").hide();
-    });
-});
+        /* 검색칸 팝업 */
+        $(document).ready(function () {
+            $("#togglesearch ").hide();
+            $("#opensearch ").click(function () {
+                $("#togglesearch ").fadeIn();
+            });
+            $(".closesearch ").click(function () {
+                $("#togglesearch ").hide();
+            });
+        });
 
-function findMyIdcontroller() {
-    var memberName = document.querySelector("div.searchinfo input[name=memberName]");
-    var memberPhone = document.querySelector("div.searchinfo input[name=memberPhone]");
-
-    $.ajax({
-        url: "/member/findMyIdcontroller",
-        data: { "memberName": memberName, "memberPhone": memberPhone },
-        success: function (data) {
-            // 아이디 찾는 태그에 뿌려주기
-            if (data == 1) {
-                alert("찾기 성공");
-                $("#findMyIdResult").html(data);
-            } else if (data == 2) {
-                alert("동일한 회원정보가 없습니다.");
-                $("#findMyIdResult").html("[찾기실패] 회원정보가 다릅니다.");
-            }
-        }
-    });
-}
 
 </script>
 
+<!-- 회원찾기 AJAX 미작동 태호=>정진 검토요청 -->
+<script>
+    function findMyIdController() {
+        var memberName = $("#memberName").val();
+        var memberPhone = $("#memberPhone").val();
+        $.ajax({
+            url: "/member/findMyId",
+            data: { "memberName": memberName, "memberPhone": memberPhone },
+            success: function (data) {
+                    $("#findMyIdResult").html(data);
+                }
+        });
+    }
+
+
+</script>
 </body>
+
 </html>

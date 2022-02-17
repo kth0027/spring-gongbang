@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -56,9 +57,9 @@ public class ReplyService {
         if (files.size() != 0) {
             for (MultipartFile file : files) {
                 UUID uuid = UUID.randomUUID();
-                uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-");
+                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
 
-                String dir = "C:\\gongbang\\build\\resources\\main\\static\\replyimg";
+                String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
                 String filepath = dir + "\\" + uuidfile;
                 try {
                     file.transferTo(new File(filepath));

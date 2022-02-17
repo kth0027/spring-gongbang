@@ -112,6 +112,8 @@ public class RoomService {
         return roomEntities;
     }
 
+    // 'MEMBER' 권한에서 검색한 결과
+    // '승인완료' 된 클래스만 리턴해야합니다.
     // header.html 에서 검색한 결과를 db 에서 받아오는 메소드
     // @Param keyword : 검색창 입력값
     // @Param local : 검색창에서 선택한 지역
@@ -124,13 +126,13 @@ public class RoomService {
             page = pageable.getPageNumber() - 1;
         }
         // 페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-        pageable = PageRequest.of(page, 3, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+        pageable = PageRequest.of(page, 50, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
 
         // 1.1 검색이 없는 경우
         if (keyword.isEmpty()) {
             // 1.2 검색 X 지역 O 카테고리 X
             if (!local.isEmpty() && category.isEmpty()) {
-                return roomRepository.findRoomByLocal(local, pageable);
+                return roomRepository.adminGetRoomByLocal(local, pageable);
             }
             // 1.3 검색 X 지역 X 카테고리 X
             else if (local.isEmpty() && category.isEmpty()) {
@@ -139,30 +141,30 @@ public class RoomService {
             // 1.3 검색 X 지역 X 카테고리 O
             // 더 줄일 수 있지만 혼선이 있을 수 있어 길게 나열해둡니다.
             else if (local.isEmpty() && !category.isEmpty()) {
-                return roomRepository.findRoomByCategory(category, pageable);
+                return roomRepository.adminGetRoomByCategory(category, pageable);
             }
             // 1.4 검색 X 지역 O 카테고리 O
             else if (!local.isEmpty() && !category.isEmpty()) {
-                return roomRepository.findRoomByLocalAndCategory(local, category, pageable);
+                return roomRepository.adminGetRoomByCategoryAndLocal(local, category, pageable);
             }
         }
         // 2. 검색이 있는 경우
         else {
             // 검색 O 지역 O 카테고리 X
             if (!local.isEmpty() && category.isEmpty()) {
-                return roomRepository.findRoomByLocalAndKeyword(keyword, local, pageable);
+                return roomRepository.adminGetRoomByKeywordAndLocal(keyword, local, pageable);
             }
             // 검색 O 지역 X 카테고리 O
             else if (local.isEmpty() && !category.isEmpty()) {
-                return roomRepository.findRoomByCategoryAndKeyword(keyword, category, pageable);
+                return roomRepository.adminGetRoomByKeywordAndCategory(keyword, category, pageable);
             }
             // 검색 O 지역 O 카테고리 O
             else if (!local.isEmpty() && !category.isEmpty()) {
-                return roomRepository.findRoomByCategoryAndLocalAndKeyword(keyword, category, local, pageable);
+                return roomRepository.adminGetRoomByKeywordAndLocalAndCategory(keyword, category, local, pageable);
             }
             // 검색 O 지역 X 카테고리 X
             else if (local.isEmpty() && category.isEmpty()) {
-                return roomRepository.findRoomByKeyword(keyword, pageable);
+                return roomRepository.adminGetRoomByKeyword(keyword, pageable);
             }
         }
 
@@ -188,7 +190,6 @@ public class RoomService {
 
         // 1. 룸 엔티티 Page 타입 변수 선언 및 초기화
         Page<RoomEntity> roomEntities = null;
-
         int page = -1;
         if (pageable.getPageNumber() == 0) {
             page = 0;
@@ -344,6 +345,78 @@ public class RoomService {
     public boolean nreadupdate(int noteNo) {
         noteRepository.findById(noteNo).get().setNoteRead(1);
         return true;
+    }
+
+    // [관리자 권한]
+    // @Author : 김정진
+    // @Date : 2022-02-17
+    // adminlist.html 에서 검색한 결과를 db 에서 받아오는 메소드
+    // 일반회원은 승인완료 된 결과만을 볼 수 있다.
+    // 관리자는 개설, 삭제, 승인거부 등등 모든 클래스를 볼 수 있다.
+    // @Param keyword : 검색창 입력값
+    // @Param local : 검색창에서 선택한 지역
+    // @Param category : 검색창에서 선택한 카테고리
+    public Page<RoomEntity> adminGetRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local, String category) {
+
+        System.out.println("관리자 검색 페이지 접근");
+        System.out.println("키워드 : " + keyword + ", 지역 : " + local + ", 카테고리 : " + category);
+
+        //페이지번호
+        int page = 0;
+        if (pageable.getPageNumber() != 0) {
+            page = pageable.getPageNumber() - 1;
+        }
+        // 페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
+        pageable = PageRequest.of(page, 50, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+
+        // 1.1 검색이 없는 경우
+        if (keyword.equals("-1")) {
+            // 1.2 검색 X 지역 O 카테고리 X
+            if (!local.equals("-1") && category.equals("-1")) {
+                System.out.println(" 검색 X 지역 O 카테고리 X ");
+                return roomRepository.adminGetRoomByLocal(local, pageable);
+            }
+            // 1.3 검색 X 지역 X 카테고리 X
+            else if (local.equals("-1") && category.equals("-1")) {
+                System.out.println("검색 X 지역 X 카테고리 X ");
+                return roomRepository.findAll(pageable);
+            }
+            // 1.4 검색 X 지역 X 카테고리 O
+            // 더 줄일 수 있지만 혼선이 있을 수 있어 길게 나열해둡니다.
+            else if (local.equals("-1") && !category.equals("-1")) {
+                System.out.println("검색 X 지역 X 카테고리 O");
+                return roomRepository.adminGetRoomByCategory(category, pageable);
+            }
+            // 1.5 검색 X 지역 O 카테고리 O
+            else if (!local.equals("-1") && !category.equals("-1")) {
+                System.out.println("검색 X 지역 O 카테고리 O");
+                return roomRepository.adminGetRoomByCategoryAndLocal(local, category, pageable);
+            }
+        }
+        // 2. 검색이 있는 경우
+        else {
+            // 검색 O 지역 O 카테고리 X
+            if (!local.equals("-1") && category.equals("-1")) {
+                return roomRepository.adminGetRoomByKeywordAndLocal(keyword, local, pageable);
+            }
+            // 검색 O 지역 X 카테고리 O
+            else if (local.equals("-1") && !category.equals("-1")) {
+                return roomRepository.adminGetRoomByKeywordAndCategory(keyword, category, pageable);
+            }
+            // 검색 O 지역 O 카테고리 O
+            else if (!local.equals("-1") && !category.equals("-1")) {
+                return roomRepository.adminGetRoomByKeywordAndLocalAndCategory(keyword, category, local, pageable);
+            }
+            // 검색 O 지역 X 카테고리 X
+            else if (local.equals("-1") && category.equals("-1")) {
+                return roomRepository.adminGetRoomByKeyword(keyword, pageable);
+            }
+        }
+
+        // 위의 경우 중 아무것도 해당하지 않는다면 null 리턴
+        // 위 조건문을 모두 통과했다면 비정상적인 접근이라고 볼 수 있음
+        // null 값에 대한 처리가 되어있는가?
+        return null;
     }
 
 

@@ -44,7 +44,6 @@ public class AppStart {
         // 댓글은 따로 상태가 없어서 모든 댓글이 출력된다.
         List<ReplyEntity> replylist = replyService.replylist();
         model.addAttribute("replylist", replylist);
-
         return "index";
     }
 

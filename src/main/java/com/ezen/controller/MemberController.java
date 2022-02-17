@@ -139,39 +139,22 @@ public class MemberController { // C S
         }
     }
 
-    // 회원정보찾기 페이지로 연결
-    @GetMapping("/findemail")
-    public String findemail() {
-        return "member/findemail";
+    // @Author : 김정진
+    // @Date : 2022-02-17
+    // 아이디, 비밀번호 찾기
+    @GetMapping("/findMyId")
+    @ResponseBody
+    public String findMyIdController(@RequestParam("memberName") String name, @RequestParam("memberPhone") String phone) {
+        // js 에서 이름, 핸드폰 번호 받고 아이디 알려주기
+
+        MemberEntity memberEntity = null;
+        if (memberService.findMyId(name, phone) != null) {
+            memberEntity = memberService.findMyId(name, phone);
+            return memberEntity.getMemberId();
+        }
+        return "";
     }
 
-    // 이메일 찾기
-    @PostMapping("/findemailcontroller")
-    public String findemailcontroller(MemberDto memberDto, Model model) {
-        String result = memberService.findemail(memberDto);
-        if (result != null) {
-            String msg = " 회원님의 이메일 : " + result;
-            model.addAttribute("findemailmsg", msg);
-        } else {
-            String msg = " 동일한 회원정보가 없습니다.";
-            model.addAttribute("findemailmsg", msg);
-        }
-        return "member/findemail";
-    }
-
-    // 비밀번호 찾기
-    @PostMapping("/findpasswordcontroller")
-    public String findpasswordcontroller(MemberDto memberDto, Model model) {
-        String result = memberService.findpassword(memberDto);
-        if (result != null) {
-            String msg = " 회원님의 이메일 : " + result;
-            model.addAttribute("findpwmsg", msg);
-        } else {
-            String msg = " 동일한 회원정보가 없습니다.";
-            model.addAttribute("findpwmsg", msg);
-        }
-        return "member/findemail";
-    }
 
     // @Author : 김정진
     // @Date : 2022-02-11
@@ -222,7 +205,7 @@ public class MemberController { // C S
                 timeTableTmp = timeTableEntity;
             }
         }
-        // 신청한 정원만큼 클래스 수용 인원을 감소시킵니다. 
+        // 3. 수용 가능한 인원보다 신청 인원이 많다면 신청할 수 없다.
         assert timeTableTmp != null;
         if (timeTableTmp.getRoomMax() < person) {
             return "2";
@@ -306,7 +289,13 @@ public class MemberController { // C S
 
         // 8. 최종적으로 회원이 가진 포인트를 감소시킵니다.
         memberEntity.setMemberPoint(memberEntity.getMemberPoint() - price);
-
+        int memberPoint;
+        if (historyEntity.getHistoryPoint() == null) {
+            memberPoint = 0;
+        } else {
+            memberPoint = Integer.parseInt(historyEntity.getHistoryPoint());
+        }
+        historyEntity.setHistoryPoint(String.valueOf(memberPoint + price));
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
         model.addAttribute("histories", historyEntities);
         return "member/history_list";
@@ -360,12 +349,15 @@ public class MemberController { // C S
     // @Param memberNo : 회원 번호를 넘겨받는다.
     @GetMapping("/reservationListController")
     public String reservationListController(Model model) {
+
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        System.out.println(loginDto);
         // 로그인 세션에 저장되어 있는 세션을 이용해 memberNo 를 불러옵니다.
         int memberNo = loginDto.getMemberNo();
         // memberNo 에 해당하는 예약 내역을 불러옵니다.
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
+        System.out.println(historyEntities);
         model.addAttribute("histories", historyEntities);
         return "member/history_list";
     }

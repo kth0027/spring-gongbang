@@ -10,7 +10,9 @@ $(document).ready(function() {
     getTimeTable();
 });
 
-// 여기서 클릭 이벤트를 관리한다.
+// [클래스 예약 진행하는 함수]
+// [해당 날짜를 클릭하면 개설된 강좌와 신청 버튼을 출력합니다]
+// 1.
 function daySelect(year , month , day, roomNo){
     // 선택한 날짜의 아이디 : YYYY-MM-DD
     var date = year + "-" + (month + 1) + "-" + day;
@@ -27,6 +29,10 @@ function daySelect(year , month , day, roomNo){
         async: false,
         contentType: "application/json",
         success: function(data){
+            if(data == 1){
+                // 1. 본인은 자신이 개설한 강의를 신청할 수 없습니다.
+                // 2. 리턴된 data 값이 '1' 일 때는 선택할 수 없도록 합니다.
+            }
             $("#time-select-inner").empty();
             // 받아온 정보들을 html 로 넘겨준다.
             // 반복문을 돌아야하니, 다시 controller 로 정보를 넘겨준 뒤
@@ -41,19 +47,19 @@ function daySelect(year , month , day, roomNo){
                 var roomLocal = room.local;
                 var roomMax = room.max;
                 var roomDate = room.date;
+                var realMax = room.timeMax;
 
-                var roomhtml = "<div class='col-sm-8'>";
-                roomhtml += "<div class='classContent'>";
+                var roomhtml = "<div class='col-md-8'>";
+                roomhtml += "<div class='classContent' style='border: 3px solid #374b73; background-color: #ffffff; color: #374b73; padding: 0.5rem;'>";
                 roomhtml += "<div> 클래스 이름 : " + roomTitle + "</div>";
-                roomhtml += "<div> 시작시간 : " + roomBeginTime + "</div>";
-                roomhtml += "<div> 종료 : " + roomEndTime + "</div>";
+                roomhtml += "<div> <span> 시작시간 : " + roomBeginTime + "</span>  <span> 종료시간 : " + roomEndTime + "</span> </div>";
                 roomhtml += "<div> 지역 : " + roomLocal + "</div>";
-                roomhtml += "<div> 최대 가능 인원 : " + roomMax + "</div>";
+                roomhtml += "<div> 신청 가능한 인원 : " + realMax + "</div>";
                 roomhtml += "</div>";
                 roomhtml += "</div>";
-                roomhtml += "<div class='col-sm-4'>";
-                roomhtml += "<button class='classBtn' onclick='registerClass("+roomNo+","+roomBeginTime+","+roomEndTime+","+roomDate+");'>";
-                roomhtml += "클래스신청";
+                roomhtml += "<div class='col-md-4'>";
+                roomhtml += "<button style='border: 3px solid ##374b73; color: #374b73; padding: 0.5rem;' onclick='registerClass("+roomNo+","+roomBeginTime+","+roomEndTime+","+roomDate+");'>";
+                roomhtml += "선택";
                 roomhtml += "</button>";
                 roomhtml += "</div>";
 
@@ -63,20 +69,44 @@ function daySelect(year , month , day, roomNo){
     });
 }
 
-// 특정 날짜, 특정 시간 클래스를 신청한다.
+// [클래스 신청]
+// [예외 처리]
+// 1. 개설한 본인은 클래스를 신청할 수 없다.
+// 2. 클래스를 신청하면 정원이 줄어야한다.
+// roomNo : 개설된 클래스 식별 번호
+// beginTime : 강좌가 시작되는 시간
+// endTime : 강좌가 종료되는 시간
+// roomDate : 강좌과 열린 시간
 function registerClass(roomNo, beginTime, endTime, roomDate){
-    var classTime = beginTime + "," + endTime;
-    $.ajax({
-        url: "/member/registerClass",
-        data: {"roomNo" : roomNo, "classTime" : classTime, "roomDate" : roomDate},
-        method: "GET",
-        success: function(data){
-            if(data==1){
-                alert("성공");
-            }
-        }
-    });
+
+    $("#time-select-inner").empty();
+
+    var roomTime = beginTime + "," + endTime;
+    var selectedDate = $("#selectedDate").val();
+
+    // 1. 최종 선택 이전에 '클래스 선택 사항' 을 출력해야한다.
+    // time-selected-wrapper 에 뿌려줘야한다.
+    var roomhtml = "<div class='container'>";
+    roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> 날짜 : " + selectedDate + "</div>";
+    roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> <span> 시작시간 : " + beginTime + "</span>  <span> 종료시간 : " + endTime + "</span> </div>";
+    roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> <span> 최대 수강 신청 인원 : 3명 </span> </div>";
+    roomhtml += "<select onchange='personTest();' class='form-select' id='class-register-person'>";
+    roomhtml += "<option selected='selected'> 인원선택 </option>";
+    roomhtml += "<option value='1'> 1명 </option>";
+    roomhtml += "<option value='2'> 2명 </option>";
+    roomhtml += "<option value='3'> 3명 </option>";
+    roomhtml += "</select>";
+    roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> 선택한 인원 수 : <input id='input-person'> </div>";
+    // 인원 수를 클릭 한 뒤에야, 신청 버튼이 나오도록 한다.
+    // 신청을 누를 때는 roomNo, roomDate, roomTime 값이 넘어가야한다.
+    roomhtml += "<input type='hidden' id='register-room-date' value = " + selectedDate + ">";
+    roomhtml += "<input type='hidden' id='register-room-time' value = " + roomTime + ">";
+    roomhtml += "<input type='hidden' id='register-room-no' value = " + roomNo + ">";
+    roomhtml += "</div>";
+    $("#time-select-inner").append(roomhtml);
+
 }
+
 
 /*
     달력 렌더링 할 때 필요한 정보 목록
@@ -173,7 +203,6 @@ function calendarInit(data, roomNo) {
                     flag = true;
                     break;
                 } else {
-
                     j = j + 1;
                 }
             }
@@ -181,8 +210,6 @@ function calendarInit(data, roomNo) {
             } else {
                 calendar.innerHTML = calendar.innerHTML + '<div style="color: gray;" class="day current" id="'+dayId+'">' + i + '</div>';
             }
-
-
         }
 
         // 다음달 달력 출력

@@ -1,6 +1,60 @@
 // tab 이벤트 + summernote + checkbox 클릭 이벤트 핸들러
 $(function(){
 
+    // 클래스 등록 시, 입력한 값에 대한 유효성 검사 시작
+    // @Author : 김정진
+    // @Date : 2022-02-16
+
+    // 1. 클래스 제목 입력에 대한 유효성 검사
+    $("#roomTitle").keyup(function(){
+        var title = $("#roomTitle").val();
+
+        var regTitle =/^[a-zA-Z가-힣]{1,50}$/;
+        // 1. 글자수를 카운트해서 view 에 보여줍니다.
+        var titleLength = getTextLength(title);
+        $("#title-key-count").html(titleLength);
+        // 2. 글자수는 50개로 제한을 둡니다.
+        if(titleLength > 50){
+            alert("제목은 50자 이하로 입력가능합니다.");
+            // 3. 글자수를 초과했다면 맨 마지막 글자를 지웁니다.
+            $("#roomTitle").val("");
+            var trimmedTitle = title.substring(0, 40);
+            $("#roomTitle").val(trimmedTitle);
+        }
+        if(!regTitle.test(title)){
+            $("#title-result").html("유효성 검사 실패");
+        }
+    });
+
+    // 2. 클래스 내용에 대한 유효성 검사
+    $("#addClassInfo").keyup(function(){
+        var content = $("#addClassInfo").val();
+        var regContent = /^[a-zA-Z가-힣]{1,100}$/;
+        // 1. 입력받은 글자수를 view 에 보여줍니다.
+        var contentLength = getTextLength(content);
+        $("#content-key-count").html(contentLength);
+        if(contentLength > 100){
+            alert("클래스 간단 소개는 100자 이하로 입력가능합니다.");
+            $("#roomContent").val("");
+            var trimmedContent = content.substring(0, 90);
+            $("#roomContent").val(trimmedContent);
+        }
+        if(!regContent.test(content)){
+            $("#content-result").html("유효성 검사 실패");
+        }
+    });
+
+    // 3. 사진 입력에 대한 유효성 검사
+        // 1. 무조건 사진을 1장이상 등록해야합니다.
+
+
+    // 4. 클래스 상세 소개에 대한 유효성 검사
+        // 1. summernote 에 내용을 최소 50글자 이상 입력해야합니다.
+
+    // 5. 주소 입력에 대한 유효성 검사
+        // 1. 무조건 주소를 선택해야합니다.
+
+
     $("ul.tabs li").click(function(){
         var tabId = $(this).attr("data-tab");
 
@@ -13,7 +67,7 @@ $(function(){
 
     $('#summernote').summernote({
         lang: 'ko-KR',  // 메뉴 한글 버전 ,
-        minHeight: 400, // 최z소 높이
+        minHeight: 400, // 최소 높이
         maxHeight: null,
         placeholder: "내용 입력"
 
@@ -35,133 +89,139 @@ $(function(){
             $("#checkBox3").val("주차공간을 제공합니다");
         }
     });
-
 });
 
+function registerCheck(){
 
-// 사진 미리보기 및 업로드 js 시작
 
-// var input = document.getElementById("rinput");
-var initLabel = document.getElementById("rlabel");
-
-$("#rinput")[0].addEventListener("change", classinput);
-
-function classinput(e){
-    const files = changeEvent(e);
-    handleUpdate(files);
 }
 
+// 문자열 길이 구하기
+function getTextLength(str){
+    var len = 0;
+    for(var i=0; i<str.length; i++){
+        if(escape(str.charAt(i)).length == 6){
+            len++;
+        }
+        len++;
+    }
+    return len;
+}
+// 사진 미리보기 및 업로드 js 시작
+var input = document.getElementById("image-input");
+var initLabel = document.getElementById("image-label");
+
+$("#image-input")[0].addEventListener("change", (event) => {
+    const files = changeEvent(event);
+    handleUpdate(files);
+});
+
 initLabel.addEventListener("mouseover", (event) => {
-  event.preventDefault();
-  const label = document.getElementById("plabel");
-  label?.classList.add("plabel--hover");
+    event.preventDefault();
+    const label = document.getElementById("image-label");
+    label?.classList.add("image-label--hover");
 });
 
 initLabel.addEventListener("mouseout", (event) => {
-  event.preventDefault();
-  const label = document.getElementById("plabel");
-  label?.classList.remove("plabel--hover");
+    event.preventDefault();
+    const label = document.getElementById("image-label");
+    label?.classList.remove("image-label--hover");
 });
 
 document.addEventListener("dragenter", (event) => {
-  event.preventDefault();
-  console.log("dragenter");
-  if (event.target.className === "inner") {
-    event.target.style.background = "#616161";
-  }
+    event.preventDefault();
+        console.log("dragenter");
+        if (event.target.className === "inner") {
+        event.target.style.background = "#fff1ed";
+    }
 });
 
 document.addEventListener("dragover", (event) => {
-  console.log("dragover");
-  event.preventDefault();
+    console.log("dragover");
+    event.preventDefault();
 });
 
 document.addEventListener("dragleave", (event) => {
-  event.preventDefault();
-  console.log("dragleave");
-  if (event.target.className === "pinner") {
-    event.target.style.background = "#3a3a3a";
-  }
+    event.preventDefault();
+    console.log("dragleave");
+    if (event.target.className === "inner") {
+        event.target.style.background = "#fff1ed";
+    }
 });
 
 document.addEventListener("drop", (event) => {
-  event.preventDefault();
-  console.log("drop");
-  if (event.target.className === "pinner") {
-    const files = event.dataTransfer?.files;
-    event.target.style.background = "#3a3a3a";
-    handleUpdate([...files]);
-  }
+    event.preventDefault();
+    console.log("drop");
+    if (event.target.className === "inner") {
+        const files = event.dataTransfer?.files;
+        event.target.style.background = "#fff1ed";
+        handleUpdate([...files]);
+    }
 });
 
 function changeEvent(event){
-  const { target } = event;
-  return [...target.files];
+    const { target } = event;
+    return [...target.files];
 };
 
 function handleUpdate(fileList){
-  const preview = document.getElementById("preview");
-
-  fileList.forEach((file) => {
-    const reader = new FileReader();
-    reader.addEventListener("load", (event) => {
-      const img = el("img", {
-        className: "embed-img img-fluid",
-        src: event.target?.result,
-      });
-      const imgContainer = el("div", { className: "container-img" }, img);
-      preview.append(imgContainer);
+    const preview = document.getElementById("preview");
+    fileList.forEach((file) => {
+        const reader = new FileReader();
+        reader.addEventListener("load", (event) => {
+            const img = el("img", {
+                className: "embed-img img-fluid",
+                src: event.target?.result,
+            });
+            const imgContainer = el("div", { className: "container-img" }, img);
+                preview.append(imgContainer);
+            });
+        reader.readAsDataURL(file);
     });
-    reader.readAsDataURL(file);
-  });
 };
 
 function el(nodeName, attributes, ...children) {
-  const node =
+    const node =
     nodeName === "fragment"
-      ? document.createDocumentFragment()
-      : document.createElement(nodeName);
+    ? document.createDocumentFragment()
+    : document.createElement(nodeName);
 
-  Object.entries(attributes).forEach(([key, value]) => {
-    if (key === "events") {
-      Object.entries(value).forEach(([type, listener]) => {
-        node.addEventListener(type, listener);
-      });
-    } else if (key in node) {
-      try {
-        node[key] = value;
-      } catch (err) {
+    Object.entries(attributes).forEach(([key, value]) => {
+        if (key === "events") {
+            Object.entries(value).forEach(([type, listener]) => {
+            node.addEventListener(type, listener);
+            });
+        } else if (key in node) {
+            try {
+            node[key] = value;
+            } catch (err) {
+            node.setAttribute(key, value);
+            }
+        } else {
         node.setAttribute(key, value);
-      }
-    } else {
-      node.setAttribute(key, value);
-    }
-  });
+        }
+    });
 
-  children.forEach((childNode) => {
-    if (typeof childNode === "string") {
-      node.appendChild(document.createTextNode(childNode));
-    } else {
-      node.appendChild(childNode);
-    }
-  });
+    children.forEach((childNode) => {
+        if (typeof childNode === "string") {
+            node.appendChild(document.createTextNode(childNode));
+        } else {
+            node.appendChild(childNode);
+        }
+    });
 
   return node;
 }
 // 사진 미리보기 및 업로드 js 종료
 
 // 다음 주소 등록 api 시작
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+var mapContainer = document.getElementById('map'),
     mapOption = {
-        center: new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
-        level: 5 // 지도의 확대 레벨
+        center: new daum.maps.LatLng(37.537187, 127.005476),
+        level: 5
     };
-
-//지도를 미리 생성
 var map = new daum.maps.Map(mapContainer, mapOption);
-//주소-좌표 변환 객체를 생성
 var geocoder = new daum.maps.services.Geocoder();
-//마커를 미리 생성
 var marker = new daum.maps.Marker({
     position: new daum.maps.LatLng(37.537187, 127.005476),
     map: map
@@ -203,10 +263,14 @@ function sample5_execDaumPostcode() {
 
 // 다음 주소 등록 api 종료
 
-// 체크박스 이벤트 핸들러 시작
+// 클래스 등록 유효성 검사 시작
+function classRegisterCheck(){
+
+    // 업로드한 이미지에 대한 유효성 검사는 Controller 에서 수행합니다.
 
 
-// 체크박스 이벤트 핸들러 종료
 
+}
 
+// 클래스 등록 유효성 검사 종료
 

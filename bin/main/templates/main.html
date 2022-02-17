@@ -8,9 +8,14 @@
     <title>메인페이지</title>
     <!-- main css 가져오기 -->
     <link th:href="@{/css/main.css}" rel="stylesheet">
-    <!-- slick
-    <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-    <script type="text/javascript" src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> -->
+    <style>
+        #room-price{
+            color: red;
+            font-size: 0.8rem;
+            text-align: right;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -1015,8 +1020,6 @@
                 <div class="card cardboxinner" th:each="room : ${roomlist}">
                     <!-- 카드 헤더 -->
                     <div class="card-header">
-                        <!--  style="background-image:url(/img/coffee.jpg); margin-top:0.5rem;" -->
-
                         <img th:if="${room.roomImgEntities != null}" class="card-img"
                              th:src="@{ 'roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
 
@@ -1027,24 +1030,37 @@
                     </div>
                     <!--  카드 바디 -->
                     <div class="card-body">
-                        <!--  카드 바디 헤더 -->
                         <div class="card-body-header">
                             <a th:href="@{'/room/view/' + ${room.roomNo} }"><h1 th:text="${room.roomTitle}"></h1></a>
-                            <p class="card-body-hashtag">태그 어떻게 구현할래?</p>
+                            <p class="card-body-hashtag">####태그 구현 후 추가바람####</p>
                             <div class="d-flex">
                                 작성자: <p class="card-body-nickname" th:text="${room.memberEntity.memberName}"></p>
                             </div>
                         </div>
                         <p class="card-body-description" th:text="${room.roomContent}">
                         </p>
-                        <!--  카드 바디 본문 -->
-
-                        <!--  카드 바디 푸터 -->
-                        <div class="card-body-footer">
-                            <hr style="margin-bottom: 8px; opacity: 0.5; border-color: #EF5A31">
-                            <i class="icon icon-view_count"></i>조회수 어떻게 구현할래?
-                            <i class="icon icon-comments_count"></i> 댓글 개수 어떻게 가져올래?
-                            <i class="reg_date" th:text="${#temporals.format(room.createdDate,'yyyy-MM-dd')}"></i>
+                    </div>
+                    <div class="card-body-footer">
+                        <hr style="margin-bottom: 8px; opacity: 0.5; border-color: #EF5A31">
+                        <div class="row">
+                            <div class="col-4">
+                                <i class="bi bi-eye-fill"></i>
+                                <div th:text="${room.roomView}"></div>
+                            </div>
+                            <div class="col-4">
+                                <i class="bi bi-pencil-square"></i>
+                                <div th:text="${#lists.size(room.replyEntities)}"></div>
+                            </div>
+                            <div class="col-4">
+                                <i class="bi bi-calendar-week"></i>
+                                <div class="reg_date"
+                                     th:text="${#temporals.format(room.createdDate,'yyyy-MM-dd')}"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div th:text="${room.roomPrice}" id="room-price"></div>
+                        </div>
+                        <div>
                         </div>
                     </div>
                 </div>
@@ -1053,11 +1069,10 @@
 
             <!-- 리뷰 후기 카드 출력 02-04 조지훈 작성중 -->
             <div class="row border">
-                <!--                <section class="variable-width">-->
                 <div class="card" th:each="reply : ${replylist}"
                      style="width: 20rem; margin-top: 10px; padding: 10px; height: 100%;">
                     <button type="button" class="btn btn-outline-primary me-2"
-                            th:data-bs-target="${'#modal'+reply.replyNo}" data-bs-toggle="modal">
+                            th:data-bs-target="${ '#modal' + reply.replyNo }" data-bs-toggle="modal">
                         <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" class="card-img-top">
                     </button>
                     <div class="card-body">
@@ -1122,7 +1137,6 @@
                         </div>
                     </div>  <!-- 리뷰카드 모달 end -->
                 </div>
-                <!--                </section>-->
             </div>
         </div>
 
@@ -1132,23 +1146,14 @@
 
 <!-- 조지훈 댓글 슬릭 js -->
 <script type="text/javascript">
-        $('.variable-width').slick({
-            dots: true,
-            infinite: true,
-            speed: 300,
-            slidesToShow: 4,
-            centerMode: true,
-            variableWidth: true
-        });
-
-
-
-
-
-
-
-
-
+    $('.variable-width').slick({
+        dots: true,
+        infinite: true,
+        speed: 300,
+        slidesToShow: 4,
+        centerMode: true,
+        variableWidth: true
+    });
 
 </script>
 

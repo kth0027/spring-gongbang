@@ -2,10 +2,10 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-  <style>
-    .adminlistwrap {
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+    .admin-list-wrapper {
       margin-top: 3rem;
     }
 
@@ -38,145 +38,269 @@
       box-shadow: inset 20rem 0 0 0 var(--hover);
       transition: 1s;
     }
-  </style>
+
+
+    ul.tabs{
+        margin: 0px;
+        padding: 0px;
+        list-style: none;
+    }
+
+    ul.tabs li{
+        border: 1px solid #ff9a9a;
+        background-color: #ffffff;
+        padding: 20px 20px;
+        cursor: pointer;
+    }
+
+    ul.tabs li.current{
+        border: 1px solid #374b73;
+        background-color: green;
+        color: #222;
+        cursor: pointer;
+    }
+
+    .tab-content{
+        display: none;
+        background-color: #ffffff;
+        height: auto;
+    }
+
+    .tab-content.current{
+        display: inherit;
+    }
+
+    </style>
 
 </head>
 <body>
-  <div th:replace="common.html::common"></div>
-  <div th:replace="header.html::header"></div>
+<div th:replace="common.html::common"></div>
+<div th:replace="header.html::header"></div>
 
-
-  <div class="container adminlistwrap border">
-    <div class="row outbox border" th:each="room : ${roomEntities}">
-      <!-- 좌측 이미지 -->
-      <div class="col-3">
-        <button style="margin-top:10px;" type="button" class="btn btn-outline-light me-2"
-          th:data-bs-target="${'#modal'+room.roomNo}" data-bs-toggle="modal">
-          <img th:src="@{'/roomimg/'+${room.roomImgEntities.get(0).roomImg}}" width="100%"> </button>
-      </div>
-      <!-- 우측 정보 -->
-      <div class="col-9">
-        <div th:text="${'등록번호 : '+room.roomNo}" style="font-size:2rem"></div>
-        <div class="row col-12 d-flex justify-content-center">
-          <div class="col-9 d-flex flex-column" style="padding: 1rem;">
-            <div>
-              <a th:href="@{'/room/view/' + ${room.roomNo} }"
-                class="logo d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                <span style="font-size:25px; color:pink;" th:text="${room.roomTitle}"></span>
-              </a>
+<div class="container admin-list-wrapper">
+    <div class="row">
+        <!-- 좌측 이미지 -->
+        <div class="col-2">
+            <div class="tab-wrapper">
+                <ul class="tabs nav d-flex flex-column">
+                    <li class="nav-item tab-link current" data-tab="tab-1">클래스</li>
+                    <li class="nav-item tab-link" data-tab="tab-2">후기</li>
+                    <li class="nav-item tab-link" data-tab="tab-3">통계</li>
+                </ul>
             </div>
-            <div th:text="${'카테고리 : '+room.roomCategory}"></div>
-            <div th:text="${'정원 : '+room.roomMax}+'명'"></div>
-            <div th:text="${'공방주소 : '+#strings.listSplit(room.roomAddress,',')[0]}"></div>
-            <div><span>상태 : </span><span th:text="${room.roomStatus}" style="color:pink"></span></div>
-            <div th:text="${'등록일자 : '+#temporals.format (room.createdDate,'MM-dd hh:mm')}"></div>
-          </div>
-          <div class="col-3 submitbtn">
-            <button class="btn border w-100 px-1 my-2 slide" th:data-bs-target="${'#active'+room.roomNo}"
-              data-bs-toggle="modal">
-              <span class="nav-link link-dark text-dark">상태변경</span></button>
-            <button class="btn border w-100 px-1 my-2 slide" th:data-bs-target="${'#delete'+room.roomNo}"
-              data-bs-toggle="modal"> <span class="nav-link link-dark  text-dark">삭제</span>
-          </div>
         </div>
-
-      </div>
-
-      <!-- 팝업슬라이드 -->
-      <!--    &lt;!&ndash; 사진 확대 모달// id는 숫자가 안됨. &ndash;&gt;-->
-      <div class="modal" tabindex="-1" role="dialog" th:id="${'modal'+room.roomNo}" data-bs-keyboard="false"
-        data-bs-backdrop="static" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-          <!--modal-lg 모달사이즈 800px 키우기-->
-          <div class="modal-content rounded-5 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
-              <!-- <h5 class="modal-title">Modal title</h5> -->
-              <h2 class="fw-bold mb-0">IMG</h2>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-5 pt-0">
-              <!-- 캐러셀 -->
-              <div th:id="${'carousel'+room.roomNo}" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                  <div class="carousel-item active">
-                    <!-- 대표이미지 -->
-                    <div>
-                      대표이미지 <img th:src="@{'/roomimg/'+${room.roomImgEntities.get(0).roomImg}}" class="d-block w-100"
-                        alt="...">
+        <!-- 우측 정보 -->
+        <div class="col-10">
+            <!-- 검색창 -->
+            <div id="tab-1" class="tab-content current">
+                <div class="row">
+                    <div class="col-4">
+                        <select name="adminLocal" id="adminLocal"
+                                class="form-select">
+                            <option value="" selected>지역선택</option>
+                            <option value="서울">서울</option>
+                            <option value="경기">경기</option>
+                            <option value="인천">인천</option>
+                        </select>
                     </div>
-                  </div>
-                  <div class="carousel-item" th:each="roomimg : ${room.roomImgEntities}">
-                    <!-- 반복문 -->
-                    <!-- active : 현재 보고 있는 이미지 설정[한곳에만 설정]-->
-                    <img th:src="@{'/roomimg/'+ ${roomimg.roomImg}}" class="d-block w-100" alt="...">
-                  </div>
+                    <div class="col-4">
+                        <select name="adminCategory" id="adminCategory"
+                                class="form-select">
+                            <option value="" selected>카테고리선택</option>
+                            <option value="핸드메이드">핸드메이드</option>
+                            <option value="쿠킹">쿠킹</option>
+                            <option value="플라워">플라워</option>
+                            <option value="드로잉">드로잉</option>
+                            <option value="음악">음악</option>
+                            <option value="요가/필라테스">필라테스</option>
+                            <option value="스포츠">스포츠</option>
+                            <option value="뷰티">뷰티</option>
+                            <option value="애완동물">애완동물</option>
+                            <option value="체험">체험</option>
+                            <option value="자기계발">자기계발</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-6">
+                                <input name="adminSearch" id="adminSearch" type="search"
+                                       placeholder="검색" class="form-control" aria-label="Search">
+                            </div>
+                            <div class="col-6">
+                                <button id="search" onclick="adminSearch();" type="button">검색</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <button class="carousel-control-prev" type="button" th:data-bs-target="${'#carousel'+room.roomNo}"
-                  data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" th:data-bs-target="${'#carousel'+room.roomNo}"
-                  data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div>
 
+                <div class="table-wrapper">
+                    <div id="table-section">
+                        <table class="table table-striped" id="admin-table">
+                            <tr>
+                                <td>등록번호</td>
+                                <td>클래스명</td>
+                                <td>카테고리</td>
+                                <td>정원</td>
+                                <td>공방주소</td>
+                                <td>승인상태</td>
+                                <td>등록일자</td>
+                                <td colspan="2">비고</td>
+                            </tr>
+
+                            <tr th:each="room : ${roomEntities}">
+                                <td th:text="${room.roomNo}"></td>
+                                <td>
+                                    <a th:href="@{'/room/view/' + ${room.roomNo} }"
+                                       class="logo d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                                        <span style="color:pink;" th:text="${room.roomTitle}"></span>
+                                    </a>
+                                </td>
+                                <td th:text="${room.roomCategory}"></td>
+                                <td th:text="${room.roomMax}+'명'"></td>
+                                <td th:text="${#strings.listSplit(room.roomAddress,',')[0]}"></td>
+                                <td>
+                                    <span th:text="${room.roomStatus}" style="color:pink"></span>
+                                </td>
+                                <td th:text="${#temporals.format (room.createdDate,'MM-dd hh:mm')}"></td>
+                                <td>
+                                    <button class="btn border w-100 px-1 my-2 slide"
+                                            th:data-bs-target="${'#active' + room.roomNo}"
+                                            data-bs-toggle="modal">
+                                        <span class="nav-link link-dark text-dark">상태변경</span></button>
+                                </td>
+                                <td>
+                                    <button class="btn border w-100 px-1 my-2 slide"
+                                            th:data-bs-target="${'#delete' + room.roomNo}"
+                                            data-bs-toggle="modal"><span class="nav-link link-dark  text-dark">삭제</span>
+                                    </button>
+                                </td>
+                                <!-- 상태변경모달  -->
+                                <div class="modal" th:id="${'active'+room.roomNo}" data-keyboard="false"
+                                     data-backdrop="static"
+                                     tabindex="-1"
+                                     role="dialog">
+                                    <div class="modal-dialog modal-lg" role="document">
+                                        <div class="modal-content rounded-4 shadow">
+                                            <div class="modal-body p-4 text-center">
+                                                <h5 class="mb-0"> 등록물 상태변경 </h5>
+                                                <p class="mb-3" id="activemsg">등록물 상태를 변경합니다. 변경하시겠습니까? </p>
+                                            </div>
+                                            <div class="modal-footer flex-nowrap p-0">
+                                                <button type="button"
+                                                        class="btn btn-lg btn-link text-decoration-none col-2 m-0 rounded-0"
+                                                        style="font-size:8px;"
+                                                        th:onclick="activeupdate([[${room.roomNo}]],'검토중')">
+                                                    검토중
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-lg btn-link text-decoration-none col-2 m-0 rounded-0"
+                                                        style="font-size:8px;"
+                                                        th:onclick="activeupdate([[${room.roomNo}]],'승인중')">
+                                                    승인중
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-lg btn-link text-decoration-none col-3 m-0 rounded-0"
+                                                        style="font-size:8px;"
+                                                        th:onclick="activeupdate([[${room.roomNo}]],'승인완료')">
+                                                    승인완료
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-lg btn-link text-decoration-none col-3 m-0 rounded-0"
+                                                        style="font-size:8px;"
+                                                        th:onclick="activeupdate([[${room.roomNo}]],'승인거부')">
+                                                    승인거부
+                                                </button>
+                                                <button type="button"
+                                                        class="btn btn-lg btn-link text-decoration-none col-2 m-0 rounded-0"
+                                                        style="font-size:10px;" data-bs-dismiss="modal">취소
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 삭제모달  -->
+                                <div class="modal" tabindex="-1" th:id="${'delete'+room.roomNo}" data-bs-keyword="false"
+                                     data-bs-backdrop="static">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content rounded-4 shadow">
+                                            <div class="modal-body p-4 text-center">
+                                                <h5 class="mb-0"> 등록물 삭제 </h5>
+                                                <p class="mb-3" id="deletemsg">등록물 삭제시 복구가 불가능합니다. 삭제하시겠습니까? </p>
+                                            </div>
+                                            <div class="modal-footer flex-nowrap p-0">
+                                                <button th:onclick="rdelete([[${room.roomNo}]]);" type="button"
+                                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right">
+                                                    <strong>삭제합니다.</strong></button>
+                                                <button type="button"
+                                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                                                        data-bs-dismiss="modal">아닙니다.
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <!--                페이징 처리
+                                <ul class="pagination justify-content-center"
+                                    th:with="start = ${ T(Math).floor( roomEntities.number / 10 ) * 10 + 1 } ,
+                                                                     last = ( ${ start + 9 < roomEntities.totalPages ?  start + 9 : roomEntities.totalPages } )">
+                                    &lt;!&ndash; 첫페이지이동 &ndash;&gt;
+                                    <li class="page-item">
+                                        <a class="page-link" th:href="@{/admin/adminlist( page = 1 ) }"> 처음 </a>
+                                    </li>
+                                    &lt;!&ndash; 이전페이지이동 &ndash;&gt;
+                                    <li class="page-item" th:class="${roomEntities.first} ? 'disabled' ">
+                                        &lt;!&ndash; 첫번페이지에서 이전페이지이동 표시 x &ndash;&gt;
+                                        <a class="page-link"
+                                           th:href="${roomEntities.first} ? '#' : @{/admin/adminlist( page = ${ roomEntities.number } ) }">
+                                            이전 </a>
+                                    </li>
+                                    &lt;!&ndash; 페이지번호 &ndash;&gt;
+                                    <li class="page-item" th:each="page : ${#numbers.sequence( start , last ) }">
+                                        <a class="page-link" th:href="@{/admin/adminlist( page = ${page} ) }" th:text="${page}"></a>
+                                    </li>
+                                    &lt;!&ndash; 다음페이지이동 &ndash;&gt;
+                                    <li class="page-item" th:class="${roomEntities.last} ? 'disabled' ">
+                                        <a class="page-link"
+                                           th:href="${roomEntities.last} ? '#' : @{/admin/adminlist( page = ${roomEntities.number+2} ) }">
+                                            다음
+                                        </a>
+                                    </li>
+                                    &lt;!&ndash; 마지막페이지 이동 &ndash;&gt;
+                                    <li class="page-item">
+                                        <a class="page-link" th:href="@{/admin/adminlist( page=${roomEntities.totalPages} ) }"> 마지막 </a>
+                                    </li>
+                                </ul>-->
             </div>
-          </div>
+            <div id="tab-2" class="tab-content">
+                후기
+            </div>
+            <div id="tab-3" class="tab-content">
+                통계
+            </div>
         </div>
-      </div>
-
-      <!-- 상태변경모달  -->
-      <div class="modal" th:id="${'active'+room.roomNo}" data-keyboard="false" data-backdrop="static" tabindex="-1"
-        role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content rounded-4 shadow">
-            <div class="modal-body p-4 text-center">
-              <h5 class="mb-0"> 등록물 상태변경 </h5>
-              <p class="mb-3" id="activemsg">등록물 상태를 변경합니다. 변경하시겠습니까? </p>
-            </div>
-            <div class="modal-footer flex-nowrap p-0">
-              <button type="button" class="btn btn-lg btn-link text-decoration-none col-2 m-0 rounded-0"
-                style="font-size:8px;" th:onclick="activeupdate([[${room.roomNo}]],'검토중')">검토중</button>
-              <button type="button" class="btn btn-lg btn-link text-decoration-none col-2 m-0 rounded-0"
-                style="font-size:8px;" th:onclick="activeupdate([[${room.roomNo}]],'승인중')">승인중</button>
-              <button type="button" class="btn btn-lg btn-link text-decoration-none col-3 m-0 rounded-0"
-                style="font-size:8px;" th:onclick="activeupdate([[${room.roomNo}]],'승인완료')">승인완료</button>
-              <button type="button" class="btn btn-lg btn-link text-decoration-none col-3 m-0 rounded-0"
-                style="font-size:8px;" th:onclick="activeupdate([[${room.roomNo}]],'승인거부')">승인거부</button>
-              <button type="button" class="btn btn-lg btn-link text-decoration-none col-2 m-0 rounded-0"
-                style="font-size:10px;" data-bs-dismiss="modal">취소</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-      <!-- 삭제모달  -->
-      <div class="modal" tabindex="-1" th:id="${'delete'+room.roomNo}" data-bs-keyword="false"
-        data-bs-backdrop="static">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content rounded-4 shadow">
-            <div class="modal-body p-4 text-center">
-              <h5 class="mb-0"> 등록물 삭제 </h5>
-              <p class="mb-3" id="deletemsg">등록물 삭제시 복구가 불가능합니다. 삭제하시겠습니까? </p>
-            </div>
-            <div class="modal-footer flex-nowrap p-0">
-              <button th:onclick="rdelete([[${room.roomNo}]]);" type="button"
-                class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"><strong>삭제합니다.</strong></button>
-              <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
-                data-bs-dismiss="modal">아닙니다.</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
-  </div>
-  <script th:src="@{/js/roomlist.js}"></script>
-  <script th:src="@{/js/nreply.js}"></script>
+</div>
+
+<script type="text/javascript">
+
+    $("ul.tabs li").click(function(){
+        var tabId = $(this).attr("data-tab");
+
+        $("ul.tabs li").removeClass("current");
+        $(".tab-content").removeClass("current");
+
+        $(this).addClass("current");
+        $("#"+ tabId).addClass("current");
+    });
+
+
+</script>
+
+<script th:src="@{/js/roomlist.js}"></script>
 </body>
 </html>

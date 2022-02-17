@@ -25,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequestMapping("/member")
@@ -480,28 +481,63 @@ public class MemberController { // C S
     @GetMapping("/channel/{memberNo}")
     public String channel(@PathVariable("memberNo") int memberNo, Model model) {
         MemberEntity memberEntity = memberService.getMember(memberNo);
+        // 02-17 조지훈
+        String realimg = null;
+        if (memberEntity.getChannelImg() != null) {
+            realimg = memberEntity.getChannelImg().split("_")[1];
+        }
+        model.addAttribute("realimg", realimg);
         model.addAttribute("memberEntity", memberEntity);
         return "member/channel";
     }
 
     // 02-15 채널 정보 등록  - 조지훈
-    @PostMapping("/channelupdatecontroller")
-    public String channelupdatecontroller(@RequestParam("memberNo") int memberNo,
-                                          @RequestParam("channelContent") String channelContent,
-                                          @RequestParam("channelTitle") String channelTitle,
-                                          @RequestParam("memberImg") MultipartFile file) {
+    @PostMapping("/channelregistration")
+    public String channelregistration(@RequestParam("memberNo") int memberNo,
+                                      @RequestParam("channelContent") String channelContent,
+                                      @RequestParam("channelTitle") String channelTitle,
+                                      @RequestParam("memberImg") MultipartFile file) {
         try {
-            UUID uuid = UUID.randomUUID();
-            String uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-");
-            String dir = "C:\\Users\\505\\Desktop\\gongbang\\src\\main\\resources\\static\\channelimg";
-            String filepath = dir + "\\" + uuidfile;
-            file.transferTo(new File(filepath));
-            memberService.channelupdate(
+            String uuidfile = null; // 02-17 조지훈
+            if (!file.getOriginalFilename().equals("")) { // 02-17 조지훈
+                UUID uuid = UUID.randomUUID();
+                uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-"); // 02-17 조지훈
+                String dir = "C:\\gongbang\\build\\resources\\main\\static\\channelimg";
+                String filepath = dir + "\\" + uuidfile;
+                file.transferTo(new File(filepath));
+            } else { // 02-17 조지훈
+                uuidfile = null;
+            } // 02-17 조지훈
+            memberService.channelregistration(
                     MemberEntity.builder().memberNo(memberNo).channelTitle(channelTitle).channelContent(channelContent).channelImg(uuidfile).build());
         } catch (Exception e) {
             System.out.println(e);
         }
         return "redirect:/member/channel/" + memberNo;
+    }
+    
+    // 02-17 채널 정보 수정시 기존이미지 삭제버튼 - 조지훈
+    @PostMapping("/channelimgdelete")
+    @ResponseBody
+    public String channelimgdelete(@RequestParam("memberNo") int memberNo) {
+        boolean result = memberService.channelimgdelete(memberNo);
+        if(result) {
+            return "1";
+        }else {
+            return "2";
+        }
+    }
+    
+    // 02-17 강사소개 작성여부 체크 - 조지훈
+    @GetMapping("/channelcheck")
+    @ResponseBody
+    public String channelcheck(@RequestParam("memberNo") int memberNo){
+        boolean result = memberService.channelcheck(memberNo);
+        if(result) {
+            return "1";
+        }else {
+            return "2";
+        }
     }
 
     // 충전소 페이지 맵핑

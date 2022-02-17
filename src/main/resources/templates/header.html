@@ -42,7 +42,8 @@
                         -->
                         <div sec:authorize="isAuthenticated()" class="col-12 col-sm-6 col-md-5">
                             <a th:href="@{/room/register}">
-                                <button class="classregistbtn" type="button">
+                                <!-- 02-17 강사소개 null이면 강사소개 작성 페이지로 이동 조지훈 -->
+                                <button class="classregistbtn" type="button" th:onclick="channelcheck([[${session.logindto.memberNo}]]);">
                                     클래스 개설
                                 </button>
                             </a>
@@ -55,7 +56,7 @@
                                 class="btn me-2 openlogin my-1" data-bs-target="#modallogin"
                                 data-bs-toggle="modal">로그인
                         </button>
-                        <a class="my-1" th:if="${session.logindto == null}" th:href="@{/member/signup}">
+                        <a class="my-1" th:if="${session.logindto == null}">
                             <button type="button" class="btn" data-target="#modalsignup"
                                     data-toggle="modal">
                                 회원가입
@@ -66,6 +67,7 @@
                              class="flex-shrink-0 dropdown">
                             <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle"
                                id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <!-- 기본 프로필 이미지 -->
                                 <img src="/img/default-profile-photo.png" alt="mdo" width="32" height="32"
                                      class="rounded-circle">
                             </a>
@@ -389,7 +391,8 @@
     </div>
 </div>
 <!-- 회원정보 찾기 종료 -->
-
+<!-- 02-17 강사소개 ajax 조지훈 -->
+<script th:src="@{/js/header.js}"></script>
 <script>
 /* 검색칸 팝업 */
 $(document).ready(function () {

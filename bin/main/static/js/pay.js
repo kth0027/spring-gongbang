@@ -1,42 +1,65 @@
 /* 결제 방식 선택  */
 function paymentselect( payselect ){
-	document.getElementById("payselect").innerHTML=payselect;
+	document.getElementById("payselect").innerHTML= payselect;
 }
 /* 결제 API 아임포트 */
 function payment(){
-	if( document.getElementById("payselect").innerHTML == "" ){
-		alert("결제방식을 선택해주세요"); return;
-	}
-	var IMP = window.IMP;
-	IMP.init("imp35631338"); // [본인]관리자 식별코드 [ 관리자 계정마다 다름]
+
+/*
+    var IMP = window.IMP;
+	IMP.init("imp65839811"); // [본인]관리자 식별코드 [ 관리자 계정마다 다름]
     IMP.request_pay({ // 결제 요청변수
 	    pg: "html5_inicis",	// pg사 [ 아임포트 관리자페이지에서 선택한 pg사 ]
-	    pay_method: document.getElementById("payselect").innerHTML,	// 결제방식
+	    pay_method: "card",	// 결제방식
 	    merchant_uid: "ORD20180131-0000011", // 주문번호[별도]
-	    name: "ezen 공방", // 결제창에 나오는 결제이름
-	    amount: document.getElementById("totalpay").innerHTML,	// 결제금액
+	    name: "나만의 쇼핑몰", // 결제창에 나오는 결제이름
+	    amount: "1000",	// 결제금액
 	    buyer_email: "gildong@gmail.com",
-	    buyer_name: $("#name").val(),
-	    buyer_tel: $("#phone").val(),
+	    buyer_name: "asd",
+	    buyer_tel: "asd",
+	    buyer_addr: "asdasd",
+	    buyer_postcode: "asdasd"	// 우편번호
 		  }, function (rsp) { // callback
 		      if (rsp.success) { // 결제 성공했을때 -> 주문 완료 페이지로 이동 []
 		      } else {
+
+		      }
+	  });
+*/
+
+    var totalpay =$("#totalpay").val();
+    var payselect =$("#payselect").val();
+	var IMP = window.IMP;
+	IMP.init("imp65839811"); // [본인]관리자 식별코드 [ 관리자 계정마다 다름]
+    IMP.request_pay({ // 결제 요청변수
+	    pg: "html5_inicis",	// pg사 [ 아임포트 관리자페이지에서 선택한 pg사 ]
+	    pay_method: payselect,	// 결제방식
+	    merchant_uid: "ORD20180131-0000011", // 주문번호[별도]
+	    name: "ezen 공방", // 결제창에 나오는 결제이름
+	    amount: totalpay,	// 결제금액
+	    buyer_email: "gildong@gmail.com",
+	    buyer_name: $("#memberId").val(),
+	    buyer_point: $("#memberPoint").val()
+
+		  }, function (rsp) { // callback
+		      if (rsp.success) { // 결제 성공했을때 -> 주문 완료 페이지로 이동 []
+		      } else {
+
 				// 결제 실패 했을때  // 테스트 : 결제 성공
 				$.ajax({
-					url : "/room/roompayment" ,
+					url : "/member/paymentcontroller" ,
 					data : {
-						order_name :  $("#name").val(),
-						order_phone	:  $("#phone").val(),
-						order_pay : document.getElementById("totalpay").innerHTML,
-						order_payment : document.getElementById("payselect").innerHTML ,
-						delivery_pay : 3000 ,
-						order_contents : document.getElementById("prequest").value
+						"totalpay" : totalpay
 					 } ,
 					success : function( result ){ // 결제성공 과  db처리 성공시 결제주문 완료 페이지 이동
-						if(result == 1){ location.href="room/room_view"; }
-						else{ alert("주문db오류 관리자에게문의");}
+						if(result==1){
+						    location.href ="/member/reservationListController";
+						} else if(result==2){
+						    location.href ="/index";
+						}
+
 					}
-				})
+				});
 		      }
 	  });
 }

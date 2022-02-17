@@ -61,9 +61,11 @@
                     <button class="nav-link" id="v-pills-reserveinfo-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-reserveinfo" type="button" role="tab"
                             aria-controls="v-pills-reserveinfo" aria-selected="false">예약정보</button>
-                    <button class="nav-link" id="v-pills-reserveinfo-tab" data-bs-toggle="pill"
+                    <!-- 02-17 채널페이지로 맵핑 조지훈 -->
+                    <a th:href="@{'/member/channel/' +${memberDto.getMemberNo} }"><button class="nav-link" id="v-pills-reserveinfo-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-reserveinfo" type="button" role="tab"
-                            aria-controls="v-pills-reserveinfo" aria-selected="false">내 채널 보기</button>
+                            aria-controls="v-pills-reserveinfo" aria-selected="false">내 채널 보기</button></a>
+                    <!-- 02-17 조지훈 end -->
                     <button class="nav-link signoutbtn" id="v-pills-signout-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-signout" type="button" role="tab" aria-controls="v-pills-signout"
                             aria-selected="false"><a data-bs-toggle="modal" data-bs-target="#modalmdelete">회원탈퇴</a> </button>

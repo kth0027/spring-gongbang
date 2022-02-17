@@ -4,8 +4,6 @@ package com.ezen.service;
 import com.ezen.domain.dto.IntergratedDto;
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
-import com.ezen.domain.entity.RoomEntity;
-import com.ezen.domain.entity.RoomLikeEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -89,6 +87,9 @@ public class MemberService implements UserDetailsService {
         // 2. 찾은 entity를 dto 변경후 반환 [ 패스워드 , 수정날짜 제외 ]
 
         return MemberDto.builder()
+                // 02-17 조지훈
+                .memberNo(memberEntity.get().getMemberNo())
+                // end
                 .memberName(memberEntity.get().getMemberName())
                 .memberId(memberEntity.get().getMemberId())
                 .memberEmail(memberEntity.get().getMemberEmail())
@@ -195,7 +196,7 @@ public class MemberService implements UserDetailsService {
 
     // 02-15 채널 정보 등록하기 - 조지훈
     @Transactional
-    public boolean channelupdate(MemberEntity memberEntity) {
+    public boolean channelregistration(MemberEntity memberEntity) {
         try {
             Optional<MemberEntity> entityOptional = memberRepository.findById(memberEntity.getMemberNo());
             entityOptional.get().setChannelTitle(memberEntity.getChannelTitle());
@@ -207,6 +208,37 @@ public class MemberService implements UserDetailsService {
             return false;
         }
     }
+
+    // 02-17 채널 정보 수정시 기존이미지 삭제버튼 - 조지훈
+    @Transactional
+    public boolean channelimgdelete(int memberNo) {
+        try {
+            MemberEntity memberEntity = memberRepository.findById(memberNo).get();
+            memberEntity.setChannelImg(null);
+            return true;
+        }catch (Exception e) {
+            System.out.println("기존 사진 삭제 실패" + e);
+            return false;
+        }
+    }
+
+    // 02-17 강사소개 작성여부 체크 - 조지훈
+    public boolean channelcheck(int memberNo){
+        MemberEntity memberEntity = memberRepository.findById(memberNo).get();
+        if(memberEntity.getChannelContent() == null) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+//    @Transactional
+//    public boolean channelupdate(MemberEntity memberEntity) {
+//        try {
+//
+//        }catch (Exception e) {}
+//
+//        return true;
+//    }
 
 }
 

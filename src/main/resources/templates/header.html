@@ -9,8 +9,8 @@
     <!-- header css 가져오기 -->
     <link th:href="@{/css/header.css}" rel="stylesheet">
 </head>
-
 <body>
+
 <!-- 로그인 스크립트는 사용하지 않습니다. -->
 <!-- OAuth 를 사용하기 때문에 비밀번호 encode, decode, login, logout 처리를 위임합니다. -->
 <!-- SecurityConfig, OauthDto, OauthService 를 참고하세요 -->
@@ -18,7 +18,7 @@
 
 <div id="wrap" class="border border-primary" style="width:100vw">
     <!-- 헤더메뉴 -->
-    <header class="p-3 text-white" style="background-color: #fff1ed;">
+    <header class="p-3" style="background-color: #fff1ed;">
         <div class="container">
             <div class="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                 <div class="col-1 d-flex justify-content-center">
@@ -43,7 +43,8 @@
                         <div sec:authorize="isAuthenticated()" class="col-12 col-sm-6 col-md-5">
                             <a th:href="@{/room/register}">
                                 <!-- 02-17 강사소개 null이면 강사소개 작성 페이지로 이동 조지훈 -->
-                                <button class="classregistbtn" type="button" th:onclick="channelcheck([[${session.logindto.memberNo}]]);">
+                                <button class="classregistbtn" type="button"
+                                        th:onclick="channelcheck([[${session.logindto.memberNo}]]);">
                                     클래스 개설
                                 </button>
                             </a>
@@ -115,9 +116,15 @@
                                     </a>
                                 </li>
 
-                                <li>
+                                <li class="point">
                                     <a sec:authorize="hasRole('MEMBER')" class="dropdown-item"
-                                       th:href="@{/member/member_payment}">포인트충전
+                                       th:href="@{/member/member_payment}">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             xmlns:xlink="http://www.w3.org/1999/xlink"
+                                             enable-background="new 0 0 24 24" height="24px" id="Layer_1" version="1.1"
+                                             viewBox="0 0 24 24" width="24px" xml:space="preserve"><g><rect height="1.4" width="2.2" x="10.9" y="8.9"/><path
+                                                d="M19.7,0.5H4.3c-2.1,0-3.8,1.7-3.8,3.8v15.4c0,2.1,1.7,3.8,3.8,3.8h15.4c2.1,0,3.8-1.7,3.8-3.8V4.3   C23.5,2.2,21.8,0.5,19.7,0.5z M17.2,13.8c0,0.3-0.2,0.5-0.5,0.5h-5.8v4.4c0,0.3-0.2,0.5-0.5,0.5H7.3c-0.3,0-0.5-0.2-0.5-0.5V5.3   c0-0.3,0.2-0.5,0.5-0.5h9.3c0.3,0,0.5,0.2,0.5,0.5V13.8z"/></g></svg>
+                                        포인트충전
                                     </a>
                                 </li>
 
@@ -129,6 +136,7 @@
                                 </li>
 
                                 <li class="d-flex align-items-center">
+                                    <i class="fa-solid fa-q"></i>
                                     <a sec:authorize="hasRole('MEMBER')" class="nav-link" th:href="@{/member/msg}"
                                        th:if="!${ session.nreadcount==null}"
                                        th:text="${'Q&A ('+session.nreadcount+')'}">
@@ -138,7 +146,6 @@
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
-
 
                                 <li>
                                     <a sec:authorize="isAuthenticated()" class="nav-link"
@@ -153,7 +160,6 @@
                                         로그아웃
                                     </a>
                                 </li>
-
                             </ul>
                         </div>
                     </div>
@@ -256,23 +262,26 @@
                                 style="width:2rem;"></button>
                         <!-- 닫기 버튼 -->
                     </div>
-                    <form action="loginController" method="post">
-
+                    <form action="loginController" method="post" >
                         <div class="modal-body p-5 pt-0">
                             <div>
                                 <label for="memberId">아이디</label>
-                                <input name="memberId" type="text" class="form-control rounded-4" id="memberId"
+                                <input onchange="loginCheck();" name="memberId" type="text"
+                                       class="form-control rounded-4" id="memberId"
                                        placeholder="아이디">
+                                <div id="loginIdCheck">아이디를 입력해주세요</div>
                             </div>
                             <div>
                                 <label for="memberPassword">비밀번호</label>
-                                <input name="memberPassword" type="password" class="form-control rounded-4"
+                                <input onchange="loginCheck();" name="memberPassword" type="password"
+                                       class="form-control rounded-4"
                                        id="memberPassword" placeholder="비밀번호">
+                                <div id="loginPasswordCheck">비밀번호를 입력해주세요</div>
                             </div>
                             <div id="loginfailmsg" class="text-danger text-center m-2"></div> <!-- 로그인 실패시 메시지 -->
                             <!-- 로그인 버튼 -->
                             <input type="submit" class="w-100 mb-2 btn btn-lg rounded-4 btn-primary openlogin"
-                                   value="로그인">
+                                   value="로그인" id="loginBtn">
                             <div><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이 아니신가요? 회원가입</a>
                             </div>
                             <a id="findbtn">
@@ -296,7 +305,6 @@
                                                          href="/oauth2/authorization/kakao "> 카카오 로그인</a>
                                 </button>
                             </div>
-
                         </div>
                     </form>
                 </div>
@@ -355,6 +363,11 @@
 <script>
         /* 검색칸 팝업 */
         $(document).ready(function () {
+
+            // 처음 로그인 화면 진입 시, 로그인 버튼을 막아둡니다.
+            // 아이디와 비밀번호를 입력해야만 넘어갈 수 있습니다.
+            $("#loginBtn").attr("disabled", true);
+
             $("#togglesearch ").hide();
             $("#opensearch ").click(function () {
                 $("#togglesearch ").fadeIn();
@@ -367,7 +380,6 @@
 
 </script>
 
-<!-- 회원찾기 AJAX 미작동 태호=>정진 검토요청 -->
 <script>
     function findMyIdController() {
         var memberName = $("#memberName").val();
@@ -380,6 +392,9 @@
                 }
         });
     }
+
+
+
 
 
 </script>

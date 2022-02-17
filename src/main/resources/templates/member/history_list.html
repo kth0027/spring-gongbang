@@ -37,6 +37,7 @@
             margin-left: 0.5rem;
             box-shadow: 3px 3px 3px #cccccc;
         }
+
     </style>
 </head>
 <body>
@@ -44,7 +45,9 @@
 @Author : 김정진
 @Date : 2022-02-13
 @Note :
-    1. History Entity 에서 회원이 신청한 내역을
+    1. History Entity 에서 회원이 신청한 내역을 달력에 뿌려줍니다.
+    2. 처음엔 모든 내역을 출력합니다.
+    3.
 -->
 
 <div th:replace="common.html::common"></div>
@@ -57,9 +60,8 @@
             <div class="reservation-content" th:each=" history : ${histories}">
                 <div class="row my-3 d-flex border">
                     <div class="col-md-4 text-center">
-                        <!--<img th:src="@{ 'roomimg/' + ${history.roomEntity.roomImgEntities.get(0).roomImg} }"
-                             class="rounded img-fluid"
-                             width="150" height="150">-->
+                        <img th:if="${room.roomImgEntities != null}"
+                             th:src="@{ 'roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
                     </div>
                     <div class="col-md-8 d-flex flex-column">
                         <div th:text="${history.memberEntity.memberId}"></div>

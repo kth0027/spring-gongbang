@@ -9,6 +9,28 @@ function channelcheck(memberNo) {
                 location.href="/member/channel/"+memberNo;
             }
         }
-
     });
+}
+
+// 로그인 유효성 검사
+
+function loginCheck(){
+
+
+
+    var loginId = $("#memberId").val();
+    var loginPassword = $("#memberPassword").val();
+
+    if(loginId == null || loginId == ""){
+        $("#loginBtn").attr("disabled", true);
+    } else {
+        $("#loginBtn").attr("disabled", false);
+    }
+
+    if(loginPassword == null || loginPassword == ""){
+        $("#loginBtn").attr("disabled", true);
+    } else {
+        $("#loginBtn").attr("disabled", false);
+    }
+
 }

@@ -32,7 +32,10 @@ public class MemberDto {
     private String memberEmail; // 회원이메일
     private Role memberGrade;
     private int memberPoint; // 회원포인트
-    private LocalDateTime createdDate; // 회원가입 날자
+    private LocalDateTime createdDate; // 회원가입 날짜
+    private String channelTitle;
+    private String channelContent;
+    private String channelImg;
 
     // Dto -> entity
     public MemberEntity toentity(){
@@ -45,6 +48,9 @@ public class MemberDto {
                 .memberEmail( this.memberEmail)
                 .memberGrade(Role.MEMBER)
                 .memberPoint(this.memberPoint)
+                .channelTitle("채널 이름을 입력해주세요")
+                .channelContent("자기소개를 입력해주세요")
+                .channelImg("")
                 .build();
     }
 

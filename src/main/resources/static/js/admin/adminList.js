@@ -355,6 +355,7 @@ function adminSelectBtn(){
                     }));
                     cursor.lineY.set("visible", false);
 
+                    // 일,
 
                     // Generate random data
                     var date = new Date();

@@ -137,7 +137,6 @@
                             </a>
                         </div>
                     </div>
-
                 </div>
             </div>
             <hr>
@@ -154,8 +153,8 @@
                 <form action="/member/channelregistration" method="post" enctype="multipart/form-data">
                     <input type="hidden" th:value="${memberEntity.memberNo}" name="memberNo">
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control rounded-4" name="channelTitle" placeholder="채널명" th:value="${memberEntity.channelTitle}">
-                        <label for="floatingInput">채널명</label>
+                        <input type="text" class="form-control rounded-4" id="channelTitle" name="channelTitle" placeholder="채널명" th:value="${memberEntity.channelTitle}">
+                        <label for="channelTitle">채널명</label>
                     </div>
                     <div>
                             <textarea id="summernote" name="channelContent" th:utext="${memberEntity.channelContent}"></textarea>

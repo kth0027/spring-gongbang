@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -115,20 +116,19 @@ public class MemberService implements UserDetailsService {
         return false;  // 회원탈퇴 X
     }
 
-    // 회원 이메일 찾기
-    public String findemail(MemberDto memberDto) {
-        // 1. 모든 엔티티 호출
+    // 회원 아이디 찾기
+    // 이름, 핸드폰 번호 받고 회원정보를 조회합니다.
+    public MemberEntity findMyId(String name, String phone) {
+
+        // 1. Member 엔티티를 불러옵니다.
         List<MemberEntity> memberEntities = memberRepository.findAll();
-        // 2. 반복문 이용한 모든 엔티티를 하나씩 꺼내보기
-        for (MemberEntity memberEntity : memberEntities) {
-            // 3. 만약에 해당 엔티티가 이름과 이메일이 동일하면
-            if (memberEntity.getMemberName().equals(memberDto.getMemberName()) &&
-                    memberEntity.getMemberPhone().equals(memberDto.getMemberPhone())) {
-                // 4. 아이디를 반환한다
-                return memberEntity.getMemberEmail();
+        // 2. 이름, 핸드폰 번호가 일치하는 회원이 있는지 검사합니다.
+        for(MemberEntity member : memberEntities){
+            if(member.getMemberName().equals(name) && member.getMemberPhone().equals(phone)){
+                // 3. 일치하는 회원이 있으면
+                return member;
             }
         }
-        // 5. 만약에 동일한 정보가 없으면
         return null;
     }
 

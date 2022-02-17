@@ -57,9 +57,9 @@
             <div class="reservation-content" th:each=" history : ${histories}">
                 <div class="row my-3 d-flex border">
                     <div class="col-md-4 text-center">
-                        <img th:src="@{ 'roomimg/' + ${history.roomEntity.roomImgEntities.get(0).roomImg} }"
+                        <!--<img th:src="@{ 'roomimg/' + ${history.roomEntity.roomImgEntities.get(0).roomImg} }"
                              class="rounded img-fluid"
-                             width="150" height="150">
+                             width="150" height="150">-->
                     </div>
                     <div class="col-md-8 d-flex flex-column">
                         <div th:text="${history.memberEntity.memberId}"></div>

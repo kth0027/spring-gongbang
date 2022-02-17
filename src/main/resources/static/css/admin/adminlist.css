@@ -1,0 +1,98 @@
+.admin-list-wrapper {
+    margin-top: 3rem;
+}
+
+.table-wrapper{
+    margin-top: 3rem;
+}
+
+
+.outbox {
+    margin-bottom: 2rem;
+}
+
+.submitbtn button:nth-child(odd) {
+    width: 15rem;
+    background: #a1e9ff;
+    font-weight: bold;
+}
+
+.submitbtn button:nth-child(even) {
+    width: 15rem;
+    background: #f0a2ff;
+    font-weight: bold;
+}
+
+.slide:nth-child(odd) {
+    --hover: #66c887;
+}
+
+.slide:nth-child(even) {
+    --hover: #ff408f;
+}
+
+.slide:hover,
+.slide:focus {
+    box-shadow: inset 20rem 0 0 0 var(--hover);
+    transition: 1s;
+}
+
+ul.tabs{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+}
+
+ul.tabs li{
+    border: 1px solid #ff9a9a;
+    background-color: #ffffff;
+    padding: 20px 20px;
+    cursor: pointer;
+}
+
+ul.tabs li.current{
+    border: 1px solid #374b73;
+    background-color: #ff9a9a;
+    color: #222;
+    cursor: pointer;
+}
+
+.tab-content{
+    display: none;
+    background-color: #ffffff;
+    height: auto;
+}
+
+.tab-content.current{
+    display: inherit;
+}
+
+#chartdiv {
+    margin-top: 2.5rem;
+    width: 100%;
+    height: 500px;
+}
+
+.admin-select-wrapper{
+    display: flex;
+    justify-content: left;
+    margin-top : 5.0rem;
+    padding: 0.8rem;
+
+}
+
+.admin-select-wrapper .admin-select-content{
+    display: inherit;
+    justify-content: left;
+    align-items: center;
+    margin-top : 0.5rem;
+    padding: 0.5rem;
+}
+
+#admin-chart-btn{
+    background: #ffffff;
+    border: 1px solid #374b73;
+    margin-top: 0.3rem;
+    padding: 0.5rem;
+}
+

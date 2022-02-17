@@ -89,6 +89,7 @@ public class MemberService implements UserDetailsService {
         // 2. 찾은 entity를 dto 변경후 반환 [ 패스워드 , 수정날짜 제외 ]
 
         return MemberDto.builder()
+                .memberNo(memberEntity.get().getMemberNo())
                 .memberName(memberEntity.get().getMemberName())
                 .memberId(memberEntity.get().getMemberId())
                 .memberEmail(memberEntity.get().getMemberEmail())
@@ -114,9 +115,32 @@ public class MemberService implements UserDetailsService {
         }
         return false;  // 회원탈퇴 X
     }
+    
+    // 회원정보 수정처리 :: 22.02.15 김태호
+    @Transactional
+    public boolean memberUpdate (MemberDto memberDto) {
+        try {
+            // 1. 수정할 엔티티 찾는다
+            Optional<MemberEntity> entityOptional = memberRepository.findById(memberDto.getMemberNo());
 
-    // 회원 이메일 찾기
-    public String findemail(MemberDto memberDto) {
+            // 2. 엔티티를 수정한다 [ 엔티티 변화 -> DB 변경처리 ]
+            entityOptional.get().setMemberNo(memberDto.getMemberNo());
+            entityOptional.get().setMemberId(memberDto.getMemberId());
+            entityOptional.get().setMemberPassword(memberDto.getMemberPassword());
+            entityOptional.get().setMemberName(memberDto.getMemberName());
+            entityOptional.get().setMemberEmail(memberDto.getMemberEmail());
+            entityOptional.get().setMemberPhone(memberDto.getMemberPhone());
+            entityOptional.get().setMemberGender(memberDto.getMemberGender());
+            return true;
+        }
+        catch ( Exception e ){
+            System.out.println( e );
+            return false;
+        }
+    }
+
+    // 회원 아이디 찾기
+     public String findid(MemberDto memberDto) {
         // 1. 모든 엔티티 호출
         List<MemberEntity> memberEntities = memberRepository.findAll();
         // 2. 반복문 이용한 모든 엔티티를 하나씩 꺼내보기
@@ -125,21 +149,21 @@ public class MemberService implements UserDetailsService {
             if (memberEntity.getMemberName().equals(memberDto.getMemberName()) &&
                     memberEntity.getMemberPhone().equals(memberDto.getMemberPhone())) {
                 // 4. 아이디를 반환한다
-                return memberEntity.getMemberEmail();
+                return memberEntity.getMemberId();
             }
         }
         // 5. 만약에 동일한 정보가 없으면
         return null;
     }
 
-    // 비밀번호
+    // 회원 비밀번호 찾기
     public String findpassword(MemberDto memberDto) {
         // 1. 모든 엔티티 호출
         List<MemberEntity> memberEntities = memberRepository.findAll();
         // 2. 반복문 이용한 모든 엔티티를 하나씩 꺼내보기
         for (MemberEntity memberEntity : memberEntities) {
             // 3. 만약에 해당 엔티티가 이름과 이메일이 동일하면
-            if (memberEntity.getMemberEmail().equals(memberDto.getMemberEmail()) &&
+            if (memberEntity.getMemberId().equals(memberDto.getMemberId()) &&
                     memberEntity.getMemberPhone().equals(memberDto.getMemberPhone())) {
                 // 4. 패스워드를 반환한다
                 return memberEntity.getMemberPassword();

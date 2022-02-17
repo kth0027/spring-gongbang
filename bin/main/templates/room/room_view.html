@@ -67,12 +67,10 @@
                             <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
                                  class="d-block w-100" alt="..." style="height: 40rem;">
                         </div>
-                    
-                        <div class="carousel-item" th:each="num : ${#numbers.sequence( 1 , roomEntity.roomImgEntities.size()  )}" >
-                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(num).roomImg} }" class="d-block w-100" alt="..."
-                                style="height: 40rem;">
+                        <div class="carousel-item" th:each="roomimg : ${roomEntity.roomImgEntities}">
+                            <img th:src="@{'/roomimg/'+${roomimg.roomImg} }" class="d-block w-100" alt="..."
+                                 style="height: 40rem;">
                         </div>
-                      
                     </div>
 
                     <button class="carousel-control-prev" type="button"
@@ -91,7 +89,7 @@
             </div>
             <div>
                 <div class="Categorybox">
-                    <span class="Categoryp" th:text="${roomEntity.roomCategory}"></span>
+                    <span class="Categoryp" th:text="${roomEntity.roomContent}"></span>
                 </div>
                 <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
                 <div>
@@ -99,7 +97,7 @@
                     <button class="btn btn-outline-info" style="color:black;" data-bs-target="#notemodal" data-bs-toggle="modal">
                         문의하기
                     </button>
-                    <button class="btn btn-outline-info"> <a th:href="@{'/member/channel/' + ${roomEntity.memberEntity.memberNo} }" style="text-decoration:none; color:black;">
+                    <button class="btn btn-outline-info"> <a th:href="@{/member/channel}" style="text-decoration:none; color:black;">
                         채널보기
                     </a> </button>
                     <button th:onclick="roomLike([[${roomEntity.roomNo}]],[[${session.logindto.memberNo}]]);" class="btn btn-outline-info">
@@ -141,9 +139,8 @@
                 </div>
                 <hr>
                 <h3 id="teacherinfo" style="font-weight: bold;">강사소개</h3>
-                <div th:utext="${roomEntity.memberEntity.channelContent}">
-
-                </div>
+                <br><br>
+                <br><br>
                 <hr>
 
                 <h3 id="position" style="font-weight: bold;">위치</h3>

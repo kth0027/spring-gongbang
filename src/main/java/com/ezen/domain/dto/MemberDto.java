@@ -37,6 +37,7 @@ public class MemberDto {
     // Dto -> entity
     public MemberEntity toentity(){
         return MemberEntity.builder()
+                .memberNo(this.memberNo)
                 .memberPassword(this.memberPassword)
                 .memberId( this.memberId)
                 .memberName( this.memberName)

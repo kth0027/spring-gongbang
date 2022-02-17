@@ -38,7 +38,7 @@ public class MemberController { // C S
     private MemberRepository memberRepository;
 
     @Autowired
-    private HttpServletRequest request;
+    private HttpServletRequest request; // 요청 객체 [ jsp : 내장객체(request)와 동일 ]
 
     @Autowired
     private RoomService roomService;
@@ -103,6 +103,12 @@ public class MemberController { // C S
         return "member/login";
     }
 
+//    // 로그인 유효성검사
+//    @GetMapping("/logincontroller")
+//    public String logincontroller() {
+//        return "redirect:/";
+//    }
+
     // 마이페이지 연결
     @GetMapping("/info")
     public String info(Model model) {
@@ -118,6 +124,30 @@ public class MemberController { // C S
         model.addAttribute("memberDto", memberDto);
 
         return "member/info";
+    }
+
+    // 회원정보 업데이트 처리 :: 김태호(2022.02.15)
+    @PostMapping("/updatecontroller")
+    public String updatecontroller(
+            @RequestParam("memberNo") int memberNo,
+            @RequestParam("memberId") String memberId,
+            @RequestParam("memberPassword") String memberPassword,
+            @RequestParam("memberName") String memberName,
+            @RequestParam("memberEmail") String memberEmail,
+            @RequestParam("memberPhone") String memberPhone,
+            @RequestParam("memberGender") String memberGender
+    ) {
+        memberService.memberUpdate(
+                MemberDto.builder()
+                        .memberNo(memberNo)
+                        .memberId(memberId)
+                        .memberPassword(memberPassword)
+                        .memberName(memberName)
+                        .memberEmail(memberEmail)
+                        .memberPhone(memberPhone)
+                        .memberGender(memberGender)
+                        .build());
+        return "redirect:/member/info";
     }
 
     // 회원삭제 처리
@@ -139,37 +169,44 @@ public class MemberController { // C S
     }
 
     // 회원정보찾기 페이지로 연결
-    @GetMapping("/findemail")
-    public String findemail() {
-        return "member/findemail";
+    @GetMapping("/findid")
+    public String findid() {
+        return "member/findid";
     }
 
-    // 이메일 찾기
-    @PostMapping("/findemailcontroller")
-    public String findemailcontroller(MemberDto memberDto, Model model) {
-        String result = memberService.findemail(memberDto);
+    // 아이디 찾기
+    @PostMapping("/findMyIdcontroller")
+    public String findMyIdcontroller(MemberDto memberDto, Model model) {
+        String result = memberService.findid(memberDto);
         if (result != null) {
-            String msg = " 회원님의 이메일 : " + result;
-            model.addAttribute("findemailmsg", msg);
+            return "1";
         } else {
-            String msg = " 동일한 회원정보가 없습니다.";
-            model.addAttribute("findemailmsg", msg);
+            return "2";
         }
-        return "member/findemail";
     }
+//        if (result != null) {
+//            String msg = " 회원님의 이메일 : " + result;
+//            model.addAttribute("findemailmsg", msg);
+//
+//        } else {
+//            String msg = " 동일한 회원정보가 없습니다.";
+//            model.addAttribute("findemailmsg", msg);
+//        }
+//        return "member/findid";
+
 
     // 비밀번호 찾기
     @PostMapping("/findpasswordcontroller")
-    public String findpasswordcontroller(MemberDto memberDto, Model model) {
+    public String findpassword(MemberDto memberDto, Model model) {
         String result = memberService.findpassword(memberDto);
         if (result != null) {
-            String msg = " 회원님의 이메일 : " + result;
+            String msg = " 회원님의 비밀번호 : " + result;
             model.addAttribute("findpwmsg", msg);
         } else {
             String msg = " 동일한 회원정보가 없습니다.";
             model.addAttribute("findpwmsg", msg);
         }
-        return "member/findemail";
+        return "member/findid";
     }
 
     // @Author : 김정진

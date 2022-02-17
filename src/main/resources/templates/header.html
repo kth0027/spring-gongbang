@@ -225,26 +225,26 @@
                                             <button class="regionbtn btn btn-toggle align-items-center collapsed"
                                                     data-bs-toggle="collapse" data-bs-target="#home-collapse"
                                                     aria-expanded="false" type="button" style="">
-                                                지역
-                                            </button>
+                                                    지역
+                                                </button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-3 p-1 m-1">
-                                        <div class="collapse" id="home-collapse" style="display: block;">
-                                            <select name="classLocal" id="classLocal"
+                                        <div class="col-md-3 p-1 m-1">
+                                            <div class="collapse" id="home-collapse" style="display: block;">
+                                                <select name="classLocal" id="classLocal"
                                                     class="form-select form-select-lg">
-                                                <option value="" selected>지역선택</option>
-                                                <option value="서울">서울</option>
-                                                <option value="경기">경기</option>
-                                                <option value="인천">인천</option>
-                                            </select>
+                                                    <option value="" selected>지역선택</option>
+                                                    <option value="서울">서울</option>
+                                                    <option value="경기">경기</option>
+                                                    <option value="인천">인천</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li class="mb-1 d-flex">
-                                    <div class="col-md-2 p-1 m-1">
-                                        <div>
-                                            <button class="categorybtn btn align-items-center collapsed"
+                                    </li>
+                                    <li class="mb-1 d-flex">
+                                        <div class="col-md-2 p-1 m-1">
+                                            <div>
+                                                <button class="categorybtn btn align-items-center collapsed"
                                                     data-bs-toggle="collapse" data-bs-target="#dashboard-collapse"
                                                     aria-expanded="false" type="button" style="">
                                                 카테고리
@@ -286,17 +286,17 @@
 </div>
 <!-- 헤더메뉴 END -->
 
-<!-- 로그인 모달 -->
-<div class="modal " id="modallogin" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" role="dialog"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content rounded-5 shadow">
-            <div class="modal-header p-5 pb-4 border-bottom-0">
-                <h2 class="fw-bold mb-0 text-center w-100">
-                    <img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%">
-                    <p class="text-center">로그인</p>
-                </h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+    <!-- 로그인 모달 -->
+    <div class="modal " id="modallogin" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" role="dialog"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-5 shadow">
+                <div class="modal-header p-5 pb-4 border-bottom-0">
+                    <h2 class="fw-bold mb-0 text-center w-100">
+                        <img th:src="@{/img/logo/logo.png}" alt="logo" style="width:50%">
+                        <p class="text-center">로그인</p>
+                    </h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
                         style="width:2rem;"></button>
                 <!-- 닫기 버튼 -->
             </div>
@@ -340,12 +340,12 @@
                         </button>
                     </div>
 
-                </div>
-            </form>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-<!-- 로그인 모달종료 -->
+    <!-- 로그인 모달종료 -->
 
 <!-- 회원정보 찾기 모달 -->
 <div class="modal " id="modalsearch" data-bs-keyboard="false" data-bs-backdrop="static" tabindex="-1" role="dialog"
@@ -422,7 +422,27 @@ function findMyIdcontroller() {
     });
 }
 
-</script>
+    <script>
+        function findMyIdcontroller() {
+            var memberName = document.querySelector("div.searchinfo input[name=memberName]");
+            var memberPhone = document.querySelector("div.searchinfo input[name=memberPhone]");
+
+            $.ajax({
+                url: "/member/findMyIdcontroller",
+                data: { "memberName": memberName, "memberPhone": memberPhone },
+                success: function (data) {
+                    // 아이디 찾는 태그에 뿌려주기
+                    if (data == 1) {
+                        alert("찾기 성공");
+                        $("#findMyIdResult").html(data);
+                    } else if (data == 2) {
+                        alert("동일한 회원정보가 없습니다.");
+                        $("#findMyIdResult").html("[찾기실패] 회원정보가 다릅니다.");
+                    }
+                }
+            });
+        }
+    </script>
 
 </body>
 </html>

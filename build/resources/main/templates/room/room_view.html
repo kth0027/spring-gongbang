@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <style>
+
+    </style>
+
+    <link rel="stylesheet" th:href="@{/css/room_view.css}">
+    <link rel="stylesheet" th:href="@{/css/calendar.css}">
+
+</head>
+<body>
+
+<div th:replace="common.html::common"></div>
+<div th:replace="header.html::header"></div>
+
+<div class="container mt-5">
+    <input type="hidden" th:value="${roomEntity.roomNo}" name="" id="thisRoomNo">
+    <input type="hidden" th:value="${roomEntity.roomPrice}" id="roomPrice">
+
+    <div class="row">
+        <!-- 상단 버튼-->
+        <!--
+        1. 홈페이지 테마에 맞게 상단 버튼 다시 꾸며야함
+        2. 부트스트랩 스타일 쓰기 XXX 통일성이 다 깨짐
+        -->
+        <div class="col-md-7">
+            <div>
+                <div th:id="${'carousel' + roomEntity.roomNo}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
+                                 class="d-block w-100" style="height: 30rem;">
+                        </div>
+                        <!-- 02-15 조지훈 -->
+                        <div class="carousel-item"
+                             th:each="num : ${#numbers.sequence( 1 , roomEntity.roomImgEntities.size()-1  )}">
+                            <img th:src="@{'/roomimg/' + ${roomEntity.roomImgEntities.get(num).roomImg} }"
+                                 class="d-block w-100"
+                                 style="height: 30rem;">
+                        </div>
+                        <!-- 02-15 조지훈 end -->
+                    </div>
+                    <button class="carousel-control-prev" type="button"
+                            th:data-bs-target="${'#carousel' + roomEntity.roomNo}"
+                            data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button"
+                            th:data-bs-target="${'#carousel' + roomEntity.roomNo}"
+                            data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <div class="Categorybox">
+                    <!-- 02-15 조지훈 -->
+                    <span class="Category" th:text="${roomEntity.roomCategory}"></span>
+                    <!-- 02-15 조지훈 end -->
+                </div>
+                <h3 class="title" th:text="${roomEntity.roomTitle}"></h3>
+                <div class="d-flex justify-content-end">
+                    <!-- 해당 클래스 리뷰 평균치를 출력하는 부분 -->
+                    <div id="review-avg">
+                        <span>리뷰 평균</span> <i class="bi bi-star-fill"></i> <span th:text="${avg}"></span>
+                    </div>
+                </div>
+                <div>
+                    <span class="subad" th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></span>
+                    <button class="btn" data-bs-target="#notemodal"
+                            data-bs-toggle="modal">
+                        문의하기
+                    </button>
+                    <button class="btn">
+                        <a th:href="@{'/member/channel/' + ${roomEntity.memberEntity.memberNo} }">
+                            채널보기
+                        </a>
+                    </button>
+                    <button sec:authorize="isAuthenticated()"
+                            th:onclick="roomLike( [[ ${roomEntity.roomNo} ]], [[ ${session.logindto.memberNo} ]] );"
+                            class="btn">
+                        <span th:if="${count==1}" id="like">♥</span>
+                        <span th:if="${count==0}" id="like">♡</span>
+                    </button>
+                </div>
+            </div>
+            <ul class="viewnav">
+                <a href="#classinfo" class="btn">
+                    <li>클래스 소개</li>
+                </a>
+                <a href="#ETC" class="btn">
+                    <li>편의사항</li>
+                </a>
+                <a href="#teacherinfo" class="btn">
+                    <li>강사소개</li>
+                </a>
+                <a href="#position" class="btn">
+                    <li>위치</li>
+                </a>
+                <a href="#review" class="btn">
+                    <li>후기</li>
+                </a>
+            </ul>
+            <hr>
+            <div>
+                <h3 id="classinfo" style="font-weight: bold;">클래스 소개</h3>
+                <div th:utext="${roomEntity.roomDetail}">
+
+                </div>
+                <hr>
+
+                <h3 id="ETC" style="font-weight: bold;">편의사항</h3>
+                <div>
+                    <span th:text="${roomEntity.roomETC}"></span>
+                </div>
+
+                <!-- 02-15 조지훈 -->
+                <h3 id="teacherinfo" style="font-weight: bold;">강사소개</h3>
+                <div th:utext="${roomEntity.memberEntity.channelContent}"></div>
+                <hr>
+                <!-- 02-15 조지훈 end -->
+
+                <h3 id="position" style="font-weight: bold;">위치</h3>
+                <div>
+                    <h5 th:text="${#strings.listSplit(roomEntity.roomAddress,',')[0] }"></h5>
+                    <div id="map9" style="width:100%;height:350px; border-radius: 0.5rem;"></div> <!-- 지도가 표시되는 구역 -->
+                    <!-- 히든으로 위도 경도 잘라서 js로 넘겨라 -->
+                    <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[1] }"
+                           id="roomaddress1">
+                    <input type="hidden" th:value="${#strings.listSplit(roomEntity.roomAddress,',')[2] }"
+                           id="roomaddress2">
+                </div>
+                <hr>
+            </div>
+
+            <h3 style="font-weight: bold;" id="review">후기</h3>
+            <button class="btn" style="color:black;" data-bs-target="#reviewmodal" data-bs-toggle="modal">
+                작성
+            </button>
+            <br>
+            <div class="row" th:each="reply : ${roomEntity.replyEntities}">
+                <div class="col-md-2">
+                    <div>
+                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}"
+                             style="width:100%; height: 100%;">
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-4" th:text="${reply.memberEntity.memberName}"></div><!-- 우선은 memberName으로 -->
+                        <div class="col-md-4" th:text="${#temporals.format(reply.createdDate,'yyyy-MM-dd hh:mm')}">날짜
+                        </div>
+                        <div class="col-md-4">
+                            <span th:each="num : ${#numbers.sequence(1,5)}">
+                                <span th:if="${num<=reply.replyStar}">★</span>
+                                <span th:unless="${num<=reply.replyStar}">☆</span>
+                            </span>
+                        </div>
+                        <hr>
+                    </div>
+                    <hr>
+                </div>
+                <div class="row">
+                    <div class="col-md-9" th:text="${reply.replyContent}"></div>
+                </div>
+            </div>
+            <hr>
+            <br>
+        </div>
+
+        <div sec:authorize="isAuthenticated()" class="col-md-4">
+            <!--
+            1. roomNo 에 해당하는 TimeTable 엔티티를 가져온다.
+            2. roomDate : YYYY-MM-DD
+            3. 각 날짜 Id : YYYY-MM-DD
+            -->
+
+            <!-- 달력 출력 시작 -->
+            <div style="width: 28.0rem; height: 32.0rem; box-shadow: 5px 5px 5px #cccccc;">
+                <div class="sec_cal">
+                    <div class="cal_nav">
+                        <a href="javascript:;" class="nav-btn go-prev">prev</a>
+                        <div class="year-month"></div>
+                        <a href="javascript:;" class="nav-btn go-next">next</a>
+                    </div>
+                    <div class="cal_wrap">
+                        <div class="days">
+                            <div class="day">MON</div>
+                            <div class="day">TUE</div>
+                            <div class="day">WED</div>
+                            <div class="day">THU</div>
+                            <div class="day">FRI</div>
+                            <div class="day">SAT</div>
+                            <div class="day">SUN</div>
+                        </div>
+                        <div class="dates"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 달력 출력 종료 -->
+
+            <div class="" style="margin: 15px 5px;">
+                <label for="selectedDate"> 선택한 날짜 </label>
+                <input type="text" id="selectedDate" class="form-control" value="" name="">
+            </div>
+
+            <!-- 날짜 선택 시 보여줄 화면-->
+            <!-- 해당 날짜에 등록된 클래스 정보 + 시간을 알려준다-->
+            <div class="container" style="width: 28.0rem;">
+                <div class="row time-selected-wrapper">
+                    <!-- 반복문을 돌면서 -->
+                    <div id="time-select-inner"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 문의 모달-->
+<div class="modal fade" tabindex="-1" id="notemodal" data-bs-keyword="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0"> 문의하기 </h5>
+                <p class="mb-3" id="notemsg"> 공방 관련 정보를 문의하실 수 있습니다.</p>
+                <textarea class="form-control" row="10" id="noteContents"></textarea>
+            </div>
+            <div class="modal-footer flex-nowrap p-0">
+                <button th:onclick="notewrite([[${roomEntity.roomNo}]]);" type="button"
+                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right">
+                    <strong>문의합니다.</strong></button>
+                <button type="button"
+                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                        data-bs-dismiss="modal">나가기
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 리뷰 모달 -->
+<div class="modal fade" tabindex="-1" id="reviewmodal" data-bs-keyword="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0"> 후기 남기기 </h5>
+                <p class="mb-3" id="reviewmsg"> 공방 관련 후기를 작성하실 수 있습니다.</p>
+                <form action="/reply/writecontroller" method="post" enctype="multipart/form-data">
+                    <div class="star_rating">
+                        <a href="#" class="on" id="1">★</a>
+                        <a href="#" id="2">★</a>
+                        <a href="#" id="3">★</a>
+                        <a href="#" id="4">★</a>
+                        <a href="#" id="5">★</a>
+                        <input type="hidden" id="review_star" name="review_star" value="1">
+                    </div>
+                    <input type="hidden" id="roomNo" name="roomNo" th:value="${roomNo}">
+                    <textarea class="form-control" placeholder="Leave a comment here" id="replyContent"
+                              name="replyContent"
+                              style="height: 100px; resize: none;"></textarea>
+                    <input type="file" multiple="multiple" name="file" id="file"> <br>
+                    <div class="flex-nowrap p-0">
+                        <input type="submit"
+                               class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"
+                               value="작성">
+                        <button type="button"
+                                class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                                data-bs-dismiss="modal">나가기
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/js/calendar2.js}"></script>
+<script th:src="@{/js/nreply.js}"></script>
+
+<!-- 인증 스크립트 -->
+<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=84d555c388d3da38338a57c648112954&libraries=clusterer"></script>
+<script th:src="@{/js/main.js}"></script>
+<script th:src="@{/js/roomview_jh.js}"></script>
+<script th:src="@{/js/roomview.js}"></script>
+
+<div th:replace="footer.html :: footer"></div>
+
+<script>
+
+    function personTest(){
+
+        $("#person-select-wrapper").remove();
+
+        let price = $("#roomPrice").val();
+        let person = $("#class-register-person").val();
+        $("#input-person").val(person);
+
+
+        price = price * person;
+
+        roomhtml = "<div class='d-flex justify-content-end' id='person-select-wrapper'>";
+        roomhtml += "<button style='padding: 0.5rem; background: #ffffff; border: 1px solid #374b73; '>" + price + "</button>";
+        roomhtml += "<button id='myClassRegisterBtn'> 신청하기 </button>";
+        roomhtml += "</div>";
+
+        $("#time-select-inner").append(roomhtml);
+
+        $("#myClassRegisterBtn").on("click", function(){
+            var person = $("#input-person").val();
+            var roomNo = $("#register-room-no").val();
+            var roomDate = $("#register-room-date").val();
+            var roomTime = $("#register-room-time").val();
+            // person : 선택한 인원 수
+            // roomNo : 클래스 식별 번호
+            // roomDate : 날짜
+            // roomTime : 시작시간, 끝나는시간 (TimeTable 에 있는 것과 동일)
+            $.ajax({
+                url: "/member/registerClass",
+                data: {"roomNo" : roomNo, "roomDate" : roomDate, "roomTime" : roomTime, "person" : person, "price" : price},
+                method: "GET",
+                success: function(data){
+                    if(data == 2){
+                        // 등록 에러 혹은 정원을 초과한 신청일 경우 등록을 못하게 막는다.
+                        alert(" 신청 가능한 정원을 초과했습니다");
+                    }
+                    else if(data == 3){
+                        // 금액이 부족할 경우
+                        alert("보유하신 포인트가 부족합니다.");
+                    }
+                    else if(data == 1){
+                        // 등록이 가능한 경우에 페이지 이동
+                        // room_payment.html 로 이동한다.
+                        location.href = "/member/memberPaymentController?roomNo=" + roomNo + "&roomDate=" + roomDate + "&roomTime=" + roomTime + "&person=" + person + "&price=" + price;
+                    }
+                }
+            });
+        });
+    }
+
+    <!--별점 보여주기 jquery -->
+    $( document ).ready(function() {
+        $( ".star_rating a" ).click(function() {
+            $(this).parent().children("a").removeClass("on");
+            $(this).addClass("on").prevAll("a").addClass("on");
+            var starRate = $(this).attr('id');
+            $("#review_star").val(starRate);
+            return false;
+        });
+    });
+
+
+</script>
+
+</body>
+</html>

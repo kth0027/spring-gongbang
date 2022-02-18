@@ -494,7 +494,7 @@ public class MemberController { // C S
             if (!file.getOriginalFilename().equals("")) { // 02-17 조지훈
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-"); // 02-17 조지훈
-                String dir = "C:\\gongbang\\gongbang\\build\\resources\\main\\static\\channelimg";
+                String dir = "C:\\gongbang\\build\\resources\\main\\static\\channelimg";
                 String filepath = dir + "\\" + uuidfile;
                 file.transferTo(new File(filepath));
             } else { // 02-17 조지훈

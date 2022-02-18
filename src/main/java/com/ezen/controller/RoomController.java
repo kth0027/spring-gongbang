@@ -407,5 +407,18 @@ public class RoomController {
         roomService.nreadupdate(noteNo);
     }
 
+    // 개설한 클래스 삭제 02-18 조지훈
+    @PostMapping("/roomdelete")
+    @ResponseBody
+    public String roomdelete(@RequestParam("roomNo") int roomNo) {
+        System.out.println("삭제 방번호 : " + roomNo);
+        boolean result = roomService.roomdelete(roomNo);
+        if(result) {
+            return "1";
+        }else {
+            return "2";
+        }
+    }
+
 
 }

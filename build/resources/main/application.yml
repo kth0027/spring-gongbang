@@ -1,0 +1,12 @@
+spring :
+  mail :
+    host : smtp.naver.com
+    port : 587
+    username : 'so_dream'
+    password : ''
+    properties :
+      mail :
+        smtp :
+          auth : true
+          starttls :
+            enable : true

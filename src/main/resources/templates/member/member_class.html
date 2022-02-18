@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/css/member/member_class.css}">
 </head>
 <body>
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
-<div class="container">
-    <h3>내가 등록한 클래스</h3>
+<div class="container wrap">
+    <h3 class="title">내가 등록한 클래스</h3>
     <div class="row">
-        <div class="nav justify-content-end mb-5">
-            <a th:href="@{/member/calculate}"><button class="btn btn-primary">정산 페이지</button></a>
+        <div class="nav justify-content-end mb-5 successbtn">
+            <a th:href="@{/member/calculate}"><button class="">정산 페이지</button></a>
         </div>
-            <table class="table table-striped">
-                <tr>
-                    <th>대표사진</th>
-                    <th>클래스명</th>
-                    <th>클래스 개설일</th>
-                    <th>승인상태</th>
-                    <th>비고</th>
+            <table class="table table-striped tablecontents text-center">
+                <tr class="firsttr">
+                    <th class="text-white">대표사진</th>
+                    <th class="text-white">클래스명</th>
+                    <th class="text-white">클래스 개설일</th>
+                    <th class="text-white">승인상태</th>
+                    <th class="text-white">비고</th>
                 </tr>
                 <tr th:each="room : ${roomDtos}">
                     <!-- 클래스 이미지 출력-->
@@ -27,8 +28,8 @@
                         <img th:src="'/roomimg/'+${room.roomImgEntities.get(0).roomImg}" alt="" class="img-fluid">
                     </td>
                     <!-- 클래스 타이틀 출력-->
-                    <td style="width:25%;">
-                        <a th:href="@{'/room/view/'+${room.roomNo}}">
+                    <td class="tableroomname" style="width:25%;">
+                        <a class="" th:href="@{'/room/view/'+${room.roomNo}}">
                             <span th:text="${room.roomTitle}"></span>
                         </a>
                     </td>

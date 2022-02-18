@@ -51,6 +51,26 @@ font-weight: bold;}
 
 }
 
+@keyframes addbtneffect {
+    0% {
+      top:0px;
+      width:18rem;
+      height:5rem
+    }
+    50% {
+        top:0.5rem;
+        width:18rem;
+        height:5rem
+    }
+    to {
+      top:1rem;
+      width:18rem;
+      height:5rem
+    } 
+  }
+
+
+
 
 .addbtn button  {
     cursor: pointer;
@@ -61,7 +81,9 @@ font-weight: bold;}
     border-top-right-radius: 10px;
     border-bottom-left-radius: 10px;
     transition: all 1s;
+    animation:addbtneffect  1s ease-in Infinite Alternate;
 }
+
 .addbtn button:after, .addbtn button:before {
     content: " ";
     width: 10px;
@@ -109,9 +131,17 @@ font-weight: bold;}
     align-items: center;
 }
 
+.title {
+    background: #ffdbdb;
+    border-bottom: 3px solid  #374b73;
+    padding-bottom: 0.2rem;
+    border-radius: 0.5rem;
+    
+}
+
 .titleborder {
     height: 5px;
-    width: 8.2rem;
+    width: 100%;
     display: flex;
     margin-top: -5px;
     justify-self: center;

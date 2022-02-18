@@ -71,7 +71,11 @@ public class RoomService {
                 // 2.1 수업 때 배웠던 방식은 프로젝트에 올리는 것[현재 작업폴더]
                 // 2.2 Spring 은 Tomcat 이 내장 서버라서, 실행할 때 마다 경로가 바뀐다. (내부적으로 로테이션을 돌면서)
 
-                String dir = "C:\\gongbang\\gongbang\\build\\resources\\main\\static\\roomimg";
+                // 인텔리전용
+                 String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+
+                // vs전용
+//                String dir = "C:\\gongbang\\src\\main\\resources\\static\\roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.
@@ -216,7 +220,7 @@ public class RoomService {
         } else {
             page = pageable.getPageNumber() - 1;
         }
-        pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+        pageable = PageRequest.of(page,1, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
 
         // 1. 승인 완료된 클래스만 가져와야합니다.
         roomEntities = roomRepository.findAll(pageable);

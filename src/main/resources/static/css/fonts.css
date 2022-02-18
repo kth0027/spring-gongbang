@@ -1,0 +1,14 @@
+@charset "UTF-8";
+/* 폰트텍스트1 */
+/* 폰트명 : 쿠키런 Regular */
+/* 폰트주소 : https://noonnu.cc/font_page/364 */
+@font-face {
+    font-family: 'CookieRun-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/CookieRun-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+*, body {
+    font-family:CookieRun-Regular;
+}

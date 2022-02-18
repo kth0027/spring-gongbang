@@ -34,7 +34,7 @@
             <div id="tab-1" class="tab-content current">
                 <div class="row">
                     <div class="col-4">
-                        <select name="adminLocal" id="adminLocal"
+                        <select onchange="adminSearch();" name="adminLocal" id="adminLocal"
                                 class="form-select">
                             <option value="" selected>지역선택</option>
                             <option value="서울">서울</option>
@@ -43,7 +43,7 @@
                         </select>
                     </div>
                     <div class="col-4">
-                        <select name="adminCategory" id="adminCategory"
+                        <select onchange="adminSearch();" name="adminCategory" id="adminCategory"
                                 class="form-select">
                             <option value="" selected>카테고리선택</option>
                             <option value="핸드메이드">핸드메이드</option>
@@ -62,11 +62,11 @@
                     <div class="col-4">
                         <div class="row">
                             <div class="col-6">
-                                <input name="adminSearch" id="adminSearch" type="search"
+                                <input onchange="adminSearch();" name="adminSearch" id="adminSearch" type="search"
                                        placeholder="검색" class="form-control" aria-label="Search">
                             </div>
                             <div class="col-6">
-                                <button id="search" onclick="adminSearch();" type="button">검색</button>
+                                <button id="search" type="button">검색</button>
                             </div>
                         </div>
                     </div>
@@ -268,20 +268,10 @@
                     </div>
 
                     <div class="col-4 admin-select-content">
-                        <select name="" id="admin-chart-local" class="form-select">
-                            <option value="">지역선택</option>
-                            <option value="서울">서울</option>
-                            <option value="경기">경기</option>
-                            <option value="인천">인천</option>
-                        </select>
+                        <button onclick="adminLocalSelectBtn();" id="admin-chart-local" >지역분류</button>
                     </div>
                     <div class="col-4 admin-select-content">
-                        <select name="" id="admin-chart-category" class="form-select">
-                            <option value="">카테고리선택</option>
-                            <option value="핸드메이드">핸드메이드</option>
-                            <option value="음악">음악</option>
-                            <option value="공예">공예</option>
-                        </select>
+                        <button onclick="adminCategorySelectBtn();" id="admin-chart-category" >카테고리분류</button>
                     </div>
 
                     <div class="col-3 admin-select-content admin-select-btn">

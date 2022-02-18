@@ -227,7 +227,7 @@ public class RoomController {
         roomEntity.setRoomView(0);
 
         boolean result = roomService.registerClass(roomEntity, files);
-        if(result){
+        if (result) {
             // 2. 등록 완료 후, 내가 등록한 클래스 페이지로 이동
             Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
             model.addAttribute("roomDtos", roomDtos);
@@ -237,10 +237,46 @@ public class RoomController {
         }
     }
 
-    // [ room_update.html 페이지와 맵핑 ]
+    // [ 등록된 공방 정보 업데이트 페이지 맵핑]
     @GetMapping("/update/{roomNo}")
-    public String update() {
+    public String update(@PathVariable("roomNo") int roomNo, Model model) {
+        // 1. 입력된 모든 정보를 출력한다.
+        // 1. 개설된 공방 정보를 넘겨준다.
+        // 2. 회원 정보를 넘긴다.
+        RoomEntity roomEntity = roomService.getroom(roomNo);
+        model.addAttribute("roomEntity", roomEntity);
+
+        HttpSession session = request.getSession();
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+
+        int memberNo = memberDto.getMemberNo();
+        MemberEntity memberEntity = memberService.getMemberEntity(memberNo);
+
+        model.addAttribute("memberEntity", memberEntity);
+
+
         return "room/room_update";
+    }
+
+    // [공방 정보 업데이트 적용 컨트롤러]
+    @GetMapping("/updateController")
+    public String updateController(Model model,
+                                   RoomEntity roomEntity,
+                                   @RequestParam("roomImageInput") List<MultipartFile> files,
+                                   @RequestParam("addressX") double addressX,
+                                   @RequestParam("addressY") double addressY,
+                                   @RequestParam("checkBox1") String checkBox1,
+                                   @RequestParam("checkBox2") String checkBox2,
+                                   @RequestParam("checkBox3") String checkBox3,
+                                   @PageableDefault Pageable pageable) {
+
+
+        roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
+        roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
+
+        boolean result = roomService.updatdeClass(roomEntity, files);
+
+        return "member/member_class";
     }
 
     // json 반환 [지도에 띄우고자 하는 방 응답하기]

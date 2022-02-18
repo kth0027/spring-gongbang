@@ -60,8 +60,7 @@
             <div class="reservation-content" th:each=" history : ${histories}">
                 <div class="row my-3 d-flex border">
                     <div class="col-md-4 text-center">
-                        <img th:if="${room.roomImgEntities != null}"
-                             th:src="@{ 'roomimg/' + ${room.roomImgEntities.get(0).roomImg} }">
+                        <img th:src="@{ 'roomimg/' + ${history.roomEntity.roomImgEntities.get(0).roomImg} }">
                     </div>
                     <div class="col-md-8 d-flex flex-column">
                         <div th:text="${history.memberEntity.memberId}"></div>
@@ -74,7 +73,6 @@
 
             <!-- 캘린더에서 선택한 날짜에 대한 예약 내역을 출력 -->
             <div class="reservation-date-select">
-
             </div>
             <!-- 예약 내역 반복문으로 출력 종료 -->
         </div>

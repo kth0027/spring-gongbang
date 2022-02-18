@@ -26,7 +26,7 @@ public class HistoryEntity extends BaseTimeEntity {
     private String phoneNumber;
 
     @Column(name = "historyPoint")
-    private String historyPoint;
+    private int historyPoint;
     // 1명의 회원이 여러 클래스를 신청할 수 있다.
     @ManyToOne()
     @JoinColumn(name = "memberNo")

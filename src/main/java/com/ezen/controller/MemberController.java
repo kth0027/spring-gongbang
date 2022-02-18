@@ -2,10 +2,7 @@ package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.dto.RoomPaymentDto;
-import com.ezen.domain.entity.HistoryEntity;
-import com.ezen.domain.entity.MemberEntity;
-import com.ezen.domain.entity.RoomEntity;
-import com.ezen.domain.entity.TimeTableEntity;
+import com.ezen.domain.entity.*;
 import com.ezen.domain.entity.repository.*;
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomService;
@@ -274,7 +271,7 @@ public class MemberController { // C S
         assert timeTableTmp != null;
         timeTableTmp.setRoomMax(timeTableTmp.getRoomMax() - person);
         // 수용 가능 인원이 '0' 명이 된다면, 클래스 상태를 '모집완료' 로 바꿉니다.
-        if (timeTableTmp.getRoomMax() == 0) {
+        if (timeTableTmp.getRoomMax() <= 0) {
             timeTableTmp.setRoomStatus("모집완료");
         }
 
@@ -290,12 +287,12 @@ public class MemberController { // C S
         // 8. 최종적으로 회원이 가진 포인트를 감소시킵니다.
         memberEntity.setMemberPoint(memberEntity.getMemberPoint() - price);
         int memberPoint;
-        if (historyEntity.getHistoryPoint() == null) {
+        if (historyEntity.getHistoryPoint() == 0) {
             memberPoint = 0;
         } else {
-            memberPoint = Integer.parseInt(historyEntity.getHistoryPoint());
+            memberPoint = historyEntity.getHistoryPoint();
         }
-        historyEntity.setHistoryPoint(String.valueOf(memberPoint + price));
+        historyEntity.setHistoryPoint(memberPoint + price);
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
         model.addAttribute("histories", historyEntities);
         return "member/history_list";
@@ -494,12 +491,10 @@ public class MemberController { // C S
             if (!file.getOriginalFilename().equals("")) { // 02-17 조지훈
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-"); // 02-17 조지훈
-                String dir = "C:\\gongbang\\gongbang\\build\\resources\\main\\static\\channelimg";
+                String dir = "C:\\gongbang\\build\\resources\\main\\static\\channelimg";
                 String filepath = dir + "\\" + uuidfile;
                 file.transferTo(new File(filepath));
-            } else { // 02-17 조지훈
-                uuidfile = null;
-            } // 02-17 조지훈
+            }
             memberService.channelregistration(
                     MemberEntity.builder().memberNo(memberNo).channelTitle(channelTitle).channelContent(channelContent).channelImg(uuidfile).build());
         } catch (Exception e) {
@@ -507,27 +502,27 @@ public class MemberController { // C S
         }
         return "redirect:/member/channel/" + memberNo;
     }
-    
+
     // 02-17 채널 정보 수정시 기존이미지 삭제버튼 - 조지훈
     @PostMapping("/channelimgdelete")
     @ResponseBody
     public String channelimgdelete(@RequestParam("memberNo") int memberNo) {
         boolean result = memberService.channelimgdelete(memberNo);
-        if(result) {
+        if (result) {
             return "1";
-        }else {
+        } else {
             return "2";
         }
     }
-    
+
     // 02-17 강사소개 작성여부 체크 - 조지훈
     @GetMapping("/channelcheck")
     @ResponseBody
-    public String channelcheck(@RequestParam("memberNo") int memberNo){
+    public String channelcheck(@RequestParam("memberNo") int memberNo) {
         boolean result = memberService.channelcheck(memberNo);
-        if(result) {
+        if (result) {
             return "1";
-        }else {
+        } else {
             return "2";
         }
     }
@@ -563,8 +558,6 @@ public class MemberController { // C S
             return "2";
         }
 
-
     }
-
 
 }

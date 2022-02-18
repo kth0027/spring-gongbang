@@ -91,4 +91,11 @@ public class MemberEntity extends BaseTimeEntity {
     @ToString.Exclude
     private List<RoomLikeEntity> roomLikeEntities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<PostEntity> postEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
+    private List<PostReplyEntity> postReplyEntities = new ArrayList<>();
+
 }

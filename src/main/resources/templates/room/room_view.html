@@ -18,6 +18,8 @@
 <div class="container mt-5">
     <input type="hidden" th:value="${roomEntity.roomNo}" name="" id="thisRoomNo">
     <input type="hidden" th:value="${roomEntity.roomPrice}" id="roomPrice">
+    <input type="hidden" th:value="${memberNo}" id="memberNo">
+    <input type="hidden" th:value="${roomEntity.memberEntity.memberNo}" id="hostMemberNo">
 
     <div class="row">
         <div class="col-md-7">

@@ -257,7 +257,7 @@ function registerCheck(){
         $("#content-result").html("내용을 입력해주세요");
         return false;
     } else {
-        $("#content-result").html("내용을 입력되었습니다.");
+        $("#content-result").html("내용이 입력되었습니다.");
     }
 
     // 이미지는 1장이상 업로드해야합니다.

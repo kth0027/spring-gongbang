@@ -166,6 +166,7 @@ public class RoomController {
     @Transactional
     public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
 
+
         // 1. 선택된 클래스 엔티티를 불러와서 Model 로 전달한다.
         RoomEntity roomEntity = roomService.getroom(roomNo);
         model.addAttribute("roomEntity", roomEntity);
@@ -182,6 +183,10 @@ public class RoomController {
         // 3.1 세션 확인해서 동일한 세션이 없으면 조회수를 증가시킨다.
         // 3.2 조회수를 증가시키고, 24시간 유지되는 세션을 부여한다.
         HttpSession session = request.getSession();
+
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
+        model.addAttribute("memberNo", memberEntity.getMemberNo());
 
         if (session.getAttribute(String.valueOf(roomNo)) == null) {
             // 조회수 증가

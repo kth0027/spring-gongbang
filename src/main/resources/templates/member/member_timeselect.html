@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/calendar.css}">
+    <link rel="stylesheet" th:href="@{/css/time_select.css}">
 </head>
 <body>
 <div th:replace="common.html::common"></div>
@@ -17,6 +18,9 @@
     3. 시간을 선택해서 시작 시간, 종료 시간 등록
     4.
 -->
+
+<script th:src="@{/js/timeselect.js}"></script>
+
 
 <form th:action="@{/room/timeSelectController}" method="get" onsubmit="return inputCheck()">
     <input type="hidden" th:value="${room.roomNo}" name="roomNo">
@@ -44,7 +48,6 @@
                 <!--
                 1. 캘린더 출력
                 2. 클릭 이벤트 발생 시 날짜 데이터 전달
-                3.
                 -->
                 <div style="width: 450px; height: 550px;">
                     <div class="sec_cal">
@@ -70,11 +73,11 @@
                 <!--
                 1. 시간 선택
                 -->
-                <div class="time-select-wrapper" style="margin-top: 25px;">
+                <div class="time-select-wrapper">
                     <!-- 캘린더에서 선택한 날짜를 input 안에 집어넣습니다 -->
-                    <div>
+                    <div class="mb-3">
                         <label for="selectedDate">선택된 날짜</label>
-                        <input type="text" id="selectedDate" class="form-control" disabled>
+                        <input onchange="inputCheck();" type="text" id="selectedDate" class="form-control" disabled>
                         <input type="hidden" id="roomDate" name="roomDate" class="form-control">
                         <span id="dateMsg"></span>
                     </div>
@@ -83,7 +86,7 @@
                         <label for="beginTime">시작 시간 선택</label>
                         <select onchange="inputCheck();" name="beginTime" id="beginTime"
                                 class="form-select form-select-lg">
-                            <option value="-1">시간선택</option>
+                            <option value="9">시작 시간 선택</option>
                             <option th:each="number : ${#numbers.sequence(9,23,1)}" th:value="${number}"
                                     th:text="${number}+'시'"></option>
                         </select>
@@ -92,15 +95,15 @@
                     <div class="mb-3">
                         <label for="endTime">끝나는 시간 선택</label>
                         <select onchange="inputCheck();" name="endTime" id="endTime" class="form-select form-select-lg">
-                            <option value="-1">시간선택</option>
-                            <option th:each="number : ${#numbers.sequence(9,23,1)}" th:value="${number}"
+                            <option value="10">종료 시간 선택</option>
+                            <option th:each="number : ${#numbers.sequence(10,24,1)}" th:value="${number}"
                                     th:text="${number}+'시'"></option>
                         </select>
                         <span id="endTimeMsg"></span>
                     </div>
                 </div>
                 <div class="">
-                    <input type="submit" value="클래스 시간 등록">
+                    <input type="submit" value="클래스 시간 등록" class="time-select-btn">
                 </div>
             </div>
         </div>
@@ -108,8 +111,6 @@
 </form>
 
 <script th:src="@{/js/calendar.js}"></script>
-<script th:src="@{/js/timeselect.js}"></script>
-
 
 </body>
 </html>

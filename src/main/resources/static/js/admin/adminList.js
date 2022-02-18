@@ -598,8 +598,9 @@ function adminSelectBtn(){
                     $(".admin-chart-wrapper").prepend("<div> 회원들의 공방 등록 현황 (단위 : 연) </div>");
                     var dataArray = []; // json 으로 받아온 데이터가 저장될 배열
 
-
                     // 반복문을 돌면서, json 에 저장되어있는 데이터를 dateArray 에 넣어줘야합니다.
+                        // 같은 날짜라면 기존의 값에 더해줘야합니다. [현재 오류]
+
                     var bundleData = $(data.history).map(function(i, history) {
                         // 1. 일별 데이터를 추가합니다.
                         // 2. history.date 에 해당하는 값들 중 day 만 가져옵니다.
@@ -614,7 +615,7 @@ function adminSelectBtn(){
 
                         am5.time.add(date, "day", 1);
                         var dateTest = date.getTime();
-
+                        console.log("dateTest >>>> " + dateTest);
                         // js array 에 데이터 추가하는 방법
                             // 1. Array.push() : 배열의 끝에 요소 추가
                             // 2. Array.unshift() : 배열의 앞에 요소 추가

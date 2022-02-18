@@ -52,7 +52,8 @@
         3. room 엔티티는 member, roomimg 와 1:N 맵핑 되어있다.
         4. 현재 드래그 앤 드롭이 합치는 과정에서 망가져서 드래그 앤 드롭이 적용되지 않는다.
     -->
-        <form action="/room/classRegister" id="form" method="post" enctype="multipart/form-data" onsubmit="return registerCheck();">
+        <form action="/room/classRegister" id="form" method="post" enctype="multipart/form-data"
+              onsubmit="return registerCheck();">
             <!--첫번째 탭-->
             <div id="tab-1" class="tab-content current">
                 <div class="tab-1-title"> 공방 정보입력</div>
@@ -111,7 +112,6 @@
                             <textarea onchange="registerCheck();" class="" name="roomContent" id="addClassInfo"
                                       cols="30" rows="5"></textarea>
                     </div>
-
                     <div id="content-result"></div>
                     <div class="register-tip">
                         <small>작성 TIP</small>
@@ -299,6 +299,7 @@
             });
         });
 
+
 </script>
 
 <script>
@@ -314,6 +315,7 @@
                 header.classList.remove("sticky");
             }
         }
+
 
 </script>
 

@@ -10,6 +10,9 @@ import com.ezen.domain.entity.repository.PostRepository;
 import com.ezen.domain.entity.repository.ReplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,8 +42,9 @@ public class PostService {
 
 
     // 작성된 게시물 리스트 불러오기
-    public List<PostEntity> getPostList(int boardNo) {
-        return boardService.getPostList(boardNo);
+    public Page<PostEntity> getPostList(int boardNo,
+                                        @PageableDefault Pageable pageable) {
+        return postRepository.findPostByBoardNo(boardNo, pageable);
     }
 
     // 작성된 게시물 엔티티 불러오기

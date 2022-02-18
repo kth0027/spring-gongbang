@@ -6,7 +6,6 @@
     2. 컨트롤러에서 model 값을 뿌려준 다음 board_list.html 에 있는 div 영역에 뿌려집니다.
 -->
 <div>
-
     <div class="row no-gutters">
         <div class="col-6">
             <div class="row no-gutters">
@@ -17,15 +16,13 @@
         <div class="col-6">
             <div class="row no-gutters">
                 <div class="col-3">
-                    <button>10개씩 보기</button>
+                    <button class="list-type-btn">10개씩 보기</button>
                 </div>
                 <div class="col-3">
-                    <button>30개씩 보기</button>
+                    <button class="list-type-btn">30개씩 보기</button>
                 </div>
-            </div>
-            <div class="row no-gutters">
                 <div class="col-6 d-flex justify-content-end">
-                    <button type="button">게시글 작성</button>
+                    <button class="list-type-btn" type="button" >게시글 작성</button>
                 </div>
             </div>
         </div>
@@ -33,22 +30,22 @@
 
     <table class="table table-striped">
         <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>내용</th>
-                <th>작성자</th>
-                <th>작성일</th>
-            </tr>
+        <tr>
+            <th>번호</th>
+            <th>제목</th>
+            <th>내용</th>
+            <th>작성자</th>
+            <th>작성일</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="post : ${posts}">
-                <td th:text="${post.postNo}"></td>
-                <td th:text="${post.postTitle}"></td>
-                <td th:text="${post.postContent}"></td>
-                <td th:text="${post.member.memberId}"></td>
-                <td th:text="${post.createdDate}"></td>
-            </tr>
+        <tr th:each="post : ${posts}">
+            <td th:text="${post.postNo}"></td>
+            <td th:text="${post.postTitle}"></td>
+            <td th:text="${post.postContent}"></td>
+            <td th:text="${post.member.memberId}"></td>
+            <td th:text="${post.createdDate}"></td>
+        </tr>
         </tbody>
     </table>
 

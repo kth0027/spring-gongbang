@@ -31,6 +31,7 @@ public class BoardController {
     PostService postService;
 
     // 헤더에서 게시판 클릭 후 리스트 출력하는 페이지 연결
+/*
     @GetMapping("/postListController")
     public String postListController(@RequestParam("boardNo") int boardNo, Model model) {
         // boardNo 에 해당하는 엔티티를 호출한다.
@@ -38,6 +39,7 @@ public class BoardController {
         model.addAttribute("posts", posts);
         return "board/board_content";
     }
+*/
 
     // [게시판 페이지와 맵핑]
     // 카테고리, 게시판을 Model 에 담아서 넘겨준다.

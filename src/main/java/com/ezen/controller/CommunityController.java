@@ -2,9 +2,14 @@ package com.ezen.controller;
 
 import com.ezen.domain.entity.BoardEntity;
 import com.ezen.domain.entity.CategoryEntity;
+import com.ezen.domain.entity.PostEntity;
 import com.ezen.service.BoardService;
 import com.ezen.service.CategoryService;
+import com.ezen.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +26,9 @@ public class CommunityController {
     private CategoryService categoryService;
     @Autowired
     private BoardService boardService;
+
+    @Autowired
+    private PostService postService;
 
     // 커뮤니티 탭 컨트롤러
 
@@ -40,9 +48,14 @@ public class CommunityController {
 
     // [특정 게시판 클릭 시 작성된 게시글 출력]
     @GetMapping("/postListController")
-    public String postListController(Model model, @RequestParam("boardNo") int boardNo){
+    public String postListController(Model model,
+                                     @RequestParam("boardNo") int boardNo,
+                                     @PageableDefault Pageable pageable){
 
+        // 작성된 PostEntity 를 board_content.html 에 뿌려준다.
+        Page<PostEntity> postEntities = postService.getPostList(boardNo, pageable);
 
+        model.addAttribute("posts", postEntities);
 
         return "community/board_content";
     }

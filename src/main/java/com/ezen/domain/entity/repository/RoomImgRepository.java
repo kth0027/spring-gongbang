@@ -14,9 +14,4 @@ public interface RoomImgRepository extends JpaRepository<RoomImgEntity, Integer>
     @Query(nativeQuery = true, value="SELECT * FROM roomimg WHERE roomNo = :roomNo")
     List<RoomImgEntity> getImagesByRoomNo(@Param("roomNo") int roomNo);
 
-    // 2. roomNo 에 해당하는 이미지 삭제하기
-    @Modifying
-    @Query(nativeQuery = true, value="DELETE FROM roomimg WHERE roomNo")
-    boolean deleteImageByRoomNo(@Param("roomNo") int roomNo);
-
 }

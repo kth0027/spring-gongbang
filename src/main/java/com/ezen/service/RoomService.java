@@ -440,7 +440,11 @@ public class RoomService {
 
             int roomNo = roomEntity.getRoomNo();
             // roomNo 에 해당하는 등록된 이미지 모두 삭제
-            boolean result = roomImgRepository.deleteImageByRoomNo(roomNo);
+
+            List<RoomImgEntity> roomImgEntities = roomImgRepository.getImagesByRoomNo(roomNo);
+            for(RoomImgEntity roomImgEntity : roomImgEntities){
+                roomImgEntity.setRoomImg("");
+            }
 
             for (MultipartFile file : files) {
                 // 1. 난수 + '_' + 파일이름

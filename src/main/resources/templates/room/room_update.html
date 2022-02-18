@@ -52,7 +52,7 @@
         3. room 엔티티는 member, roomimg 와 1:N 맵핑 되어있다.
         4. 현재 드래그 앤 드롭이 합치는 과정에서 망가져서 드래그 앤 드롭이 적용되지 않는다.
     -->
-        <form action="/room/classUpdate" id="updateForm" method="post" enctype="multipart/form-data"
+        <form action="/room/updateController" id="form" method="post" enctype="multipart/form-data"
               onsubmit="return registerCheck()">
             <!--첫번째 탭-->
             <div id="tab-1" class="tab-content current">
@@ -111,7 +111,7 @@
                         <span>글자수(<span id="content-key-count"></span>/150)</span></label><br>
                     <div class="text-center">
                             <textarea class="" onchange="registerCheck();" name="roomContent" id="addClassInfo"
-                                      cols="30" rows="5" th:value="${roomEntity.roomContent}"></textarea>
+                                      cols="30" rows="5" th:text="${roomEntity.roomContent}"></textarea>
                     </div>
 
                     <div id="content-result"></div>
@@ -130,8 +130,8 @@
 
                 <div class="register-content-wrapper">
                     <!--
-                1. 클래스 카테고리는 미리 정해져있고, 관리자만이 추가 및 삭제, 수정이 가능하다.
-                -->
+                    1. 클래스 카테고리는 미리 정해져있고, 관리자만이 추가 및 삭제, 수정이 가능하다.
+                    -->
                     <label for="classCategory" class="form-label">공방 카테고리<span>[필수]</span></label>
                     <div id="classCategory" class="register-category">
                         <input type="radio" name="roomCategory" class="form-check-input" value="핸드메이드" checked>핸드메이드
@@ -179,7 +179,7 @@
                     <label for="summernote"> 공방 소개</label>
                     <!-- SummerNote 첨부하기 -->
                     <div>
-                        <textarea id="summernote" name="roomDetail" th:value="${roomEntity.roomDetail}">
+                        <textarea id="summernote" name="roomDetail" th:utext="${roomEntity.roomDetail}">
 
 
                         </textarea>

@@ -259,7 +259,7 @@ public class RoomController {
     }
 
     // [공방 정보 업데이트 적용 컨트롤러]
-    @GetMapping("/updateController")
+    @PostMapping("/updateController")
     public String updateController(Model model,
                                    RoomEntity roomEntity,
                                    @RequestParam("roomImageInput") List<MultipartFile> files,

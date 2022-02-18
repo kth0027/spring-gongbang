@@ -274,7 +274,7 @@ public class RoomController {
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
 
-        boolean result = roomService.updatdeClass(roomEntity, files);
+        boolean result = roomService.updateClass(roomEntity, files);
 
         return "member/member_class";
     }

@@ -43,7 +43,8 @@ public class RoomService {
     private NoteRepository noteRepository;
 
     @Transactional
-    public boolean registerClass(RoomEntity roomEntity, List<MultipartFile> files) {
+    public boolean registerClass(RoomEntity roomEntity,
+                                 List<MultipartFile> files) {
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
@@ -422,7 +423,10 @@ public class RoomService {
 
     // [공방 정보 수정]
     @Transactional
-    public boolean updatdeClass(RoomEntity roomEntity, List<MultipartFile> files) {
+    public boolean updateClass(RoomEntity roomEntity, List<MultipartFile> files) {
+
+        // 공방에는 이미 MemberEntity 가 맵핑되어있다.
+
 
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();

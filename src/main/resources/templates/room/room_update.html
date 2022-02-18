@@ -79,7 +79,7 @@
                         <span>글자수(<span id="title-key-count"></span>/50)</span>
                     </label>
                     <input onchange="registerCheck();" type="text" class="form-control" id="roomTitle"
-                           name="roomTitle" th:value="${roomEntity.roomTitle}">
+                           name="roomTitle" th:text="${roomEntity.roomTitle}">
                     <div id="title-result"></div>
                     <div class="register-tip">
                         <small>작성 TIP</small>
@@ -111,7 +111,7 @@
                         <span>글자수(<span id="content-key-count"></span>/150)</span></label><br>
                     <div class="text-center">
                             <textarea class="" onchange="registerCheck();" name="roomContent" id="addClassInfo"
-                                      cols="30" rows="5" th:value="${roomEntity.roomContent}"></textarea>
+                                      cols="30" rows="5" th:text="${roomEntity.roomContent}"></textarea>
                     </div>
 
                     <div id="content-result"></div>
@@ -155,11 +155,6 @@
 
                 -->
                 <div class="image-drag-wrapper">
-
-                    <!--
-                    1. 기존 이미지들을 불러올 수 있을까?
-                    2.
-                    -->
 
                     <label class="image-label" id="image-label" for="image-input">
                         <div class="inner" id="inner">기존 이미지는 사라집니다. </div>

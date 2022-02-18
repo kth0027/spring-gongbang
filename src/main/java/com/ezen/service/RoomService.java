@@ -132,7 +132,7 @@ public class RoomService {
             page = pageable.getPageNumber() - 1;
         }
         // 페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-        pageable = PageRequest.of(page, 50, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+        pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
 
         // 1.1 검색이 없는 경우
         if (keyword.isEmpty()) {

@@ -95,9 +95,9 @@ $(function () {
     });
 
     // 이름 유효성검사
-    $("#memberName").keyup(function () {
+    $("#memberNameSignup").keyup(function () {
         var namej = /^[A-Za-z가-힣]{1,15}$/;	// 이름 정규표현식
-        var memberName = $("#memberName").val();
+        var memberName = $("#memberNameSignup").val();
         if (!namej.test(memberName)) {
             $("#namecheck").html("영대문자/한글 1~15 허용");
             $("#namecheck").css('color', 'green');
@@ -111,9 +111,9 @@ $(function () {
     });
 
     // 연락처 유효성검사
-    $("#memberPhone").keyup(function () {
+    $("#memberPhoneSignup").keyup(function () {
         var phonej = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 연락처
-        var memberPhone = $("#memberPhone").val();
+        var memberPhone = $("#memberPhoneSignup").val();
         if (!phonej.test(memberPhone)) {
             $("#phonecheck").html("01X-XXXX-XXXX 형식으로 입력해주세요");
             $("#phonecheck").css('color', 'red');

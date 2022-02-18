@@ -1,81 +1,20 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
-
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-    .admin-list-wrapper {
-      margin-top: 3rem;
-    }
-
-    .outbox {
-      margin-bottom: 2rem;
-    }
-
-    .submitbtn button:nth-child(odd) {
-      width: 15rem;
-      background: #a1e9ff;
-      font-weight: bold;
-    }
-
-    .submitbtn button:nth-child(even) {
-      width: 15rem;
-      background: #f0a2ff;
-      font-weight: bold;
-    }
-
-    .slide:nth-child(odd) {
-      --hover: #66c887;
-    }
-
-    .slide:nth-child(even) {
-      --hover: #ff408f;
-    }
-
-    .slide:hover,
-    .slide:focus {
-      box-shadow: inset 20rem 0 0 0 var(--hover);
-      transition: 1s;
-    }
-
-
-    ul.tabs{
-        margin: 0px;
-        padding: 0px;
-        list-style: none;
-    }
-
-    ul.tabs li{
-        border: 1px solid #ff9a9a;
-        background-color: #ffffff;
-        padding: 20px 20px;
-        cursor: pointer;
-    }
-
-    ul.tabs li.current{
-        border: 1px solid #374b73;
-        background-color: green;
-        color: #222;
-        cursor: pointer;
-    }
-
-    .tab-content{
-        display: none;
-        background-color: #ffffff;
-        height: auto;
-    }
-
-    .tab-content.current{
-        display: inherit;
-    }
-
-    </style>
+    <link rel="stylesheet" th:href="@{/css/admin/adminlist.css}">
 
 </head>
 <body>
 <div th:replace="common.html::common"></div>
 <div th:replace="header.html::header"></div>
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/xy.js"></script>
+<script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+<script th:src="@{/js/adminChart.js}"></script>
 
 <div class="container admin-list-wrapper">
     <div class="row">
@@ -152,14 +91,17 @@
                                 <td>
                                     <a th:href="@{'/room/view/' + ${room.roomNo} }"
                                        class="logo d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                                        <span style="color:pink;" th:text="${room.roomTitle}"></span>
+                                        <span th:text="${room.roomTitle}"></span>
                                     </a>
                                 </td>
                                 <td th:text="${room.roomCategory}"></td>
                                 <td th:text="${room.roomMax}+'명'"></td>
                                 <td th:text="${#strings.listSplit(room.roomAddress,',')[0]}"></td>
                                 <td>
-                                    <span th:text="${room.roomStatus}" style="color:pink"></span>
+                                    <span th:if="${room.roomStatus.equals('검토중')}" th:text="${room.roomStatus}"
+                                          style="color:red"></span>
+                                    <span th:if="${room.roomStatus.equals('승인완료')}" th:text="${room.roomStatus}"
+                                          style="color:green"></span>
                                 </td>
                                 <td th:text="${#temporals.format (room.createdDate,'MM-dd hh:mm')}"></td>
                                 <td>
@@ -243,64 +185,126 @@
                             </tr>
                         </table>
                     </div>
+                    <ul id="pagination-section" class="pagination justify-content-center"
+                        th:with="start = ${ T(Math).floor( roomEntities.number / 10 ) * 10 + 1 } ,
+                                                     last = ( ${ start + 9 < roomEntities.totalPages ?  start + 9 : roomEntities.totalPages } )">
+
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/admin/adminlist( page = 1 ) }"> 처음 </a>
+                        </li>
+
+                        <li class="page-item" th:class="${roomEntities.first} ? 'disabled' ">
+
+                            <a class="page-link"
+                               th:href="${roomEntities.first} ? '#' : @{/admin/adminlist( page = ${ roomEntities.number } ) }">
+                                이전 </a>
+                        </li>
+
+                        <li class="page-item" th:each="page : ${#numbers.sequence( start , last ) }">
+                            <a class="page-link" th:href="@{/admin/adminlist( page = ${page} ) }" th:text="${page}"></a>
+                        </li>
+
+                        <li class="page-item" th:class="${roomEntities.last} ? 'disabled' ">
+                            <a class="page-link"
+                               th:href="${roomEntities.last} ? '#' : @{/admin/adminlist( page = ${roomEntities.number+2} ) }">
+                                다음
+                            </a>
+                        </li>
+
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{/admin/adminlist( page=${roomEntities.totalPages} ) }">
+                                마지막 </a>
+                        </li>
+                    </ul>
                 </div>
-                <!--                페이징 처리
-                                <ul class="pagination justify-content-center"
-                                    th:with="start = ${ T(Math).floor( roomEntities.number / 10 ) * 10 + 1 } ,
-                                                                     last = ( ${ start + 9 < roomEntities.totalPages ?  start + 9 : roomEntities.totalPages } )">
-                                    &lt;!&ndash; 첫페이지이동 &ndash;&gt;
-                                    <li class="page-item">
-                                        <a class="page-link" th:href="@{/admin/adminlist( page = 1 ) }"> 처음 </a>
-                                    </li>
-                                    &lt;!&ndash; 이전페이지이동 &ndash;&gt;
-                                    <li class="page-item" th:class="${roomEntities.first} ? 'disabled' ">
-                                        &lt;!&ndash; 첫번페이지에서 이전페이지이동 표시 x &ndash;&gt;
-                                        <a class="page-link"
-                                           th:href="${roomEntities.first} ? '#' : @{/admin/adminlist( page = ${ roomEntities.number } ) }">
-                                            이전 </a>
-                                    </li>
-                                    &lt;!&ndash; 페이지번호 &ndash;&gt;
-                                    <li class="page-item" th:each="page : ${#numbers.sequence( start , last ) }">
-                                        <a class="page-link" th:href="@{/admin/adminlist( page = ${page} ) }" th:text="${page}"></a>
-                                    </li>
-                                    &lt;!&ndash; 다음페이지이동 &ndash;&gt;
-                                    <li class="page-item" th:class="${roomEntities.last} ? 'disabled' ">
-                                        <a class="page-link"
-                                           th:href="${roomEntities.last} ? '#' : @{/admin/adminlist( page = ${roomEntities.number+2} ) }">
-                                            다음
-                                        </a>
-                                    </li>
-                                    &lt;!&ndash; 마지막페이지 이동 &ndash;&gt;
-                                    <li class="page-item">
-                                        <a class="page-link" th:href="@{/admin/adminlist( page=${roomEntities.totalPages} ) }"> 마지막 </a>
-                                    </li>
-                                </ul>-->
+
+
             </div>
             <div id="tab-2" class="tab-content">
                 후기
             </div>
             <div id="tab-3" class="tab-content">
-                통계
+                <!--
+                @Author : 김정진
+                @Date : 2022-02-17
+                @Content :
+                    1. 회원 전체의 예약 내역 차트로 보여주는 부분
+                    2. 연도별, 월별, 일별 구분
+                        1. 개설된 강좌
+                        2. 결제된 금액
+                        3. 인원 수
+                    3. 남녀 비율 파이차트
+
+                @Flow :
+                    1. 처음 접근하면 아무것도 없다
+                    2. select 하면 ajax 로 데이터를 뿌려준다.
+                -->
+
+                <div class="row admin-select-wrapper">
+
+                    <div class="col-3 admin-select-content">
+                        <select name="" id="admin-chart-year" class="form-select">
+                            <option value="">연도선택</option>
+                            <option value="2022">2022년</option>
+                            <option value="2023">2023년</option>
+                            <option value="2024">2024년</option>
+                        </select>
+
+                    </div>
+                    <div class="col-3 admin-select-content">
+                        <select name="" id="admin-chart-month" class="form-select">
+                            <option value="">월별선택</option>
+                            <option th:each="num : ${#numbers.sequence(1,12)}" th:value="${num}"
+                                    th:text="${num} + 월"></option>
+                        </select>
+
+                    </div>
+                    <div class="col-3 admin-select-content">
+                        <select name="" id="admin-chart-day" class="form-select">
+                            <option value="">일별선택</option>
+                            <option th:each="num : ${#numbers.sequence(1,31)}" th:value="${num}"
+                                    th:text="${num} + 일"></option>
+                        </select>
+                    </div>
+
+                    <div class="col-4 admin-select-content">
+                        <select name="" id="admin-chart-local" class="form-select">
+                            <option value="">지역선택</option>
+                            <option value="서울">서울</option>
+                            <option value="경기">경기</option>
+                            <option value="인천">인천</option>
+                        </select>
+                    </div>
+                    <div class="col-4 admin-select-content">
+                        <select name="" id="admin-chart-category" class="form-select">
+                            <option value="">카테고리선택</option>
+                            <option value="핸드메이드">핸드메이드</option>
+                            <option value="음악">음악</option>
+                            <option value="공예">공예</option>
+                        </select>
+                    </div>
+
+                    <div class="col-3 admin-select-content admin-select-btn">
+                        <button type="button" id="admin-chart-btn" onclick="adminSelectBtn();">차트보기</button>
+                    </div>
+
+                </div>
+
+                <!-- 차트 그리기 -->
+                <div class="admin-chart-wrapper">
+                    <div class="admin-chart-content">
+                        <div id="chartdiv"></div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
 </div>
 
-<script type="text/javascript">
-
-    $("ul.tabs li").click(function(){
-        var tabId = $(this).attr("data-tab");
-
-        $("ul.tabs li").removeClass("current");
-        $(".tab-content").removeClass("current");
-
-        $(this).addClass("current");
-        $("#"+ tabId).addClass("current");
-    });
-
-
-</script>
-
+<script th:src="@{/js/admin/adminList.js}"></script>
 <script th:src="@{/js/roomlist.js}"></script>
+
 </body>
 </html>

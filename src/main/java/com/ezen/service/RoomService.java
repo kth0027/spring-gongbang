@@ -22,6 +22,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -73,7 +74,11 @@ public class RoomService {
                 // 2.1 수업 때 배웠던 방식은 프로젝트에 올리는 것[현재 작업폴더]
                 // 2.2 Spring 은 Tomcat 이 내장 서버라서, 실행할 때 마다 경로가 바뀐다. (내부적으로 로테이션을 돌면서)
 
-                String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+                // 인텔리전용
+                 String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+
+                // vs전용
+//                String dir = "C:\\gongbang\\src\\main\\resources\\static\\roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.
@@ -128,7 +133,7 @@ public class RoomService {
             page = pageable.getPageNumber() - 1;
         }
         // 페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-        pageable = PageRequest.of(page, 50, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+        pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
 
         // 1.1 검색이 없는 경우
         if (keyword.isEmpty()) {
@@ -419,6 +424,16 @@ public class RoomService {
         // 위 조건문을 모두 통과했다면 비정상적인 접근이라고 볼 수 있음
         // null 값에 대한 처리가 되어있는가?
         return null;
+    }
+    // 룸 삭제 02-18 조지훈
+    @Transactional
+    public boolean roomdelete(int roomNo) {
+       Optional<RoomEntity> entityOptional = roomRepository.findById(roomNo);
+       if(entityOptional != null) {
+           roomRepository.delete(entityOptional.get());
+           return true;
+       }
+       return false;
     }
 
     // [공방 정보 수정]

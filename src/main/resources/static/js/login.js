@@ -1,32 +1,20 @@
 function login(){
 
-    var memberEmail = $("#login_memail").val();
-    var memberPassword = $("#login_mpassword").val();
-    var memberdto = { "memberEmail" : memberEmail  , "memberPassword" : memberPassword  };
-    // json형식 = { "키" : 값  ,  "키2" : 값2 }
+    // input 에 keyup 혹은 onchange 이벤트 핸들러 작성
+    // 일치하는 경우만 접근 가능
 
-     $.ajax({
-        url: "/member/logincontroller",             // 보내는곳
-        data : JSON.stringify(memberdto)  ,   //  전송 데이터 값
-        //  JSON.stringify( JSON 자료형 -> 문자열 )
-        method: "post",        //  Get , Post 방식중 선택
-        contentType: "application/json" ,  //  ajax 타입
-        success: function(result){     // 성공시 반환값
-            if( result == 1 ){
-                $.ajax({
-                url: "/nreadcount",
-                success: function(data){
-                    location.href="/"   // 로그인 성공시 메인페이지로 이동
-                }
-                });
+    // 입력한 아이디, 비밀번호를 받고
 
-            }else{
-                $("#loginfailmsg").html("아이디 혹은 비밀번호가 다릅니다.");
-                //  $("#태그ID").html( ) ;   // 태그 안에 html 추가
-                // js : document.getElementById("loginfailmsg").innerHTML = "아이디 혹은 비밀번호가 다릅니다";
-            }
-        }
-     });
+    // 컨트롤러로 넘깁니다.
+    // 컨트롤러에서 서비스로 넘깁니다.
+    // 서비스에서 repo 탐색합니다.
+    // repo 에서 검색결과, 아이디, 비밀번호 일치하면
+    // "1" 리턴
+    // 리턴값이 "1" 일 때
+        // 로그인 버튼을 활성화시킨다.
+        //
+
+
 }
 
 

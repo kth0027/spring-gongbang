@@ -48,12 +48,37 @@
                         <a th:href="@{'/room/update/' + ${room.roomNo} }" style="text-decoration: none;">
                             <button type="button" class="btn btn-outline-success">내용 수정</button>
                         </a>
-                        <button type="button" class="btn btn-outline-danger">삭제</button>
+                        <button type="button" class="btn btn-outline-danger" th:onclick="roomdeletemodal([[${room.roomNo}]])">삭제</button>
                     </td>
                 </tr>
             </table>
     </div>
 </div>
+
+<!-- 삭제 모달 02-18 조지훈 -->
+<div class="modal fade" tabindex="-1" id="roomdelete" data-bs-keyword="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content rounded-4 shadow">
+            <div class="modal-body p-4 text-center">
+                <h5 class="mb-0"> 클래스 삭제 </h5>
+                <p class="mb-3" id=""> 개설하신 클래스를 삭제하시겠습니까? </p>
+                <input type="hidden" name="roomNo" id="roomNo">
+                <div class="flex-nowrap p-0">
+                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" onclick="roomdelete()">
+                        삭제
+                    </button>
+                    <button type="button"
+                            class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                            data-bs-dismiss="modal">나가기
+                    </button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 삭제 모달 end -->
+<script th:src="@{/js/roomdelete.js}"></script>
 <div th:replace="footer.html::footer"></div>
 </body>
 </html>

@@ -411,7 +411,6 @@ public class RoomController {
     @PostMapping("/roomdelete")
     @ResponseBody
     public String roomdelete(@RequestParam("roomNo") int roomNo) {
-        System.out.println("삭제 방번호 : " + roomNo);
         boolean result = roomService.roomdelete(roomNo);
         if(result) {
             return "1";

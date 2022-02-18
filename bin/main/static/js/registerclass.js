@@ -73,6 +73,15 @@ $(function(){
 
     });
 
+    // 02-17 조지훈
+    $('#summernoteupdate').summernote({
+            lang: 'ko-KR',  // 메뉴 한글 버전 ,
+            minHeight: 400, // 최소 높이
+            maxHeight: null,
+            placeholder: "내용 입력"
+
+    });
+
     $("#formCheck1").on("change", function(e) {
         if( $("#formCheck1").is(":checked")){
             $("#checkBox1").val("반려동물 가능합니다");

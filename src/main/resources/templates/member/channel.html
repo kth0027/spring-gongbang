@@ -5,28 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/css/summernote/summernote-lite.css}">
     <link rel="stylesheet" th:href="@{/css/channelcard.css}">
-    <style>
-        #reviewbox {
-            height: auto;
-            display: flex;
-            padding: 2%;
-            border-color: #e0e0e0;
-            border-style: solid;
-            border-width: 1px;
-            border-radius: 7px;
-            flex-direction: column;
-        }
-
-        .nav {
-            margin-top: 2rem;
-        }
-        .nav-item {
-            font-size: 1.5rem;
-            margin-right: 4rem;
-        }
-
-
-    </style>
+    <link rel="stylesheet" th:href="@{/css/member/channel.css}">
 </head>
 <body>
 <div th:replace="common.html::common"></div>
@@ -36,35 +15,28 @@
 <script th:src="@{/js/summernote/lang/summernote-ko-KR.js}"></script>
 
 <!-- 레이아웃 01-27 조지훈-->
-<div class="container">
+<div class="container" id="channelmain">
     <div class="row">
-        <div style="height:200px;">
-
-        </div>
         <div>
             <div class="row">
                 <div class="col-md-2">
-                    <img th:if="${memberEntity.channelImg == null}" src="/img/default-profile-photo.png" alt=""
-                         style="height: 8rem; width: 8rem; border-radius: 5rem;">
-                    <img th:if="${memberEntity.channelImg != null}"
+                    <img class="channelimg" th:if="${memberEntity.channelImg == null}" src="/img/default-profile-photo.png" alt=""
+                         >
+                    <img class="channelimg" th:if="${memberEntity.channelImg != null}"
                          th:src="@{'/channelimg/' + ${memberEntity.channelImg}}" alt=""
-                         style="height: 8rem; width: 8rem; border-radius: 5rem;">
+                         >
                 </div>
                 <div class="col-md-8">
                     <div>
-                        <span th:text="${memberEntity.channelTitle}" style="font-weight: bold; font-size: 2.5rem;"></span>
+                        <span th:text="${memberEntity.channelTitle}" id="channelname"></span>
                         <div sec:authorize="isAuthenticated()"
                              th:if="${session.logindto.memberNo == memberEntity.memberNo}" align="right">
                             <button class="btn btn-outline-primary" data-bs-target="#channelregistration"
                                     data-bs-toggle="modal">채널 정보 등록/수정
                             </button>
-                            <!-- 02-17 조지훈 -->
-<!--                            <button th:if="${memberEntity.channelContent != null}" class="btn btn-outline-primary" data-bs-target="#channelupdate"-->
-<!--                                    data-bs-toggle="modal">채널 정보 수정-->
-<!--                            </button>-->
                         </div>
                         <div>
-                            <span th:if="${memberEntity.roomEntities.size != 0}" th:text="${#strings.listSplit(memberEntity.RoomEntities.get(0).roomAddress,',')[0] }"></span>
+                            <span id="classaddress"th:if="${memberEntity.roomEntities.size != 0}" th:text="${#strings.listSplit(memberEntity.RoomEntities.get(0).roomAddress,',')[0] }"></span>
                         </div>
                     </div>
                 </div>
@@ -90,12 +62,12 @@
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
                      aria-labelledby="pills-home-tab">
                     <div class="row">
-                        <div class="col-md-8">
+                        <div class="col-md-8" id="channelContentBox">
                             <h3><strong>강사 소개</strong></h3>
-                            <div th:if="${memberEntity.channelContent == null}">
+                            <div id="channelContentnull" th:if="${memberEntity.channelContent == null}">
                                 작성된 소개글이 없습니다.
                             </div>
-                            <div th:if="${memberEntity.channelContent != null}" th:utext="${memberEntity.channelContent}"></div>
+                            <div id="channelContent" th:if="${memberEntity.channelContent != null}" th:utext="${memberEntity.channelContent}"></div>
                         </div>
                         <div class="col-md-4" id="reviewbox">
                             <h4><strong>클래스 후기</strong></h4>
@@ -108,8 +80,8 @@
                                         <span th:text="${reply.replyContent}">내용</span>
                                     </div>
                                     <div class="col-md-4">
-                                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}"
-                                             alt="" style="width: 100%">
+                                        <img id="reviewimg"th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}"
+                                             alt="">
                                     </div>
                                 </div>
                             </div>
@@ -120,13 +92,13 @@
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="band">
-                        <div th:if="${memberEntity.roomEntities.size == 0}">
+                        <div id="channelClassNull" th:if="${memberEntity.roomEntities.size == 0}">
                             아직 등록된 클래스가 없습니다.
                         </div>
                         <div class="item" th:if="${memberEntity.roomEntities.size != 0}" th:each="room : ${memberEntity.roomEntities}">
                             <a th:href="@{'/room/view/' + ${room.roomNo}}" class="card">
                                 <div class="thumb">
-                                    <img th:src="@{'/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }" alt=""
+                                    <img id="channelclassimg" th:src="@{'/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }" alt=""
                                          style="width: 340px; height: 270px;">
                                 </div>
                                 <article>

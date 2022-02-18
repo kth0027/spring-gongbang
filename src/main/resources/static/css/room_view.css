@@ -111,3 +111,35 @@ ul li{
     padding: 5px;
     width: 100%;
 }
+
+/* 리뷰출력 */
+#reviewcard{
+    border: solid 1px rgb(161, 154, 154);
+    margin-bottom: 1rem; 
+    border-radius: 1rem; 
+    padding: 1rem;
+}
+
+/* 클래스소개 */
+#classinfo{
+    font-weight: bold;
+}
+
+#classinfobox{
+    height: 15rem;
+}
+
+#ETC{
+    font-weight: bold;
+}
+
+#ETCbox{
+    height: 15rem;
+}
+
+#teacherinfo{
+    font-weight: bold;
+}
+#teacherinfobox{
+    height: 15rem;
+}

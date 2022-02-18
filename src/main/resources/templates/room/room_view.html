@@ -27,7 +27,10 @@
         -->
         <div class="col-md-7">
             <div>
-                <div th:id="${'carousel' + roomEntity.roomNo}" class="carousel slide" data-bs-ride="carousel">
+                <div th:if="${#lists.size(roomEntity.roomImgEntities) == 1}"><!-- 등록된 이미지가 1개 라면 -->
+                    <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }" alt="" style="height: 30rem;">
+                </div>
+                <div th:if="${#lists.size(roomEntity.roomImgEntities) != 1}" th:id="${'carousel' + roomEntity.roomNo}" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
                             <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
@@ -107,20 +110,20 @@
             </ul>
             <hr>
             <div>
-                <h3 id="classinfo" style="font-weight: bold;">클래스 소개</h3>
-                <div th:utext="${roomEntity.roomDetail}">
+                <h3 id="classinfo">클래스 소개</h3>
+                <div id="classinfobox" th:utext="${roomEntity.roomDetail}">
 
                 </div>
                 <hr>
 
-                <h3 id="ETC" style="font-weight: bold;">편의사항</h3>
-                <div>
+                <h3 id="ETC">편의사항</h3>
+                <div id="ETCbox">
                     <span th:text="${roomEntity.roomETC}"></span>
                 </div>
-
+                <hr>
                 <!-- 02-15 조지훈 -->
-                <h3 id="teacherinfo" style="font-weight: bold;">강사소개</h3>
-                <div th:utext="${roomEntity.memberEntity.channelContent}"></div>
+                <h3 id="teacherinfo">강사소개</h3>
+                <div id="teacherinfobox" th:utext="${roomEntity.memberEntity.channelContent}"></div>
                 <hr>
                 <!-- 02-15 조지훈 end -->
 
@@ -142,31 +145,30 @@
                 작성
             </button>
             <br>
-            <div class="row" th:each="reply : ${roomEntity.replyEntities}">
-                <div class="col-md-2">
+            <div id="reviewcard" class="row" th:each="reply : ${roomEntity.replyEntities}">
+                <div class="col-md-3">
                     <div>
-                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}"
-                             style="width:100%; height: 100%;">
+                        <img th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}" style="width:100%; height: 100%;">
                     </div>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-9">
                     <div class="row">
-                        <div class="col-md-4" th:text="${reply.memberEntity.memberName}"></div><!-- 우선은 memberName으로 -->
-                        <div class="col-md-4" th:text="${#temporals.format(reply.createdDate,'yyyy-MM-dd hh:mm')}">날짜
-                        </div>
+                        <div class="col-md-3" th:text="${'작성자 : ' + reply.memberEntity.memberName}"></div><!-- 우선은 memberName으로 -->
+                        <div class="col-md-5" th:text="${'작성날짜 : ' + #temporals.format(reply.createdDate,'yyyy-MM-dd')}">날짜</div>
                         <div class="col-md-4">
+                            <span>평점 : </span>
                             <span th:each="num : ${#numbers.sequence(1,5)}">
                                 <span th:if="${num<=reply.replyStar}">★</span>
                                 <span th:unless="${num<=reply.replyStar}">☆</span>
                             </span>
                         </div>
-                        <hr>
                     </div>
                     <hr>
+                    <div>
+                        <div th:text="${reply.replyContent}"></div>
+                    </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-9" th:text="${reply.replyContent}"></div>
-                </div>
+
             </div>
             <hr>
             <br>

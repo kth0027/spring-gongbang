@@ -20,9 +20,9 @@
         <div>
             <div class="row">
                 <div class="col-md-2">
-                    <img class="channelimg" th:if="${memberEntity.channelImg == null}" src="/img/default-profile-photo.png" alt=""
+                    <img class="channelimg img-fluid" th:if="${memberEntity.channelImg == null}" src="/img/default-profile-photo.png" alt=""
                          >
-                    <img class="channelimg" th:if="${memberEntity.channelImg != null}"
+                    <img class="channelimg img-fluid" th:if="${memberEntity.channelImg != null}"
                          th:src="@{'/channelimg/' + ${memberEntity.channelImg}}" alt=""
                          >
                 </div>

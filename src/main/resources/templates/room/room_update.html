@@ -52,8 +52,10 @@
         3. room 엔티티는 member, roomimg 와 1:N 맵핑 되어있다.
         4. 현재 드래그 앤 드롭이 합치는 과정에서 망가져서 드래그 앤 드롭이 적용되지 않는다.
     -->
-        <form action="/room/updateController" id="form" method="post" enctype="multipart/form-data"
-              onsubmit="return registerCheck()">
+        <form action="/room/updateController" id="updateForm" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:value="${roomEntity.roomNo}" name="roomNo">
+            <input type="hidden" th:value="${roomEntity.roomStatus}" name="roomStatus">
+            <input type="hidden" th:value="${roomEntity.createdDate}" name="createdDate">
             <!--첫번째 탭-->
             <div id="tab-1" class="tab-content current">
                 <div class="tab-1-title"> 공방 정보입력</div>
@@ -156,7 +158,7 @@
                 -->
                 <div class="image-drag-wrapper">
                     <label class="image-label" id="image-label" for="image-input">
-                        <div class="inner" id="inner">기존 이미지는 사라집니다. </div>
+                        <div class="inner" id="inner">기존 이미지는 사라집니다.</div>
                     </label>
                     <input onchange="registerCheck();" id="image-input" class="image-input" accept="image/*"
                            type="file" required="true" multiple="true" hidden="true" name="roomImageInput">
@@ -181,6 +183,7 @@
 
             <!--세번 째 탭-->
             <div id="tab-3" class="tab-content">
+
                 <div class="tab-3-title"> 공방 위치입력</div>
                 <div class="register-content-wrapper">
                     <div>지역 선택</div>
@@ -301,6 +304,8 @@
         });
 
 
+
+
 </script>
 
 <script>
@@ -317,6 +322,8 @@
             header.classList.remove("sticky");
         }
     }
+
+
 
 </script>
 

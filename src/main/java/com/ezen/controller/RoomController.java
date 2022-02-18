@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -260,7 +261,8 @@ public class RoomController {
 
     // [공방 정보 업데이트 적용 컨트롤러]
     @PostMapping("/updateController")
-    public String updateController(Model model,
+    @Transactional
+    public void updateController(Model model,
                                    RoomEntity roomEntity,
                                    @RequestParam("roomImageInput") List<MultipartFile> files,
                                    @RequestParam("addressX") double addressX,
@@ -268,15 +270,20 @@ public class RoomController {
                                    @RequestParam("checkBox1") String checkBox1,
                                    @RequestParam("checkBox2") String checkBox2,
                                    @RequestParam("checkBox3") String checkBox3,
+                                   @RequestParam("roomNo") int roomNo,
+                                   @RequestParam("roomStatus") String roomStatus,
                                    @PageableDefault Pageable pageable) {
 
+        System.out.println(roomEntity.toString());
 
-        roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
-        roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
+//        roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
+//        roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
+//        roomEntity.setRoomStatus(roomStatus);
+//
+//
+//        boolean result = roomService.updateClass(roomEntity, files);
 
-        boolean result = roomService.updateClass(roomEntity, files);
-
-        return "member/member_class";
+        // return "member/member_class";
     }
 
     // json 반환 [지도에 띄우고자 하는 방 응답하기]
@@ -448,9 +455,9 @@ public class RoomController {
     @ResponseBody
     public String roomdelete(@RequestParam("roomNo") int roomNo) {
         boolean result = roomService.roomdelete(roomNo);
-        if(result) {
+        if (result) {
             return "1";
-        }else {
+        } else {
             return "2";
         }
     }

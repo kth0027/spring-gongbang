@@ -278,7 +278,6 @@ function classRegisterCheck(){
     // 업로드한 이미지에 대한 유효성 검사는 Controller 에서 수행합니다.
 
 
-
 }
 
 // 클래스 등록 유효성 검사 종료

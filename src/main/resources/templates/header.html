@@ -86,10 +86,12 @@
                                     </a>
                                 </li>
 
-                                <li class="d-flex align-items-center"><i class="fa-solid fa-gear"></i>
-                                    <a sec:authorize="hasRole('ADMIN')" class="nav-link"
+                                <li sec:authorize="hasRole('ADMIN')">
+                                    <i class="fa-solid fa-gear"></i>
+                                    <a class="nav-link"
                                        th:href="@{/admin/adminlist}">관리리스트 </a>
                                 </li>
+
                                 <li>
                                     <a sec:authorize="hasRole('MEMBER')" class="nav-link"
                                        th:href="@{/member/reservationListController}">
@@ -128,20 +130,18 @@
                                     </a>
                                 </li>
 
+
                                 <li sec:authorize="hasRole('MEMBER')" class="d-flex align-items-center">
                                     <i class="fa-solid fa-q"></i>
                                     <a class="nav-link" th:href="@{/member/msg}"
-                                       th:if="${ session.nreadcount==null }" th:text="${'Q&A(0)'}">
+                                       th:if="${ session.nreadcount == null }" th:text="${'Q&A(0)'}">
                                     </a>
-                                </li>
-
-                                <li class="d-flex align-items-center">
-                                    <i class="fa-solid fa-q"></i>
                                     <a sec:authorize="hasRole('MEMBER')" class="nav-link" th:href="@{/member/msg}"
-                                       th:if="!${ session.nreadcount==null}"
+                                       th:if="!${ session.nreadcount == null}"
                                        th:text="${'Q&A ('+session.nreadcount+')'}">
                                     </a>
                                 </li>
+
 
                                 <li>
                                     <a sec:authorize="hasRole('MEMBER')" class="nav-link" th:href="@{/community/list}">
@@ -385,6 +385,11 @@
             });
         });
 
+
+
+
+
+
 </script>
 
 <script>
@@ -399,6 +404,11 @@
                 }
         });
     }
+
+
+
+
+
 
 </script>
 </body>

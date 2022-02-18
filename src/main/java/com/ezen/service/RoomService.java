@@ -75,7 +75,7 @@ public class RoomService {
                 // 2.2 Spring 은 Tomcat 이 내장 서버라서, 실행할 때 마다 경로가 바뀐다. (내부적으로 로테이션을 돌면서)
 
                 // 인텔리전용
-                 String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+                String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
 
                 // vs전용
 //                String dir = "C:\\gongbang\\src\\main\\resources\\static\\roomimg";
@@ -365,6 +365,9 @@ public class RoomService {
     // @Param category : 검색창에서 선택한 카테고리
     public Page<RoomEntity> adminGetRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local, String category) {
 
+
+        // 관리자 페이지에서 페이지 볼 개수를 입력받아서 PageRequest 에 넣어주면 페이징 처리를 할 수 있습니다.
+
         System.out.println("관리자 검색 페이지 접근");
         System.out.println("키워드 : " + keyword + ", 지역 : " + local + ", 카테고리 : " + category);
 
@@ -374,7 +377,8 @@ public class RoomService {
             page = pageable.getPageNumber() - 1;
         }
         // 페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-        pageable = PageRequest.of(page, 50, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+        // 한 페이지에서 볼 개수를 변수로 입력받도록 수정 예정입니다.
+        pageable = PageRequest.of(page, 30, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
 
         // 1.1 검색이 없는 경우
         if (keyword.equals("-1")) {
@@ -425,15 +429,16 @@ public class RoomService {
         // null 값에 대한 처리가 되어있는가?
         return null;
     }
+
     // 룸 삭제 02-18 조지훈
     @Transactional
     public boolean roomdelete(int roomNo) {
-       Optional<RoomEntity> entityOptional = roomRepository.findById(roomNo);
-       if(entityOptional != null) {
-           roomRepository.delete(entityOptional.get());
-           return true;
-       }
-       return false;
+        Optional<RoomEntity> entityOptional = roomRepository.findById(roomNo);
+        if (entityOptional != null) {
+            roomRepository.delete(entityOptional.get());
+            return true;
+        }
+        return false;
     }
 
     // [공방 정보 수정]
@@ -441,13 +446,15 @@ public class RoomService {
     public boolean updateClass(RoomEntity roomEntity, List<MultipartFile> files) {
 
         // 공방에는 이미 MemberEntity 가 맵핑되어있다.
-
+        // roomEntity 는 이미 존재하는 기존 엔티티이다.
+        // 새로 입력받은 값들을 업데이트 시켜줘야한다.
 
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = memberService.getMember(memberDto.getMemberNo());
 
+        System.out.println(roomEntity.toString());
         // 2. 이미지 처리
         String uuidfile = null;
 
@@ -460,11 +467,20 @@ public class RoomService {
             int roomNo = roomEntity.getRoomNo();
             // roomNo 에 해당하는 등록된 이미지 모두 삭제
 
-            List<RoomImgEntity> roomImgEntities = roomImgRepository.getImagesByRoomNo(roomNo);
-            for(RoomImgEntity roomImgEntity : roomImgEntities){
-                roomImgEntity.setRoomImg("");
+            List<RoomImgEntity> roomImgEntities = roomImgRepository.findAll();
+            for (RoomImgEntity roomImgEntity : roomImgEntities) {
+                roomImgRepository.deleteById(roomImgEntity.getRoomImgNo());
             }
 
+            System.out.println(roomImgEntities.toString());
+            // 수정된 RoomEntity 를 Repo 에 저장시킨다.
+            roomEntity.setMemberEntity(memberEntity);
+
+            System.out.println(roomEntity.toString());
+
+            int savedRoomNo = roomRepository.save(roomEntity).getRoomNo();
+
+            // 새로 입력받은 파일 입력
             for (MultipartFile file : files) {
                 // 1. 난수 + '_' + 파일이름
                 UUID uuid = UUID.randomUUID();
@@ -500,7 +516,11 @@ public class RoomService {
                 int roomImgNo = roomImgRepository.save(roomImgEntity).getRoomImgNo();
                 RoomImgEntity roomImgEntitySaved = roomImgRepository.findById(roomImgNo).get();
                 // 6.2 각각의 이미지를 room entity 에 선언된 list 에 저장시킨다.
-                roomEntity.getRoomImgEntities().add(roomImgEntitySaved);
+                RoomEntity savedRoomEntity = roomRepository.findById(savedRoomNo).get();
+                savedRoomEntity.getRoomImgEntities().add(roomImgEntitySaved);
+
+                System.out.println(savedRoomEntity.toString());
+
                 return true;
             }
         }

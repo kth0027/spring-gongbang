@@ -4,8 +4,6 @@ package com.ezen.service;
 import com.ezen.domain.dto.IntergratedDto;
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
-import com.ezen.domain.entity.RoomEntity;
-import com.ezen.domain.entity.RoomLikeEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -89,7 +88,9 @@ public class MemberService implements UserDetailsService {
         // 2. 찾은 entity를 dto 변경후 반환 [ 패스워드 , 수정날짜 제외 ]
 
         return MemberDto.builder()
+                // 02-17 조지훈
                 .memberNo(memberEntity.get().getMemberNo())
+                // end
                 .memberName(memberEntity.get().getMemberName())
                 .memberId(memberEntity.get().getMemberId())
                 .memberEmail(memberEntity.get().getMemberEmail())
@@ -115,55 +116,31 @@ public class MemberService implements UserDetailsService {
         }
         return false;  // 회원탈퇴 X
     }
-    
-    // 회원정보 수정처리 :: 22.02.15 김태호
-    @Transactional
-    public boolean memberUpdate (MemberDto memberDto) {
-        try {
-            // 1. 수정할 엔티티 찾는다
-            Optional<MemberEntity> entityOptional = memberRepository.findById(memberDto.getMemberNo());
-
-            // 2. 엔티티를 수정한다 [ 엔티티 변화 -> DB 변경처리 ]
-            entityOptional.get().setMemberNo(memberDto.getMemberNo());
-            entityOptional.get().setMemberId(memberDto.getMemberId());
-            entityOptional.get().setMemberPassword(memberDto.getMemberPassword());
-            entityOptional.get().setMemberName(memberDto.getMemberName());
-            entityOptional.get().setMemberEmail(memberDto.getMemberEmail());
-            entityOptional.get().setMemberPhone(memberDto.getMemberPhone());
-            entityOptional.get().setMemberGender(memberDto.getMemberGender());
-            return true;
-        }
-        catch ( Exception e ){
-            System.out.println( e );
-            return false;
-        }
-    }
 
     // 회원 아이디 찾기
-     public String findid(MemberDto memberDto) {
-        // 1. 모든 엔티티 호출
+    // 이름, 핸드폰 번호 받고 회원정보를 조회합니다.
+    public MemberEntity findMyId(String name, String phone) {
+
+        // 1. Member 엔티티를 불러옵니다.
         List<MemberEntity> memberEntities = memberRepository.findAll();
-        // 2. 반복문 이용한 모든 엔티티를 하나씩 꺼내보기
-        for (MemberEntity memberEntity : memberEntities) {
-            // 3. 만약에 해당 엔티티가 이름과 이메일이 동일하면
-            if (memberEntity.getMemberName().equals(memberDto.getMemberName()) &&
-                    memberEntity.getMemberPhone().equals(memberDto.getMemberPhone())) {
-                // 4. 아이디를 반환한다
-                return memberEntity.getMemberId();
+        // 2. 이름, 핸드폰 번호가 일치하는 회원이 있는지 검사합니다.
+        for(MemberEntity member : memberEntities){
+            if(member.getMemberName().equals(name) && member.getMemberPhone().equals(phone)){
+                // 3. 일치하는 회원이 있으면
+                return member;
             }
         }
-        // 5. 만약에 동일한 정보가 없으면
         return null;
     }
 
-    // 회원 비밀번호 찾기
+    // 비밀번호
     public String findpassword(MemberDto memberDto) {
         // 1. 모든 엔티티 호출
         List<MemberEntity> memberEntities = memberRepository.findAll();
         // 2. 반복문 이용한 모든 엔티티를 하나씩 꺼내보기
         for (MemberEntity memberEntity : memberEntities) {
             // 3. 만약에 해당 엔티티가 이름과 이메일이 동일하면
-            if (memberEntity.getMemberId().equals(memberDto.getMemberId()) &&
+            if (memberEntity.getMemberEmail().equals(memberDto.getMemberEmail()) &&
                     memberEntity.getMemberPhone().equals(memberDto.getMemberPhone())) {
                 // 4. 패스워드를 반환한다
                 return memberEntity.getMemberPassword();
@@ -219,7 +196,7 @@ public class MemberService implements UserDetailsService {
 
     // 02-15 채널 정보 등록하기 - 조지훈
     @Transactional
-    public boolean channelupdate(MemberEntity memberEntity) {
+    public boolean channelregistration(MemberEntity memberEntity) {
         try {
             Optional<MemberEntity> entityOptional = memberRepository.findById(memberEntity.getMemberNo());
             entityOptional.get().setChannelTitle(memberEntity.getChannelTitle());
@@ -231,6 +208,37 @@ public class MemberService implements UserDetailsService {
             return false;
         }
     }
+
+    // 02-17 채널 정보 수정시 기존이미지 삭제버튼 - 조지훈
+    @Transactional
+    public boolean channelimgdelete(int memberNo) {
+        try {
+            MemberEntity memberEntity = memberRepository.findById(memberNo).get();
+            memberEntity.setChannelImg(null);
+            return true;
+        }catch (Exception e) {
+            System.out.println("기존 사진 삭제 실패" + e);
+            return false;
+        }
+    }
+
+    // 02-17 강사소개 작성여부 체크 - 조지훈
+    public boolean channelcheck(int memberNo){
+        MemberEntity memberEntity = memberRepository.findById(memberNo).get();
+        if(memberEntity.getChannelContent() == null) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+//    @Transactional
+//    public boolean channelupdate(MemberEntity memberEntity) {
+//        try {
+//
+//        }catch (Exception e) {}
+//
+//        return true;
+//    }
 
 }
 

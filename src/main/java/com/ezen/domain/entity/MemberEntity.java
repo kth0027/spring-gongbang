@@ -52,7 +52,6 @@ public class MemberEntity extends BaseTimeEntity {
     @Column(name = "channelImg")
     private String channelImg;
 
-
     // 회원이 여러개의 방을 등록할 수 있다.
     // RoomEntity 와 1 : N 관계를 맺는다.
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)

@@ -255,16 +255,21 @@ public class RoomController {
 
         model.addAttribute("memberEntity", memberEntity);
 
-
         return "room/room_update";
     }
 
     // [공방 정보 업데이트 적용 컨트롤러]
     @PostMapping("/updateController")
     @Transactional
-    public void updateController(Model model,
-                                   RoomEntity roomEntity,
+    public String updateController(Model model,
+                                   @RequestParam("roomTitle") String roomTitle,
+                                   @RequestParam("roomContent") String roomContent,
+                                   @RequestParam("roomDetail") String roomDetail,
                                    @RequestParam("roomImageInput") List<MultipartFile> files,
+                                   @RequestParam("roomCategory") String roomCategory,
+                                   @RequestParam("roomLocal") String roomLocal,
+                                   @RequestParam("roomAddress") String roomAddress,
+                                   @RequestParam("roomMax") int roomMax,
                                    @RequestParam("addressX") double addressX,
                                    @RequestParam("addressY") double addressY,
                                    @RequestParam("checkBox1") String checkBox1,
@@ -274,16 +279,30 @@ public class RoomController {
                                    @RequestParam("roomStatus") String roomStatus,
                                    @PageableDefault Pageable pageable) {
 
-        System.out.println(roomEntity.toString());
+        RoomEntity targetRoomEntity = null;
+        if (roomRepository.findById(roomNo).isPresent()) {
+            targetRoomEntity = roomRepository.findById(roomNo).get();
+        }
+        assert targetRoomEntity != null;
+        targetRoomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
+        targetRoomEntity.setRoomAddress(roomAddress + "," + addressY + "," + addressX);
+        targetRoomEntity.setRoomStatus(roomStatus);
+        targetRoomEntity.setRoomCategory(roomCategory);
+        targetRoomEntity.setRoomLocal(roomLocal);
+        targetRoomEntity.setRoomMax(roomMax);
+        targetRoomEntity.setRoomDetail(roomDetail);
+        targetRoomEntity.setRoomTitle(roomTitle);
+        targetRoomEntity.setRoomContent(roomContent);
 
-//        roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
-//        roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
-//        roomEntity.setRoomStatus(roomStatus);
-//
-//
-//        boolean result = roomService.updateClass(roomEntity, files);
+        System.out.println("수정된 룸 엔티티 : " + targetRoomEntity.toString());
+        System.out.println("입력받은 이미지 : " + files.toString());
 
-        // return "member/member_class";
+        boolean result = roomService.updateClass(targetRoomEntity, files);
+
+        List<RoomEntity> roomDtos = roomService.getmyroomlist();
+        model.addAttribute("roomDtos", roomDtos);
+
+        return "member/member_class";
     }
 
     // json 반환 [지도에 띄우고자 하는 방 응답하기]
@@ -365,8 +384,10 @@ public class RoomController {
         timeTableEntity.setRoomMax(roomEntity.getRoomMax());
         timeTableEntity.setRoomStatus("모집중");
         boolean result = roomService.registerTimeToClass(timeTableEntity, roomNo);
-        List<RoomEntity> roomDtos = roomService.getmyroomlist();
+
+        Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
         model.addAttribute("roomDtos", roomDtos);
+
         return "member/member_class";
     }
 

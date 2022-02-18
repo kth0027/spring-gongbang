@@ -445,50 +445,39 @@ public class RoomService {
     @Transactional
     public boolean updateClass(RoomEntity roomEntity, List<MultipartFile> files) {
 
-        // 공방에는 이미 MemberEntity 가 맵핑되어있다.
-        // roomEntity 는 이미 존재하는 기존 엔티티이다.
-        // 새로 입력받은 값들을 업데이트 시켜줘야한다.
+        System.out.println("서비스에 넘어온 이미지 파일 리스트 >>>>     " + files.toString());
 
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = memberService.getMember(memberDto.getMemberNo());
+        roomEntity.setMemberEntity(memberEntity);
 
-        System.out.println(roomEntity.toString());
+        RoomEntity savedRoomEntity = null;
+        int savedRoomNo = roomRepository.save(roomEntity).getRoomNo();
+        if (roomRepository.findById(savedRoomNo).isPresent()) {
+            savedRoomEntity = roomRepository.findById(savedRoomNo).get();
+        }
+
         // 2. 이미지 처리
         String uuidfile = null;
 
         // 2.1 이미지가 존재하는 경우
         if (files.size() != 0) {
-
             // [이미지 처리]
             // 다수의 기존에 등록된 이미지를 불러올 마땅한 방법을 생각해야한다.
-
             int roomNo = roomEntity.getRoomNo();
             // roomNo 에 해당하는 등록된 이미지 모두 삭제
-
-            List<RoomImgEntity> roomImgEntities = roomImgRepository.findAll();
-            for (RoomImgEntity roomImgEntity : roomImgEntities) {
-                roomImgRepository.deleteById(roomImgEntity.getRoomImgNo());
-            }
-
-            System.out.println(roomImgEntities.toString());
-            // 수정된 RoomEntity 를 Repo 에 저장시킨다.
-            roomEntity.setMemberEntity(memberEntity);
-
-            System.out.println(roomEntity.toString());
-
-            int savedRoomNo = roomRepository.save(roomEntity).getRoomNo();
-
+            roomImgRepository.removeRoomImgByRoomNo(roomNo);
+            System.out.println("어떤 이미지가 들어가는지 체크 >>>>   ");
             // 새로 입력받은 파일 입력
             for (MultipartFile file : files) {
+                System.out.println(file.toString());
                 // 1. 난수 + '_' + 파일이름
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
-                // 2.1 수업 때 배웠던 방식은 프로젝트에 올리는 것[현재 작업폴더]
-                // 2.2 Spring 은 Tomcat 이 내장 서버라서, 실행할 때 마다 경로가 바뀐다. (내부적으로 로테이션을 돌면서)
-
+                // >> 서버에 저장
                 String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
@@ -496,37 +485,19 @@ public class RoomService {
                 String filepath = dir + "\\" + uuidfile;
 
                 try {
-                    // 4. 지정한 경로에 파일을 저장시킨다.
                     file.transferTo(new File(filepath));
                 } catch (Exception e) {
                     System.out.println("오류 : " + e);
                 }
-                // 5.entity 에 파일 경로를 저장한다.
-                // 5.1 이미지 엔티티와 맵핑된 roomEntity 에 room entity 를 주입해야한다.
-
-                // 등록 X 수정이므로 인수로 받은 RoomEntity 를 그대로 넣어준다.
-
                 RoomImgEntity roomImgEntity = RoomImgEntity.builder()
                         .roomImg(uuidfile)
                         .roomEntity(roomEntity)
                         .build();
-
-                // 6. 각각의 파일을 repo 를 통해 db에 저장한다.
-                // 6.1 해당하는 파일의 roomImgNo 를 통해 해당하는 이미지를 불러온다.
                 int roomImgNo = roomImgRepository.save(roomImgEntity).getRoomImgNo();
                 RoomImgEntity roomImgEntitySaved = roomImgRepository.findById(roomImgNo).get();
-                // 6.2 각각의 이미지를 room entity 에 선언된 list 에 저장시킨다.
-                RoomEntity savedRoomEntity = roomRepository.findById(savedRoomNo).get();
                 savedRoomEntity.getRoomImgEntities().add(roomImgEntitySaved);
-
-                System.out.println(savedRoomEntity.toString());
-
-                return true;
             }
-        }
-        // 2.2 새로 첨부된 이미지가 존재하지 않는 경우
-        else {
-            // 1. 기존 이미지를 그대로 유지합니다.
+            return true;
         }
         return false;
     }

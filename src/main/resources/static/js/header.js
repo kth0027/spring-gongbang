@@ -16,8 +16,6 @@ function channelcheck(memberNo) {
 
 function loginCheck(){
 
-
-
     var loginId = $("#memberId").val();
     var loginPassword = $("#memberPassword").val();
 

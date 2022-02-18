@@ -1,59 +1,19 @@
 // tab 이벤트 + summernote + checkbox 클릭 이벤트 핸들러
 $(function(){
 
-    // 클래스 등록 시, 입력한 값에 대한 유효성 검사 시작
-    // @Author : 김정진
-    // @Date : 2022-02-16
-
-    // 1. 클래스 제목 입력에 대한 유효성 검사
     $("#roomTitle").keyup(function(){
-        var title = $("#roomTitle").val();
-
-        var regTitle =/^[a-zA-Z가-힣]{1,50}$/;
         // 1. 글자수를 카운트해서 view 에 보여줍니다.
-        var titleLength = getTextLength(title);
-        $("#title-key-count").html(titleLength);
-        // 2. 글자수는 50개로 제한을 둡니다.
-        if(titleLength > 50){
-            alert("제목은 50자 이하로 입력가능합니다.");
-            // 3. 글자수를 초과했다면 맨 마지막 글자를 지웁니다.
-            $("#roomTitle").val("");
-            var trimmedTitle = title.substring(0, 40);
-            $("#roomTitle").val(trimmedTitle);
-        }
-        if(!regTitle.test(title)){
-            $("#title-result").html("유효성 검사 실패");
-        }
+        var title = $("#roomTitle").val();
+        var updateTitleLength = getTextLength(title);
+        $("#title-key-count").html(updateTitleLength);
     });
 
-    // 2. 클래스 내용에 대한 유효성 검사
     $("#addClassInfo").keyup(function(){
         var content = $("#addClassInfo").val();
-        var regContent = /^[a-zA-Z가-힣]{1,100}$/;
         // 1. 입력받은 글자수를 view 에 보여줍니다.
         var contentLength = getTextLength(content);
         $("#content-key-count").html(contentLength);
-        if(contentLength > 100){
-            alert("클래스 간단 소개는 100자 이하로 입력가능합니다.");
-            $("#roomContent").val("");
-            var trimmedContent = content.substring(0, 90);
-            $("#roomContent").val(trimmedContent);
-        }
-        if(!regContent.test(content)){
-            $("#content-result").html("유효성 검사 실패");
-        }
     });
-
-    // 3. 사진 입력에 대한 유효성 검사
-        // 1. 무조건 사진을 1장이상 등록해야합니다.
-
-
-    // 4. 클래스 상세 소개에 대한 유효성 검사
-        // 1. summernote 에 내용을 최소 50글자 이상 입력해야합니다.
-
-    // 5. 주소 입력에 대한 유효성 검사
-        // 1. 무조건 주소를 선택해야합니다.
-
 
     $("ul.tabs li").click(function(){
         var tabId = $(this).attr("data-tab");
@@ -273,10 +233,59 @@ function sample5_execDaumPostcode() {
 // 다음 주소 등록 api 종료
 
 // 클래스 등록 유효성 검사 시작
-function classRegisterCheck(){
+function registerCheck(){
 
-    // 업로드한 이미지에 대한 유효성 검사는 Controller 에서 수행합니다.
+    // 클래스 등록 시, 입력한 값에 대한 유효성 검사 시작
+    // @Author : 김정진
+    // @Date : 2022-02-16
 
+    // 제목
+    var title = $("#roomTitle").val();
+    var regTitle =/^[\w\s가-힣]{1,50}$/;
+
+    if(!regTitle.test(title)){
+        $("#title-result").html("제목을 입력해주세요");
+        return false;
+    } else {
+        $("#title-result").html("제목이 입력되었습니다.");
+    }
+
+    var content = $("#addClassInfo").val();
+    var regContent = /^[\w\s가-힣]{1,100}$/;
+
+    if(!regContent.test(content)){
+        $("#content-result").html("내용을 입력해주세요");
+        return false;
+    } else {
+        $("#content-result").html("내용을 입력되었습니다.");
+    }
+
+    // 이미지는 1장이상 업로드해야합니다.
+    var fileCheck = $("#image-input").val();
+    if(!fileCheck){
+        $("#image-input-result").html("이미지를 1장이상 업로드하셔야합니다. ");
+        return false;
+    } else {
+        $("#image-input-result").html("");
+    }
+
+//    var roomDetail = $("#summernote").val();
+//    console.log(roomDetail);
+//    var regDetail = /^[\w\s가-힣]{1,2000}$/g;
+//    if(!regDetail.test(roomDetail)){
+//        $("#room-detail-result").html("1-2000자 이내로 내용을 입력해주세요.");
+//        return false;
+//    } else {
+//        $("#room-detail-result").html("");
+//    }
+
+    var address = $("#sample5_address").val();
+    if(address == "" || address == null){
+        $("#address-result").html("주소를 선택해야합니다.");
+        return false;
+    } else {
+        $("#address-result").html("");
+    }
 
 }
 

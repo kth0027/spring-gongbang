@@ -44,15 +44,16 @@
 
     <div class="row register-detail-inner">
         <!--
-    1. @Author : 김정진
-    2. @Date : 2022-01-27
-    3. @Note :
-        1. form 태그 이용한 클래스 정보 등록
-        2. tab-1, tab-2, tab-3 에 각각 탭 이동 이벤트가 걸려있다.
-        3. room 엔티티는 member, roomimg 와 1:N 맵핑 되어있다.
-        4. 현재 드래그 앤 드롭이 합치는 과정에서 망가져서 드래그 앤 드롭이 적용되지 않는다.
-    -->
-        <form action="/room/updateController" id="updateForm" method="post" enctype="multipart/form-data">
+        1. @Author : 김정진
+        2. @Date : 2022-01-27
+        3. @Note :
+            1. form 태그 이용한 클래스 정보 등록
+            2. tab-1, tab-2, tab-3 에 각각 탭 이동 이벤트가 걸려있다.
+            3. room 엔티티는 member, roomimg 와 1:N 맵핑 되어있다.
+            4. 현재 드래그 앤 드롭이 합치는 과정에서 망가져서 드래그 앤 드롭이 적용되지 않는다.
+        -->
+        <form th:action="@{/room/updateController}" id="form" method="post" enctype="multipart/form-data"
+              onsubmit="return registerCheck();">
             <input type="hidden" th:value="${roomEntity.roomNo}" name="roomNo">
             <input type="hidden" th:value="${roomEntity.roomStatus}" name="roomStatus">
             <input type="hidden" th:value="${roomEntity.createdDate}" name="createdDate">
@@ -66,14 +67,12 @@
                             <div th:text="${memberEntity.memberName}"></div>
                         </div>
                     </div>
-
                     <div class="d-flex justify-content-start align-items-center registerbox">
                         <div> 강사님 연락처 :</div>
                         <div class="my-2">
                             <div th:text="${memberEntity.memberPhone}"></div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="register-content-wrapper">
@@ -100,7 +99,6 @@
                             </li>
                         </ul>
                     </div>
-
                 </div>
 
                 <div class="register-content-wrapper register-content-wrappertextarea">
@@ -112,7 +110,7 @@
                     <label for="addClassInfo" class="form-label">공방 간단소개 <span>[필수]</span>
                         <span>글자수(<span id="content-key-count"></span>/150)</span></label><br>
                     <div class="text-center">
-                            <textarea class="" onchange="registerCheck();" name="roomContent" id="addClassInfo"
+                            <textarea onchange="registerCheck();" name="roomContent" id="addClassInfo"
                                       cols="30" rows="5" th:text="${roomEntity.roomContent}"></textarea>
                     </div>
 
@@ -274,7 +272,7 @@
                     </div>
                 </div>
                 <div class="register-content-wrapper">
-                    <input type="submit" value="공방 등록">
+                    <input type="submit" value="공방 정보 수정">
                 </div>
             </div>
         </form>
@@ -302,14 +300,9 @@
                 placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
             });
         });
-
-
-
-
 </script>
 
 <script>
-
     window.onscroll = function () { myFunction() };
 
     var header = document.getElementById("stickynav");
@@ -322,7 +315,6 @@
             header.classList.remove("sticky");
         }
     }
-
 
 
 </script>

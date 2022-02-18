@@ -62,3 +62,33 @@ function showBoardContent(boardNo){
         }
     });
 }
+
+function createPost(boardNo){
+
+    $.ajax({
+        url: "/community/createPost",
+        data: {"boardNo" : boardNo},
+        method: "GET",
+        success: function(data){
+            // 기존에 있던 내용을 지운다.
+            $(".content-area").empty();
+            $(".content-area").append(data);
+        }
+    });
+
+}
+
+// 게시글 작성 시 '취소' 누르고 뒤로가기
+function goToPostList(boardNo){
+    $.ajax({
+        url: "/community/postListController",
+        data: {"boardNo" : boardNo},
+        method: "GET",
+        success: function(data){
+            // 기존에 있던 내용을 지운다.
+            $(".content-area").empty();
+            $(".content-area").append(data);
+        }
+    });
+
+}

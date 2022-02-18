@@ -46,7 +46,7 @@ public class CommunityController {
         return "member/community";
     }
 
-    // [특정 게시판 클릭 시 작성된 게시글 출력]
+    // [특정 게시판 클릭 시 작성된 게시글을 리스트로 출력]
     @GetMapping("/postListController")
     public String postListController(Model model,
                                      @RequestParam("boardNo") int boardNo,
@@ -56,8 +56,20 @@ public class CommunityController {
         Page<PostEntity> postEntities = postService.getPostList(boardNo, pageable);
 
         model.addAttribute("posts", postEntities);
+        model.addAttribute("boardNo", boardNo);
 
         return "community/board_content";
+    }
+
+    // 게시물 작성하기
+    // 카테고리 -> 게시글 리스트 -> 게시글 작성
+    @GetMapping("createPost")
+    public String createPost(@RequestParam("boardNo") int boardNo, Model model){
+
+        model.addAttribute("boardNo", boardNo);
+
+        return "community/create_post";
+
     }
 
 

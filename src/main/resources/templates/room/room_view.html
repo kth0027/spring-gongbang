@@ -20,23 +20,18 @@
     <input type="hidden" th:value="${roomEntity.roomPrice}" id="roomPrice">
 
     <div class="row">
-        <!-- 상단 버튼-->
-        <!--
-        1. 홈페이지 테마에 맞게 상단 버튼 다시 꾸며야함
-        2. 부트스트랩 스타일 쓰기 XXX 통일성이 다 깨짐
-        -->
         <div class="col-md-7">
             <div>
                 <div th:id="${'carousel' + roomEntity.roomNo}" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img th:src="@{'/roomimg/'+${roomEntity.roomImgEntities.get(0).roomImg} }"
+                            <img th:src="@{ '/roomimg/' + ${roomEntity.roomImgEntities.get(0).roomImg} }"
                                  class="d-block w-100" style="height: 30rem;">
                         </div>
                         <!-- 02-15 조지훈 -->
                         <div class="carousel-item"
-                             th:each="num : ${#numbers.sequence( 1 , roomEntity.roomImgEntities.size()-1  )}">
-                            <img th:src="@{'/roomimg/' + ${roomEntity.roomImgEntities.get(num).roomImg} }"
+                             th:each="num : ${#numbers.sequence(1, roomEntity.roomImgEntities.size()-1)}">
+                            <img th:src="@{ '/roomimg/' + ${roomEntity.roomImgEntities.get(num).roomImg} }"
                                  class="d-block w-100"
                                  style="height: 30rem;">
                         </div>
@@ -350,6 +345,8 @@
             return false;
         });
     });
+
+
 
 
 </script>

@@ -90,8 +90,7 @@ function registerClass(roomNo, beginTime, endTime, roomDate){
     roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> <span> 시작시간 : " + beginTime + "</span>  <span> 종료시간 : " + endTime + "</span> </div>";
     roomhtml += "<div style='margin: 0.5rem; padding: 0.5rem;'> <span> 최대 수강 신청 인원 : 3명 </span> </div>";
     roomhtml += "<select onchange='personTest();' class='form-select' id='class-register-person'>";
-    roomhtml += "<option selected='selected'> 인원선택 </option>";
-    roomhtml += "<option value='1'> 1명 </option>";
+    roomhtml += "<option selected='selected' value='1'> 1명 </option>";
     roomhtml += "<option value='2'> 2명 </option>";
     roomhtml += "<option value='3'> 3명 </option>";
     roomhtml += "</select>";

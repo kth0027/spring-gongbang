@@ -78,11 +78,7 @@ public class AdminController {
 
     @GetMapping("/roomJSON")
     @ResponseBody
-    public JSONObject roomToJSON(@RequestParam("year") int year,
-                                 @RequestParam("month") int month,
-                                 @RequestParam("day") int day,
-                                 @RequestParam("category") String category,
-                                 @RequestParam("local") String local) {
+    public JSONObject roomToJSON() {
 
         // RoomEntity 를 JSON 으로 변환 후 js 로 넘겨주는 역할
         JSONObject jsonObject = new JSONObject();
@@ -127,6 +123,10 @@ public class AdminController {
             // 4. 예약 정보
             data.put("createdDate", historyEntity.getCreatedDate()); // 예약이 완료된 날짜
             data.put("price", historyEntity.getHistoryPoint()); // 회원이 결제한 금액
+
+            // 5. 신청한 인원 수 : 결제 금액 / 클래스 1명당 금액
+            int person = historyEntity.getHistoryPoint() / roomEntity.getRoomPrice();
+            data.put("person", person);
 
             jsonArray.add(data);
         }

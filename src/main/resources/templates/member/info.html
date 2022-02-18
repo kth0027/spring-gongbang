@@ -4,35 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-        .navcssul {
-            background-color: #374b73;
-            border-radius: 1rem;
-        }
-
-        .navcssul a:hover {
-            background-color: #ff9a9a;
-            border-radius: 1rem;
-            color: white;
-
-        }
-
-        /* .navcssul:hover a {
-            color: white;
-        } */
-
-        .profile {
-            position: relative;
-        }
-
-        .rewritebox {
-            position: absolute;
-            top: 0;
-            left: 0;
-            background: white;
-            display: none;
-        }
-    </style>
+    <link th:href="@{/css/info.css}" rel="stylesheet">
 </head>
 
 <body>
@@ -53,44 +25,48 @@
                     <span class="fs-4">나의정보</span>
                 </a>
                 <hr>
-                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist"
+                <div class="nav flex-column nav-pills me-3 navlist" id="v-pills-tab" role="tablist"
                      aria-orientation="vertical">
                     <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
-                            aria-selected="true">회원정보</button>
+                            aria-selected="true">회원정보
+                    </button>
                     <button class="nav-link" id="v-pills-reserveinfo-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-reserveinfo" type="button" role="tab"
-                            aria-controls="v-pills-reserveinfo" aria-selected="false">예약정보</button>
-                    <!-- 02-17 채널페이지로 맵핑 조지훈 -->
-                    <a th:href="@{'/member/channel/' +${memberDto.getMemberNo} }"><button class="nav-link" id="v-pills-reserveinfo-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-reserveinfo" type="button" role="tab"
-                            aria-controls="v-pills-reserveinfo" aria-selected="false">내 채널 보기</button></a>
-                    <!-- 02-17 조지훈 end -->
+                            aria-controls="v-pills-reserveinfo" aria-selected="false">예약정보
+                    </button>
                     <button class="nav-link signoutbtn" id="v-pills-signout-tab" data-bs-toggle="pill"
                             data-bs-target="#v-pills-signout" type="button" role="tab" aria-controls="v-pills-signout"
-                            aria-selected="false"><a data-bs-toggle="modal" data-bs-target="#modalmdelete">회원탈퇴</a> </button>
+                            aria-selected="false"><a data-bs-toggle="modal" data-bs-target="#modalmdelete">회원탈퇴</a>
+                    </button>
                 </div>
                 <hr>
             </div>
 
             <div class="col-8 p-5 ">
                 <div class="tab-content" id="v-pills-tabContent">
+                    <!-- 회원정보 페이지 -->
                     <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
                          aria-labelledby="v-pills-profile-tab">
-                        <div class="row">
+                        <div class="row writeform">
+
+                            <!-- 회원정보 -->
                             <div class="writebox">
                                 <div class="h3">회원 정보</div>
                                 <form action="">
                                     <table class="table">
                                         <tr>
-                                            <td>이메일</td>
-                                            <td th:text="${memberDto.getMemberEmail}"></td>
+                                            <td>아이디</td>
+                                            <td th:text="${memberDto.getMemberId}"></td>
                                         </tr>
                                         <tr>
                                             <td>이름</td>
                                             <td th:text="${memberDto.getMemberName}"></td>
                                         </tr>
-
+                                        <tr>
+                                            <td>이메일</td>
+                                            <td th:text="${memberDto.getMemberEmail}"></td>
+                                        </tr>
                                         <tr>
                                             <td>회원등급</td>
                                             <td>서비스준비중</td>
@@ -109,79 +85,100 @@
                                         </tr>
                                         <tr>
                                             <td>가입날짜</td>
-                                            <td th:text="${memberDto.getCreatedDate}"></td>
+                                            <td th:text="${#temporals.format(memberDto.createdDate,'yyyy-MM-dd hh:mm')}"></td>
                                         </tr>
                                     </table>
-                                    <div class="d-flex">
-                                        <input class="btn-info rounded text-white text-center w-25 offset-4"
-                                               type="submit" value="수정하기">
+                                    <div class="d-flex justify-content-center infosubmitbtn">
+                                        <input class="btninfo" type="button" value="수정하기">
                                     </div>
 
                                 </form>
                             </div>
 
+                            <!-- 회원정보 수정 -->
                             <div class="rewritebox">
                                 <div class="h3">회원 정보수정</div>
-                                <form action="">
+                                <form action="/member/updatecontroller" method="post">
+                                    <input type="text" maxlength="15" placeholder="5~15자리" name="memberNo"
+                                           th:value="${memberDto.getMemberNo}">
                                     <table class="table">
+
                                         <tr>
-                                            <td>이메일</td>
-                                            <td th:text="${memberDto.getMemberEmail}"></td>
+                                            <td th:text="'(아이디) ' + ${memberDto.getMemberId}"></td>
+                                            <td><input type="text" maxlength="15" placeholder="5~15자리" name="memberId"
+                                                       th:value="${memberDto.memberId}"></td>
                                         </tr>
                                         <tr>
-                                            <td>이름</td>
-                                            <td th:text="${memberDto.getMemberName}"></td>
+                                            <td th:text="'(비밀번호) ' + ${memberDto.getMemberPassword}"></td>
+                                            <td><input type="password" maxlength="15" placeholder="8~16자리"
+                                                       name="memberPassword" th:value="${memberDto.memberPassword}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td th:text="'(이름) ' + ${memberDto.getMemberName}"></td>
+                                            <td><input type="text" maxlength="15" placeholder="1~15자리" name="memberName"
+                                                       th:value="${memberDto.memberName}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td th:text="'(이메일) ' + ${memberDto.getMemberEmail}"></td>
+                                            <td><input type="text" placeholder="@(포함)" maxlength="" name="memberEmail"
+                                                       th:value="${memberDto.memberEmail}"></td>
                                         </tr>
 
                                         <tr>
                                             <td>회원등급</td>
-                                            <td>서비스준비중</td>
+                                            <td th:text="${memberDto.getMemberGrade}"></td>
                                         </tr>
                                         <tr>
-                                            <td>연락처</td>
-                                            <td th:text="${memberDto.getMemberPhone}"></td>
+                                            <td th:text="'(연락처) ' + ${memberDto.getMemberPhone}"></td>
+                                            <td><input type="text" maxlength="12" placeholder="11~12자리"
+                                                       name="memberPhone" th:value="${memberDto.memberPhone}"></td>
                                         </tr>
                                         <tr>
                                             <td>포인트</td>
                                             <td th:text="${memberDto.getMemberPoint}"></td>
                                         </tr>
                                         <tr>
-                                            <td>성별</td>
-                                            <td th:text="${memberDto.getMemberGender}"></td>
+                                            <td th:text="'(성별) ' + ${memberDto.getMemberGender}"></td>
+                                            <td class="d-flex align-items-center">
+                                                <input class="gendercheck col-1" type="radio" name="memberGender"
+                                                       id="msex1" value="남" checked="checked">남자
+                                                <input class="gendercheck col-1" type="radio" name="memberGender"
+                                                       id="msex2" value="여">여자
+                                            </td>
+
                                         </tr>
                                         <tr>
                                             <td>가입날짜</td>
                                             <td th:text="${memberDto.getCreatedDate}"></td>
                                         </tr>
                                     </table>
+
+                                    <div class="d-flex justify-content-center btninput">
+                                        <input class="form-control"
+                                               type="submit" value="확인">
+                                        <input
+                                                class="btnback"
+                                                type="button" value="뒤로가기">
+                                    </div>
                                 </form>
-                                <div class="d-flex justify-content-center">
-                                    <input class="btn-primary rounded text-white text-center w-25 h-50 mx-2"
-                                           type="submit" value="확인">
-                                    <input class="btn-dark rounded text-white text-center w-25 h-50 mx-2 btnback"
-                                           type="button" value="뒤로가기">
-                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- 예약내역 페이지 -->
                     <div class="tab-pane fade" id="v-pills-reserveinfo" role="tabpanel"
                          aria-labelledby="v-pills-reserveinfo-tab">
                         <div class="row">
                             예약내역
                         </div>
                     </div>
+
+                    <!-- 회원삭제 -->
                     <div class="tab-pane fade" id="v-pills-signout" role="tabpanel"
                          aria-labelledby="v-pills-signout-tab">
                     </div>
                 </div>
-                <div class="tab-content" id="v-pills-tabContent">
-                </div>
-
-
-
-
-
-
 
 
                 <!-- 모달 -->
@@ -213,20 +210,17 @@
     </div>
 
     <script>
-            /* 검색칸 팝업 */
-            $(document).ready(function () {
-
-                $(".btn-info").click(function () {
-                    $(".rewritebox").fadeIn();
-                    $(".writebox").hide();
-                });
-
-                $(".btnback").click(function () {
-                    $(".rewritebox").fadeOut();
-                    $(".writebox").show();
-                });
+        $(document).ready(function () {
+            $(".btninfo").click(function () {
+                $(".writebox").hide();
+                $(".rewritebox").fadeIn();
             });
-        </script>
+            $(".btnback").click(function () {
+                $(".rewritebox").fadeOut();
+                $(".writebox").show();
+            });
+        });
+    </script>
+</div>
 </body>
-
 </html>

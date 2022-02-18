@@ -504,3 +504,63 @@ h1 {
 .card-bot ul li {
     margin: 0 1rem;
 }
+
+
+/* 리뷰카드 */
+.reviewcard {
+    width: 20rem;
+    margin-top: 10px;
+    padding: 10px;
+    height: 100%;
+}
+
+.reviewimgbox {
+    width: 100%;
+    height: 20rem;
+}
+
+
+
+.modalimgbox {
+    border: 2px solid rgb(173, 173, 173);
+    height: 20rem;
+    position: relative;
+}
+
+.reviewimgbox img {
+    height: 100%;
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+}
+
+.modalbot a {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    text-decoration: none;
+    width: 10rem;
+    background-color: #ff9a9a;
+    border-radius: 1rem;
+    padding: 0 0.5rem;
+    border: 1px solid #374b73;
+}
+
+
+.modalbot a:hover {
+    transform: scale(1.05);
+    transition: ease-in-out 1s;    
+}
+
+.modalimg {
+    background-color: rgb(196, 196, 196);
+    height: 100%;
+}
+
+.modalimg img {
+    height: 100%;
+    width: 100%;
+}
+
+.modaltitle {
+    border-bottom: 0.2rem solid #374b73;
+}

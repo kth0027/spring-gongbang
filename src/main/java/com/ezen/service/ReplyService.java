@@ -59,7 +59,12 @@ public class ReplyService {
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
 
-                String dir = "C:\\gongbang\\build\\resources\\main\\static\\replyimg";
+                // 인텔리 전용 경로
+                 String dir = "C:\\gongbang\\build\\resources\\main\\static\\replyimg";
+                // vs 전용 경로
+//                String dir = "C:\\gongbang\\src\\main\\resources\\static\\replyimg";
+
+
                 String filepath = dir + "\\" + uuidfile;
                 try {
                     file.transferTo(new File(filepath));

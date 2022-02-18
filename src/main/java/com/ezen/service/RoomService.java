@@ -22,6 +22,7 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -418,6 +419,16 @@ public class RoomService {
         // 위 조건문을 모두 통과했다면 비정상적인 접근이라고 볼 수 있음
         // null 값에 대한 처리가 되어있는가?
         return null;
+    }
+    // 룸 삭제 02-18 조지훈
+    @Transactional
+    public boolean roomdelete(int roomNo) {
+       Optional<RoomEntity> entityOptional = roomRepository.findById(roomNo);
+       if(entityOptional != null) {
+           roomRepository.delete(entityOptional.get());
+           return true;
+       }
+       return false;
     }
 
     // [공방 정보 수정]

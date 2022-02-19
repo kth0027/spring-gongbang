@@ -32,8 +32,6 @@ function createNewReply(postNo){
 
                 $(".post-reply-content-container").last().append(postHTML);
 
-                // $("#post-reply-wrapper").load(location.href + " #post-reply-wrapper");
-
                 $(contentId).val("");
             }
         }

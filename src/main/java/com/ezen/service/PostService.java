@@ -56,23 +56,17 @@ public class PostService {
 
     // 게시글 등록하기
     @Transactional
-    public boolean createPost(PostEntity post, List<MultipartFile> files, int boardNo) {
-
-        System.out.println("[컨트롤러에서 넘어온 직후]" + post.toString());
+    public void createPost(PostEntity post, List<MultipartFile> files, int boardNo) {
 
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
 
-        // 1. postEntity 에 member, board 엔티티를 맵핑시킨다.
+        // 1. postEntity 에 member, board 엔티티를 주입한다.
         MemberEntity memberEntity = memberService.getMemberEntity(memberDto.getMemberNo());
         BoardEntity boardEntity = boardService.getBoardEntity(boardNo);
         post.setMemberEntity(memberEntity);
         post.setBoardEntity(boardEntity);
 
-        System.out.println("[member >>>> ] " + memberEntity);
-        System.out.println("[board >>>> ] " + boardEntity);
-
-        System.out.println("[post >>> ] " + post.toString());
 
         // 2. 엔티티를 db에 저장시킨다. [현재 db에 들어가지를 않는다. 대체 왜?]
         int postNo = postRepository.save(post).getPostNo();
@@ -83,7 +77,6 @@ public class PostService {
             savedPostEntity = postRepository.findById(postNo).get();
         }
 
-        System.out.println("[savedPostEntity >>> ]" + savedPostEntity);
 
         memberEntity.getPostEntities().add(savedPostEntity);
         boardEntity.getPostEntities().add(savedPostEntity);
@@ -111,21 +104,16 @@ public class PostService {
                         .postEntity(savedPostEntity)
                         .build();
 
-                System.out.println("[이미지 엔티티 주입 된 결과 체크]" + postImgEntity.toString());
                 int postImgNo = postImgRepository.save(postImgEntity).getPostImgNo();
                 PostImgEntity savedPostImgEntity = null;
                 if (postImgRepository.findById(postImgNo).isPresent()) {
                     savedPostImgEntity = postImgRepository.findById(postImgNo).get();
                 }
                 assert savedPostImgEntity != null;
-                System.out.println("[이미지 저장되었는지 체크]" + savedPostImgEntity.toString());
                 assert savedPostEntity != null;
-                System.out.println("[이미지 엔티티가 저장될 Post 엔티티]" + savedPostEntity.toString());
                 savedPostEntity.getPostImgEntities().add(savedPostImgEntity);
             }
-
         }
-        return true;
     }
 
     // 게시물 삭제
@@ -223,16 +211,5 @@ public class PostService {
 
     }
 
-    // 등록된 '부모' 댓글 리스트 호출하기
-    // 매끄러운 출력을 위해서 depth = 0 인 경우만 불러와야한다.
-    public List<PostReplyEntity> getReplyList(int postNo) {
-        return postReplyRepository.getParentReply();
-    }
-
-    // '자식' 댓글 리스트 호출하기
-    // depth != 0 인 댓글을 모두 호출한다.
-    public List<PostReplyEntity> getChildReplyList() {
-        return postReplyRepository.getChildReply();
-    }
 
 }

@@ -38,9 +38,9 @@
                 1. 카테고리를 출력하고
                 2. 해당하는 게시판을 출력한다. : for 문 안에 for 문
             -->
-            <div th:each="category : ${categories}" class="sidebar-container">
+            <div th:each="category : ${categories}" class="sidebar-container" th:id="category + ${category.categoryNo}">
                 <div th:text="${category.categoryName}" class="sidebar-category"></div>
-                <div th:each="board : ${boards}" class="sidebar-board"
+                <div th:each="board : ${boards}" class="sidebar-board" th:id="board + ${board.boardNo}"
                      th:if="${board.categoryEntity.categoryNo == category.categoryNo}">
                     <div class="sidebar-tabs">
                         <!-- 각 게시판에 id 값과 클릭 이벤트를 부여한다. -->

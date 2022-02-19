@@ -17,7 +17,7 @@ import java.util.List;
 public class MemberEntity extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "memberNo")
     private int memberNo;
 
@@ -53,17 +53,6 @@ public class MemberEntity extends BaseTimeEntity {
     private String channelImg;
 
 
-    // 회원이 여러개의 방을 등록할 수 있다.
-    // RoomEntity 와 1 : N 관계를 맺는다.
-    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<RoomEntity> roomEntities = new ArrayList<>();
-
-    // 문의 리스트
-    @OneToMany(mappedBy = "memberEntity")
-    @ToString.Exclude
-    private List<NoteEntity> noteEntities = new ArrayList<>();
-
     @Enumerated(EnumType.STRING)
     @Column
     private Role memberGrade; // 회원등급
@@ -78,35 +67,47 @@ public class MemberEntity extends BaseTimeEntity {
         return this;
     }
 
-    // 리뷰 리스트
-    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
+    // 문의 리스트
+    @OneToMany(mappedBy = "memberEntity")
     @ToString.Exclude
-    private List<ReplyEntity> replyEntities = new ArrayList<>();
+    private final List<NoteEntity> noteEntities = new ArrayList<>();
 
-    // 회원은 여러개의 예약 내역을 가질 수 있습니다.
-    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<HistoryEntity> historyEntities = new ArrayList<>();
 
+    // 멤버 : 공방개설 = 1 : N
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<RoomLikeEntity> roomLikeEntities = new ArrayList<>();
+    private final List<RoomEntity> roomEntities = new ArrayList<>();
+
+    // 멤버 : 후기 = 1 : N
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private final List<ReplyEntity> replyEntities = new ArrayList<>();
+
+    // 멤버 : 예약 = 1 : N
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private final List<HistoryEntity> historyEntities = new ArrayList<>();
+
+    // 멤버 : 좋아요 = 1 : N
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private final List<RoomLikeEntity> roomLikeEntities = new ArrayList<>();
 
     // 멤버 게시글 = 1 : N
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<PostEntity> postEntities = new ArrayList<>();
+    private final List<PostEntity> postEntities = new ArrayList<>();
 
     // 멤버 : 댓글 = 1 : N
     @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<PostReplyEntity> postReplyEntities = new ArrayList<>();
+    private final List<PostReplyEntity> postReplyEntities = new ArrayList<>();
 
-    // [스태프] [관리자] 등급은 게시판을 생성할 수 있다.
+    // [스태프] [관리자] 등급은 새로운 카테고리를 생성할 수 있다.
     // 멤버 : 카테고리 = 1 : N
-    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "memberEntity")
     @ToString.Exclude
-    private List<CategoryEntity> categoryEntities = new ArrayList<>();
+    private final List<CategoryEntity> categoryEntities = new ArrayList<>();
 
 
 }

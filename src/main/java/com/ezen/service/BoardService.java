@@ -42,7 +42,6 @@ public class BoardService {
         // 카테고리 엔티티에 보드 엔티티를 추가시킨다.
         // DB 에 저장한 뒤, 해당 boardNo 를 변수에 저장
         int boardNo = boardRepository.save(newBoard).getBoardNo();
-        System.out.println(boardNo);
         // 해당하는 boardNo 를 이용해서 DB 에서 꺼내온다.
         BoardEntity savedBoard = boardRepository.findById(boardNo).get();
         // 저장된 Board 를 Category 엔티티에 맵핑된 BoardList 에 저장시킵니다.
@@ -53,18 +52,6 @@ public class BoardService {
     // [탭 가져오기]
     public List<BoardEntity> getBoards() {
         return boardRepository.findAll();
-    }
-
-    // boardNo 에 속한 Post 가져오기
-    public List<PostEntity> getPostList(int boardNo) {
-        Optional<BoardEntity> boardOptional = boardRepository.findById(boardNo);
-        return boardOptional.get().getPostEntities();
-    }
-
-    // boardNo 로 boardName 가져오기
-    public String getBoardNameByNo(int boardNo) {
-        Optional<BoardEntity> boardOptional = boardRepository.findById(boardNo);
-        return boardOptional.get().getBoardName();
     }
 
     // boardNo 로 board 엔티티 가져오기

@@ -16,13 +16,14 @@
         <div class="col-6">
             <div class="row no-gutters">
                 <div class="col-3">
-                    <button class="list-type-btn">10개씩 보기</button>
+                    <button class="list-type-btn">10개씩</button>
                 </div>
                 <div class="col-3">
-                    <button class="list-type-btn">30개씩 보기</button>
+                    <button class="list-type-btn">30개씩</button>
                 </div>
                 <div class="col-6 d-flex justify-content-end">
-                    <button class="list-type-btn" type="button" th:onclick="createPost( [[${boardNo}]] );">게시글 작성</button>
+                    <button class="list-type-btn" type="button" th:onclick="createPost( [[${boardNo}]] );">게시글 작성
+                    </button>
                 </div>
             </div>
         </div>
@@ -32,16 +33,15 @@
         <thead>
         <tr>
             <th>제목</th>
-            <th>내용</th>
             <th>작성자</th>
             <th>작성일</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="post : ${posts}">
-            <td th:text="${post.postTitle}"><a href="#"></a></td>
-            <td th:text="${post.postContent}"></td>
-            <td th:text="${post.member.memberId}"></td>
+            <!-- 상세페이지로 이동-->
+            <td th:text="${post.postTitle}" th:onclick="goToPostView( [[${post.postNo}]], [[${boardNo}]] )"></td>
+            <td th:text="${post.memberEntity.memberId}"></td>
             <td th:text="${post.createdDate}"></td>
         </tr>
         </tbody>

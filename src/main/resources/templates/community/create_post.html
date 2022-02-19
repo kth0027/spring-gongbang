@@ -9,7 +9,7 @@
 <script th:src="@{/js/summernote/lang/summernote-ko-KR.js}"></script>
 <script th:src="@{/js/community/new-post.js}"></script>
 
-<form th:action="@{/community/createPostController}" method="post" enctype="multipart/form-data">
+<form id="form">
     <div class="container">
         <input type="hidden" th:value="${boardNo}" name="boardNo">
         <div class="row">
@@ -38,7 +38,7 @@
         </div>
         <div>
             <div>
-                <button type="submit" class="community-create-post-btn">등록</button>
+                <button type="button" onclick="createNewPost();" class="community-create-post-btn">등록</button>
                 <button th:onclick="goToPostList( [[${boardNo}]] );">취소</button>
             </div>
         </div>

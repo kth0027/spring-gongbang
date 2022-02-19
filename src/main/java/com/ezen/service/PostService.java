@@ -1,10 +1,8 @@
 package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
-import com.ezen.domain.entity.BoardEntity;
-import com.ezen.domain.entity.MemberEntity;
-import com.ezen.domain.entity.PostEntity;
-import com.ezen.domain.entity.PostReplyEntity;
+import com.ezen.domain.entity.*;
+import com.ezen.domain.entity.repository.PostImgRepository;
 import com.ezen.domain.entity.repository.PostReplyRepository;
 import com.ezen.domain.entity.repository.PostRepository;
 import com.ezen.domain.entity.repository.ReplyRepository;
@@ -19,8 +17,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PostService {
@@ -40,6 +41,9 @@ public class PostService {
     @Autowired
     HttpServletRequest request;
 
+    @Autowired
+    private PostImgRepository postImgRepository;
+
 
     // 작성된 게시물 리스트 불러오기
     public Page<PostEntity> getPostList(int boardNo,
@@ -56,12 +60,13 @@ public class PostService {
     // 게시글 등록하기
     @Transactional
     public boolean createPost(@Lazy PostEntity post, List<MultipartFile> files, int boardNo) {
+
         // 1. 로그인 세션 불러와서 회원 번호(memberNo) 변수에 초기화
         HttpSession session = request.getSession();
-        MemberDto loginDTO = (MemberDto) session.getAttribute("loginSession");
+        MemberDto loginDTO = (MemberDto) session.getAttribute("logindto");
         int memberNo = loginDTO.getMemberNo();
         // 1.1 로그인 된 회원 엔티티 호출하기
-        MemberEntity memberEntity = memberService.getMemberEntity(loginDTO.getMemberNo());
+        MemberEntity memberEntity = memberService.getMemberEntity(memberNo);
         // 1.2 호출된 member 엔티티를 post 엔티티에 주입하기
         post.setMemberEntity(memberEntity);
         // 1.3 인수로 받아온 boardNo 로 board 엔티티 호출하기
@@ -76,9 +81,46 @@ public class PostService {
         post.setPostDepth(0);
         post.setPostOrder(0);
 
+
         // 4. post 정보를 db 에 등록한 뒤 해당 post 를 엔티티로 호출한다.
         int postNo = postRepository.save(post).getPostNo();
         PostEntity savedPost = postRepository.findById(postNo).get();
+
+        // 5. 입력받은 이미지를 저장한다.
+        String uuidfile = null;
+        if (files.size() != 0) {
+
+            for (MultipartFile file : files) {
+                // 1. 난수 + '_' + 파일이름
+                UUID uuid = UUID.randomUUID();
+                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
+                // 2. 저장될 경로
+                String dir = "C:\\gongbang\\build\\resources\\main\\static\\postimg";
+                String filepath = dir + "\\" + uuidfile;
+                try {
+                    // 4. 지정한 경로에 파일을 저장시킨다.
+                    file.transferTo(new File(filepath));
+                } catch (Exception e) {
+                    System.out.println("오류 : " + e);
+                }
+
+                // 이미지 엔티티 빌더
+                PostImgEntity postImgEntity = PostImgEntity.builder()
+                        .postImg(uuidfile)
+                        .postEntity(savedPost)
+                        .build();
+
+                int postImgNo = postImgRepository.save(postImgEntity).getPostImgNo();
+                PostImgEntity savedPostImgEntity = null;
+                if (postImgRepository.findById(postImgNo).isPresent()) {
+                    savedPostImgEntity = postImgRepository.findById(postImgNo).get();
+                }
+                savedPost.getPostImgEntities().add(savedPostImgEntity);
+            }
+
+
+        }
+
 
         // 5. 저장된 post 객체를 member, board 엔티티에 저장한다.
         memberEntity.getPostEntities().add(savedPost);

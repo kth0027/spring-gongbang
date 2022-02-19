@@ -10,5 +10,9 @@
 }
 
 *, body {
-    font-family:CookieRun-Regular;
+    /*font-family:CookieRun-Regular;*/
+    font-family: 'Noto Sans KR', sans-serif;
 }
+
+
+/* 나눔 바른 스퀘어 폰트 */

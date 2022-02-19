@@ -60,11 +60,6 @@ $(function(){
     });
 });
 
-function registerCheck(){
-
-
-}
-
 // 문자열 길이 구하기
 function getTextLength(str){
     var len = 0;
@@ -76,6 +71,7 @@ function getTextLength(str){
     }
     return len;
 }
+
 // 사진 미리보기 및 업로드 js 시작
 var input = document.getElementById("image-input");
 var initLabel = document.getElementById("image-label");

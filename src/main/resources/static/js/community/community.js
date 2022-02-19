@@ -78,6 +78,22 @@ function createPost(boardNo){
 
 }
 
+// ## 게시글 작성 ##
+// @Author: 김정진
+// @Date : 2022-02-19
+function createNewPost(boardNo){
+    // 1. 각 게시물은 boardNo 에 종속된다.
+    $.ajax({
+        url: "/community/createPost",
+        data: {"boardNo" : boardNo},
+        success: function(data){
+            // 2. 게시글 등록 성공 시 리스트 화면으로 돌아간다.
+            $(".content-area").empty();
+            $(".content-area").append(data);
+        }
+    });
+}
+
 // 게시글 작성 시 '취소' 누르고 뒤로가기
 function goToPostList(boardNo){
     $.ajax({
@@ -90,5 +106,4 @@ function goToPostList(boardNo){
             $(".content-area").append(data);
         }
     });
-
 }

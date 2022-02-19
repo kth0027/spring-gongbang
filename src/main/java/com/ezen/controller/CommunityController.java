@@ -13,8 +13,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -61,16 +63,38 @@ public class CommunityController {
         return "community/board_content";
     }
 
-    // 게시물 작성하기
+    // 게시물 작성하기 페이지 맵핑
     // 카테고리 -> 게시글 리스트 -> 게시글 작성
+    // 등록 후 해당 게시판 리스트로 이동 (boardNo)
     @GetMapping("createPost")
-    public String createPost(@RequestParam("boardNo") int boardNo, Model model){
+    public String createPost(Model model,
+                             @RequestParam("boardNo") int boardNo){
 
         model.addAttribute("boardNo", boardNo);
 
         return "community/create_post";
 
     }
+
+    // 게시글 작성 컨트롤러
+    @PostMapping("/createPostController")
+    public String createPostController(Model model,
+                                       @RequestParam("boardNo") int boardNo,
+                                       @RequestParam("community-post-img-input") List<MultipartFile> files,
+                                       @RequestParam("create-post-title") String title,
+                                       @RequestParam("post-content") String content){
+
+        PostEntity postEntity = PostEntity.builder()
+                .postTitle(title)
+                .postContent(content)
+                .postViewCount(0)
+                .build();
+
+        boolean result = postService.createPost(postEntity, files, boardNo);
+
+        return "";
+    }
+
 
 
 }

@@ -28,6 +28,7 @@ import java.util.UUID;
 
 @Service
 public class RoomService {
+
     @Autowired
     private RoomImgRepository roomImgRepository;
     @Autowired

@@ -101,7 +101,6 @@ function el(nodeName, attributes, ...children) {
             node.appendChild(childNode);
         }
     });
-
   return node;
 }
 // 사진 미리보기 및 업로드 js 종료

@@ -63,13 +63,14 @@ public class PostEntity extends BaseTimeEntity {
     // 게시물 : 게시물 이미지 = 1 : N 관계
     // 게시물 엔티티 안에는 게시물 이미지 리스트가 맵핑되어 있어서
     // 게시물 하나를 호출하면, 해당 게시물에 등록된 리스트를 불러올 수 있습니다.
-    @OneToMany(mappedBy = "postEntity")
+    @OneToMany(mappedBy = "postEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<PostImgEntity> postImgEntities = new ArrayList<>();
 
     // 게시물 : 댓글 = 1 : N 관계 맵핑
     // 게시물 하나에 댓글은 여러개 달릴 수 있습니다.
-    @OneToMany(mappedBy = "postEntity")
+    @OneToMany(mappedBy = "postEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<PostReplyEntity> postReplyEntities = new ArrayList<>();
+
 }

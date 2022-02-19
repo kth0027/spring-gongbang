@@ -40,5 +40,6 @@ public class BoardEntity extends BaseTimeEntity {
     // 게시판이 삭제되면 게시글도 모두 삭제되도록 fk 관계 부여
     @OneToMany(mappedBy = "boardEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<PostEntity> postList = new ArrayList<>();
+    private List<PostEntity> postEntities = new ArrayList<>();
+
 }

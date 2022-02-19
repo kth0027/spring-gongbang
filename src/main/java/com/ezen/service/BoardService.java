@@ -58,7 +58,7 @@ public class BoardService {
     // boardNo 에 속한 Post 가져오기
     public List<PostEntity> getPostList(int boardNo) {
         Optional<BoardEntity> boardOptional = boardRepository.findById(boardNo);
-        return boardOptional.get().getPostList();
+        return boardOptional.get().getPostEntities();
     }
 
     // boardNo 로 boardName 가져오기

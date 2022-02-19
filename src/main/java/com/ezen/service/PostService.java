@@ -2,10 +2,7 @@ package com.ezen.service;
 
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.*;
-import com.ezen.domain.entity.repository.PostImgRepository;
-import com.ezen.domain.entity.repository.PostReplyRepository;
-import com.ezen.domain.entity.repository.PostRepository;
-import com.ezen.domain.entity.repository.ReplyRepository;
+import com.ezen.domain.entity.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
@@ -30,16 +27,16 @@ public class PostService {
     private PostReplyRepository postReplyRepository;
 
     @Autowired
-    PostRepository postRepository;
+    private PostRepository postRepository;
 
     @Autowired
-    BoardService boardService;
+    private BoardService boardService;
 
     @Autowired
-    MemberService memberService;
+    private MemberService memberService;
 
     @Autowired
-    HttpServletRequest request;
+    private HttpServletRequest request;
 
     @Autowired
     private PostImgRepository postImgRepository;
@@ -59,73 +56,75 @@ public class PostService {
 
     // 게시글 등록하기
     @Transactional
-    public boolean createPost(@Lazy PostEntity post, List<MultipartFile> files, int boardNo) {
+    public boolean createPost(PostEntity post, List<MultipartFile> files, int boardNo) {
 
-        // 1. 로그인 세션 불러와서 회원 번호(memberNo) 변수에 초기화
+        System.out.println("[컨트롤러에서 넘어온 직후]" + post.toString());
+
         HttpSession session = request.getSession();
-        MemberDto loginDTO = (MemberDto) session.getAttribute("logindto");
-        int memberNo = loginDTO.getMemberNo();
-        // 1.1 로그인 된 회원 엔티티 호출하기
-        MemberEntity memberEntity = memberService.getMemberEntity(memberNo);
-        // 1.2 호출된 member 엔티티를 post 엔티티에 주입하기
+        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
+
+        // 1. postEntity 에 member, board 엔티티를 맵핑시킨다.
+        MemberEntity memberEntity = memberService.getMemberEntity(memberDto.getMemberNo());
+        BoardEntity boardEntity = boardService.getBoardEntity(boardNo);
         post.setMemberEntity(memberEntity);
-        // 1.3 인수로 받아온 boardNo 로 board 엔티티 호출하기
-        // 1.4 호출 한 board 엔티티를 post 에 주입하기
-        BoardEntity board = boardService.getBoardEntity(boardNo);
-        post.setBoardEntity(board);
-        // 2. 부모 댓글이면 depth : 0
-        // 2.1 자식 댓글이면 depth : 1
-        // 3. 부모 댓글이면 order : 0
-        // 3.1 자식 댓글이면 order : 1 부터 증가
-        // 해당 컨트롤러에 접근한다는 것은 부모 게시글 이라는 뜻이므로 0 으로 set 한다.
-        post.setPostDepth(0);
-        post.setPostOrder(0);
+        post.setBoardEntity(boardEntity);
 
+        System.out.println("[member >>>> ] " + memberEntity);
+        System.out.println("[board >>>> ] " + boardEntity);
 
-        // 4. post 정보를 db 에 등록한 뒤 해당 post 를 엔티티로 호출한다.
+        System.out.println("[post >>> ] " + post.toString());
+
+        // 2. 엔티티를 db에 저장시킨다. [현재 db에 들어가지를 않는다. 대체 왜?]
         int postNo = postRepository.save(post).getPostNo();
-        PostEntity savedPost = postRepository.findById(postNo).get();
+        // DB 에 저장된 PostEntity 를 호출한다.
+        PostEntity savedPostEntity = null;
 
-        // 5. 입력받은 이미지를 저장한다.
+        if (postRepository.findById(postNo).isPresent()) {
+            savedPostEntity = postRepository.findById(postNo).get();
+        }
+
+        System.out.println("[savedPostEntity >>> ]" + savedPostEntity);
+
+        memberEntity.getPostEntities().add(savedPostEntity);
+        boardEntity.getPostEntities().add(savedPostEntity);
+
+        // 이미지 파일 저장
         String uuidfile = null;
-        if (files.size() != 0) {
 
+        if (files.size() != 0) {
             for (MultipartFile file : files) {
-                // 1. 난수 + '_' + 파일이름
+                System.out.println("[개별 파일]" + file.toString());
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
-                // 2. 저장될 경로
+
                 String dir = "C:\\gongbang\\build\\resources\\main\\static\\postimg";
                 String filepath = dir + "\\" + uuidfile;
+
                 try {
-                    // 4. 지정한 경로에 파일을 저장시킨다.
                     file.transferTo(new File(filepath));
                 } catch (Exception e) {
                     System.out.println("오류 : " + e);
                 }
-
                 // 이미지 엔티티 빌더
                 PostImgEntity postImgEntity = PostImgEntity.builder()
                         .postImg(uuidfile)
-                        .postEntity(savedPost)
+                        .postEntity(savedPostEntity)
                         .build();
 
+                System.out.println("[이미지 엔티티 주입 된 결과 체크]" + postImgEntity.toString());
                 int postImgNo = postImgRepository.save(postImgEntity).getPostImgNo();
                 PostImgEntity savedPostImgEntity = null;
                 if (postImgRepository.findById(postImgNo).isPresent()) {
                     savedPostImgEntity = postImgRepository.findById(postImgNo).get();
                 }
-                savedPost.getPostImgEntities().add(savedPostImgEntity);
+                assert savedPostImgEntity != null;
+                System.out.println("[이미지 저장되었는지 체크]" + savedPostImgEntity.toString());
+                assert savedPostEntity != null;
+                System.out.println("[이미지 엔티티가 저장될 Post 엔티티]" + savedPostEntity.toString());
+                savedPostEntity.getPostImgEntities().add(savedPostImgEntity);
             }
 
-
         }
-
-
-        // 5. 저장된 post 객체를 member, board 엔티티에 저장한다.
-        memberEntity.getPostEntities().add(savedPost);
-        board.getPostList().add(post);
-
         return true;
     }
 

@@ -12,15 +12,15 @@ public interface PostReplyRepository extends JpaRepository<PostReplyEntity, Inte
 
 
     // 부모 댓글(depth=0)을 호출하는 쿼리문
-    @Query(nativeQuery = true, value = "select * from reply where replyDepth = 0")
+    @Query(nativeQuery = true, value = "select * from postReply where replyDepth = 0")
     List<PostReplyEntity> getParentReply();
 
     // 대댓글 등록을 위한 쿼리문
-    @Query(nativeQuery = true, value = "select count(replyDepth) from reply where replyTarget = :replyTarget")
-    int getReplyDepthByTargetNo(@Param("replyTarget") int replyTarget);
+    @Query(nativeQuery = true, value = "select count(postReplyDepth) from postReply where postReplyTarget = :postReplyTarget")
+    int getReplyDepthByTargetNo(@Param("postReplyTarget") int postReplyTarget);
 
     // 부모 댓글에 속한 자식 댓글을 호출하는 쿼리문
-    @Query(nativeQuery = true, value = "select * from reply where replyDepth > 0")
+    @Query(nativeQuery = true, value = "select * from postReply where postReplyDepth > 0")
     List<PostReplyEntity> getChildReply();
 
 }

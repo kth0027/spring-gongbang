@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Controller
@@ -52,7 +53,7 @@ public class CommunityController {
     @GetMapping("/postListController")
     public String postListController(Model model,
                                      @RequestParam("boardNo") int boardNo,
-                                     @PageableDefault Pageable pageable){
+                                     @PageableDefault Pageable pageable) {
 
         // 작성된 PostEntity 를 board_content.html 에 뿌려준다.
         Page<PostEntity> postEntities = postService.getPostList(boardNo, pageable);
@@ -68,7 +69,7 @@ public class CommunityController {
     // 등록 후 해당 게시판 리스트로 이동 (boardNo)
     @GetMapping("createPost")
     public String createPost(Model model,
-                             @RequestParam("boardNo") int boardNo){
+                             @RequestParam("boardNo") int boardNo) {
 
         model.addAttribute("boardNo", boardNo);
 
@@ -78,23 +79,27 @@ public class CommunityController {
 
     // 게시글 작성 컨트롤러
     @PostMapping("/createPostController")
-    public String createPostController(Model model,
-                                       @RequestParam("boardNo") int boardNo,
-                                       @RequestParam("community-post-img-input") List<MultipartFile> files,
-                                       @RequestParam("create-post-title") String title,
-                                       @RequestParam("post-content") String content){
+    @Transactional
+    public void createPostController(Model model,
+                                     @RequestParam("boardNo") int boardNo,
+                                     @RequestParam("community-post-img-input") List<MultipartFile> files,
+                                     @RequestParam("create-post-title") String title,
+                                     @RequestParam("post-content") String content) {
 
         PostEntity postEntity = PostEntity.builder()
                 .postTitle(title)
                 .postContent(content)
                 .postViewCount(0)
+                .postOrder(0)
+                .postDepth(0)
                 .build();
+
+        System.out.println("[서비스 넘어가기 직전 컨트롤러]" + postEntity.toString());
+        System.out.println("[서비스 넘어가기 직전 이미지 파일 체크]" + files.toString());
 
         boolean result = postService.createPost(postEntity, files, boardNo);
 
-        return "";
     }
-
 
 
 }

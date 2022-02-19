@@ -5,7 +5,7 @@
     1. board_content.html 은 게시판 선택 후, 해당 게시판에 대한 정보를 출력하는 화면입니다.
     2. 컨트롤러에서 model 값을 뿌려준 다음 board_list.html 에 있는 div 영역에 뿌려집니다.
 -->
-<div>
+<div th:id=" 'postList' + ${boardNo}">
     <div class="row no-gutters">
         <div class="col-6">
             <div class="row no-gutters">

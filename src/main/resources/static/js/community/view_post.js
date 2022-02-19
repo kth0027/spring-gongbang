@@ -30,9 +30,9 @@ function createNewReply(postNo){
                 postHTML += "<button> 삭제 </button>";
                 postHTML += "</div>";
 
-                // $(".post-reply-content-container").last().append(postHTML);
+                $(".post-reply-content-container").last().append(postHTML);
 
-                $("#post-reply-wrapper").load(location.href + " #post-reply-wrapper");
+                // $("#post-reply-wrapper").load(location.href + " #post-reply-wrapper");
 
                 $(contentId).val("");
             }
@@ -50,6 +50,7 @@ $(function(){
 
 
     $(".add-reply-child").on("click", function(){
+
         var postNo = $("#postNo").val();
         // 1. 해당 부모 댓글 번호를 변수에 저장합니다.
         var replyNo = $(this).attr("data-tab");

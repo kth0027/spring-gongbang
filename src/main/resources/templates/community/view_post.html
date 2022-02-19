@@ -76,7 +76,6 @@
                         <div class="col-9">
                             <div th:text="${reply.postReplyContent}"></div>
                         </div>
-
                         <div class="col-12">
                             <button class="add-reply-child" th:id="'child' + ${reply.postReplyNo}"
                                     th:data-tab="${reply.postReplyNo}">
@@ -85,7 +84,6 @@
                             <button>수정</button>
                             <button>삭제</button>
                         </div>
-
 
                         <!-- 대댓글 출력 영역 시작 -->
                         <!-- 컨트롤러에서 부모 댓글에 해당하는 대댓글을 Model 로 받아와서 출력한다. -->
@@ -107,9 +105,6 @@
                         </div>
                         <!-- 대댓글 출력 영역 종료 -->
                         <!-- 대댓글 등록 시 나타날 영역-->
-                        <!--
-                            1. 각 영역에 replyNo 를 포함한 id 값을 부여합니다.
-                        -->
                         <div style="display: none;" class="reply-child-section" th:data-tab="${reply.postReplyNo}"
                              th:id="'child-section' + ${reply.postReplyNo}">
                             <div class="row">
@@ -129,7 +124,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                     </div>
                 </div>

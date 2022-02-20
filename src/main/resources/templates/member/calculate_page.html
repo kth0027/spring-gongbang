@@ -1,46 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
+    <link rel="stylesheet" th:href="@{/css/calculate_page.css}">
 </head>
+
 <body>
-<div th:replace="common.html::common"></div>
-<div th:replace="header.html::header"></div>
-<div class="container">
-    <div clas="row">
-        <div style="background-color:#F28316;">
-            <h3>정산페이지</h3>
-        </div>
-        <div class="col-md-3" style="border-right: 1px solid grey;">
-            <div>
-                <p>정산 신청</p>
-                <p>정산 내역</p>
-                <p>결제 내역 관리</p>
-
-                <button type="button" class="btn btn-outline-primary" >문의하기</button>
+    <div th:replace="common.html::common"></div>
+    <div th:replace="header.html::header"></div>
+    <div class="wrap">
+        <div class="container">
+            <div class="title">
+                <h2>정산페이지</h2>
             </div>
-        </div>
-        <div class="col-md-9">
-            <div style="background-color:#263238;">
-                <h4 style="color: #FFFFFF;">공지 사항 안내</h4>
-            </div>
+            <div class="row contentsbox">
+                <div class="col-md-4 col-4 leftcontents" style="border-right: 1px solid grey;">
+                    <div class="leftcontentsinner">
+                        <span>정산 신청</span>
+                        <span>정산 내역</span>
+                        <span>결제 내역 관리</span>
+                    </div>
+                    <button type="button" class="">문의하기</button>
+                </div>
+                <div class="col-md-7 col-7 rightcontentscontents">
+                    <div class="noticetitle">
+                        <h4 style="">공지 사항 안내</h4>
+                    </div>
 
-            <h3><strong>결제 내역 관리</strong></h3>
-            <table class="table table-striped">
-                <tr>
-                    <th>클래스명</th>
-                    <th>결제날짜</th>
-                    <th>결제금액</th>
-                    <th>신청인원</th>
-                    <th>수강날짜</th>
-                    <th>신청상태</th>
-                    <th>신청상세내역</th>
-                </tr>
-            </table>
+                    <h5><strong>결제 내역 관리</strong></h5>
+                    <table class="table table-striped text-center">
+                        <tr>
+                            <th>클래스명</th>
+                            <th>결제날짜</th>
+                            <th>결제금액</th>
+                            <th>신청인원</th>
+                            <th>수강날짜</th>
+                            <th>신청상태</th>
+                            <th>신청상세내역</th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 </body>
+
 </html>

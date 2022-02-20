@@ -43,7 +43,7 @@ public class ReplyService {
         RoomEntity roomEntity = roomService.getroom(roomNo);
         replyEntity.setRoomEntity(roomEntity);
 
-        //별점 추가
+        // 별점 추가
         replyEntity.setReplyStar(replyStar);
 
         int replyNo = replyRepository.save(replyEntity).getReplyNo();
@@ -57,13 +57,13 @@ public class ReplyService {
         if (files.size() != 0) {
             for (MultipartFile file : files) {
                 UUID uuid = UUID.randomUUID();
-                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
+                uuidfile = uuid.toString() + "_"
+                        + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
 
                 // 인텔리 전용 경로
-                 String dir = "C:\\gongbang\\build\\resources\\main\\static\\replyimg";
+                // String dir = "C:\\gongbang\\build\\resources\\main\\static\\replyimg";
                 // vs 전용 경로
-//                String dir = "C:\\gongbang\\src\\main\\resources\\static\\replyimg";
-
+                String dir = "C:\\gongbang\\src\\main\\resources\\static\\replyimg";
 
                 String filepath = dir + "\\" + uuidfile;
                 try {

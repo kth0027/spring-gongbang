@@ -19,23 +19,15 @@
             <div class="row d-flex">
                 <div class="col-4 d-flex flex-column flex-shrink-0 p-3 bg-light">
                     <!-- 좌측 탭 -->
-                    <a href="#"
-                        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                         <img class="mx-3" th:src="@{/img/logo/logo.png}" alt="logo" style="width:5rem;">
                         <span class="fs-4">나의정보</span>
                     </a>
                     <hr>
-                    <div class="nav flex-column nav-pills me-3 navlist" id="v-pills-tab" role="tablist"
-                        aria-orientation="vertical">
-                        <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
-                            aria-selected="true">회원정보</button>
-                        <button class="nav-link" id="v-pills-reserveinfo-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-reserveinfo" type="button" role="tab"
-                            aria-controls="v-pills-reserveinfo" aria-selected="false">예약정보</button>
-                        <button class="nav-link signoutbtn" id="v-pills-signout-tab" data-bs-toggle="pill"
-                            data-bs-target="#v-pills-signout" type="button" role="tab" aria-controls="v-pills-signout"
-                            aria-selected="false"><a data-bs-toggle="modal" data-bs-target="#modalmdelete">회원탈퇴</a>
+                    <div class="nav flex-column nav-pills me-3 navlist" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">회원정보</button>
+                        <button class="nav-link" id="v-pills-reserveinfo-tab" data-bs-toggle="pill" data-bs-target="#v-pills-reserveinfo" type="button" role="tab" aria-controls="v-pills-reserveinfo" aria-selected="false">예약정보</button>
+                        <button class="nav-link signoutbtn" id="v-pills-signout-tab" data-bs-toggle="pill" data-bs-target="#v-pills-signout" type="button" role="tab" aria-controls="v-pills-signout" aria-selected="false"><a data-bs-toggle="modal" data-bs-target="#modalmdelete">회원탈퇴</a>
                         </button>
                     </div>
                     <hr>
@@ -44,8 +36,7 @@
                 <div class="col-8 p-5 ">
                     <div class="tab-content" id="v-pills-tabContent">
                         <!-- 회원정보 페이지 -->
-                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
-                            aria-labelledby="v-pills-profile-tab">
+                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                             <div class="row writeform">
 
                                 <!-- 회원정보 -->
@@ -83,11 +74,12 @@
                                             </tr>
                                             <tr>
                                                 <td>가입날짜</td>
-                                                <td th:text="${#temporals.format(memberDto.createdDate,'yyyy-MM-dd hh:mm')}"></td>
+                                                <td th:text="${#temporals.format(memberDto.createdDate,'yyyy-MM-dd hh:mm')}">
+                                                </td>
                                             </tr>
                                         </table>
                                         <div class="d-flex justify-content-center infosubmitbtn">
-                                            <input class="btninfo" type="button" value="수정하기" >
+                                            <input class="btninfo" type="button" value="수정하기">
                                         </div>
 
                                     </form>
@@ -97,23 +89,24 @@
                                 <div class="rewritebox">
                                     <div class="h3">회원 정보수정</div>
                                     <form action="/member/updatecontroller" method="post">
-                                        <input type="text" maxlength="15" placeholder="5~15자리" name="memberNo" th:value="${memberDto.getMemberNo}">
-                                        <table class="table">
-
+                                        <input class="d-none" type="text" maxlength="15" placeholder="5~15자리" name="memberNo" th:value="${memberDto.getMemberNo}">
+                                        <table class="table myaddtable">
                                             <tr>
-                                                <td th:text="'(아이디) ' + ${memberDto.getMemberId}"></td>
+                                                <td th:text="'(아이디) ' + ${memberDto.getMemberId}">
+                                                </td>
                                                 <td><input type="text" maxlength="15" placeholder="5~15자리" name="memberId" th:value="${memberDto.memberId}"></td>
                                             </tr>
                                             <tr>
-                                                <td th:text="'(비밀번호) ' + ${memberDto.getMemberPassword}"></td>
-                                                <td><input type="password" maxlength="15" placeholder="8~16자리" name="memberPassword" th:value="${memberDto.memberPassword}"></td>
+                                                <td th:text="' (비밀번호) ****** '"></td>
+                                                <td><input type="password" maxlength="15" placeholder="8~16자리" name="memberPassword" th:value="${memberDto.memberPassword}">
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td th:text="'(이름) ' + ${memberDto.getMemberName}"></td>
+                                                <td th:text="' (이름) ' + ${memberDto.getMemberName}"></td>
                                                 <td><input type="text" maxlength="15" placeholder="1~15자리" name="memberName" th:value="${memberDto.memberName}"></td>
                                             </tr>
                                             <tr>
-                                                <td th:text="'(이메일) ' + ${memberDto.getMemberEmail}"></td>
+                                                <td th:text="' (이메일) ' + ${memberDto.getMemberEmail}"></td>
                                                 <td><input type="text" placeholder="@(포함)" maxlength="" name="memberEmail" th:value="${memberDto.memberEmail}"></td>
                                             </tr>
 
@@ -122,7 +115,7 @@
                                                 <td th:text="${memberDto.getMemberGrade}"></td>
                                             </tr>
                                             <tr>
-                                                <td th:text="'(연락처) ' + ${memberDto.getMemberPhone}"></td>
+                                                <td th:text="' (연락처) ' + ${memberDto.getMemberPhone}"></td>
                                                 <td><input type="text" maxlength="12" placeholder="11~12자리" name="memberPhone" th:value="${memberDto.memberPhone}"></td>
                                             </tr>
                                             <tr>
@@ -130,10 +123,10 @@
                                                 <td th:text="${memberDto.getMemberPoint}"></td>
                                             </tr>
                                             <tr>
-                                                <td th:text="'(성별) ' + ${memberDto.getMemberGender}"></td>
+                                                <td th:text="' (성별) ' + ${memberDto.getMemberGender}"></td>
                                                 <td class="d-flex align-items-center">
-                                                    <input class="gendercheck col-1" type="radio" name="memberGender" id="msex1" value="남" checked="checked" >남자
-                                                    <input class="gendercheck col-1" type="radio" name="memberGender" id="msex2" value="여" >여자
+                                                    <input class="gendercheck col-1" type="radio" name="memberGender" id="msex1" value="남" checked="checked">남자
+                                                    <input class="gendercheck col-1" type="radio" name="memberGender" id="msex2" value="여">여자
                                                 </td>
 
                                             </tr>
@@ -144,11 +137,8 @@
                                         </table>
 
                                         <div class="d-flex justify-content-center btninput">
-                                            <input class="form-control"
-                                                type="submit" value="확인">
-                                            <input
-                                                class="btnback"
-                                                type="button" value="뒤로가기">
+                                            <input class="form-control" type="submit" value="확인">
+                                            <input class="btnback" type="button" value="뒤로가기">
                                         </div>
                                     </form>
                                 </div>
@@ -156,38 +146,30 @@
                         </div>
 
                         <!-- 예약내역 페이지 -->
-                        <div class="tab-pane fade" id="v-pills-reserveinfo" role="tabpanel"
-                            aria-labelledby="v-pills-reserveinfo-tab">
+                        <div class="tab-pane fade" id="v-pills-reserveinfo" role="tabpanel" aria-labelledby="v-pills-reserveinfo-tab">
                             <div class="row">
                                 예약내역
                             </div>
                         </div>
 
                         <!-- 회원삭제 -->
-                        <div class="tab-pane fade" id="v-pills-signout" role="tabpanel"
-                            aria-labelledby="v-pills-signout-tab">
+                        <div class="tab-pane fade" id="v-pills-signout" role="tabpanel" aria-labelledby="v-pills-signout-tab">
                         </div>
                     </div>
 
 
                     <!-- 모달 -->
-                    <div class="modal" tabindex="-1" id="modalmdelete" data-bs-keyboard="false"
-                        data-bs-backdrop="static">
+                    <div class="modal" tabindex="-1" id="modalmdelete" data-bs-keyboard="false" data-bs-backdrop="static">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content rounded-4 shadow">
                                 <div class="modal-body p-4 text-center">
                                     <h5 class="mb-0"> 회원탈퇴 </h5>
                                     <p class="mb-3" id="deletemsg"> 회원탈퇴시 포인트 사라집니다. 환불불가 !!! </p>
-                                    <input type="password" placeholder="비밀번호 확인" class="form-control"
-                                        id="passwordconfirm">
+                                    <input type="password" placeholder="비밀번호 확인" class="form-control" id="passwordconfirm">
                                 </div>
                                 <div class="modal-footer flex-nowrap p-0">
-                                    <button type="button"
-                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"
-                                        onclick="mdelete()"><strong> 탈퇴 합니다.</strong></button>
-                                    <button type="button"
-                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
-                                        data-bs-dismiss="modal"> 탈퇴 취소합니다.
+                                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" onclick="mdelete()"><strong> 탈퇴 합니다.</strong></button>
+                                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal"> 탈퇴 취소합니다.
                                     </button>
                                 </div>
                             </div>
@@ -199,19 +181,18 @@
         </div>
 
         <script>
-            $(document).ready(function () {
-                $(".btninfo").click(function () {
+            $(document).ready(function() {
+                $(".btninfo").click(function() {
                     $(".writebox").hide();
                     $(".rewritebox").fadeIn();
                 });
-                $(".btnback").click(function () {
+                $(".btnback").click(function() {
                     $(".rewritebox").fadeOut();
                     $(".writebox").show();
                 });
             });
         </script>
         <script>
-
         </script>
 
 

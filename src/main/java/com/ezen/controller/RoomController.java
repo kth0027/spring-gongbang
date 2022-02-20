@@ -70,10 +70,11 @@ public class RoomController {
 
     /*
      * @Author : 김정진
+     * 
      * @Date : 2022-02-07
      * 1. header 에 위치한 검색 창에서 '키워드검색' '지역 선택' '카테고리 선택' 세가지 경우에 결과값을 출력한다.
      * 2.
-     * */
+     */
 
     // [개설된 강좌 출력]
     // 검색이 있는 경우 / 검색이 없는 경우 구분 짓는다.
@@ -99,7 +100,8 @@ public class RoomController {
         // 2. 아무것도 선택하지 않았을 경우, 이전 검색한 세션을 그대로 활용한다.
         else {
             // 1. 이전 세션이 없는 경우
-            if (session.getAttribute("keyword") == null && session.getAttribute("local") == null && session.getAttribute("category") == null) {
+            if (session.getAttribute("keyword") == null && session.getAttribute("local") == null
+                    && session.getAttribute("category") == null) {
                 roomEntities = roomService.getRoomEntityBySearch(pageable, "", "", "");
                 return "room/room_list";
             } else {
@@ -121,12 +123,13 @@ public class RoomController {
             // 비정상적인 경로로 접근하면 error 페이지를 띄운다.
             return "error";
         }
-        return "room/room_list";  // 타임리프를 통한 html 반환
+        return "room/room_list"; // 타임리프를 통한 html 반환
     }
 
     // 메인 화면에서 지역 아이콘 선택했을 때 검색 후 결과 출력 페이지로 이동
     @GetMapping("/byLocal/{local}")
-    public String roomListByLocal(@PathVariable("local") String local, Model model, @PageableDefault Pageable pageable) {
+    public String roomListByLocal(@PathVariable("local") String local, Model model,
+            @PageableDefault Pageable pageable) {
 
         // 세션 호출
         HttpSession session = request.getSession();
@@ -144,7 +147,8 @@ public class RoomController {
 
     // 메인 화면에서 카테고리 선택했을 때 검색 후 결과 출력 페이지로 이동
     @GetMapping("/byCategory/{category}")
-    public String roomListByCategory(@PathVariable("category") String category, Model model, @PageableDefault Pageable pageable) {
+    public String roomListByCategory(@PathVariable("category") String category, Model model,
+            @PageableDefault Pageable pageable) {
 
         // 세션 호출
         HttpSession session = request.getSession();
@@ -165,7 +169,6 @@ public class RoomController {
     @GetMapping("/view/{roomNo}") // 이동
     @Transactional
     public String roomview(@PathVariable("roomNo") int roomNo, Model model) {
-
 
         // 1. 선택된 클래스 엔티티를 불러와서 Model 로 전달한다.
         RoomEntity roomEntity = roomService.getroom(roomNo);
@@ -219,14 +222,14 @@ public class RoomController {
     @PostMapping("/classRegister")
     @Transactional
     public String classRegister(Model model,
-                                RoomEntity roomEntity,
-                                @RequestParam("roomImageInput") List<MultipartFile> files,
-                                @RequestParam("addressX") double addressX,
-                                @RequestParam("addressY") double addressY,
-                                @RequestParam("checkBox1") String checkBox1,
-                                @RequestParam("checkBox2") String checkBox2,
-                                @RequestParam("checkBox3") String checkBox3,
-                                @PageableDefault Pageable pageable) {
+            RoomEntity roomEntity,
+            @RequestParam("roomImageInput") List<MultipartFile> files,
+            @RequestParam("addressX") double addressX,
+            @RequestParam("addressY") double addressY,
+            @RequestParam("checkBox1") String checkBox1,
+            @RequestParam("checkBox2") String checkBox2,
+            @RequestParam("checkBox3") String checkBox3,
+            @PageableDefault Pageable pageable) {
         roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
@@ -267,22 +270,22 @@ public class RoomController {
     @PostMapping("/updateController")
     @Transactional
     public String updateController(Model model,
-                                   @RequestParam("roomTitle") String roomTitle,
-                                   @RequestParam("roomContent") String roomContent,
-                                   @RequestParam("roomDetail") String roomDetail,
-                                   @RequestParam("roomImageInput") List<MultipartFile> files,
-                                   @RequestParam("roomCategory") String roomCategory,
-                                   @RequestParam("roomLocal") String roomLocal,
-                                   @RequestParam("roomAddress") String roomAddress,
-                                   @RequestParam("roomMax") int roomMax,
-                                   @RequestParam("addressX") double addressX,
-                                   @RequestParam("addressY") double addressY,
-                                   @RequestParam("checkBox1") String checkBox1,
-                                   @RequestParam("checkBox2") String checkBox2,
-                                   @RequestParam("checkBox3") String checkBox3,
-                                   @RequestParam("roomNo") int roomNo,
-                                   @RequestParam("roomStatus") String roomStatus,
-                                   @PageableDefault Pageable pageable) {
+            @RequestParam("roomTitle") String roomTitle,
+            @RequestParam("roomContent") String roomContent,
+            @RequestParam("roomDetail") String roomDetail,
+            @RequestParam("roomImageInput") List<MultipartFile> files,
+            @RequestParam("roomCategory") String roomCategory,
+            @RequestParam("roomLocal") String roomLocal,
+            @RequestParam("roomAddress") String roomAddress,
+            @RequestParam("roomMax") int roomMax,
+            @RequestParam("addressX") double addressX,
+            @RequestParam("addressY") double addressY,
+            @RequestParam("checkBox1") String checkBox1,
+            @RequestParam("checkBox2") String checkBox2,
+            @RequestParam("checkBox3") String checkBox3,
+            @RequestParam("roomNo") int roomNo,
+            @RequestParam("roomStatus") String roomStatus,
+            @PageableDefault Pageable pageable) {
 
         RoomEntity targetRoomEntity = null;
         if (roomRepository.findById(roomNo).isPresent()) {
@@ -364,7 +367,6 @@ public class RoomController {
         return roomRepository.findById(roomNo).get().getRoomAddress();
     }
 
-
     // 내가 등록한 클래스 보기
     @GetMapping("/timeSelectPage/{roomNo}")
     public String timeSelectController(@PathVariable("roomNo") int roomNo, Model model) {
@@ -380,10 +382,10 @@ public class RoomController {
     // form 태그로 받아오며 날짜, 시간, roomNo 를 받습니다.
     @GetMapping("/timeSelectController")
     public String timeSelectController(TimeTableEntity timeTableEntity,
-                                       @RequestParam("beginTime") String beginTime,
-                                       @RequestParam("endTime") String endTime,
-                                       @RequestParam("roomNo") int roomNo,
-                                       Model model, @PageableDefault Pageable pageable) {
+            @RequestParam("beginTime") String beginTime,
+            @RequestParam("endTime") String endTime,
+            @RequestParam("roomNo") int roomNo,
+            Model model, @PageableDefault Pageable pageable) {
         timeTableEntity.setRoomTime(beginTime + "," + endTime);
         RoomEntity roomEntity = roomRepository.getById(roomNo);
         timeTableEntity.setRoomMax(roomEntity.getRoomMax());
@@ -416,7 +418,8 @@ public class RoomController {
     // JS 에서 Entity 를 읽을 수 없으니 JSON 형태로 변환해서 보낸다.
     @GetMapping("/toJSON")
     @ResponseBody
-    public JSONObject getRoomEntityByTimeTableToJson(@RequestParam("activeId") String roomDate, @RequestParam("roomNo") int roomNo) {
+    public JSONObject getRoomEntityByTimeTableToJson(@RequestParam("activeId") String roomDate,
+            @RequestParam("roomNo") int roomNo) {
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
@@ -488,5 +491,11 @@ public class RoomController {
         }
     }
 
+    // 방번호를 이용한 방정보 html 반환
+    @GetMapping("/getroom")
+    public String getroom(@RequestParam("roomNo") int roomNo, Model model) {
+        model.addAttribute("room", roomService.getroom(roomNo));
+        return "room/room_list"; // room html 반환
+    }
 
 }

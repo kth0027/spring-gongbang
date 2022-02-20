@@ -1,5 +1,4 @@
 @charset "UTF-8";
-
 .wrap {
     font-family: CookieRun-Regular;
 }
@@ -23,26 +22,31 @@
     transition-timing-function: ease-in-out;
 }
 
-.tablecontents {
-    color: #374b73;
-    /* background: #ffdbdb;    */
-}
 
+/* 테이블 */
+
+.tablecontents {
+    border-radius: 1rem;
+}
 
 .tablecontents tr:first-child {
     background: #374b73;
 }
 
-.tablecontents tr {
-    background: #ffdbdb;}
-
-
-
-.tablecontents tr:first-child th {
-    color: white;
+.firsttr th {
+    border: solid 2px #fff;
 }
 
-.tablecontents span, .tablecontents a {
+.secondtr td {
+    border: solid 2px #fff;
+}
+
+.tablecontents tr {
+    background: #ffdbdb;
+}
+
+.tablecontents span,
+.tablecontents a {
     color: #374b73;
 }
 
@@ -50,3 +54,4 @@
     text-decoration: none;
 }
 
+.myaddtable {}

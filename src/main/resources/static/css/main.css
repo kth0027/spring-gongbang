@@ -16,10 +16,27 @@
     height: 20em;
     margin: 0 auto;
     position: relative;
+    margin-top: 5rem;
 }
 
 .carouselbox section ul {
     margin-left: -2rem;
+    overflow: hidden;
+}
+
+.carouselbox section ul li,
+.carouselbox section ul li iframe {
+    height: 20rem;
+}
+
+.carouselbox section ul li img {
+    width: 100%;
+    height: 20rem;
+}
+
+.carouselbox section ul li video {
+    width: 120%;
+    height: 25rem;
 }
 
 .carouselbox section span {
@@ -132,7 +149,7 @@ span {
 /* 버튼 */
 
 .tabbutton {
-    margin: 1rem 0;
+    margin: 3rem 0;
 }
 
 .tabbutton button {
@@ -366,7 +383,7 @@ h1 {
     position: relative;
     z-index: 1;
     background: #ffffff;
-    min-width: 270px;
+    min-width: 20rem;
     height: 470px;
     box-shadow: 12px 15px 20px 0px rgba(46, 61, 73, 0.15);
     transition: all 0.3s ease;
@@ -507,6 +524,7 @@ h1 {
 
 
 /* 리뷰카드 */
+
 .reviewcard {
     width: 20rem;
     margin-top: 10px;
@@ -518,8 +536,6 @@ h1 {
     width: 100%;
     height: 20rem;
 }
-
-
 
 .modalimgbox {
     border: 2px solid rgb(173, 173, 173);
@@ -545,10 +561,9 @@ h1 {
     border: 1px solid #374b73;
 }
 
-
 .modalbot a:hover {
     transform: scale(1.05);
-    transition: ease-in-out 1s;    
+    transition: ease-in-out 1s;
 }
 
 .modalimg {

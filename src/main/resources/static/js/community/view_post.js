@@ -14,7 +14,7 @@ function createNewReply(postNo){
         success: function(data){
             if(data == "1"){
                 // 2. 댓글 등록 성공
-                var postHTML = "<div class='post-reply-content'>";
+                var postHTML = "<div class='post-reply-content' id='post-reply-content-container"+postNo+"'>";
                 postHTML += "<div class='col-3'>";
                 postHTML += "<span> 작성자 </span>";
                 postHTML += "<div>" + memberId + "</div>";
@@ -29,9 +29,10 @@ function createNewReply(postNo){
                 postHTML += "<button> 수정 </button>";
                 postHTML += "<button> 삭제 </button>";
                 postHTML += "</div>";
+                postHTML += "</div>";
 
-                $(".post-reply-content-container").last().append(postHTML);
-
+                var $parentWrapperId= "#post-reply-wrapper" + postNo;
+                $($parentWrapperId).insertAfter(postHTML);
                 $(contentId).val("");
             }
         }
@@ -56,7 +57,6 @@ $(function(){
         var childId = '#child-section' + replyNo;
         var btnId = '#child-btn' + replyNo;
         var contentId = '#child-content' + replyNo;
-
         $(childId).toggle("fade");
         // 3. 대댓글 등록 버튼 클릭 시
         $(btnId).on("click", function(){
@@ -73,13 +73,17 @@ $(function(){
                         replyHTML += "<div class='reply-child'>" + content + "</div>";
                         replyHTML += "</div>";
                         replyHTML += "</div>";
+
                         var wrapperId = "#reply-child-wrapper" + replyNo;
                         $(wrapperId).append(replyHTML);
 
                         // 대댓글 입력 후 입력 창 지우기
-                        var inputId = "#child-content" + replyNo;
-                        $(inputId).val("");
-                        $(".reply-child-section").hide();
+                        var $inputId = "#child-content" + replyNo;
+                        $($inputId).val("");
+
+                        var $childSectionId = "#child-section" + replyNo;
+
+                        $($childSectionId).hide();
                     }
                 }
             });

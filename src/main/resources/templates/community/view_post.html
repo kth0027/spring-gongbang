@@ -38,9 +38,9 @@
     </div>
 
     <div class="mb-3">
-        <div class="post-reply-wrapper">
+        <div class="post-reply-wrapper" th:id=" 'post-reply-wrapper' + ${post.postNo}">
             <!-- 댓글 칸 최상단에는 작성 칸 위치-->
-            <div class="new-reply-wrapper">
+            <div class="new-reply-wrapper" th:id=" 'new-reply-wrapper' + ${post.postNo}">
                 <div class="row">
                     <div class="col-3">
                         <div>
@@ -62,13 +62,16 @@
                 </div>
             </div>
 
+            <!-- js 로 넘어갈 값 -->
             <input type="hidden" th:value="${memberEntity.memberId}" id="postLoginMemberId">
             <input type="hidden" th:value="${post.postNo}" id="postNo">
 
             <!-- 등록된 댓글 출력-->
-            <div class="post-reply-content-wrapper" id="post-reply-wrapper">
-                <div class="row post-reply-content-container" th:each="reply : ${replies}">
-                    <div class="post-reply-content">
+            <div class="post-reply-content-wrapper" th:id=" 'post-reply-content-wrapper' + ${post.postNo} ">
+
+                <div class="row post-reply-content-container" th:id=" 'post-reply-content-container' + ${post.postNo} "
+                     th:each="reply : ${replies}">
+                    <div class="post-reply-content" th:id=" 'post-reply-content' + ${post.postNo} ">
                         <div class="col-3">
                             <span>작성자</span>
                             <div th:text="${reply.memberEntity.memberId}"></div>

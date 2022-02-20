@@ -237,7 +237,7 @@ function registerCheck(){
 
     // 제목
     var title = $("#roomTitle").val();
-    var regTitle =/^[\w\s가-힣.,-_!@#$%^&*();:\/\\\[\]]{1,50}$/g;
+    var regTitle =/^[\w\s가-힣~\`.,-_!@#$%^&*();:\/\\\[\]]{1,50}$/g;
 
     if(!regTitle.test(title)){
         $("#title-result").html("제목을 입력해주세요");
@@ -247,7 +247,7 @@ function registerCheck(){
     }
 
     var content = $("#addClassInfo").val();
-    var regContent = /^[\w\s가-힣.,-_!@#$%^&*();:\/\\\[\]]{1,100}$/g;
+    var regContent = /^[\w\s가-힣~\`.,-_!@#$%^&*();:\/\\\[\]]{1,100}$/g;
 
     if(!regContent.test(content)){
         $("#content-result").html("내용을 입력해주세요");

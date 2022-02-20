@@ -23,8 +23,6 @@ function daySelect(year , month , day, roomNo){
 
     var memberNo = $("#memberNo").val();
     var hostMemberNo = $("#hostMemberNo").val();
-    alert("memberNo: " + memberNo);
-    alert("hostMemberNo: " + hostMemberNo);
 
     // 해당 날짜를 선택했을 때의 이벤트를 부여합니다.
     // DB 를 조회해서 선택한 날짜에 개설된 강좌 정보를 불러옵니다.

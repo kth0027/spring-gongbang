@@ -122,7 +122,6 @@ $(function () {
 });
 
 
-
 // 쪽지 카운트 세기
 $(function () {
 	$.ajax({
@@ -132,49 +131,3 @@ $(function () {
 		}
 	});
 });
-
-function roomLike(roomNo,memberNo) { // 답변하기 클릭 이벤트
-    $.ajax({
-        url:"/roomLike/roomLike",
-        data: {"roomNo": roomNo,"memberNo":memberNo},
-        success: function (data) {
-            if(data==1){
-                alert("좋아요");
-                $("#like").html("♥");
-
-            } else if(data==2){
-                 alert("싫어요");
-                  $("#like").html("♡");
-            }
-
-        }
-
-
-    });
-
-}
-
-/*
-    // 리뷰 버튼 클릭 이벤트
-function reviewwrite(roomNo){
-   var reviewContent =$("#reviewContent").val();
-
-   $.ajax({
-    url: '/room/reviewwrite',
-    data:{"roomNo":roomNo , "reviewContent":reviewContent},
-    success: function(data){
-        if(data==1){
-            alert("정상적으로 등록하셧습니다.");
-             $("#reviewContent").val(""); // 내용물 초기화
-             $("#reviewmodal").modal("hide"); // 모달 종료
-        } else if(data==2){
-            alert("로그인 후 등록이 가능합니다.");
-            // 로그인창 모달띄우기
-             $("#reviewContent").val(""); // 내용물 초기화
-             $("#reviewmodal").modal("hide"); // 모달 종료
-
-        }
-    }
-
-   });
-}*/

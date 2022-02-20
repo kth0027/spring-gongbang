@@ -279,7 +279,6 @@
 
 <!-- 인증 스크립트 -->
 <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=84d555c388d3da38338a57c648112954&libraries=clusterer"></script>
-<script th:src="@{/js/main.js}"></script>
 <script th:src="@{/js/roomview_jh.js}"></script>
 <script th:src="@{/js/roomview.js}"></script>
 
@@ -347,6 +346,25 @@
             return false;
         });
     });
+
+    function roomLike(roomNo,memberNo) {
+    $.ajax({
+        url:"/roomLike/roomLike",
+        data: {"roomNo": roomNo,"memberNo":memberNo},
+        success: function (data) {
+            if(data==1){
+                alert("좋아요");
+                $("#like").html("♥");
+
+            } else if(data==2){
+                 alert("싫어요");
+                  $("#like").html("♡");
+            }
+        }
+    });
+
+}
+
 
 
 </script>

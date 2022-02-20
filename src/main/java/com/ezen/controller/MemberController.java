@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -395,58 +396,34 @@ public class MemberController { // C S
     }
 
     // [내가 예약한 RoomEntity 에 관한 정보를 캘린더에 뿌려주기 위한 메소드]
+    // model 값을 history_item.html 에 넘겨서 해당 html 을 뿌려준다.
     @GetMapping("/memberHistoryJSON")
-    @ResponseBody
-    public JSONObject getRoomEntityByMemberNo(@RequestParam("date") String date) {
+    public String getRoomEntityByMemberNo(@RequestParam("date") String date, Model model) {
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         int memberNo = loginDto.getMemberNo();
 
-        JSONObject jsonObject = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-
         // memberNo 를 사용해서 History 엔티티를 불러옵니다.
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
+
         // HistoryEntity 에는 memberEntity, roomEntity, timeTableEntity 가 모두 맵핑되어있습니다.
 
-        TimeTableEntity timeTableEntity = null;
-        RoomEntity roomEntity = null;
+        // 특정 날짜에 개설된 강의 시간 정보만 불러옵니다.
+        List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomDate(date);
 
-        // JSON 에 넘겨줄 정보는 다음과 같다
-        // 1. title : 클래스 이름
-        // 2. date : 클래스 개설 날짜
-        // 3. beginTime, endTime : 클래스 시작 시간, 끝나는 시간
-        // 4. category : 클래스 카테고리
-        // 5. local : 클래스 지역
-        // 6. address : 클래스 도로명 주소
+        List<HistoryEntity> historyList = new ArrayList<>();
 
-        // History 엔티티를 for 문을 돌면서 JSON 에 저장시킨다.
-        for (HistoryEntity historyEntity : historyEntities) {
-            // for 문 안에서 data 에 정보를 누적시킵니다.
-            JSONObject data = new JSONObject();
-
-            // historyEntity 안에서 캘린더에서 클릭한 날짜와 동일한 정보만을 담아야합니다.
-            if (historyEntity.getTimeTableEntity().getRoomDate().equals(date)) {
-                if (timeTableRepository.findById(historyEntity.getTimeTableEntity().getTimeTableNo()).isPresent()) {
-                    timeTableEntity = timeTableRepository.findById(historyEntity.getTimeTableEntity().getTimeTableNo()).get();
-                    data.put("beginTime", timeTableEntity.getRoomTime().split(",")[0]);
-                    data.put("endTime", timeTableEntity.getRoomTime().split(",")[1]);
-                    data.put("date", timeTableEntity.getRoomDate());
+        for (TimeTableEntity timeTableEntity : timeTableEntities) {
+            for (HistoryEntity historyEntity : historyEntities) {
+                // 연관관계로 맵핑되어 있기 때문에 for 문을 2번 돌며 특정 날짜에 대한 예약 정보만을 전달합니다.
+                if (historyEntity.getTimeTableEntity().getTimeTableNo() == timeTableEntity.getTimeTableNo()) {
+                    historyList.add(historyEntity);
                 }
-                if (roomRepository.findById(historyEntity.getRoomEntity().getRoomNo()).isPresent()) {
-                    roomEntity = roomRepository.findById(historyEntity.getRoomEntity().getRoomNo()).get();
-                    data.put("category", roomEntity.getRoomCategory());
-                    data.put("local", roomEntity.getRoomLocal());
-                    data.put("title", roomEntity.getRoomTitle());
-                    data.put("address", roomEntity.getRoomAddress());
-                    data.put("roomNo", roomEntity.getRoomNo());
-                }
-                jsonArray.add(data);
             }
         }
-        jsonObject.put("json", jsonArray);
-        return jsonObject;
+        model.addAttribute("histories", historyList);
+        return "member/history_item";
     }
 
     // [메시지 페이지와 맵핑]

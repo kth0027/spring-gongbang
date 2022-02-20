@@ -31,33 +31,7 @@ function daySelect(year , month , day){
             // 기존에 있던 데이터를 지운다.
             $(".reservation-content").empty();
             $(".reservation-date-select").empty();
-            // json 으로 받아온 데이터를 html 태그에 추가시킨다.
-            var rooms = $(data.json).map(function(i, room) {
-
-                var roomNo = room.roomNo;
-                var roomCategory = room.category;
-                var roomTitle = room.title;
-                var roomBeginTime = room.beginTime;
-                var roomEndTime = room.endTime;
-                var roomLocal = room.local;
-                var roomDate = room.date;
-
-                var roomhtml = "<div class='class-selected-wrapper'>";
-                roomhtml += "<div class='class-selected-content'>";
-                roomhtml += "<div> 클래스 이름 : " + roomTitle + "</div>";
-                roomhtml += "<div> 시작시간 : " + roomBeginTime + "</div>";
-                roomhtml += "<div> 종료 : " + roomEndTime + "</div>";
-                roomhtml += "<div> 지역 : " + roomLocal + "</div>";
-                roomhtml += "<div> 카테고리 : " + roomCategory + "</div>";
-                roomhtml += "<div> 날짜 : " + roomDate + "</div>";
-                roomhtml += "</div>";
-                roomhtml += "</div>";
-
-                $(".reservation-date-select").append(roomhtml);
-
-            });
-
-
+            $(".reservation-date-select").append(data);
         }
     });
 }

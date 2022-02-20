@@ -24,4 +24,8 @@ public interface TimeTableRepository extends JpaRepository<TimeTableEntity, Inte
     @Query(nativeQuery = true, value = "SELECT * FROM timetable ORDER BY roomDate ASC")
     List<TimeTableEntity> getTimeTableOrderByRoomDate();
 
+    // 4. roomDate 에 해당하는 값만 가져옵니다.
+    @Query(nativeQuery = true, value = "SELECT * FROM timetable WHERE roomDate = :roomDate")
+    List<TimeTableEntity> getTimeTableByRoomDate(@Param("roomDate") String roomDate);
+
 }

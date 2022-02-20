@@ -1,3 +1,6 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+
 <!--
 @Author : 김정진
 @Date : 2022-02-18
@@ -5,21 +8,25 @@
     1. board_content.html 은 게시판 선택 후, 해당 게시판에 대한 정보를 출력하는 화면입니다.
     2. 컨트롤러에서 model 값을 뿌려준 다음 board_list.html 에 있는 div 영역에 뿌려집니다.
 -->
+<head>
+    <link rel="stylesheet" th:href="@{/css/community/board_content.css}">
+</head>
+<body>
 <div th:id=" 'postList' + ${boardNo}">
     <div class="row no-gutters">
         <div class="col-6">
             <div class="row no-gutters">
-                <div class="col-3">전체선택</div>
+                <!--<div class="col-3">전체선택</div>-->
                 <div class="col-3"></div>
             </div>
         </div>
         <div class="col-6">
             <div class="row no-gutters">
                 <div class="col-3">
-                    <button class="list-type-btn">10개씩</button>
+                    <!--<button class="list-type-btn">10개씩</button>-->
                 </div>
                 <div class="col-3">
-                    <button class="list-type-btn">30개씩</button>
+                    <!--<button class="list-type-btn">30개씩</button>-->
                 </div>
                 <div class="col-6 d-flex justify-content-end">
                     <button class="list-type-btn" type="button" th:onclick="createPost( [[${boardNo}]] );">게시글 작성
@@ -29,25 +36,25 @@
         </div>
     </div>
 
-    <table class="table table-striped">
+    <table class="table table-striped community-table text-center">
         <thead>
-            <tr>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일</th>
-            </tr>
+        <tr class="community-table-tr">
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일</th>
+        </tr>
         </thead>
         <tbody>
-            <tr th:each="post : ${posts}">
-                <!-- 상세페이지로 이동-->
-                <td th:text="${post.postTitle}" th:onclick="goToPostView( [[${post.postNo}]], [[${boardNo}]] )"></td>
-                <td th:text="${post.memberEntity.memberId}"></td>
-                <td th:text="${post.createdDate}"></td>
-            </tr>
+        <tr th:each="post : ${posts}">
+            <!-- 상세페이지로 이동-->
+            <td th:text="${post.postTitle}" th:onclick="goToPostView( [[${post.postNo}]], [[${boardNo}]] )"></td>
+            <td th:text="${post.memberEntity.memberId}"></td>
+            <td th:text="${post.createdDate}"></td>
+        </tr>
         </tbody>
     </table>
 
-    <input type="text" th:value="${ posts.number + 1 }" id="current-page">
+    <input type="hidden" th:value="${ posts.number + 1 }" id="current-page">
 
     <!-- 페이징 처리 -->
     <ul class="pagination justify-content-center"
@@ -84,3 +91,5 @@
 
 
 </div>
+</body>
+</html>

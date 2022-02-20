@@ -1,6 +1,5 @@
 package com.ezen.controller;
 
-import com.ezen.domain.dto.StatsDto;
 import com.ezen.domain.entity.HistoryEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.TimeTableEntity;
@@ -15,12 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Time;
 import java.util.List;
 
 
@@ -74,6 +73,59 @@ public class AdminController {
         Page<RoomEntity> roomEntities = roomService.getroomlistadmin(pageable);
         model.addAttribute("roomEntities", roomEntities);
         return "admin/adminlist";
+    }
+
+    @GetMapping("/roomJSONDaySelect")
+    @ResponseBody
+    public JSONObject daySelectJSON(@RequestParam("select-date") String date) {
+
+        // RoomEntity 를 JSON 으로 변환 후 js 로 넘겨주는 역할
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        List<HistoryEntity> historyEntities = historyRepository.findAll();
+
+        // date 에 해당하는 예약 내역만 불러온다.
+        List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomDate(date);
+
+        for(TimeTableEntity timeTableEntity : timeTableEntities){
+            for(HistoryEntity historyEntity : historyEntities){
+                // 특정 날짜에 해당하는 예약 내역 정보만 json 으로 넘겨줍니다.
+                if(historyEntity.getTimeTableEntity().getTimeTableNo() == timeTableEntity.getTimeTableNo()){
+
+                    RoomEntity roomEntity = null;
+                    JSONObject data = new JSONObject();
+
+                    data.put("date", timeTableEntity.getRoomDate()); // YYYY-MM-DD
+                    data.put("beginTime", timeTableEntity.getRoomTime().split(",")[0]); // HH, HH
+                    data.put("endTime", timeTableEntity.getRoomTime().split(",")[1]); // HH, HH
+
+                    // 3. 현재 예약건에 해당하는 강좌 정보
+                    int roomNo = historyEntity.getRoomEntity().getRoomNo();
+                    if (roomRepository.findById(roomNo).isPresent()) {
+                        roomEntity = roomRepository.findById(roomNo).get();
+                    }
+
+                    assert roomEntity != null;
+                    data.put("category", roomEntity.getRoomCategory());
+                    data.put("local", roomEntity.getRoomLocal());
+
+                    // 4. 예약 정보
+                    data.put("createdDate", historyEntity.getCreatedDate()); // 예약이 완료된 날짜
+                    data.put("price", historyEntity.getHistoryPoint()); // 회원이 결제한 금액
+
+                    // 5. 신청한 인원 수 : 결제 금액 / 클래스 1명당 금액
+                    int person = historyEntity.getHistoryPoint() / roomEntity.getRoomPrice();
+                    data.put("person", person);
+
+                    jsonArray.add(data);
+
+                }
+            }
+        }
+        jsonObject.put("history", jsonArray);
+        return jsonObject;
+
     }
 
     @GetMapping("/roomJSON")

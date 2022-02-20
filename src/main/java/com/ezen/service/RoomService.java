@@ -388,11 +388,6 @@ public class RoomService {
     public Page<RoomEntity> adminGetRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local,
             String category) {
 
-        // 관리자 페이지에서 페이지 볼 개수를 입력받아서 PageRequest 에 넣어주면 페이징 처리를 할 수 있습니다.
-
-        System.out.println("관리자 검색 페이지 접근");
-        System.out.println("키워드 : " + keyword + ", 지역 : " + local + ", 카테고리 : " + category);
-
         // 페이지번호
         int page = 0;
         if (pageable.getPageNumber() != 0) {

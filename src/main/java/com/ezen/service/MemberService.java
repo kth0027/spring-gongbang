@@ -1,6 +1,5 @@
 package com.ezen.service;
 
-
 import com.ezen.domain.dto.IntergratedDto;
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.MemberEntity;
@@ -14,7 +13,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -39,9 +37,20 @@ public class MemberService implements UserDetailsService {
         // 패스워드 암호화 [ BCryptPasswordEncoder ]
         // 1. 암호화 클래스 객체 생성
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        // 2. 입력받은 memberDto내 패스워드 재설정 [ 암호화객체명.encode( 입력받은 패스워드 )   ]
+        // 2. 입력받은 memberDto내 패스워드 재설정 [ 암호화객체명.encode( 입력받은 패스워드 ) ]
         memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));
-        memberRepository.save(memberDto.toentity());  // save(entity) : insert / update :  Entity를 DB에 저장
+        memberRepository.save(memberDto.toentity()); // save(entity) : insert / update : Entity를 DB에 저장
+        return true;
+    }
+
+    // 회원수정 메소드
+    public boolean memberUpdate(MemberDto memberDto) {
+        // 패스워드 암호화 [ BCryptPasswordEncoder ]
+        // 1. 암호화 클래스 객체 생성
+        // BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // 2. 입력받은 memberDto내 패스워드 재설정 [ 암호화객체명.encode( 입력받은 패스워드 ) ]
+        // memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));
+        memberRepository.save(memberDto.toentity()); // save(entity) : insert / update : Entity를 DB에 저장
         return true;
     }
 
@@ -107,14 +116,14 @@ public class MemberService implements UserDetailsService {
     public boolean delete(int memberNo, String passwordconfirm) {
         // 1. 로그인된 회원번호의 엔티티[레코드] 호출
         Optional<MemberEntity> entityOptional = memberRepository.findById(memberNo);
-        // Optional 클래스 :  null 포함 객체 저장
+        // Optional 클래스 : null 포함 객체 저장
         // 2. 해당 엔티티내 패스워드가 확인패스워드와 동일하면
         if (entityOptional.get().getMemberPassword().equals(passwordconfirm)) {
-            // Optional 클래스 -> memberEntity.get()  :  Optional 내 객체 호출
+            // Optional 클래스 -> memberEntity.get() : Optional 내 객체 호출
             memberRepository.delete(entityOptional.get());
-            return true;    // 회원탈퇴
+            return true; // 회원탈퇴
         }
-        return false;  // 회원탈퇴 X
+        return false; // 회원탈퇴 X
     }
 
     // 회원 아이디 찾기
@@ -124,8 +133,8 @@ public class MemberService implements UserDetailsService {
         // 1. Member 엔티티를 불러옵니다.
         List<MemberEntity> memberEntities = memberRepository.findAll();
         // 2. 이름, 핸드폰 번호가 일치하는 회원이 있는지 검사합니다.
-        for(MemberEntity member : memberEntities){
-            if(member.getMemberName().equals(name) && member.getMemberPhone().equals(phone)){
+        for (MemberEntity member : memberEntities) {
+            if (member.getMemberName().equals(name) && member.getMemberPhone().equals(phone)) {
                 // 3. 일치하는 회원이 있으면
                 return member;
             }
@@ -155,7 +164,7 @@ public class MemberService implements UserDetailsService {
         return entityOptional.get();
     }
 
-    @Override   // /member/logincontroller URL 호출시 실행되는 메소드 [ 로그인처리(인증처리) 메소드 ]
+    @Override // /member/logincontroller URL 호출시 실행되는 메소드 [ 로그인처리(인증처리) 메소드 ]
     public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
 
         // 회원 아이디로 회원엔티티 찾기
@@ -170,14 +179,14 @@ public class MemberService implements UserDetailsService {
         // GrantedAuthority : 권한 [ 키 저장 가능한 클래스 ]
 
         // 세션 부여
-        MemberDto loginDto = MemberDto.builder().memberEmail(memberEntity.getMemberEmail()).memberNo(memberEntity.getMemberNo()).build();
-        HttpSession session = request.getSession();   // 서버내 세션 가져오기
-        session.setAttribute("logindto", loginDto);    // 세션 설정
+        MemberDto loginDto = MemberDto.builder().memberEmail(memberEntity.getMemberEmail())
+                .memberNo(memberEntity.getMemberNo()).build();
+        HttpSession session = request.getSession(); // 서버내 세션 가져오기
+        session.setAttribute("logindto", loginDto); // 세션 설정
 
         // 회원정보와 권한을 갖는 UserDetails 반환
         return new IntergratedDto(memberEntity, authorities);
     }
-
 
     // 충전금액 증가
     @Transactional
@@ -216,39 +225,28 @@ public class MemberService implements UserDetailsService {
             MemberEntity memberEntity = memberRepository.findById(memberNo).get();
             memberEntity.setChannelImg(null);
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("기존 사진 삭제 실패" + e);
             return false;
         }
     }
 
     // 02-17 강사소개 작성여부 체크 - 조지훈
-    public boolean channelcheck(int memberNo){
+    public boolean channelcheck(int memberNo) {
         MemberEntity memberEntity = memberRepository.findById(memberNo).get();
-        if(memberEntity.getChannelContent() == null) {
+        if (memberEntity.getChannelContent() == null) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
-//    @Transactional
-//    public boolean channelupdate(MemberEntity memberEntity) {
-//        try {
-//
-//        }catch (Exception e) {}
-//
-//        return true;
-//    }
+    // @Transactional
+    // public boolean channelupdate(MemberEntity memberEntity) {
+    // try {
+    //
+    // }catch (Exception e) {}
+    //
+    // return true;
+    // }
 
 }
-
-
-
-
-
-
-
-
-
-
-

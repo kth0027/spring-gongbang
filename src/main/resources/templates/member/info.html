@@ -27,10 +27,10 @@
                         <span class="fs-4 infotitle">나의정보</span>
                     </a>
                     <hr>
-                    <div class="nav flex-column me-3 navlist" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div class="nav  me-3 navlist" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">회원정보</button>
                         <button class="nav-link d-none" id="v-pills-reserveinfo-tab" data-bs-toggle="pill" data-bs-target="#v-pills-reserveinfo" type="button" role="tab" aria-controls="v-pills-reserveinfo" aria-selected="false">예약정보</button>
-                        <button class="nav-link signoutbtn" id="v-pills-signout-tab" data-bs-toggle="pill" data-bs-target="#v-pills-signout" type="button" role="tab" aria-controls="v-pills-signout" aria-selected="false"><a data-bs-toggle="modal" data-bs-target="#modalmdelete">회원탈퇴</a>
+                        <button class="nav-link signoutbtn" id="v-pills-signout-tab" data-bs-toggle="modal" data-bs-target="#modalmdelete" type="button" role="tab" aria-controls="v-pills-signout" aria-selected="false">회원탈퇴
                         </button>
                     </div>
                     <hr>
@@ -45,72 +45,79 @@
                                 <!-- 회원정보 -->
                                 <div class="writebox">
                                     <div class="h3">회원 정보</div>
-                                    <form action="">
-                                        <table class="table">
-                                            <tr>
-                                                <td>아이디</td>
-                                                <td th:text="${memberDto.getMemberId}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>이름</td>
-                                                <td th:text="${memberDto.getMemberName}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>이메일</td>
-                                                <td th:text="${memberDto.getMemberEmail}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>회원등급</td>
-                                                <td>서비스준비중</td>
-                                            </tr>
-                                            <tr>
-                                                <td>연락처</td>
-                                                <td th:text="${memberDto.getMemberPhone}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>포인트</td>
-                                                <td th:text="${memberDto.getMemberPoint}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>성별</td>
-                                                <td th:text="${memberDto.getMemberGender}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>가입날짜</td>
-                                                <td th:text="${#temporals.format(memberDto.createdDate,'yyyy-MM-dd hh:mm')}">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <div class="d-flex justify-content-center infosubmitbtn">
-                                            <input class="btninfo" type="button" value="수정하기">
-                                        </div>
 
-                                    </form>
+                                    <table class="table">
+                                        <tr>
+                                            <td>아이디</td>
+                                            <td th:text="${memberDto.getMemberId}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>이름</td>
+                                            <td th:text="${memberDto.getMemberName}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>이메일</td>
+                                            <td th:text="${memberDto.getMemberEmail}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>회원등급</td>
+                                            <td>서비스준비중</td>
+                                        </tr>
+                                        <tr>
+                                            <td>연락처</td>
+                                            <td th:text="${memberDto.getMemberPhone}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>포인트</td>
+                                            <td th:text="${memberDto.getMemberPoint}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>성별</td>
+                                            <td th:text="${memberDto.getMemberGender}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>가입날짜</td>
+                                            <td th:text="${#temporals.format(memberDto.createdDate,'yyyy-MM-dd hh:mm')}">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="d-flex justify-content-center infosubmitbtn">
+                                        <input class="btninfo" type="button" value="수정하기">
+                                    </div>
+
+
                                 </div>
 
                                 <!-- 회원정보 수정 -->
                                 <div class="rewritebox">
                                     <div class="h3">회원 정보수정</div>
-                                    <form action="/member/updatecontroller" method="post">
+                                    <form action="/member/updateController" method="post">
                                         <input class="d-none" type="text" maxlength="15" placeholder="5~15자리" name="memberNo" th:value="${memberDto.getMemberNo}">
                                         <table class="table myaddtable">
                                             <tr>
                                                 <td th:text="'(아이디) ' + ${memberDto.getMemberId}">
                                                 </td>
-                                                <td><input type="text" maxlength="15" placeholder="5~15자리" name="memberId" th:value="${memberDto.memberId}"></td>
+                                                <td><input id="memberUpdateId" class="form-control" type="text" maxlength="15" placeholder="5~15자리" name="memberId" th:value="${memberDto.memberId}">
+                                                    <p id="idUpdateCheck"></p>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td th:text="' (비밀번호) ****** '"></td>
-                                                <td><input type="password" maxlength="15" placeholder="8~16자리" name="memberPassword" th:value="${memberDto.memberPassword}">
+                                                <td><input id="memberUpdatePassword" class="form-control" type="password" maxlength="15" placeholder="8~16자리" name="memberPassword" th:value="${memberDto.memberPassword}">
+                                                    <p id="passwordUpdatecheck"></p>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td th:text="' (이름) ' + ${memberDto.getMemberName}"></td>
-                                                <td><input type="text" maxlength="15" placeholder="1~15자리" name="memberName" th:value="${memberDto.memberName}"></td>
+                                                <td><input id="memberNameUpdate" class="form-control" type="text" maxlength="15" placeholder="1~15자리" name="memberName" th:value="${memberDto.memberName}">
+                                                    <p id="nameUpdatecheck"></p>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td th:text="' (이메일) ' + ${memberDto.getMemberEmail}"></td>
-                                                <td><input type="text" placeholder="@(포함)" maxlength="" name="memberEmail" th:value="${memberDto.memberEmail}"></td>
+                                                <td><input id="memberEmail" class="form-control" type="text" placeholder="@(포함)" maxlength="" name="memberEmail" th:value="${memberDto.memberEmail}">
+                                                    <p id="emailUpdatecheck"></p>
+                                                </td>
                                             </tr>
 
                                             <tr>
@@ -119,7 +126,9 @@
                                             </tr>
                                             <tr>
                                                 <td th:text="' (연락처) ' + ${memberDto.getMemberPhone}"></td>
-                                                <td><input type="text" maxlength="12" placeholder="11~12자리" name="memberPhone" th:value="${memberDto.memberPhone}"></td>
+                                                <td><input id="memberPhoneUpdate" class="form-control" type="text" maxlength="12" placeholder="11~12자리" name="memberPhone" th:value="${memberDto.memberPhone}">
+                                                    <p id="phoneUpdatecheck"></p>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td>포인트</td>
@@ -127,23 +136,40 @@
                                             </tr>
                                             <tr>
                                                 <td th:text="' (성별) ' + ${memberDto.getMemberGender}"></td>
-                                                <td class="d-flex align-items-center">
+                                                <td class="d-flex align-items-center form-control">
                                                     <input class="gendercheck col-1" type="radio" name="memberGender" id="msex1" value="남" checked="checked">남자
                                                     <input class="gendercheck col-1" type="radio" name="memberGender" id="msex2" value="여">여자
                                                 </td>
 
                                             </tr>
+                                            t
                                             <tr>
                                                 <td>가입날짜</td>
                                                 <td th:text="${memberDto.getCreatedDate}"></td>
                                             </tr>
-                                        </table>
+                                            <tr>
+                                                <td></td>
 
-                                        <div class="d-flex justify-content-center btninput">
-                                            <input class="form-control" type="submit" value="확인">
-                                            <input class="btnback" type="button" value="뒤로가기">
-                                        </div>
+                                                <td class="">
+                                                    <div class="d-flex w-100" style="">
+                                                        <span style="display: inline-block;"><input
+                                                                style="width: 2rem !important;" type="checkbox" class=""
+                                                                name="infosign"></span>
+                                                        <span class="text-info fw-bold">*개인정보수집·이용에 동의합니다. *
+                                                        </span>
+                                                    </div>
+
+
+
+                                            </tr>
+                                        </table>
                                     </form>
+
+                                    <div class="d-flex justify-content-center btninput">
+                                        <input id="formsubmit" class="form-control" type="submit" value="확인">
+                                        <input class="btnback" type="button" value="뒤로가기">
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -195,6 +221,140 @@
                 $(".writebox").show();
             });
         });
+    </script>
+
+    <!-- 수정 유효성 -->
+    <script>
+        // 아이디 유효성 검사
+        $(function() {
+            // 아이디 유효성 검사
+            $("#memberUpdateId").keyup(function() {
+                // 해당 태그에 키보드가 눌렸을 때 이벤트 : keyup
+                var memberId = $("#memberUpdateId").val();
+                var idj = /^[a-z0-9]{5,15}$/; // 정규표현식
+                if (!idj.test(memberId)) { //정규표현식이 다를경우
+                    $("#idUpdateCheck").html("영소문자 5~15 글자만 가능합니다.");
+                    $("#idUpdateCheck").css('color', 'green');
+                } else {
+                    // 아이디 중복체크 비동기 통신
+                    $.ajax({
+                        url: "/member/idCheck",
+                        data: {
+                            "memberId": memberId
+                        },
+                        method: "GET",
+                        success: function(result) {
+                            if (result == 1) {
+                                $("#idUpdateCheck").html("현재 사용중인 아이디입니다.");
+                                $("#idUpdateCheck").css('color', 'red');
+                                $("#idUpdateCheck").css('font-weight', 'bold');
+                            } else {
+                                $("#idUpdateCheck").html("사용가능");
+                                $("#idUpdateCheck").css('color', 'blue');
+                                $("#idUpdateCheck").css('font-weight', 'bold');
+                            }
+                        }
+                    });
+                }
+            });
+
+            // 패스워드 유효성검사
+            $("#memberUpdatePassword").keyup(function() {
+                var pwj = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,15}$/;
+                // 영대소문자+숫자+특수문자[ !@#$%^&*()+|= ] 8~15포함
+                var memberUpdatePassword = $("#memberUpdatePassword").val();
+                if (!pwj.test(memberUpdatePassword)) {
+                    $("#passwordUpdatecheck").html("영대소문자+숫자+특수문자[ !@#$%^&*()+|= ] 8~15포함");
+                    $("#passwordUpdatecheck").css('color', 'green');
+
+                } else {
+                    $("#passwordUpdatecheck").html("사용가능");
+                    $("#passwordUpdatecheck").css('color', 'blue');
+                    $("#passwordUpdatecheck").css('font-weight', 'bold');
+                }
+            });
+
+            // 이메일 유효성검사
+            $("#memberEmail").keyup(function() {
+                var emailj = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+                var memberEmail = $("#memberEmail").val();
+                if (!emailj.test(memberEmail)) {
+                    $("#emailUpdatechec").html("이메일 형식으로 입력해주세요");
+                    $("#emailUpdatechec").css('color', 'green');
+                } else {
+                    // 이메일 중복체크 비동기 통신
+                    $.ajax({
+                        url: "/member/emailcheck",
+                        data: {
+                            "memberEmail": memberEmail
+                        },
+                        method: "GET",
+                        success: function(result) {
+                                if (result == 1) {
+                                    $("#emailUpdatecheck").html("현재 사용중인 이메일 입니다.");
+                                    $("#emailUpdatecheck").css('color', 'red');
+                                    $("#emailUpdatecheck").css('font-weight', 'bold');
+                                } else {
+                                    $("#emailUpdatecheck").html("사용가능");
+                                    $("#emailUpdatecheck").css('color', 'blue');
+                                    $("#emailUpdatecheck").css('font-weight', 'bold');
+                                }
+                            } // success send
+                    }); // ajax 함수  end
+                }
+            });
+
+
+            // 이름 유효성검사
+            $("#memberNameUpdate").keyup(function() {
+                var namej = /^[A-Za-z가-힣]{1,15}$/; // 이름 정규표현식
+                var memberName = $("#memberNameUpdate").val();
+                if (!namej.test(memberName)) {
+                    $("#nameUpdatecheck").html("영대문자/한글 1~15 허용");
+                    $("#nameUpdatecheck").css('color', 'green');
+                    $("#nameUpdatecheck").css('font-weight', 'bold');
+
+                } else {
+                    $("#nameUpdatecheck").html("사용가능");
+                    $("#nameUpdatecheck").css('color', 'blue');
+                    $("#nameUpdatecheck").css('font-weight', 'bold');
+                }
+            });
+
+            // 연락처 유효성검사
+            $("#memberPhoneUpdate").keyup(function() {
+                var phonej = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 연락처
+                var memberPhone = $("#memberPhoneUpdate").val();
+                if (!phonej.test(memberPhone)) {
+                    $("#phoneUpdatecheck").html("01X-XXXX-XXXX 형식으로 입력해주세요");
+                    $("#phoneUpdatecheck").css('color', 'red');
+                    $("#phoneUpdatecheck").css('font-weight', 'bold');
+
+                } else {
+                    $("#phoneUpdatecheck").html("사용가능");
+                    $("#phoneUpdatecheck").css('color', 'blue');
+                    $("#phoneUpdatecheck").css('font-weight', 'bold');
+                }
+            });
+
+            $("#formsubmit").click(function() {
+                if (!$('input[name=infosign]').is(":checked")) {
+                    alert(" 개인정보처리방침 동의시 회원가입이 가능합니다 . ");
+                } else if ($("#idUpdateCheck").html() != "사용가능") {
+                    alert(" 아이디 불가능합니다 . ");
+                } else if ($("#passwordUpdatecheck").html() != "사용가능") {
+                    alert(" 패스워드 불가능합니다 . ");
+                } else if ($("#nameUpdatecheck").html() != "사용가능") {
+                    alert(" 이름 불가능합니다 . ");
+                } else if ($("#emailUpdatecheck").html() != "사용가능") {
+                    alert(" 이메일 불가능합니다 . ");
+                } else if ($("#phoneUpdatecheck").html() != "사용가능") {
+                    alert(" 연락처가 불가능합니다 . ");
+                } else {
+                    $("form").submit(); // 모든 유효성검사 통과시 폼 전송
+                }
+            });
+        }); // 함수 end
     </script>
 
 

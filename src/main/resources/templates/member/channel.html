@@ -23,19 +23,20 @@
             <h3 class="title">개인채널</h3>
             <div class="row">
                 <div>
-                    <div class="row  hannelmaintop">
-                        <div class="col-md-4 col-4 my-3 hannelmaintopimgbox">
+                    <div class="hannelmaintop">
+                        <div class="hannelmaintopimgbox">
                             <img class="channelimg img-fluid" th:if="${memberEntity.channelImg == null}" src="/img/default-profile-photo.png" alt="">
                             <img class="channelimg img-fluid" th:if="${memberEntity.channelImg != null}" th:src="@{'/channelimg/' + ${memberEntity.channelImg}}" alt="">
                         </div>
                         <div class="col-md-6 col-6 text-center my-3">
-                            <div>
+                            <div class="topbox">
                                 <span th:text="${memberEntity.channelTitle}" id="channelname"></span>
                                 <div class="changeimg" sec:authorize="isAuthenticated()" th:if="${session.logindto.memberNo == memberEntity.memberNo}">
-                                    <button class="btn " data-bs-target="#channelregistration" data-bs-toggle="modal">채널
-                                        정보 등록/수정
-                                    </button>
+
                                 </div>
+                                <button class="btn" data-bs-target="#channelregistration" data-bs-toggle="modal">채널
+                                    정보 등록/수정
+                                </button>
                                 <div>
                                     <span id="classaddress" th:if="${memberEntity.roomEntities.size != 0}" th:text="${#strings.listSplit(memberEntity.RoomEntities.get(0).roomAddress,',')[0] }"></span>
                                 </div>
@@ -130,11 +131,12 @@
                             </div>
                             <block id="existingfile">
                                 <span th:text="${realimg}" id="test"></span> <button type="button" th:onclick="channelimgdelete([[${memberEntity.memberNo}]]);">기본 이미지 사용</button>
+                                <input type="file" name="memberImg" id="file"> <br>
                             </block>
-                            <input type="file" name="memberImg" id="file"> <br>
-                            <div class="flex-nowrap p-0">
-                                <input type="submit" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" value="수정">
-                                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">나가기
+
+                            <div class="modalbtn d-flex flex-nowrap p-0">
+                                <input type="submit" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right mx-2" value="수정">
+                                <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 mx-2" data-bs-dismiss="modal">나가기
                                 </button>
                             </div>
                         </form>

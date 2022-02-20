@@ -563,12 +563,15 @@ h1 {
     background-color: #ff9a9a;
     border-radius: 1rem;
     padding: 0 0.5rem;
-    border: 1px solid #374b73;
+    color: #374b73;
+    box-shadow: 3px 3px 3px #ff9a9a;
 }
 
 .modalbot a:hover {
-    transform: scale(1.05);
+    transform: scale(1.2);
     transition: ease-in-out 1s;
+    font-size: 1.1rem;
+    text-decoration: underline;
 }
 
 .modalimg {

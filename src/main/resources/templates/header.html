@@ -23,7 +23,7 @@
             <div class="container">
                 <div class="row d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                     <div class="col-1 d-flex justify-content-center">
-                        <a href="/" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <a href="#" class="logo d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                             <img th:src="@{/img/logo/logo.png}" alt="logo">
                         </a>
                     </div>
@@ -270,13 +270,13 @@
                                 <!-- 로그인 실패시 메시지 -->
                                 <!-- 로그인 버튼 -->
                                 <input type="submit" class="w-100 mb-4 btn btn-lg rounded-4 btn-primary openlogin" value="로그인" id="loginBtn">
-                                <div class=""><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이
+                                <div class="mb-2"><a id="switchlogin" class="" th:href="@{/member/signup}">아직 회원이
                                         아니신가요?
-                                        <span>회원가입</span>
+                                        회원가입
                                     </a>
                                 </div>
-                                <div>
-                                    <a id="findbtn" class="btn" th:if="${session.logindto == null}" data-bs-target="#modalsearch" data-bs-toggle="modal">
+                                <div class="my-2">
+                                    <a id="findbtn" class="" th:if="${session.logindto == null}" data-bs-target="#modalsearch" data-bs-toggle="modal">
                                         회원정보찾기</a>
                                 </div>
                                 <hr class="my-1 ">

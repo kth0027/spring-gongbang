@@ -1,0 +1,15 @@
+body{
+    padding: 0px;
+    margin: 0px;
+}
+
+.time-select-btn{
+    padding: 1.2rem;
+    margin: 0.5rem;
+    background-color: #374b73;
+    border: 3px solid #ff9a9a;
+    border-radius: 5px;
+    color: #ffffff;
+}
+
+

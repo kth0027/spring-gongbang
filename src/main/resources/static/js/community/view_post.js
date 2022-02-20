@@ -12,29 +12,35 @@ function createNewReply(postNo){
         url: "/community/newPostReply",
         data: {"postNo" : postNo, "content" : content},
         success: function(data){
-            if(data == "1"){
-                // 2. 댓글 등록 성공
-                var postHTML = "<div class='post-reply-content' id='post-reply-content-container"+postNo+"'>";
-                postHTML += "<div class='col-3'>";
-                postHTML += "<span> 작성자 </span>";
-                postHTML += "<div>" + memberId + "</div>";
-                postHTML += "</div>";
-                postHTML += "<div class='col-9'>";
-                postHTML += "<div>" + content + "</div>";
-                postHTML += "</div>";
-                postHTML += "</div>";
-                postHTML += "<div class='col-12'>";
-                postHTML += "<button class='add-reply-child' id='child"+postNo+"' data-tab='"+postNo+"'>";
-                postHTML += "답글달기</button>";
-                postHTML += "<button> 수정 </button>";
-                postHTML += "<button> 삭제 </button>";
-                postHTML += "</div>";
-                postHTML += "</div>";
 
-                var $parentWrapperId= "#post-reply-wrapper" + postNo;
-                $($parentWrapperId).insertAfter(postHTML);
-                $(contentId).val("");
-            }
+            $(contentId).val("");
+            $(".post-reply-content-wrapper").empty();
+            $(".post-reply-area").empty();
+            $(".post-reply-area").append(data);
+
+
+                // 2. 댓글 등록 성공
+//                var postHTML = "<div class='post-reply-content' id='post-reply-content-container"+postNo+"'>";
+//                postHTML += "<div class='col-3'>";
+//                postHTML += "<span> 작성자 </span>";
+//                postHTML += "<div>" + memberId + "</div>";
+//                postHTML += "</div>";
+//                postHTML += "<div class='col-9'>";
+//                postHTML += "<div>" + content + "</div>";
+//                postHTML += "</div>";
+//                postHTML += "</div>";
+//                postHTML += "<div class='col-12'>";
+//                postHTML += "<button class='add-reply-child' id='child"+postNo+"' data-tab='"+postNo+"'>";
+//                postHTML += "답글달기</button>";
+//                postHTML += "<button> 수정 </button>";
+//                postHTML += "<button> 삭제 </button>";
+//                postHTML += "</div>";
+//                postHTML += "</div>";
+//
+//                var $parentWrapperId= "#post-reply-wrapper" + postNo;
+//                $($parentWrapperId).insertAfter(postHTML);
+//                $(contentId).val("");
+
         }
     });
 }
@@ -47,9 +53,7 @@ $(function(){
         $(".reply-child-section").hide();
     });
 
-
     $(".add-reply-child").on("click", function(){
-
         var postNo = $("#postNo").val();
         // 1. 해당 부모 댓글 번호를 변수에 저장합니다.
         var replyNo = $(this).attr("data-tab");
@@ -66,6 +70,7 @@ $(function(){
                 method: "GET",
                 data: {"replyNo" : replyNo, "content" : content, "postNo" : postNo},
                 success: function(data){
+                    // 1. 자식 댓글 등록 후 부모 댓글을 찾아서 그 아래에 출력한다.
                     if(data == "1"){
                         // #child-container{postReplyNo} 에 등록해야한다.
                         var replyHTML = "<div>";

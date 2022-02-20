@@ -211,6 +211,26 @@ public class RoomService {
         return roomEntities;
     }
 
+    // [멤버용]
+    // 내가 개설한 강좌 불러오기
+    public Page<RoomEntity> getMyGongbang(int memberNo, @PageableDefault Pageable pageable) {
+
+        // 1. 룸 엔티티 Page 타입 변수 선언 및 초기화
+        Page<RoomEntity> myGongbangs = null;
+        int page = -1;
+        if (pageable.getPageNumber() == 0) {
+            page = 0;
+        } else {
+            page = pageable.getPageNumber() - 1;
+        }
+        pageable
+                = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+        myGongbangs = roomRepository.findMyGongbang(memberNo, pageable);
+
+        return myGongbangs;
+
+    }
+
     // 모든 룸 가져오기(어드민용)
     // 관리자는 모든 클래스를 볼 수 있습니다.
     public Page<RoomEntity> getroomlistadmin(@PageableDefault Pageable pageable) {

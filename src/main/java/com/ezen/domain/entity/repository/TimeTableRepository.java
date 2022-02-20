@@ -13,12 +13,15 @@ public interface TimeTableRepository extends JpaRepository<TimeTableEntity, Inte
     // 1.1 중복은 허용하지 않습니다.
     // 1.2 중복이 있을 수도 있기 때문에 limit 9 는 사용하지 않습니다.
     // 1.2.1 service 에서 제어
-    @Query(nativeQuery = true, value = "select * from timetable order by createdDate desc")
+    @Query(nativeQuery = true, value = "SELECT * FROM timetable ORDER BY createdDate DESC")
     List<TimeTableEntity> getByTimeSequence();
 
     // 2. roomNo 에 해당하는 TimeTable 엔티티를 List 형태로 리턴
-    @Query(nativeQuery = true, value = "select * from timetable where roomNo = :roomNo")
+    @Query(nativeQuery = true, value = "SELECT * FROM timetable WHERE roomNo = :roomNo")
     List<TimeTableEntity> getTimeTableByRoomNo(@Param("roomNo") int roomNo);
 
-    // 3. roomNo 에 해당하는 Time
+    // 3. roomDate 로 정렬된 결과를 얻는다.
+    @Query(nativeQuery = true, value = "SELECT * FROM timetable ORDER BY roomDate ASC")
+    List<TimeTableEntity> getTimeTableOrderByRoomDate();
+
 }

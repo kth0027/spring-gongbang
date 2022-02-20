@@ -5,6 +5,8 @@ import com.ezen.domain.entity.CategoryEntity;
 import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +58,7 @@ public class CategoryService {
     }
 
     // [카테고리 리스트 불러오기]
-    public List<CategoryEntity> getCategoryList() {
-        return categoryRepository.findAll();
+    public Page<CategoryEntity> getCategoryList(Pageable pageable) {
+        return categoryRepository.findAll(pageable);
     }
 }

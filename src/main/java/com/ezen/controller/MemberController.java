@@ -360,9 +360,17 @@ public class MemberController { // C S
     }
 
     // [내가 개설한 클래스와 맵핑]
+    //
     @GetMapping("/myclass")
     public String myclass(Model model, @PageableDefault Pageable pageable) {
-        Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        // 로그인 세션에 저장되어 있는 세션을 이용해 memberNo 를 불러옵니다.
+        int memberNo = loginDto.getMemberNo();
+        MemberEntity memberEntity = memberService.getMemberEntity(memberNo);
+
+        Page<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo, pageable);
         model.addAttribute("roomDtos", roomDtos);
         return "member/member_class";
     }

@@ -237,7 +237,7 @@ function registerCheck(){
 
     // 제목
     var title = $("#roomTitle").val();
-    var regTitle =/^[\w\s가-힣]{1,50}$/;
+    var regTitle =/^[\w\s가-힣.,-_!@#$%^&*();:\/\\\[\]]{1,50}$/g;
 
     if(!regTitle.test(title)){
         $("#title-result").html("제목을 입력해주세요");
@@ -247,7 +247,7 @@ function registerCheck(){
     }
 
     var content = $("#addClassInfo").val();
-    var regContent = /^[\w\s가-힣]{1,100}$/;
+    var regContent = /^[\w\s가-힣.,-_!@#$%^&*();:\/\\\[\]]{1,100}$/g;
 
     if(!regContent.test(content)){
         $("#content-result").html("내용을 입력해주세요");
@@ -265,15 +265,8 @@ function registerCheck(){
         $("#image-input-result").html("");
     }
 
-//    var roomDetail = $("#summernote").val();
-//    console.log(roomDetail);
-//    var regDetail = /^[\w\s가-힣]{1,2000}$/g;
-//    if(!regDetail.test(roomDetail)){
-//        $("#room-detail-result").html("1-2000자 이내로 내용을 입력해주세요.");
-//        return false;
-//    } else {
-//        $("#room-detail-result").html("");
-//    }
+    // summernote 유효성 검사는 textarea 검사할 때 처럼 하면 먹히지 않아서 지웠습니다.
+    // 추후 수정 요망 -> 유효성 검사 안걸려있음
 
     var address = $("#sample5_address").val();
     if(address == "" || address == null){

@@ -41,8 +41,6 @@ public class TimeTableEntity extends BaseTimeEntity {
     @JoinColumn(name = "roomNo")
     private RoomEntity roomEntity;
 
-
-
     // TimeTable Entity 에는 History Entity 가 다수 들어갈 수 있다.
     // mappedBy 는 '부모' 가 갖는다.
     @OneToMany(mappedBy = "timeTableEntity", cascade = CascadeType.ALL)

@@ -47,15 +47,17 @@ public class CommunityController {
     // [게시판 사이드 바 출력]
     // 카테고리, 게시판을 Model 에 담아서 넘겨준다.
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(Model model, @PageableDefault Pageable pageable) {
+
         // 1. 만들어진 카테고리 전체 호출
-        List<CategoryEntity> categories = categoryService.getCategoryList();
+        Page<CategoryEntity> categories = categoryService.getCategoryList(pageable);
         // 2. 카테고리에 해당하는 게시판 목록을 가져온다
         List<BoardEntity> boards = boardService.getBoards();
         // model 에 담아서 html 로 보낸다
         model.addAttribute("boards", boards);
         model.addAttribute("categories", categories);
         return "member/community";
+
     }
 
     // [특정 게시판 클릭 시 작성된 게시글을 리스트로 출력]
@@ -79,9 +81,7 @@ public class CommunityController {
     @GetMapping("createPost")
     public String createPost(Model model,
                              @RequestParam("boardNo") int boardNo) {
-
         model.addAttribute("boardNo", boardNo);
-
         return "community/create_post";
 
     }
@@ -152,8 +152,7 @@ public class CommunityController {
     // 1.1 따로 service 를 만들지 않고 바로 repo 에 접근한다.
     @GetMapping("/newPostReply")
     @Transactional
-    @ResponseBody
-    public String newPostReply(@RequestParam("postNo") int postNo, @RequestParam("content") String content) {
+    public String newPostReply(Model model, @RequestParam("postNo") int postNo, @RequestParam("content") String content, @PageableDefault Pageable pageable) {
 
         // 1. 현재 로그인 된 회원 정보 호출
         HttpSession session = request.getSession();
@@ -188,8 +187,21 @@ public class CommunityController {
         // 5. PostEntity 에 댓글을 추가시킨다.
         postEntity.getPostReplyEntities().add(savedPostReplyEntity);
 
+        model.addAttribute("postNo", postNo);
+
+        // 3. 등록된 댓글을 model 에 추가시킨다.
+        Page<PostReplyEntity> postReplyEntities = postReplyRepository.getParentReply(pageable, postNo);
+        model.addAttribute("replies", postReplyEntities);
+
+        // 4. 대댓글을 호출해서 model 에 주입한다.
+        List<PostReplyEntity> postChildReplyEntities = postReplyRepository.getChildReply(postNo);
+        model.addAttribute("childReplies", postChildReplyEntities);
+
+        model.addAttribute("memberEntity", memberEntity);
+
+
         // 6. null 체크를 거쳐서 여기까지 도달했으니, "1" 을 리턴한다.
-        return "1";
+        return "community/post_reply";
 
     }
 

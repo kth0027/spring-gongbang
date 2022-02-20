@@ -108,10 +108,7 @@ function el(nodeName, attributes, ...children) {
 
 // ajax 를 이용한 이미지 전송
 function createNewPost(){
-
     var formData = new FormData(form);
-    alert(formData);
-
     $.ajax({
         type: "POST",
         url: "/community/createPostController",
@@ -124,8 +121,5 @@ function createNewPost(){
             $(".content-area").empty();
             $(".content-area").append(data);
         }
-
     });
-
-
 }

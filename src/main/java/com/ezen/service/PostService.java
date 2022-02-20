@@ -6,7 +6,9 @@ import com.ezen.domain.entity.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,6 +47,13 @@ public class PostService {
     // 작성된 게시물 리스트 불러오기
     public Page<PostEntity> getPostList(int boardNo,
                                         @PageableDefault Pageable pageable) {
+        //페이지번호
+        int page = 0;
+        if (pageable.getPageNumber() != 0) {
+            page = pageable.getPageNumber() - 1;
+        }
+        // 페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
+        pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "postNo")); // 변수 페이지 10개 출력
         return postRepository.findPostByBoardNo(boardNo, pageable);
     }
 

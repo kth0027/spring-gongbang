@@ -30,7 +30,7 @@
                         <img th:src=" '/roomimg/'+${room.roomImgEntities.get(0).roomImg} " alt=" " class="img-fluid" style="height:100%">
                     </td>
                     <!-- 클래스 타이틀 출력-->
-                    <td class="tableroomname " style="width:25%; ">
+                    <td class="tableroomname " style="width:20%; ">
                         <a class=" " th:href="@{ '/room/view/'+${room.roomNo}} ">
                             <span th:text="${room.roomTitle} "></span>
                         </a>
@@ -40,9 +40,9 @@
                     여기서 클래스 개설일은 강좌가 실제로 열리는 날 X
                     사용자가 처음으로 강좌를 개설한 날짜
                     -->
-                    <td style="width:10%; " th:text="${#strings.arraySplit(room.createdDate, 'T')[0]} "></td>
+                    <td style="width:12.5%; " th:text="${#strings.arraySplit(room.createdDate, 'T')[0]} "></td>
                     <!-- 강좌 승인 상태 -->
-                    <td style="width:10%; " th:text="${room.roomStatus} "></td>
+                    <td style="width:12.5%; " th:text="${room.roomStatus} "></td>
                     <!-- 버튼 클러스터-->
                     <td style="width:25%; ">
                         <a th:href="@{ '/room/timeSelectPage/'+${room.roomNo}} " style="text-decoration: none; ">

@@ -35,10 +35,12 @@
 
 .firsttr th {
     border: solid 2px #fff;
+    font-size: 1.2rem;
 }
 
 .secondtr td {
     border: solid 2px #fff;
+    font-size: 1.2rem;
 }
 
 .tablecontents tr {

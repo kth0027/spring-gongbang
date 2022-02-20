@@ -1,8 +1,10 @@
                     @charset "UTF-8";
                     /* 헤더폰트적용 */
+                    /* common 안쓰는 페이지 및 헤더쓰는 페이지가 있어서 여기서 한번더 써줘야 적용됀다. */
                     
                     #wrap {
-                        font-family: 'Noto Sans KR', sans-serif;
+                        /* font-family: 'Noto Sans KR', sans-serif; */
+                        font-family: CookieRun-Regular;
                     }
                     
                     .logo img {

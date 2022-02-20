@@ -49,9 +49,6 @@ public class MemberDto {
                 .memberEmail( this.memberEmail)
                 .memberGrade(Role.MEMBER)
                 .memberPoint(this.memberPoint)
-                .channelTitle("채널 이름을 입력해주세요")
-                .channelContent("자기소개를 입력해주세요")
-                .channelImg("")
                 .build();
     }
 

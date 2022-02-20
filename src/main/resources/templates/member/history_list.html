@@ -24,17 +24,18 @@
             <!-- 처음 화면 진입 시 예약 내역 전체를 출력 -->
             <div class="reservation-content" th:each=" history : ${histories}">
                 <div class="row my-3 d-flex border">
-                    <div class="row col-md-4 text-center">
+                    <div id="historyimgbox" class="col-md-4 text-center">
                         <img id="historyImg"th:if="${history.RoomEntity.RoomImgEntities != null}"
                              th:src="@{'/roomimg/' + ${history.RoomEntity.RoomImgEntities.get(0).roomImg} }">
-                        <div id="hrheight"></div>
+
                     </div>
-                    <div class="col-md-8 d-flex flex-column" style="padding: 1rem;">
+                    <div id="hrheight"></div>
+                    <div class="col-md-7 d-flex flex-column" style="padding: 1rem;">
                         <div>
-                            <span>예약자 아이디 :</span> <span th:text="${history.memberEntity.memberId}"></span>
+                            <span class="historyclassname">클래스명 : </span> <span class="historyclassname" th:text="${history.roomEntity.roomTitle}"></span>
                         </div>
                         <div>
-                            <span>클래스명 : </span> <span th:text="${history.roomEntity.roomTitle}"></span>
+                            <span class="historyid">예약자 아이디 :</span> <span class="historyid" th:text="${history.memberEntity.memberId}"></span>
                         </div>
                         <div th:text="${'예약날짜 : ' + history.timeTableEntity.roomDate}">
 

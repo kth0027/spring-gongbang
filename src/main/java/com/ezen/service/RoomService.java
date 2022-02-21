@@ -459,8 +459,6 @@ public class RoomService {
     @Transactional
     public boolean updateClass(RoomEntity roomEntity, List<MultipartFile> files) {
 
-        System.out.println("서비스에 넘어온 이미지 파일 리스트 >>>>     " + files.toString());
-
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");

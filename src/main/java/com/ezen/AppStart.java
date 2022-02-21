@@ -60,12 +60,12 @@ public class AppStart {
         List<ReplyEntity> replylist = replyService.replylist();
         model.addAttribute("replylist", replylist);
 
+/*
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
 
         MemberEntity memberEntity = null;
         if (loginDto == null) {
-
         } else {
             memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
@@ -77,6 +77,7 @@ public class AppStart {
                 model.addAttribute("memberEntity", memberEntity);
             }
         }
+*/
 
         return "index";
     }

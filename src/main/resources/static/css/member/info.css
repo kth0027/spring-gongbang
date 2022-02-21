@@ -3,12 +3,6 @@
     font-family: CookieRun-Regular !important;
 }
 
-.title {
-    margin: 2rem !important;
-    border-bottom: 5px solid #374b73;
-    width: 8rem !important;
-}
-
 .navlist {
     border-radius: 1rem;
     display: flex;
@@ -24,21 +18,22 @@
 }
 
 .navlist button {
-    color: #374b73;
+    color: rgb(0, 0, 0);
+    font-weight: bold;
     border-radius: 1rem;
-    background-color: #ff9a9a;
-    margin: 0.8rem 0;
+    background-color: #ffdbdb;
+    margin: 0.2rem 0;
     border: 3px solid #374b73;
     padding-bottom: 1rem;
     width: 10rem;
-    box-shadow: #a1e9ff 3px 3px 5px 0;
+    box-shadow: 2px 2px 10px #a1e9ff;
 }
 
 .navlist button:hover,
 .navlist button:active {
     background-color: #ff9a9a !important;
     border-radius: 1rem;
-    color: white !important;
+    color: #a1e9ff !important;
     transform: scale(1.05);
 }
 
@@ -100,15 +95,14 @@
 }
 
 .btninput input:nth-child(1):hover {
-    color: #374b73 !important;
-    background-color: #a1e9ff !important;
+    color: #ff9a9a;
 }
 
 .btninput input:nth-child(2):hover {
     color: #374b73;
 }
 
-.btninput input:hover table tr {
+.btninput input:f:hover table tr {
     display: flex;
     justify-content: start;
     align-items: center;

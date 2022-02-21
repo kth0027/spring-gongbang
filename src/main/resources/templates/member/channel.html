@@ -9,11 +9,11 @@
 </head>
 
 <body>
-<div th:replace="common.html::common"></div>
-<div th:replace="header.html::header"></div>
-<!-- 섬머노트 -->
-<script th:src="@{/js/summernote/summernote-lite.js}"></script>
-<script th:src="@{/js/summernote/lang/summernote-ko-KR.js}"></script>
+    <div th:replace="common.html::common"></div>
+    <div th:replace="header.html::header"></div>
+    <!-- 섬머노트 -->
+    <script th:src="@{/js/summernote/summernote-lite.js}"></script>
+    <script th:src="@{/js/summernote/lang/summernote-ko-KR.js}"></script>
 
     <div class="wrap">
 
@@ -30,16 +30,16 @@
                         </div>
                         <div class="col-md-6 col-6 text-center my-3">
                             <div class="topbox">
-                                <span th:text="${'채널명 : ' + memberEntity.channelTitle}" id="channelname"></span>
                                 <div class="changeimg" sec:authorize="isAuthenticated()" th:if="${session.logindto.memberNo == memberEntity.memberNo}">
 
+                                </div>
+                                <p><span th:text="${'채널명 : ' + memberEntity.channelTitle}" id="channelname"></span></p>
+                                <div>
+                                    <span id="classaddress" th:if="${memberEntity.roomEntities.size != 0}" th:text="${'공방주소 : ' +  #strings.listSplit(memberEntity.RoomEntities.get(0).roomAddress,',')[0] }"></span>
                                 </div>
                                 <button class="btn my-3" data-bs-target="#channelregistration" data-bs-toggle="modal">채널
                                     정보 등록/수정
                                 </button>
-                                <div>
-                                    <span id="classaddress" th:if="${memberEntity.roomEntities.size != 0}" th:text="${#strings.listSplit(memberEntity.RoomEntities.get(0).roomAddress,',')[0] }"></span>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -180,4 +180,5 @@
     <!--    });-->
     <!--</script>-->
 </body>
+
 </html>

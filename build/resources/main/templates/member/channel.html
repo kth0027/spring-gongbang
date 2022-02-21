@@ -90,7 +90,7 @@
                                         <div class="col-md-4">
                                             <img id="reviewimg"
                                                  th:src="@{'/replyimg/' + ${reply.replyImgEntities.get(0).replyImg}}"
-                                                 alt="">
+                                                 alt="" class="img-fluid">
                                         </div>
                                     </div>
                                 </div>
@@ -185,6 +185,7 @@
             placeholder: '최대 2048자까지 쓸 수 있습니다' //placeholder 설정
         });
     });
+
 </script>
 
 </body>

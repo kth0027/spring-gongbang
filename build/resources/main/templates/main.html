@@ -1262,7 +1262,7 @@
 
             <!-- 카드출력부분 -->
             <div class="row product-boxoutline p-2">
-                <h3>진행중인 공방</h3>
+                <h3 style="background-color: #fff1ed">진행중인 공방</h3>
                 <div class="product-box" id="main-gongbang-slick">
                     <div class="product-card" th:each="room : ${roomlist}">
                         <div class="card-thumbnail">
@@ -1271,8 +1271,7 @@
                         </div>
                         <div class="card-content">
                             <div class="card-header-is_closed">
-                                <div class="card-header-text">모집중</div>
-                                <div class="card-header-text">마감임박</div>
+                                <div class="card-header-text" style="padding: 14px;">모집중</div>
                             </div>
                             <h1 class="card-title">
                                 <a th:href="@{'/room/view/' + ${room.roomNo} }">
@@ -1280,7 +1279,8 @@
                                 </a>
                             </h1>
                             <h2 class="card-sub-title">
-                                <div>리뷰평균</div> <div th:text="${room.roomAvg}"> </div>
+                                <div>리뷰평균</div>
+                                <div th:text="${room.roomAvg}"></div>
                             </h2>
                             <div class="description">
                                 <p th:text="${'작성자:' + room.memberEntity.memberName}">
@@ -1315,8 +1315,8 @@
             <!-- 카드줄력부분 종료 -->
 
             <!-- 리뷰 후기 카드 출력 02-04 조지훈 작성중 -->
-            <div class="row border p-2">
-                <h3>공방리뷰</h3>
+            <div class="row p-2">
+                <h3 style="background-color: #fff1ed">공방리뷰</h3>
                 <div id="main-review-slick">
                     <div class="card review" th:each="reply : ${replylist}">
 
@@ -1474,6 +1474,7 @@
 
 
     })
+
 
 </script>
 

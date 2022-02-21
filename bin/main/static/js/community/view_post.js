@@ -12,28 +12,35 @@ function createNewReply(postNo){
         url: "/community/newPostReply",
         data: {"postNo" : postNo, "content" : content},
         success: function(data){
-            if(data == "1"){
+
+            $(contentId).val("");
+            $(".post-reply-content-wrapper").empty();
+            $(".post-reply-area").empty();
+            $(".post-reply-area").append(data);
+
+
                 // 2. 댓글 등록 성공
-                var postHTML = "<div class='post-reply-content'>";
-                postHTML += "<div class='col-3'>";
-                postHTML += "<span> 작성자 </span>";
-                postHTML += "<div>" + memberId + "</div>";
-                postHTML += "</div>";
-                postHTML += "<div class='col-9'>";
-                postHTML += "<div>" + content + "</div>";
-                postHTML += "</div>";
-                postHTML += "</div>";
-                postHTML += "<div class='col-12'>";
-                postHTML += "<button class='add-reply-child' id='child"+postNo+"' data-tab='"+postNo+"'>";
-                postHTML += "답글달기</button>";
-                postHTML += "<button> 수정 </button>";
-                postHTML += "<button> 삭제 </button>";
-                postHTML += "</div>";
+//                var postHTML = "<div class='post-reply-content' id='post-reply-content-container"+postNo+"'>";
+//                postHTML += "<div class='col-3'>";
+//                postHTML += "<span> 작성자 </span>";
+//                postHTML += "<div>" + memberId + "</div>";
+//                postHTML += "</div>";
+//                postHTML += "<div class='col-9'>";
+//                postHTML += "<div>" + content + "</div>";
+//                postHTML += "</div>";
+//                postHTML += "</div>";
+//                postHTML += "<div class='col-12'>";
+//                postHTML += "<button class='add-reply-child' id='child"+postNo+"' data-tab='"+postNo+"'>";
+//                postHTML += "답글달기</button>";
+//                postHTML += "<button> 수정 </button>";
+//                postHTML += "<button> 삭제 </button>";
+//                postHTML += "</div>";
+//                postHTML += "</div>";
+//
+//                var $parentWrapperId= "#post-reply-wrapper" + postNo;
+//                $($parentWrapperId).insertAfter(postHTML);
+//                $(contentId).val("");
 
-                $(".post-reply-content-container").last().append(postHTML);
-
-                $(contentId).val("");
-            }
         }
     });
 }
@@ -46,9 +53,7 @@ $(function(){
         $(".reply-child-section").hide();
     });
 
-
     $(".add-reply-child").on("click", function(){
-
         var postNo = $("#postNo").val();
         // 1. 해당 부모 댓글 번호를 변수에 저장합니다.
         var replyNo = $(this).attr("data-tab");
@@ -56,7 +61,6 @@ $(function(){
         var childId = '#child-section' + replyNo;
         var btnId = '#child-btn' + replyNo;
         var contentId = '#child-content' + replyNo;
-
         $(childId).toggle("fade");
         // 3. 대댓글 등록 버튼 클릭 시
         $(btnId).on("click", function(){
@@ -66,6 +70,7 @@ $(function(){
                 method: "GET",
                 data: {"replyNo" : replyNo, "content" : content, "postNo" : postNo},
                 success: function(data){
+                    // 1. 자식 댓글 등록 후 부모 댓글을 찾아서 그 아래에 출력한다.
                     if(data == "1"){
                         // #child-container{postReplyNo} 에 등록해야한다.
                         var replyHTML = "<div>";
@@ -73,13 +78,17 @@ $(function(){
                         replyHTML += "<div class='reply-child'>" + content + "</div>";
                         replyHTML += "</div>";
                         replyHTML += "</div>";
+
                         var wrapperId = "#reply-child-wrapper" + replyNo;
                         $(wrapperId).append(replyHTML);
 
                         // 대댓글 입력 후 입력 창 지우기
-                        var inputId = "#child-content" + replyNo;
-                        $(inputId).val("");
-                        $(".reply-child-section").hide();
+                        var $inputId = "#child-content" + replyNo;
+                        $($inputId).val("");
+
+                        var $childSectionId = "#child-section" + replyNo;
+
+                        $($childSectionId).hide();
                     }
                 }
             });

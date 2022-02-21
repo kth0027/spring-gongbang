@@ -587,3 +587,37 @@ h1 {
 .modaltitle {
     border-bottom: 0.2rem solid #374b73;
 }
+
+/* 광고배너1 */
+.adbanner {
+    border: 1px solid #000000;
+    margin: 1rem 0;
+    height: 10rem;
+}
+
+.adbanner:hover {
+    box-shadow: 0 2px 2px 0 #999999;
+}
+
+.adbanner .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+ 
+}
+
+.adbanner .column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 7;
+}
+
+.rowimg {
+    background-image: url();
+    background-image: url(/src/main/resources/static/img/bnimg.jpg);
+    height: 100%; background-repeat: no-repeat;
+    flex: 3;
+}

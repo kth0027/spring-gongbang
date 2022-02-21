@@ -5,7 +5,11 @@
                     #wrap {
                         /* font-family: 'Noto Sans KR', sans-serif; */
                         font-family: CookieRun-Regular;
+                        /* display: none; */
+
                     }
+
+                   
                     
                     .logo img {
                         height: 50px;
@@ -259,24 +263,42 @@
                         transform: scale(1.1);
                         transition: 1s;
                     }
+
+                    /* 드롭다운 */
+                    .dropbtn {
+                    display: flex;
+                    align-items: center;
+                    }
+
+                    .dropbtn img {
+                        display: block;
+                    }
+
+                    .dropdown-menu li  {
+                        display: flex;
+                        align-items: center;
+                        height: 2.4rem;
+
+                    }
                     
-                    .dropdown-menu {}
                     
                     .dropdown-menu li:hover {
                         background-color: #374b73;
                         color: white;
+                  
                     }
-                    
-                    .dropdown-menu a:hover {
-                        color: white;
-                    }
-                    
+
                     .dropdown-menu li a {
                         text-decoration: none;
                         color: #374b73;
                         font-weight: bold;
                     }
                     
+                    .dropdown-menu a:hover {
+                        color: white;
+                    }
+                    
+            
                     .dropdown-item:hover {
                         background-color: #374b73;
                         color: white;
@@ -292,6 +314,12 @@
                         color: #ff9a9a;
                         transform: scale(1.1);
                         margin-left: 1.25rem;
+                    }
+
+               
+                    .mych svg {
+                        fill: #ff9a9a;
+                        margin-right: 0.6rem;
                     }
                     
                     .point svg {

@@ -1,40 +1,46 @@
 @charset "UTF-8";
-
 .wrap {
     font-family: CookieRun-Regular;
 }
 
 .leftcontents {
-     height:700px; margin-top: 2.5rem;
+    height: auto;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.roomlist {
+    height: 20rem;
 }
 
 
-
 /* 좌측 컨텐츠리스트 부분 */
+
 .roombox {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    height: inherit;
 }
 
+
 /* 좌측 슬라이드 */
+
 .roomboxcontentimgbox {
-    height: 100%;
-    display: flex;
+    height: 18rem;
+    padding: 1rem 0;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background: #ffdbdb;
     border-radius: 1rem;
     margin-bottom: 1rem;
-    padding-bottom: 1rem;
     max-width: 35rem;
 }
 
 .roomboxcontentimg {
-    width: 30rem;
-    height: 15rem;
+    height: 90%;
     border: 1px solid grey;
     border-radius: 0.5rem;
 }
@@ -42,8 +48,9 @@
 .roomboxcontentimg img {
     display: block;
     margin: 0 auto;
-    width: 100%;
+    width: auto;
     height: 100%;
+    background: #fff;
 }
 
 .roomboxtoptxt {
@@ -51,24 +58,35 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    height: 3rem;
 }
 
-.roomboxtoptxt > div {
-    margin: 1rem 1rem;
-    width: 8rem;
+.roomboxtoptxt>div {
+    text-align: center;
+    margin: 0 1rem;
 }
 
+
+/* 좌측 공방정보 */
 
 .roomboxcontent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 18rem;
     padding: 1rem 0;
+    border-radius: 1rem !important;
+    margin-left: 1rem;
+    font-size: 0.8rem;
 }
 
-.roomboxcontent > div{
-    margin: 10px 0;
+.roomboxcontent>div {
     border-bottom: 1px solid #374b73;
+    margin: 0.3rem 0;
 }
 
-.roomboxcontentimgbox input, .roomboxcontentimgbox input a{
+.roomboxcontentimgbox input,
+.roomboxcontentimgbox input a {
     width: 100%;
     height: 2rem;
     cursor: pointer;
@@ -81,32 +99,23 @@
     background-color: #374b73;
     float: right;
     border-radius: 1rem;
-    padding: 0 2rem;
     margin: 1rem 0;
-    
 }
 
-.roomboxcontentimgbox a:hover {
-    color: white;
-    transform: scale(1.1);
-    transition: 1s;
-}
-
-
-
-.roadbtn{
+.roadbtn {
     border-bottom: none;
     background-color: #ff9a9a;
     color: #374b73;
     border: none;
     border-radius: 1rem;
     padding: 0 1rem;
-   margin-top: 1rem;
+    margin-top: 1rem;
     box-shadow: grey 1px 3px 5px;
     display: block;
     margin: 0 auto;
 }
 
+.gongbangdetail input:hover,
 .roadbtn:hover {
     background-color: #374b73;
     color: white;
@@ -114,24 +123,24 @@
     transition: 1s;
 }
 
-/* 좌측 컨텐츠 */
-.roomboxcontent {
-        display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 100%;
-}
 
 /* 페이징버튼 */
+
 .pagination li {
     margin: 0 5px;
 }
 
-.pagination li a{
+.pagination li a {
     background: #ffdbdb;
     color: #374b73;
     height: 100%;
-    border: 1px solid rgb(218, 218, 218);
+    border: 2px solid #374b73;
+    border-radius: 1rem !important;
+}
+
+.pagination li a:hover {
+    background: #374b73;
+    color: #fff;
 }
 
 
@@ -143,6 +152,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    align-items: center;
 }
 
 #map {
@@ -153,4 +163,23 @@
     box-shadow: rgb(209, 209, 209) 5px 5px 5px;
     margin: 0 auto;
     display: block;
+}
+
+
+/* 길찾기 */
+
+.searchroadbtn {
+    background: #374b73;
+    color: white;
+    border-radius: 0.3rem;
+}
+
+.searchroadbtn:hover {
+    transform: scale(1.05);
+    transition: all ease-in-out 0.3s;
+    color: #ff9a9a;
+}
+
+.markcontents {
+    background-color: white;
 }

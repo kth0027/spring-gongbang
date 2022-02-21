@@ -1,13 +1,12 @@
 @charset "UTF-8";
-
 .wrap {
     font-family: CookieRun-Regular;
 }
 
 .title {
-    margin: 1rem 0;
+    margin: 2rem !important;
     border-bottom: 5px solid #374b73;
-    width: 15rem;
+    width: 15   rem;
 }
 
 .successbtn button {
@@ -23,26 +22,33 @@
     transition-timing-function: ease-in-out;
 }
 
-.tablecontents {
-    color: #374b73;
-    /* background: #ffdbdb;    */
-}
 
+/* 테이블 */
+
+.tablecontents {
+    border-radius: 1rem;
+}
 
 .tablecontents tr:first-child {
     background: #374b73;
 }
 
-.tablecontents tr {
-    background: #ffdbdb;}
-
-
-
-.tablecontents tr:first-child th {
-    color: white;
+.firsttr th {
+    border: solid 2px #fff;
+    font-size: 1.2rem;
 }
 
-.tablecontents span, .tablecontents a {
+.secondtr td {
+    border: solid 2px #fff;
+    font-size: 1.2rem;
+}
+
+.tablecontents tr {
+    background: #ffdbdb;
+}
+
+.tablecontents span,
+.tablecontents a {
     color: #374b73;
 }
 
@@ -50,3 +56,4 @@
     text-decoration: none;
 }
 
+.myaddtable {}

@@ -2,68 +2,82 @@
 <html lang="en" th:fragment="main" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8" />
-    <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>메인페이지</title>
-    <!-- main css 가져오기 -->
-    <link th:href="@{/css/main.css}" rel="stylesheet" />
-    <style>
+        <meta charset="UTF-8" />
+        <!-- 반응형 웹을 위한 미디어쿼리 선언부 -->
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>메인페이지</title>
+        <!-- main css 가져오기 -->
+        <link th:href="@{/css/main.css}" rel="stylesheet" />
+        <style>
 
-    </style>
+        </style>
 </head>
 
 <body>
-    <div id="wrap" class="wrap" style="width: 100vw">
-        <main>
-            <div class="container">
-                <!-- 캐러셀 시작-->
-                <div class="row carouselbox my-3">
-                    <section class="">
-                        <ul class="carousel d-flex justify-content-center">
-                            <li class="items main-pos w-100" id="1">
-                                <img src="img/main/공방메인이미지1.jpg">
-                            </li>
-                            <li class="items right-pos" id="2">
-                                <div class="" style="width: 100%; height: 100%">
-                                    <div class="" style="position: relative">
-                                        <div class="" style="position: absolute">
-                                            <p class="text-white" style="padding: 1.3rem; padding-top:4rem">
-                                                놓치면 사라져요!
-                                                <br />오직 지금 만날 수 있는 최대 할인 혜택!!
-                                            </p>
-                                            <img src="https://class101.net/images/time-deal/header-title-sandglass.gif" alt="time-deal-header-title-image" class="sc-b974f94e-6 dxilYu" style="width: 10rem; height: 5rem; padding: 1rem" />
-                                        </div>
-                                        <div>
-                                            <video style="" autoplay="" playsinline="" loop="" muted="" class="">
+        <div id="wrap" class="wrap" style="width: 100vw">
+                <main>
+                        <div class="container">
+                                <!-- 캐러셀 시작-->
+                                <div class="row carouselbox my-3">
+                                        <section class="">
+                                                <ul class="carousel d-flex justify-content-center">
+                                                        <li class="items main-pos w-100" id="1">
+                                                                <img src="img/main/공방메인이미지1.jpg">
+                                                        </li>
+                                                        <li class="items right-pos" id="2">
+                                                                <div class="" style="width: 100%; height: 100%">
+                                                                        <div class="" style="position: relative">
+                                                                                <div class=""
+                                                                                        style="position: absolute">
+                                                                                        <p class="text-white"
+                                                                                                style="padding: 1.3rem; padding-top:4rem">
+                                                                                                놓치면 사라져요!
+                                                                                                <br />오직 지금 만날 수 있는 최대
+                                                                                                할인 혜택!!
+                                                                                        </p>
+                                                                                        <img src="https://class101.net/images/time-deal/header-title-sandglass.gif"
+                                                                                                alt="time-deal-header-title-image"
+                                                                                                class="sc-b974f94e-6 dxilYu"
+                                                                                                style="width: 10rem; height: 5rem; padding: 1rem" />
+                                                                                </div>
+                                                                                <div>
+                                                                                        <video style="" autoplay=""
+                                                                                                playsinline="" loop=""
+                                                                                                muted="" class="">
                                                                                                 <source src="https://cdn.class101.net/images/320a027f-fd39-4797-aa8d-cfea3b671c9f"
                                                                                                         type="video/mp4"
                                                                                                         style="transform: scale(0.7)" />
                                                                                         </video>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="items back-pos" id="3" style="position: relative">
-                                <iframe class="" width="500" height="281" src="https://www.youtube.com/embed/TR28IBZM_IY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            </li>
-                            <li class="items back-pos" id="4">
-                                <iframe width="500" height="281" src=" https://www.youtube.com/embed/iOWXzTl0Xes?list=PLeA2JamKkRNuUb-bEfwvbUcETsVbVAQaA" frameborder="0" allowfullscreen></iframe>
-                            </li>
-                        </ul>
-                        <span class="d-flex justify-content-between carouselbtn ">
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </li>
+                                                        <li class="items back-pos" id="3" style="position: relative">
+                                                                <iframe class="" width="500" height="281"
+                                                                        src="https://www.youtube.com/embed/TR28IBZM_IY"
+                                                                        title="YouTube video player" frameborder="0"
+                                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                                        allowfullscreen></iframe>
+                                                        </li>
+                                                        <li class="items back-pos" id="4">
+                                                                <iframe width="500" height="281"
+                                                                        src=" https://www.youtube.com/embed/iOWXzTl0Xes?list=PLeA2JamKkRNuUb-bEfwvbUcETsVbVAQaA"
+                                                                        frameborder="0" allowfullscreen></iframe>
+                                                        </li>
+                                                </ul>
+                                                <span class="d-flex justify-content-between carouselbtn ">
                                                         <input type="button" value="<<" id="prev" class="mx-3"
                                                                 style="" />
                                                         <input type="button" value=">>" id="next" class="mx-3" />
                                                 </span>
-                    </section>
-                </div>
-                <!-- 캐러셀 종료 -->
+                                        </section>
+                                </div>
+                                <!-- 캐러셀 종료 -->
 
-                <!-- 캐러셀 지역 / 카테고리 -->
+                                <!-- 캐러셀 지역 / 카테고리 -->
 
-                <div class="tabbutton">
-                    <button id="localBtn" type="button" class="btn">
+                                <div class="tabbutton">
+                                        <button id="localBtn" type="button" class="btn">
                                                 <svg class="MuiSvgIcon-root sc-jNMdTA eJCOeE MuiSvgIcon-fontSizeSmall"
                                                         focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                                                         <path
@@ -73,7 +87,7 @@
                                                 </svg>
                                                 지역
                                         </button>
-                    <button id="categoryBtn" type="button" class="btn">
+                                        <button id="categoryBtn" type="button" class="btn">
                                                 <svg class="MuiSvgIcon-root sc-dOSReg eWtntv MuiSvgIcon-fontSizeSmall"
                                                         focusable="false" viewBox="0 0 24 24" aria-hidden="true">
                                                         <path
@@ -82,14 +96,16 @@
                                                 </svg>
                                                 카테고리
                                         </button>
-                </div>
+                                </div>
 
-                <div class="slider-parent">
-                    <!-- 카테고리1 -->
-                    <div class="slider-child" style="" id="slider-div1">
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="서울">
-                            <a th:href="@{'/room/byLocal/'+${'서울'}}">
-                                <svg width="103" height="103" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <div class="slider-parent">
+                                        <!-- 카테고리1 -->
+                                        <div class="slider-child" style="" id="slider-div1">
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="서울">
+                                                        <a th:href="@{'/room/byLocal/'+${'서울'}}">
+                                                                <svg width="103" height="103" viewBox="0 0 103 103"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M51.5 1.78125C76.675 1.78125 97.2188 22.325 97.2188 47.5C97.2188 72.675 76.675 93.2188 51.5 93.2188C26.325 93.2188 5.78125 72.675 5.78125 47.5C5.78125 22.325 26.325 1.78125 51.5 1.78125ZM51.5 0C25.2563 0 4 21.2563 4 47.5C4 73.7438 25.2563 95 51.5 95C77.7438 95 99 73.7438 99 47.5C99 21.2563 77.7438 0 51.5 0Z"
                                                                                         fill="url(#paint0_linear)" />
@@ -137,12 +153,14 @@
                                                                                 </linearGradient>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">서울</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="경기">
-                            <a th:href="@{'/room/byLocal/'+${'경기'}}">
-                                <svg width="103" height="103" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">서울</div>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="경기">
+                                                        <a th:href="@{'/room/byLocal/'+${'경기'}}">
+                                                                <svg width="103" height="103" viewBox="0 0 103 103"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M67.5312 17.575C68.3625 21.2563 74.5375 24.9375 76.2 25.7688C74.4188 27.3125 72.6375 27.9063 71.5688 28.1438L70.6187 28.3813V29.3313V32.4188V33.6063H71.8062H74.6562L76.675 37.4063H72.2812H71.0938V38.5938V41.8V42.9875H72.2812H74.4188V61.3938V62.5813H75.6063H79.1688V77.3063H58.5063V71.25C58.5063 69.35 57.7937 67.5688 56.3687 66.1438C55.0625 64.8375 53.2812 64.125 51.5 64.125H51.2625C47.4625 64.2438 44.375 67.5688 44.375 71.4875V77.1875H23.7125V62.7H27.275H28.4625V61.5125V43.1063H30.6H31.7875V41.9188V38.7125V37.525H30.6H26.2063L28.225 33.725H31.075H32.2625V32.5375V29.45V28.5L31.3125 28.2625C30.3625 28.025 28.4625 27.4313 26.6813 25.8875C28.3438 24.9375 34.5187 21.375 35.35 17.6938H67.5312V17.575ZM68.4813 16.3875H35.35H34.5188L34.4 17.1C33.925 19.95 28.7 23.5125 25.9688 24.8188L25.4938 25.0563V26.125L25.85 26.4813C27.8687 28.3813 30.125 29.0938 31.1937 29.45V32.5375H28.1062H27.5125L24.9 37.4063L24.6625 37.8813L25.2562 38.8313H30.6V42.0375H28.225H27.275V61.6313H23.3562H22.4062V77.7813V78.7313H44.6125H45.5625V71.8438C45.5625 68.5188 48.175 65.7875 51.2625 65.6688H51.5934C53.1371 65.6688 54.5621 66.2625 55.6309 67.3313C56.8184 68.4 57.4121 69.9438 57.4121 71.4875V77.7813V78.7313H79.4062H80.3563V62.4625V61.5125H75.6063V42.8688V41.9188H72.2812V38.7125H77.15H77.625L78.1 37.7625L75.25 32.4188H71.6875V29.3313C72.875 29.0938 75.0125 28.3813 77.0312 26.3625L77.3875 26.0063L77.2687 25.0563L77.0312 24.9375C74.3 23.5125 69.075 20.0688 68.6 17.2188L68.4813 16.3875Z"
                                                                                         fill="white" />
@@ -217,12 +235,14 @@
                                                                                 </linearGradient>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">경기</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="인천">
-                            <a th:href="@{'/room/byLocal/'+${'인천'}}">
-                                <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">경기</div>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="인천">
+                                                        <a th:href="@{'/room/byLocal/'+${'인천'}}">
+                                                                <svg width="103" height="104" viewBox="0 0 103 104"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M51.5 2.58398C76.675 2.58398 97.2188 23.1277 97.2188 48.3027C97.2188 73.4777 76.675 94.0215 51.5 94.0215C26.325 94.0215 5.78125 73.4777 5.78125 48.3027C5.78125 23.1277 26.325 2.58398 51.5 2.58398ZM51.5 0.802734C25.2563 0.802734 4 22.059 4 48.3027C4 74.5465 25.2563 95.8027 51.5 95.8027C77.7438 95.8027 99 74.5465 99 48.3027C99 22.059 77.7438 0.802734 51.5 0.802734Z"
                                                                                         fill="url(#paint0_linear)" />
@@ -281,12 +301,14 @@
                                                                                 </linearGradient>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">인천</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="부산">
-                            <a th:href="@{'/room/byLocal/' + ${'부산'}}">
-                                <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">인천</div>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="부산">
+                                                        <a th:href="@{'/room/byLocal/' + ${'부산'}}">
+                                                                <svg width="103" height="104" viewBox="0 0 103 104"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M51.5 2.58398C76.675 2.58398 97.2188 23.1277 97.2188 48.3027C97.2188 73.4777 76.675 94.0215 51.5 94.0215C26.325 94.0215 5.78125 73.4777 5.78125 48.3027C5.78125 23.1277 26.325 2.58398 51.5 2.58398ZM51.5 0.802734C25.2563 0.802734 4 22.059 4 48.3027C4 74.5465 25.2563 95.8027 51.5 95.8027C77.7438 95.8027 99 74.5465 99 48.3027C99 22.059 77.7438 0.802734 51.5 0.802734Z"
                                                                                         fill="url(#paint0_linear)" />
@@ -335,12 +357,14 @@
                                                                                 </linearGradient>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">부산</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="대구">
-                            <a th:href="@{'/room/byLocal/' + ${'대구'}}">
-                                <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">부산</div>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="대구">
+                                                        <a th:href="@{'/room/byLocal/' + ${'대구'}}">
+                                                                <svg width="103" height="104" viewBox="0 0 103 104"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M51.5 2.58398C76.675 2.58398 97.2188 23.1277 97.2188 48.3027C97.2188 73.4777 76.675 94.0215 51.5 94.0215C26.325 94.0215 5.78125 73.4777 5.78125 48.3027C5.78125 23.1277 26.325 2.58398 51.5 2.58398ZM51.5 0.802734C25.2563 0.802734 4 22.059 4 48.3027C4 74.5465 25.2563 95.8027 51.5 95.8027C77.7438 95.8027 99 74.5465 99 48.3027C99 22.059 77.7438 0.802734 51.5 0.802734Z"
                                                                                         fill="url(#paint0_linear)" />
@@ -399,16 +423,18 @@
                                                                                 </linearGradient>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">대구</div>
-                        </div>
-                    </div>
-                    <!-- 카테고리1 종료 -->
-                    <!-- 카테고리2 시작 -->
-                    <div class="slider-child" style="display: none" id="slider-div2">
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="미용">
-                            <a th:href="@{'/room/byCategory/' + ${'미용'}}">
-                                <svg width="103" height="103" viewBox="0 0 103 103" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">대구</div>
+                                                </div>
+                                        </div>
+                                        <!-- 카테고리1 종료 -->
+                                        <!-- 카테고리2 시작 -->
+                                        <div class="slider-child" style="display: none" id="slider-div2">
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="미용">
+                                                        <a th:href="@{'/room/byCategory/' + ${'미용'}}">
+                                                                <svg width="103" height="103" viewBox="0 0 103 103"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d_7549_26451)">
                                                                                 <path d="M51.5 1.93089C76.6016 1.93089 97.0691 22.3984 97.0691 47.5C97.0691 72.6016 76.6016 92.9404 51.5 92.9404C26.3984 92.9404 5.93089 72.4729 5.93089 47.3713C5.93089 22.2696 26.3984 1.93089 51.5 1.93089ZM51.5 0C25.2398 0 4 21.2398 4 47.5C4 73.7602 25.2398 95 51.5 95C77.7602 95 99 73.7602 99 47.5C99 21.2398 77.6314 0 51.5 0Z"
                                                                                         fill="#676767" />
@@ -516,12 +542,14 @@
                                                                                 </filter>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">미용</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="쿠킹">
-                            <a th:href="@{'/room/byCategory/' + ${'쿠킹'}}">
-                                <svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">미용</div>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="쿠킹">
+                                                        <a th:href="@{'/room/byCategory/' + ${'쿠킹'}}">
+                                                                <svg width="104" height="104" viewBox="0 0 104 104"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M51.5234 2.0875C76.7301 2.0875 97.1234 22.4808 97.1234 47.6875C97.1234 72.8942 76.7301 93.2875 51.5234 93.2875C26.3168 93.2875 5.92344 72.8942 5.92344 47.6875C5.92344 22.4808 26.3168 2.0875 51.5234 2.0875ZM51.5234 0.1875C25.3034 0.1875 4.02344 21.4675 4.02344 47.6875C4.02344 73.9075 25.3034 95.1875 51.5234 95.1875C77.7434 95.1875 99.0234 73.9075 99.0234 47.6875C99.0234 21.4675 77.7434 0.1875 51.5234 0.1875Z"
                                                                                         fill="#676767" />
@@ -612,13 +640,15 @@
                                                                                 </filter>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">쿠킹</div>
-                        </div>
+                                                        </a>
+                                                        <div class="">쿠킹</div>
+                                                </div>
 
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="공예">
-                            <a th:href="@{'/room/byCategory/' + ${'공예'}}">
-                                <svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="공예">
+                                                        <a th:href="@{'/room/byCategory/' + ${'공예'}}">
+                                                                <svg width="104" height="104" viewBox="0 0 104 104"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M35.1526 27.4207V24.254C35.1526 23.114 36.0393 22.2274 37.1793 22.2274C38.3193 22.2274 39.2059 23.114 39.2059 24.254V27.4207"
                                                                                         fill="#F28317" />
@@ -715,12 +745,14 @@
                                                                                 </filter>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">공예</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="드로잉">
-                            <a th:href="@{'/room/byCategory/' + ${'드로잉'}}">
-                                <svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">공예</div>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="드로잉">
+                                                        <a th:href="@{'/room/byCategory/' + ${'드로잉'}}">
+                                                                <svg width="104" height="104" viewBox="0 0 104 104"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M52.0791 2.0875C77.2858 2.0875 97.6791 22.4808 97.6791 47.6875C97.6791 72.8942 77.2858 93.2875 52.0791 93.2875C26.8724 93.2875 6.4791 72.8942 6.4791 47.6875C6.4791 22.4808 26.8724 2.0875 52.0791 2.0875ZM52.0791 0.1875C25.8591 0.1875 4.5791 21.4675 4.5791 47.6875C4.5791 73.9075 25.8591 95.1875 52.0791 95.1875C78.2991 95.1875 99.5791 73.9075 99.5791 47.6875C99.5791 21.4675 78.2991 0.1875 52.0791 0.1875Z"
                                                                                         fill="#676767" />
@@ -819,12 +851,14 @@
                                                                                 </filter>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">드로잉</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="음악">
-                            <a th:href="@{'/room/byCategory/' + ${'음악'}}">
-                                <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">드로잉</div>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="음악">
+                                                        <a th:href="@{'/room/byCategory/' + ${'음악'}}">
+                                                                <svg width="103" height="104" viewBox="0 0 103 104"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M51.5 0.53125V2.43064C71.127 2.43064 88.6014 14.9666 94.8061 33.7073C102.784 57.513 89.7411 83.4713 65.9354 91.3221C61.2502 92.8417 56.4384 93.6014 51.6266 93.6014C31.873 93.6014 14.3986 81.0654 8.19388 62.3248C4.3951 50.8018 5.28148 38.3924 10.7264 27.5026C16.1713 16.6128 25.5417 8.50869 37.0646 4.70991C41.7498 3.1904 46.5616 2.43064 51.3734 2.43064L51.5 0.53125ZM51.5 0.53125C46.5616 0.53125 41.4965 1.29101 36.5581 2.93715C11.6128 11.1678 -1.80958 38.1392 6.42111 62.9579C13.0057 82.9648 31.6197 95.5008 51.5 95.5008C56.4384 95.5008 61.5035 94.7411 66.4419 93.0949C91.3872 84.8642 104.81 58.0195 96.5789 33.0742C89.9943 13.1939 71.3803 0.53125 51.5 0.53125Z"
                                                                                         fill="#676767" />
@@ -920,13 +954,15 @@
                                                                                 </filter>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">음악</div>
-                        </div>
+                                                        </a>
+                                                        <div class="">음악</div>
+                                                </div>
 
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="펫">
-                            <a th:href="@{'/room/byCategory/' + ${'펫'}}">
-                                <svg width="104" height="103" viewBox="0 0 104 103" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="펫">
+                                                        <a th:href="@{'/room/byCategory/' + ${'펫'}}">
+                                                                <svg width="104" height="103" viewBox="0 0 104 103"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M65.37 66.4999C74.49 62.9532 74.6167 54.5932 74.6167 54.5932C75.3767 41.4199 62.33 33.8199 62.33 33.8199C62.33 33.8199 41.05 22.6732 29.9034 41.0399C29.9034 41.0399 22.5567 47.4999 26.61 59.7866C28.6367 66.8799 34.3367 67.1332 34.3367 67.1332"
                                                                                         fill="white" />
@@ -1018,12 +1054,14 @@
                                                                                 </filter>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">펫</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="스포츠">
-                            <a th:href="@{'/room/byCategory/' + ${'스포츠'}}">
-                                <svg width="104" height="104" viewBox="0 0 104 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">펫</div>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="스포츠">
+                                                        <a th:href="@{'/room/byCategory/' + ${'스포츠'}}">
+                                                                <svg width="104" height="104" viewBox="0 0 104 104"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M52.4121 2.11839C77.5137 2.11839 97.9812 22.5859 97.9812 47.6875C97.9812 72.7891 77.5137 93.1279 52.4121 93.1279C27.3105 93.1279 6.843 72.6604 6.843 47.5588C6.843 22.4571 27.3105 2.11839 52.4121 2.11839ZM52.4121 0.1875C26.1519 0.1875 4.91211 21.4273 4.91211 47.6875C4.91211 73.9477 26.1519 95.1875 52.4121 95.1875C78.6723 95.1875 99.9121 73.9477 99.9121 47.6875C99.9121 21.4273 78.5435 0.1875 52.4121 0.1875Z"
                                                                                         fill="#676767" />
@@ -1091,12 +1129,14 @@
                                                                                 </filter>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">스포츠</div>
-                        </div>
-                        <div class="d-flex flex-column justify-content-center align-items-center" id="건강">
-                            <a th:href="@{'/room/byCategory/' + ${'건강'}}">
-                                <svg width="103" height="104" viewBox="0 0 103 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        </a>
+                                                        <div class="">스포츠</div>
+                                                </div>
+                                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                                        id="건강">
+                                                        <a th:href="@{'/room/byCategory/' + ${'건강'}}">
+                                                                <svg width="103" height="104" viewBox="0 0 103 104"
+                                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
                                                                         <g filter="url(#filter0_d)">
                                                                                 <path d="M98.25 48.0312C98.25 73.8506 77.3193 94.7812 51.5 94.7812C25.6807 94.7812 4.75 73.8506 4.75 48.0312C4.75 22.2119 25.6807 1.28125 51.5 1.28125C77.3193 1.28125 98.25 22.2119 98.25 48.0312Z"
                                                                                         stroke="#676767"
@@ -1219,188 +1259,241 @@
                                                                                 </clipPath>
                                                                         </defs>
                                                                 </svg>
-                            </a>
-                            <div class="">건강</div>
-                        </div>
-                        <!-- 카테고리2 종료 -->
-                    </div>
-                    <!-- 좌우 버튼 -->
-                    <div class="">
-                        <button type="button" class="slick-prev">Previous</button>
-                    </div>
-                    <div class="">
-                        <button type="button" class="slick-next">Next</button>
-                    </div>
-                    <!-- 슬라이드 닷 -->
-                    <div class=""></div>
-                </div>
-
-                <!-- 등록된 리스트를 card 형식으로 출력하는 부분 시작-->
-                <!-- 나중에 수정할 것-->
-
-                <!-- 등록된 리스트를 card 형식으로 출력하는 부분 종료 -->
-
-                <!-- 카드출력부분 -->
-                <div class="row product-boxoutline p-2">
-                    <h3>진행중인 공방</h3>
-                    <div class="product-box">
-                        <div class="product-card" th:each="room : ${roomlist}">
-
-                            <div class="card-thumbnail">
-                                <img th:if="${room.roomImgEntities != null}" class="card-img" th:src="@{ '/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }" />
-                            </div>
-                            <div class="card-content">
-                                <div class="card-header-is_closed">
-                                    <div class="card-header-text">모집중</div>
-                                    <div class="card-header-text">마감임박</div>
-                                </div>
-                                <h1 class="card-title">
-                                    <a th:href="@{'/room/view/' + ${room.roomNo} }">
-                                        <h1 th:text="${room.roomTitle}"></h1>
-                                    </a>
-                                </h1>
-                                <h2 class="card-sub-title">
-                                    ##태그 구현 후 추가바람##
-                                </h2>
-                                <div class="description">
-                                    <p th:text="${'작성자:' + room.memberEntity.memberName}">
-                                    </p>
-                                    <p th:text="${'공방컨텐츠: ' + room.roomContent}">
-                                    </p>
-                                </div>
-
-                                </p>
-                                <div th:text="${'공방가격: ' + room.roomPrice}" id="room-price" class="room-price"></div>
-                                <hr>
-                            </div>
-                            <div class="card-bot">
-                                <ul class="list-inline post-meta d-flex justify-content-between">
-                                    <li class="time-stamp d-flex">
-                                        <i class="bi bi-eye-fill mx-1"></i>
-                                        <div th:text="${room.roomView}"></div>
-                                    </li>
-                                    <li class="card-comment d-flex">
-                                        <i class="bi bi-pencil-square mx-1"></i>
-                                        <div th:text="${#lists.size(room.replyEntities)}">
+                                                        </a>
+                                                        <div class="">건강</div>
+                                                </div>
+                                                <!-- 카테고리2 종료 -->
                                         </div>
-                                    </li>
-                                    <li class="time-stamp">
-                                        <i class="fa fa-clock-o mx-1"></i>
-                                        <small class="reg_date" th:text="${#temporals.format(room.createdDate,'yyyy-MM-dd')}"></small>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 카드줄력부분 종료 -->
+                                        <!-- 좌우 버튼 -->
+                                        <div class="">
+                                                <button type="button" class="slick-prev">Previous</button>
+                                        </div>
+                                        <div class="">
+                                                <button type="button" class="slick-next">Next</button>
+                                        </div>
+                                        <!-- 슬라이드 닷 -->
+                                        <div class=""></div>
+                                </div>
 
-                <!-- 리뷰 후기 카드 출력 02-04 조지훈 작성중 -->
-                <div class="row border p-2">
-                    <h3>공방리뷰</h3>
-                    <div class="card review" th:each="reply : ${replylist}">
-                        <div class="reviewimgbox">
-                            <a href="" th:data-bs-target="${ '#modal' + reply.replyNo }" data-bs-toggle="modal"><img th:src="@{'/replyimg/' + ${reply.replyImgEntities                                          .get(0).replyImg}}" class="card-img-top" /></a>
+                                <!-- 등록된 리스트를 card 형식으로 출력하는 부분 시작-->
+                                <!-- 나중에 수정할 것-->
 
-                        </div>
+                                <!-- 등록된 리스트를 card 형식으로 출력하는 부분 종료 -->
 
-                        <div class="card-body">
-                            <div class="card-title" th:text="${'개설공방 :' + reply.roomEntity.roomTitle}">
-                            </div>
-                            <p class="card-text" th:text="${'리뷰내용 :' +reply.replyContent}">
-                            </p>
-                        </div>
+                                <!-- 카드출력부분 -->
+                                <div class="row product-boxoutline p-2">
+                                        <h3>진행중인 공방</h3>
+                                        <div class="product-box">
+                                                <div class="product-card" th:each="room : ${roomlist}">
 
-                        <!-- 리뷰카드 모달 -->
-                        <div class="modal" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static" role="dialog" th:id="${'modal'+reply.replyNo}" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content rounded-5 shadow">
-                                    <div class="modal-header p-5 pb-4 border-bottom-0">
-                                        <h2 class="fw-bold mb-0 modaltitle">리뷰 상세페이지
-                                        </h2>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body p-5 pt-0">
-                                        <div th:id="${'carousel' +reply.replyNo}" class="carousel slide" data-bs-ride="carousel">
-                                            <!-- 모달상단 -->
-                                            <div class="carousel-inner modalimgbox">
-                                                <!-- 반복문 -->
-                                                <div class="carousel-item active modalimg">
-                                                    <img th:src="@{'/replyimg/'+${reply.replyImgEntities.get(0).replyImg} }" alt="..." />
+                                                        <div class="card-thumbnail">
+                                                                <img th:if="${room.roomImgEntities != null}"
+                                                                        class="card-img"
+                                                                        th:src="@{ '/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }" />
+                                                        </div>
+                                                        <div class="card-content">
+                                                                <div class="card-header-is_closed">
+                                                                        <div class="card-header-text">모집중</div>
+                                                                        <div class="card-header-text">마감임박</div>
+                                                                </div>
+                                                                <h1 class="card-title">
+                                                                        <a th:href="@{'/room/view/' + ${room.roomNo} }">
+                                                                                <h1 th:text="${room.roomTitle}"></h1>
+                                                                        </a>
+                                                                </h1>
+                                                                <h2 class="card-sub-title">
+                                                                        ##태그 구현 후 추가바람##
+                                                                </h2>
+                                                                <div class="description">
+                                                                        <p
+                                                                                th:text="${'작성자:' + room.memberEntity.memberName}">
+                                                                        </p>
+                                                                        <p th:text="${'공방컨텐츠: ' + room.roomContent}">
+                                                                        </p>
+                                                                </div>
+
+                                                                </p>
+                                                                <div th:text="${'공방가격: ' + room.roomPrice}"
+                                                                        id="room-price" class="room-price"></div>
+                                                                <hr>
+                                                        </div>
+                                                        <div class="card-bot">
+                                                                <ul
+                                                                        class="list-inline post-meta d-flex justify-content-between">
+                                                                        <li class="time-stamp d-flex">
+                                                                                <i class="bi bi-eye-fill mx-1"></i>
+                                                                                <div th:text="${room.roomView}"></div>
+                                                                        </li>
+                                                                        <li class="card-comment d-flex">
+                                                                                <i class="bi bi-pencil-square mx-1"></i>
+                                                                                <div
+                                                                                        th:text="${#lists.size(room.replyEntities)}">
+                                                                                </div>
+                                                                        </li>
+                                                                        <li class="time-stamp">
+                                                                                <i class="fa fa-clock-o mx-1"></i>
+                                                                                <small class="reg_date"
+                                                                                        th:text="${#temporals.format(room.createdDate,'yyyy-MM-dd')}"></small>
+                                                                        </li>
+                                                                </ul>
+                                                        </div>
                                                 </div>
-                                                <div class="carousel-item modalimg" th:each="replyimg : ${reply.replyImgEntities}">
-                                                    <img th:src="@{'/replyimg/'+${replyimg.replyImg} }" alt="..." />
+                                        </div>
+                                </div>
+                                <!-- 카드줄력부분 종료 -->
+
+                                <!-- 리뷰 후기 카드 출력 02-04 조지훈 작성중 -->
+                                <div class="row border p-2">
+                                        <h3>공방리뷰</h3>
+                                        <div class="card review" th:each="reply : ${replylist}">
+                                                <div class="reviewimgbox">
+                                                        <a href="" th:data-bs-target="${ '#modal' + reply.replyNo }"
+                                                                data-bs-toggle="modal"><img
+                                                                        th:src="@{'/replyimg/' + ${reply.replyImgEntities                                          .get(0).replyImg}}"
+                                                                        class="card-img-top" /></a>
+
                                                 </div>
-                                                <div class="modalbtn">
-                                                    <!-- <input type="button"> -->
-                                                    <button class="carousel-control-prev" type="button" th:data-bs-target="${'#carousel'+reply.replyNo}" data-bs-slide="prev">
+
+                                                <div class="card-body">
+                                                        <div class="card-title"
+                                                                th:text="${'개설공방 :' + reply.roomEntity.roomTitle}">
+                                                        </div>
+                                                        <p class="card-text" th:text="${'리뷰내용 :' +reply.replyContent}">
+                                                        </p>
+                                                </div>
+
+                                                <!-- 리뷰카드 모달 -->
+                                                <div class="modal" tabindex="-1" data-bs-keyboard="false"
+                                                        data-bs-backdrop="static" role="dialog"
+                                                        th:id="${'modal'+reply.replyNo}" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                                <div class="modal-content rounded-5 shadow">
+                                                                        <div
+                                                                                class="modal-header p-5 pb-4 border-bottom-0">
+                                                                                <h2 class="fw-bold mb-0 modaltitle">리뷰
+                                                                                        상세페이지
+                                                                                </h2>
+                                                                                <button type="button" class="btn-close"
+                                                                                        data-bs-dismiss="modal"
+                                                                                        aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body p-5 pt-0">
+                                                                                <div th:id="${'carousel' +reply.replyNo}"
+                                                                                        class="carousel slide"
+                                                                                        data-bs-ride="carousel">
+                                                                                        <!-- 모달상단 -->
+                                                                                        <div
+                                                                                                class="carousel-inner modalimgbox">
+                                                                                                <!-- 반복문 -->
+                                                                                                <div
+                                                                                                        class="carousel-item active modalimg">
+                                                                                                        <img th:src="@{'/replyimg/'+${reply.replyImgEntities.get(0).replyImg} }"
+                                                                                                                alt="..." />
+                                                                                                </div>
+                                                                                                <div class="carousel-item modalimg"
+                                                                                                        th:each="replyimg : ${reply.replyImgEntities}">
+                                                                                                        <img th:src="@{'/replyimg/'+${replyimg.replyImg} }"
+                                                                                                                alt="..." />
+                                                                                                </div>
+                                                                                                <div class="modalbtn">
+                                                                                                        <!-- <input type="button"> -->
+                                                                                                        <button class="carousel-control-prev"
+                                                                                                                type="button"
+                                                                                                                th:data-bs-target="${'#carousel'+reply.replyNo}"
+                                                                                                                data-bs-slide="prev">
                                                                                                                 <<
                                                                                                                         </button>
-                                                    <button class="carousel-control-next" type="button" th:data-bs-target="${'#carousel'+reply.replyNo}" data-bs-slide="next">
+                                                                                                                        <button class="carousel-control-next"
+                                                                                                                                type="button"
+                                                                                                                                th:data-bs-target="${'#carousel'+reply.replyNo}"
+                                                                                                                                data-bs-slide="next">
                                                                                                                                 >>
                                                                                                                         </button>
-                                                </div>
+                                                                                                </div>
 
-                                            </div>
-                                            <!-- 모달하단 -->
-                                            <div class="modalbot">
-                                                <div class="mt-3">
-                                                    <h3 class="fw-bold" th:text="${'공방클래스 : '+ reply.roomEntity.roomTitle}">
-                                                    </h3>
-                                                    <hr />
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-4">
-                                                        <p class="mt-2" th:text="${'강사 : ' + reply.memberEntity.memberName}">
-                                                        </p>
+                                                                                        </div>
+                                                                                        <!-- 모달하단 -->
+                                                                                        <div class="modalbot">
+                                                                                                <div class="mt-3">
+                                                                                                        <h3 class="fw-bold"
+                                                                                                                th:text="${'공방클래스 : '+ reply.roomEntity.roomTitle}">
+                                                                                                        </h3>
+                                                                                                        <hr />
+                                                                                                </div>
+                                                                                                <div class="row">
+                                                                                                        <div
+                                                                                                                class="col-md-4">
+                                                                                                                <p class="mt-2"
+                                                                                                                        th:text="${'강사 : ' + reply.memberEntity.memberName}">
+                                                                                                                </p>
 
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="mt-2" th:text="${'리뷰내용 : ' + reply.replyContent}">
-                                                        </div>
-                                                        <div th:text="${'리뷰일 : ' +  #temporals.format(reply.createdDate,'yyyy-MM-dd')}">
+                                                                                                        </div>
+                                                                                                        <div
+                                                                                                                class="col-md-8">
+                                                                                                                <div class="mt-2"
+                                                                                                                        th:text="${'리뷰내용 : ' + reply.replyContent}">
+                                                                                                                </div>
+                                                                                                                <div
+                                                                                                                        th:text="${'리뷰일 : ' +  #temporals.format(reply.createdDate,'yyyy-MM-dd')}">
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr />
-                                                <a th:href="@{'/room/view/' +${reply.roomEntity.roomNo } }">
+                                                                                                                </div>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                                <hr />
+                                                                                                <a
+                                                                                                        th:href="@{'/room/view/' +${reply.roomEntity.roomNo } }">
                                                                                                         공방클래스 바로가기
                                                                                                 </a>
-                                            </div>
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                                <!-- 리뷰카드 모달 end -->
                                         </div>
-                                    </div>
                                 </div>
-                            </div>
+
                         </div>
-                        <!-- 리뷰카드 모달 end -->
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
 
-    <!-- 조지훈 댓글 슬릭 js -->
-    <script type="text/javascript">
-        $(".variable-width").slick({
-            dots: true,
-            infinite: true,
-            speed: 300,
-            slidesToShow: 4,
-            centerMode: true,
-            variableWidth: true,
-        });
-    </script>
+                        <!-- 광고배너 -->
+                        <div class="adbanner">
+                              <div class="row">
+                                     <div class="column">
+                                             <p>20,000원 쿠폰 페이백!!</p>
+                                             <p>할인받아 다양한 공방클랙스에 참여하고, 후기작성하시면 경품선물도 드려요!!!</p>
+                                     </div>
+                                     <div class="rowimg"></div>
+                                
+                              </div>
+                              
+                        </div>
+                </main>
 
-    <!-- 개발자 js 가져오기 : 지역, 카테고리 slick 관련 스크립트 -->
-    <script th:src="@{/js/main.js}"></script>
-    <!-- 메인캐러셀 js 가져오기 -->
-    <script th:src="@{/js/maincarousel.js}"></script>
-    <!-- 메인 탭 캐러셀 js 가져오기 -->
-    <script th:src="@{/js/maintabcarousel.js}"></script>
 
-    <!-- 메인 탭 캐러셀 js 가져오기 -->
-    <script th:src="@{/js/maincard.js}"></script>
+        </div>
+
+        <!-- 조지훈 댓글 슬릭 js -->
+        <script type="text/javascript">
+                $(".variable-width").slick({
+                        dots: true,
+                        infinite: true,
+                        speed: 300,
+                        slidesToShow: 4,
+                        centerMode: true,
+                        variableWidth: true,
+                });
+        </script>
+
+        <!-- 개발자 js 가져오기 : 지역, 카테고리 slick 관련 스크립트 -->
+        <script th:src="@{/js/main.js}"></script>
+        <!-- 메인캐러셀 js 가져오기 -->
+        <script th:src="@{/js/maincarousel.js}"></script>
+        <!-- 메인 탭 캐러셀 js 가져오기 -->
+        <script th:src="@{/js/maintabcarousel.js}"></script>
+
+        <!-- 메인 탭 캐러셀 js 가져오기 -->
+        <script th:src="@{/js/maincard.js}"></script>
 
 
 

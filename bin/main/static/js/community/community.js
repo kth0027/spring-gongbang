@@ -15,7 +15,8 @@ $(function(){
             success: function(data){
                 if(data==1){
                     // 등록 성공 시 마지막 뒷 부분에 div 추가
-                    $(".sidebar-container:last").append("<div class='sidebar-category'>" + category + "</div>");
+                    // $(".sidebar-container").last().append("<div class='sidebar-category' id='category'"++>" + category + "</div>");
+                    location.reload();
                 } else {
                     alert("오류발생. 관리자에게 문의하세요");
                     location.href = "/community/list";
@@ -40,8 +41,6 @@ $(function(){
             }
         });
     });
-
-
 
 });
 

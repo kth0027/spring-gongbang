@@ -4,53 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <title>개설중인 클래스 리스트</title>
-    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"> -->
     <link rel="stylesheet" th:href="@{/css/room/room_list.css}">
 </head>
 
 <body>
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-        crossorigin="anonymous"></script> -->
     <div th:replace="common.html::common"></div>
     <div th:replace="header.html::header"></div>
-
     <!--
-@Author : 김정진
-@Date : 2022-02-08
+    @Author : 김정진
+    @Date : 2022-02-08
 
-1. 검색해서 들어오면 리스트로 출력
-2. '지도 표시하기' 버튼을 클릭하면 화면 전환 후 지도 출력
--->
+    1. 검색해서 들어오면 리스트로 출력
+    2. '지도 표시하기' 버튼을 클릭하면 화면 전환 후 지도 출력
+    -->
 
     <div class="wrap">
         <div class="container">
 
             <div class="row ">
                 <!-- 룸 1개당 반복문-->
-                <div class="col-md-6 leftcontents">
-                    <div th:each="room : ${roomEntities}">
+                <div class="col-md-6 leftcontents" style="margin-top: 2rem;">
+                    <div class="roomlist" th:each="room : ${roomEntities}">
                         <div class="row roombox d-flex">
                             <!-- 좌측 지도 -->
-                            <div class="roomboxcontentimgbox col-7 p-2 mx-1">
-                                <div class="roomboxcontentimg w-100"><img
-                                        th:src="@{ '/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }"></div>
+                            <div class="roomboxcontentimgbox col-7">
+                                <div class="roomboxcontentimg w-100"><img th:src="@{ '/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }"></div>
                                 <div class="roomboxtoptxt">
-                                    <div><a th:href="@{ '/room/view/' + ${room.roomNo} }" class="logo">
-                                            <input class="detailbtn" type="text" value="공방상세보기"></a>
+                                    <div class="gongbangdetail">
+                                        <a th:href="@{ '/room/view/' + ${room.roomNo} }" class="logo">
+                                            <input class="detailbtn" type="button" value="공방상세보기"></a>
                                     </div>
                                     <div>
-                                        <input class="roadbtn" type="button" value="길찾기"
-                                            th:onclick="roomnavy([[${room.roomNo}]])" data-bs-target="#modalnavy"
-                                            data-bs-toggle="modal">
+                                        <input class="roadbtn" type="button" value="길찾기" th:onclick="roomnavy([[${room.roomNo}]])" data-bs-target="#modalnavy" data-bs-toggle="modal">
                                     </div>
                                 </div>
                             </div>
                             <!-- 우측출력글 -->
-                            <div class="roomboxcontent border col-4 ">
+                            <div class="roomboxcontent col-4">
                                 <div th:text="${'공방번호 : ' +room.roomNo}"></div>
                                 <div th:text="${'공방명 : ' +room.roomTitle}"></div>
                                 <div th:text="${'공방구분 : ' +room.roomCategory}"></div>
@@ -70,56 +60,70 @@
                         <input type="hidden" th:value="${local}" id="room-list-local">
                     </div>
 
-
-                    <!-- 페이징 처리 -->
-                    <ul class="pagination justify-content-center"
-                        th:with="start = ${ T(Math).floor( roomEntities.number / 10 ) * 10 + 1 } ,
+                    <div>
+                        <!-- 페이징 처리 -->
+                        <ul class="pagination justify-content-center" th:with="start = ${ T(Math).floor( roomEntities.number / 2 ) * 2 + 1 } ,
                                      last = ( ${ start + 9 < roomEntities.totalPages ?  start + 9 : roomEntities.totalPages } )">
-                        <!-- 첫페이지이동 -->
-                        <li class="page-item">
-                            <a class="page-link" th:href="@{ /room/list( page = 1 ) }"> 처음 </a>
-                        </li>
-                        <!-- 이전페이지이동 -->
-                        <li class="page-item" th:class="${roomEntities.first} ? 'disabled' ">
-                            <!-- 첫번페이지에서 이전페이지이동 표시 x -->
-                            <a class="page-link"
-                                th:href="${roomEntities.first} ? '#' : @{ /room/list( page = ${ roomEntities.number } ) }">
-                                이전 </a>
-                        </li>
-                        <!-- 페이지번호 -->
-                        <li class="page-item" th:each="page : ${#numbers.sequence( start , last ) }">
-                            <a class="page-link" th:href="@{ /room/list( page = ${page} ) }" th:text="${page}"></a>
-                        </li>
-                        <!-- 다음페이지이동 -->
-                        <li class="page-item" th:class="${roomEntities.last} ? 'disabled' ">
-                            <a class="page-link"
-                                th:href="${roomEntities.last} ? '#' : @{ /room/list( page = ${roomEntities.number+2} ) }">
-                                다음
-                            </a>
-                        </li>
-                        <!-- 마지막페이지 이동 -->
-                        <li class="page-item">
-                            <a class="page-link" th:href="@{ /room/list( page=${roomEntities.totalPages} ) }"> 마지막 </a>
-                        </li>
-                    </ul>
+                            <!-- 첫페이지이동 -->
+                            <li class="page-item">
+                                <a class="page-link" th:href="@{ /room/list( page = 1 ) }"> 처음 </a>
+                            </li>
+                            <!-- 이전페이지이동 -->
+                            <li class="page-item" th:class="${roomEntities.first} ? 'disabled' ">
+                                <!-- 첫번페이지에서 이전페이지이동 표시 x -->
+                                <a class="page-link" th:href="${roomEntities.first} ? '#' : @{ /room/list( page = ${ roomEntities.number } ) }">
+                                    이전 </a>
+                            </li>
+                            <!-- 페이지번호 -->
+                            <li class="page-item" th:each="page : ${#numbers.sequence( start , last ) }">
+                                <a class="page-link" th:href="@{ /room/list( page = ${page} ) }" th:text="${page}"></a>
+                            </li>
+                            <!-- 다음페이지이동 -->
+                            <li class="page-item" th:class="${roomEntities.last} ? 'disabled' ">
+                                <a class="page-link" th:href="${roomEntities.last} ? '#' : @{ /room/list( page = ${roomEntities.number+2} ) }">
+                                    다음
+                                </a>
+                            </li>
+                            <!-- 마지막페이지 이동 -->
+                            <li class="page-item">
+                                <a class="page-link" th:href="@{ /room/list( page=${roomEntities.totalPages} ) }"> 마지막
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
 
                 <div class="col-md-5 offset-1" id="map-default-wrapper">
-                    <div class="mb-1">
+                    <div class="mb-1 h3 mb-3">
                         오픈된 <span class="text-info">공방</span>을확인하세요!
                     </div>
-                    <div id="map"></div>
+                    <div id="map" class="">
+                        <!-- 맵 팝업
+                         -->
+                        <div id="mappopup">
+
+                            <div id="contents">
+                                <!-- 사이드바 내용물 -->
+                                <!-- <div>
+                                    <div class="markcontents" style='padding:0 5px;background:black;'>" + position.roomNo + "," + position.roomImg + "<br><a href='/room/view/" + position.roomNo + "'>바로가기</a></div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
             </div>
         </div>
 
+        <!-- <a href="javascript:void(0)" </a>
+
+            <div id="marker"></div> -->
+
 
         <!-- 길찾기 모달  -->
-        <div class="modal fade" id="modalnavy" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog"
-            aria-hidden="true">
+        <div class="modal fade" id="modalnavy" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content rounded-5 shadow">
                     <div class="modal-header p-5 pb-4 border-bottom-0">
@@ -127,15 +131,14 @@
                             <p class="text-center">찾아오는 길</p>
                         </h2>
                         <input id="road" type="hidden">
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                            style="width:2rem;"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="width:2rem;"></button>
                         <!-- 닫기 버튼 -->
                     </div>
                     <div class="modal-body p-5 pt-0" id="modalnavy1">
 
                         <div class="ft_area">
                             <div class="ft_select_wrap">
-                                <div class="ft_select">
+                                <div class="ft_select text-center">
                                     <select id="selectLevel">
                                         <option value="0" selected="selected">교통최적+추천</option>
                                         <option value="1">교통최적+무료우선</option>
@@ -150,7 +153,7 @@
                                         <option value="Y">Y</option>
                                         <option value="N">N</option>
                                     </select>
-                                    <button id="btn_select">길찾기</button>
+                                    <button class="mt-3 searchroadbtn" id="btn_select">길찾기</button>
                                 </div>
                             </div>
                             <br>
@@ -172,13 +175,24 @@
     </div>
 
 
-    <!--
+<!--
 새로고침 1번 할때마다 이용횟수가 증가하기 때문에 맨 마지막에 테스트하기 위해서 주석 처리 해둠
 <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx1a649f9e9e5642ed82f72ada2ff00e9d"></script>
 -->
     <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c4b311c12f156511eb9b89bf63938e65&libraries=clusterer"></script>
     <script th:src="@{/js/roomview.js}"></script>
     <script th:src="@{/js/roomnavy.js}"></script>
+    <script>
+        + function($) {
+            'use strict';
+
+            $(document).on('click.bs.sidebar.data-api', '[data-toggle="sidebar"]', function(e) {
+                e.preventDefault();
+                $(".sidebar").toggleClass("toggled");
+                $(".has-sidebar").toggleClass("toggled");
+            });
+        }(jQuery);
+    </script>
 
 </body>
 

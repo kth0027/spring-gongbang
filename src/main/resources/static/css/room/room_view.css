@@ -349,7 +349,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 10.0rem;
+    height: 7rem;
     margin: 1rem 0;
     border-bottom: 1px solid #374b73;
     border-left: none;
@@ -428,6 +428,26 @@
     margin-right: 1rem;
 }
 
+.time-selected-wrapper {
+    /* overflow-y: scroll; */
+
+    padding: 1rem 0;
+
+}
+ 
+
+
+#time-select-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#time-select-inner > div{
+    margin: 0.2rem 0;
+}
+
 #time-select-inner button {
     background-color: #374b73;
     border-radius: 0.3rem;
@@ -463,3 +483,6 @@
 
 #time-select-inner .container select,
 #time-select-inner .container input {}
+
+
+/* 신청하기 */

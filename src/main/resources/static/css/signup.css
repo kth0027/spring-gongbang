@@ -8,6 +8,8 @@
     margin-top: 0rem;
 }
 
+
+
 .outlineinner {
     background: white;
     background: hsla(0, 0%, 100%, .8);
@@ -33,6 +35,8 @@
 
 .snssignup a{
     text-decoration: none;
+    color: #374b73 !important;
+    text-shadow: rgb(0, 0, 0) 1px 1px 1px;
 }
 
 video {

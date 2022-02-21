@@ -1,8 +1,9 @@
 /* section calendar */
 
-.day:hover{
+.day:hover {
     cursor: pointer;
-    background-color: #fff1ed;
+    background-color: #ffcbcb;
+    opacity: 1;
 }
 
 .sec_cal {
@@ -85,7 +86,7 @@
 }
 
 .sec_cal .cal_wrap .day {
-    display:flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: calc(100% / 7);
@@ -93,10 +94,16 @@
     color: #999;
     font-size: 12px;
     text-align: center;
-    border-radius:5px
+    border-radius: 50%;
 }
 
-.current.today {background: rgb(242 242 242);}
+.current.today {
+    background: #a1e9ff;
+}
+
+.current.today:hover {
+    background: #000000;
+}
 
 .sec_cal .cal_wrap .dates {
     display: flex;
@@ -104,8 +111,8 @@
     height: 290px;
 }
 
-.sec_cal .cal_wrap .day:nth-child(7n -1) {
-    color: #3c6ffa;
+.dates {
+    display: none;
 }
 
 .sec_cal .cal_wrap .day:nth-child(7n) {

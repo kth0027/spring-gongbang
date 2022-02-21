@@ -20,7 +20,7 @@
 
         <!-- 레이아웃 01-27 조지훈-->
         <div class="container" id="channelmain">
-            <h3 class="title">개인채널</h3>
+            <div class="title h3 subtitle">개인채널</div>
             <div class="row">
                 <div>
                     <div class="hannelmaintop">
@@ -30,11 +30,11 @@
                         </div>
                         <div class="col-md-6 col-6 text-center my-3">
                             <div class="topbox">
-                                <span th:text="${memberEntity.channelTitle}" id="channelname"></span>
+                                <span th:text="${'채널명 : ' + memberEntity.channelTitle}" id="channelname"></span>
                                 <div class="changeimg" sec:authorize="isAuthenticated()" th:if="${session.logindto.memberNo == memberEntity.memberNo}">
 
                                 </div>
-                                <button class="btn" data-bs-target="#channelregistration" data-bs-toggle="modal">채널
+                                <button class="btn my-3" data-bs-target="#channelregistration" data-bs-toggle="modal">채널
                                     정보 등록/수정
                                 </button>
                                 <div>
@@ -47,13 +47,13 @@
                     <hr>
                     <div class="tabnav">
                         <!-- 02-15 조지훈 -->
-                        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                            <li class="nav-item" role="presentation" id="hoverli">
-                                <button class="nav-link btn active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">홈
+                        <ul class="nav mb-3" id="pills-tab" role="tablist">
+                            <li class="nav-item active" role="presentation" id="hoverli">
+                                <button class="nav-link btn" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">홈
                                 </button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link btn" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">클래스
+                            <li class="nav-item btn" role="presentation">
+                                <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">클래스
                                 </button>
                             </li>
                         </ul>
@@ -64,14 +64,14 @@
                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                             <div class="row">
                                 <div class="col-md-8" id="channelContentBox">
-                                    <h3><strong>강사 소개</strong></h3>
+                                    <div class="h4 subtitle"><strong>강사 소개</strong></div>
                                     <div id="channelContentnull" th:if="${memberEntity.channelContent == null}">
                                         작성된 소개글이 없습니다.
                                     </div>
                                     <div id="channelContent" th:if="${memberEntity.channelContent != null}" th:utext="${memberEntity.channelContent}"></div>
                                 </div>
                                 <div class="col-md-4" id="reviewbox">
-                                    <h4><strong>클래스 후기</strong></h4>
+                                    <div class="h4 subtitle"><strong>클래스후기</strong></div>
                                     <div class="row" th:each="room : ${memberEntity.roomEntities}">
                                         <div th:each="reply : ${room.replyEntities}">
                                             <div class="col-md-8">
@@ -154,6 +154,7 @@
     <script src="">
         $(document).ready(function() {
             //여기 아래 부분
+
             $('#summernote').summernote({
                 height: 200, // 에디터 높이
                 minHeight: null, // 최소 높이
@@ -164,6 +165,7 @@
             });
         });
     </script>
+
     <!--<script src="">-->
     <!--    $(document).ready(function () {-->
     <!--        //여기 아래 부분-->

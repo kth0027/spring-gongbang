@@ -352,19 +352,19 @@ public class RoomService {
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         if (memberDto == null) {
-            return;
-        } // 로그인이 되어 있지 않으면 제외
-
-        int nreadcount = 0; // 안읽은 쪽지의 갯수
-        // 로그인된 회원번호와 쪽지 받은 사람의 회원번호가 모두 동일하면
-        for (NoteEntity noteEntity : noteRepository.findAll()) {
-            if (noteEntity.getRoomEntity().getMemberEntity().getMemberNo() == memberDto.getMemberNo() && noteEntity.getNoteRead() == 0) { // 받는사람 == 로그인된 번호 && 읽음이 0이면
-                // 문의 엔티티. 방엔티티. 멤버엔티티. 멤버번호
-                nreadcount++;
+        } else {
+            int nreadcount = 0; // 안읽은 쪽지의 갯수
+            // 로그인된 회원번호와 쪽지 받은 사람의 회원번호가 모두 동일하면
+            for (NoteEntity noteEntity : noteRepository.findAll()) {
+                if (noteEntity.getRoomEntity().getMemberEntity().getMemberNo() == memberDto.getMemberNo() && noteEntity.getNoteRead() == 0) { // 받는사람 == 로그인된 번호 && 읽음이 0이면
+                    // 문의 엔티티. 방엔티티. 멤버엔티티. 멤버번호
+                    nreadcount++;
+                }
             }
+            // 세션에 저장하기
+            session.setAttribute("nreadcount", nreadcount);
         }
-        // 세션에 저장하기
-        session.setAttribute("nreadcount", nreadcount);
+
     }
 
     //읽음처리 서비스

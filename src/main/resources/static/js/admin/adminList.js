@@ -1020,42 +1020,42 @@ function adminSelectBtn(){
                             name: "핸드메이드",
                             steps: category1,
                             pictureSettings: {
-                            src: "https://www.urbanbrush.net/web/wp-content/uploads/edd/2017/12/web-20171228171757223431.png"
+                            src: "https://cdn-icons-png.flaticon.com/512/5110/5110736.png"
                         }
                         },
                         {
                             name: "쿠킹",
                             steps: category2,
                             pictureSettings: {
-                            src: "https://cdn-icons-png.flaticon.com/512/4976/4976190.png"
+                            src: "https://www.creativefabrica.com/wp-content/uploads/2020/06/03/Cooking-Vector-Illustration-Icon-Graphics-4267218-1-1-580x435.jpg"
                         }
                         },
                         {
                             name: "플라워",
                             steps: category3,
                             pictureSettings: {
-                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                            src: "https://icons.iconarchive.com/icons/paomedia/small-n-flat/1024/flower-icon.png"
                         }
                         },
                         {
                             name: "드로잉",
                             steps: category4,
                             pictureSettings: {
-                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                            src: "https://icons-for-free.com/iconfiles/png/512/brush+design+draw+drawing+icon-1320168140159902387.png"
                         }
                         },
                         {
                             name: "음악",
                             steps: category5,
                             pictureSettings: {
-                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                            src: "https://icons-for-free.com/iconfiles/png/512/music-131964753036631366.png"
                         }
                         },
                         {
                             name: "필라테스",
                             steps: category6,
                             pictureSettings: {
-                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                            src: "https://cdn-icons-png.flaticon.com/512/2320/2320765.png"
                         }
                         }
                         ,
@@ -1063,7 +1063,7 @@ function adminSelectBtn(){
                             name: "스포츠",
                             steps: category7,
                             pictureSettings: {
-                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                            src: "https://image.emojipng.com/679/10488679.jpg"
                         }
                         }
                         ,
@@ -1071,7 +1071,7 @@ function adminSelectBtn(){
                             name: "뷰티",
                             steps: category8,
                             pictureSettings: {
-                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                            src: "https://www.clipartmax.com/png/middle/196-1962163_cosmetics-beauty-icon-maquillaje-vector-png.png"
                         }
                         },
 
@@ -1079,7 +1079,7 @@ function adminSelectBtn(){
                             name: "애완동물",
                             steps: category9,
                             pictureSettings: {
-                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                            src: "https://cdn-icons-png.flaticon.com/512/1596/1596810.png"
                         }
                         },
 
@@ -1087,7 +1087,7 @@ function adminSelectBtn(){
                             name: "체험",
                             steps: category10,
                             pictureSettings: {
-                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                            src: "https://cdn.imgbin.com/24/11/3/hiking-icon-backpack-icon-adventure-icon-5QV3DDYU.jpg"
                         }
                         },
 
@@ -1095,7 +1095,7 @@ function adminSelectBtn(){
                             name: "자기계발",
                             steps: category11,
                             pictureSettings: {
-                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                            src: "https://cdn-icons-png.flaticon.com/512/1478/1478929.png"
                         }
                         }
                     ];

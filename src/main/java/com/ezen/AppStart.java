@@ -47,6 +47,7 @@ public class AppStart {
     @Autowired
     private MemberRepository memberRepository;
 
+
     // 메인 페이지 맵핑
     // 메인 페이지 실행되면서 개설된 강의, 작성된 리뷰를 Model 로 뿌려줍니다.
 
@@ -58,6 +59,24 @@ public class AppStart {
         // 댓글은 따로 상태가 없어서 모든 댓글이 출력된다.
         List<ReplyEntity> replylist = replyService.replylist();
         model.addAttribute("replylist", replylist);
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+
+        MemberEntity memberEntity = null;
+        if (loginDto == null) {
+
+        } else {
+            memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+                model.addAttribute("memberEntity", memberEntity);
+            }
+        }
 
         return "index";
     }

@@ -1319,13 +1319,11 @@
                 <h3 style="background-color: #fff1ed">공방리뷰</h3>
                 <div id="main-review-slick">
                     <div class="card review" th:each="reply : ${replylist}">
-
                         <div class="reviewimgbox">
                             <a href="" th:data-bs-target="${ '#modal' + reply.replyNo }" data-bs-toggle="modal">
                                 <img th:src="@{'/replyimg/' + ${reply.replyImgEntities                                          .get(0).replyImg}}"
                                      class="card-img-top"/></a>
                         </div>
-
                         <div class="card-body">
                             <div class="card-title" th:text="${'개설공방 :' + reply.roomEntity.roomTitle}">
                             </div>

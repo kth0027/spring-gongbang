@@ -1,5 +1,6 @@
 
 $(function(){
+
     // 카테고리 생성 이벤트
     $("#createNewCategoryBtn").on("click", function(e) {
         // 입력된 카테고리 이름
@@ -14,7 +15,8 @@ $(function(){
             success: function(data){
                 if(data==1){
                     // 등록 성공 시 마지막 뒷 부분에 div 추가
-                    $(".sidebar-tabs:last").append("<div class='sidebar-tabs'>"+category+"</div>");
+                    // $(".sidebar-container").last().append("<div class='sidebar-category' id='category'"++>" + category + "</div>");
+                    location.reload();
                 } else {
                     alert("오류발생. 관리자에게 문의하세요");
                     location.href = "/community/list";
@@ -32,14 +34,13 @@ $(function(){
             data: {"boardName" : boardName, "categoryName" : categoryName},
             method: "GET",
             success:function(data){
-                if(data==1){
-                    alert("새로운 게시판이 생성되었습니다. ");
+                // 1. 특정 지역 안에 묶여야한다.
+                if(data == 1){
+                    location.reload();
                 }
             }
         });
     });
-
-
 
 });
 
@@ -87,7 +88,6 @@ function createNewPost(boardNo){
         url: "/community/createPost",
         data: {"boardNo" : boardNo},
         success: function(data){
-            // 2. 게시글 등록 성공 시 리스트 화면으로 돌아간다.
             $(".content-area").empty();
             $(".content-area").append(data);
         }
@@ -101,9 +101,21 @@ function goToPostList(boardNo){
         data: {"boardNo" : boardNo},
         method: "GET",
         success: function(data){
-            // 기존에 있던 내용을 지운다.
             $(".content-area").empty();
             $(".content-area").append(data);
         }
     });
+}
+// 작성된 게시물 상세 페이지 출력하기
+function goToPostView(postNo, boardNo){
+    $.ajax({
+        url: "/community/viewPost",
+        data: {"postNo" : postNo, "boardNo" : boardNo},
+        method: "GET",
+        success: function(data){
+            $(".content-area").empty();
+            $(".content-area").append(data);
+        }
+    })
+
 }

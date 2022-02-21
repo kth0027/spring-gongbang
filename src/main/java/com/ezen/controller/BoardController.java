@@ -7,6 +7,9 @@ import com.ezen.service.BoardService;
 import com.ezen.service.CategoryService;
 import com.ezen.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,24 +33,13 @@ public class BoardController {
     @Autowired
     PostService postService;
 
-    // 헤더에서 게시판 클릭 후 리스트 출력하는 페이지 연결
-/*
-    @GetMapping("/postListController")
-    public String postListController(@RequestParam("boardNo") int boardNo, Model model) {
-        // boardNo 에 해당하는 엔티티를 호출한다.
-        List<PostEntity> posts = postService.getPostList(boardNo);
-        model.addAttribute("posts", posts);
-        return "board/board_content";
-    }
-*/
-
     // [게시판 페이지와 맵핑]
     // 카테고리, 게시판을 Model 에 담아서 넘겨준다.
     @GetMapping("/list")
-    public String list(Model model) {
+    public String list(Model model, @PageableDefault Pageable pageable) {
 
         // 1. 만들어진 카테고리 전체 호출
-        List<CategoryEntity> categories = categoryService.getCategoryList();
+        Page<CategoryEntity> categories = categoryService.getCategoryList(pageable);
         // 1. 카테고리에 해당하는 게시판 목록을 가져온다
         // 1.
         List<BoardEntity> boards = boardService.getBoards();

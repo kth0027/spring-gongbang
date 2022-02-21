@@ -82,28 +82,28 @@ public class RoomEntity extends BaseTimeEntity {
     // timetable 과의 관계
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<TimeTableEntity> timeTableEntity;
+    private final List<TimeTableEntity> timeTableEntity = new ArrayList<>();
 
     // 이미지 관계
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<RoomImgEntity> roomImgEntities = new ArrayList<>();
+    private final List<RoomImgEntity> roomImgEntities = new ArrayList<>();
 
     // 문의글 리스트
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<NoteEntity> noteEntities = new ArrayList<>();
+    private final List<NoteEntity> noteEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<ReplyEntity> replyEntities = new ArrayList<ReplyEntity>();
+    private final List<ReplyEntity> replyEntities = new ArrayList<ReplyEntity>();
 
     // 클래스 1개는 여러개의 예약 내역을 가질 수 있습니다.
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<HistoryEntity> historyEntities = new ArrayList<>();
+    private final List<HistoryEntity> historyEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "roomEntity", cascade = CascadeType.ALL)
     @ToString.Exclude
-    private List<RoomLikeEntity> roomLikeEntities = new ArrayList<>();
+    private final List<RoomLikeEntity> roomLikeEntities = new ArrayList<>();
 }

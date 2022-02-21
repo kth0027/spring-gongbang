@@ -13,6 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class CategoryEntity extends BaseTimeEntity {
 
     @Id
@@ -31,11 +32,9 @@ public class CategoryEntity extends BaseTimeEntity {
     private MemberEntity memberEntity;
 
     // 카테고리 : 게시판 = 1 : N 관계를 맺는다.
-    // '가전제품' 카테고리 안에 여러개의 게시판이 존재할 수 있다.
-    //  또한, 게시판 : 게시글 = 1 : N 관계를 갖는다.
     @OneToMany(mappedBy = "categoryEntity")
     @ToString.Exclude
-    private List<BoardEntity> boardEntities = new ArrayList<>();
+    private final List<BoardEntity> boardEntities = new ArrayList<>();
 
 
 }

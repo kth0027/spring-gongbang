@@ -349,7 +349,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 7rem;
+    height: 10.0rem;
     margin: 1rem 0;
     border-bottom: 1px solid #374b73;
     border-left: none;
@@ -463,6 +463,3 @@
 
 #time-select-inner .container select,
 #time-select-inner .container input {}
-
-
-/* 신청하기 */

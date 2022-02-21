@@ -27,6 +27,7 @@ import java.util.UUID;
 
 @Service
 public class RoomService {
+
     @Autowired
     private RoomImgRepository roomImgRepository;
     @Autowired
@@ -44,7 +45,7 @@ public class RoomService {
 
     @Transactional
     public boolean registerClass(RoomEntity roomEntity,
-            List<MultipartFile> files) {
+                                 List<MultipartFile> files) {
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
@@ -68,17 +69,16 @@ public class RoomService {
             for (MultipartFile file : files) {
                 // 1. 난수 + '_' + 파일이름
                 UUID uuid = UUID.randomUUID();
-                uuidfile = uuid.toString() + "_"
-                        + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
+                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
                 // 2.1 수업 때 배웠던 방식은 프로젝트에 올리는 것[현재 작업폴더]
                 // 2.2 Spring 은 Tomcat 이 내장 서버라서, 실행할 때 마다 경로가 바뀐다. (내부적으로 로테이션을 돌면서)
 
                 // 인텔리전용
-                // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+                String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
 
                 // vs전용
-                String dir = "C:\\gongbang\\src\\main\\resources\\static\\roomimg";
+//                String dir = "C:\\gongbang\\src\\main\\resources\\static\\roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.
@@ -125,16 +125,15 @@ public class RoomService {
     // @Param keyword : 검색창 입력값
     // @Param local : 검색창에서 선택한 지역
     // @Param category : 검색창에서 선택한 카테고리
-    public Page<RoomEntity> getRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local,
-            String category) {
+    public Page<RoomEntity> getRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local, String category) {
 
-        // 페이지번호
+        //페이지번호
         int page = 0;
         if (pageable.getPageNumber() != 0) {
             page = pageable.getPageNumber() - 1;
         }
         // 페이지 속성[PageRequest.of(페이지번호, 페이지당 게시물수, 정렬기준)]
-        pageable = PageRequest.of(page, 2, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+        pageable = PageRequest.of(page, 4, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
 
         // 1.1 검색이 없는 경우
         if (keyword.isEmpty()) {
@@ -209,6 +208,26 @@ public class RoomService {
         // 1. 승인 완료된 클래스만 가져와야합니다.
         roomEntities = roomRepository.findRoomByRoomStatus("승인완료", pageable);
         return roomEntities;
+    }
+
+    // [멤버용]
+    // 내가 개설한 강좌 불러오기
+    public Page<RoomEntity> getMyGongbang(int memberNo, @PageableDefault Pageable pageable) {
+
+        // 1. 룸 엔티티 Page 타입 변수 선언 및 초기화
+        Page<RoomEntity> myGongbangs = null;
+        int page = -1;
+        if (pageable.getPageNumber() == 0) {
+            page = 0;
+        } else {
+            page = pageable.getPageNumber() - 1;
+        }
+        pageable
+                = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
+        myGongbangs = roomRepository.findMyGongbang(memberNo, pageable);
+
+        return myGongbangs;
+
     }
 
     // 모든 룸 가져오기(어드민용)
@@ -293,9 +312,9 @@ public class RoomService {
 
     }
 
-    // 문의 등록
+    //문의 등록
     public boolean notewrite(int roomNo, String noteContents) {
-        // 로그인된 회원정보를 가져온다[작성자]
+        //로그인된 회원정보를 가져온다[작성자]
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
         // 만약에 로그인이 되어 있지 않으면
@@ -313,18 +332,19 @@ public class RoomService {
         // 해당 룸 엔티티의 문의 리스트에 문의 엔티티 저장
         roomRepository.findById(roomNo).get().getNoteEntities().add(noteRepository.findById(NoteNo).get());
         // 해당 회원엔티티의 문의 리스트에 문의 엔티티 저장
-        memberService.getMemberEntity(memberDto.getMemberNo()).getNoteEntities()
-                .add(noteRepository.findById(NoteNo).get());
+        memberService.getMemberEntity(memberDto.getMemberNo()).getNoteEntities().add(noteRepository.findById(NoteNo).get());
 
         return true;
     }
 
-    // 답변등록
+
+    //답변등록
     @Transactional
     public boolean notereplywrite(int noteNo, String noteReply) {
         noteRepository.findById(noteNo).get().setNoteReply(noteReply);
         return true;
     }
+
 
     // 쪽지 카운트 세기 // nread : 0 읽지 않음 / 1 읽음
     // 모든페이지에서 쿠키나 세션으로 출력해야함. 굳이 반환타입을 사용할 필요 x
@@ -338,8 +358,7 @@ public class RoomService {
         int nreadcount = 0; // 안읽은 쪽지의 갯수
         // 로그인된 회원번호와 쪽지 받은 사람의 회원번호가 모두 동일하면
         for (NoteEntity noteEntity : noteRepository.findAll()) {
-            if (noteEntity.getRoomEntity().getMemberEntity().getMemberNo() == memberDto.getMemberNo()
-                    && noteEntity.getNoteRead() == 0) { // 받는사람 == 로그인된 번호 && 읽음이 0이면
+            if (noteEntity.getRoomEntity().getMemberEntity().getMemberNo() == memberDto.getMemberNo() && noteEntity.getNoteRead() == 0) { // 받는사람 == 로그인된 번호 && 읽음이 0이면
                 // 문의 엔티티. 방엔티티. 멤버엔티티. 멤버번호
                 nreadcount++;
             }
@@ -348,7 +367,7 @@ public class RoomService {
         session.setAttribute("nreadcount", nreadcount);
     }
 
-    // 읽음처리 서비스
+    //읽음처리 서비스
     @Transactional // 업데이트처리에서 필수
     public boolean nreadupdate(int noteNo) {
         noteRepository.findById(noteNo).get().setNoteRead(1);
@@ -364,15 +383,9 @@ public class RoomService {
     // @Param keyword : 검색창 입력값
     // @Param local : 검색창에서 선택한 지역
     // @Param category : 검색창에서 선택한 카테고리
-    public Page<RoomEntity> adminGetRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local,
-            String category) {
+    public Page<RoomEntity> adminGetRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local, String category) {
 
-        // 관리자 페이지에서 페이지 볼 개수를 입력받아서 PageRequest 에 넣어주면 페이징 처리를 할 수 있습니다.
-
-        System.out.println("관리자 검색 페이지 접근");
-        System.out.println("키워드 : " + keyword + ", 지역 : " + local + ", 카테고리 : " + category);
-
-        // 페이지번호
+        //페이지번호
         int page = 0;
         if (pageable.getPageNumber() != 0) {
             page = pageable.getPageNumber() - 1;
@@ -476,8 +489,7 @@ public class RoomService {
                 System.out.println(file.toString());
                 // 1. 난수 + '_' + 파일이름
                 UUID uuid = UUID.randomUUID();
-                uuidfile = uuid.toString() + "_"
-                        + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
+                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
                 // >> 서버에 저장
                 String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";

@@ -101,7 +101,25 @@ function el(nodeName, attributes, ...children) {
             node.appendChild(childNode);
         }
     });
-
   return node;
 }
 // 사진 미리보기 및 업로드 js 종료
+
+
+// ajax 를 이용한 이미지 전송
+function createNewPost(){
+    var formData = new FormData(form);
+    $.ajax({
+        type: "POST",
+        url: "/community/createPostController",
+        data : formData,
+        processData: false,
+        contentType: false,
+        cache: false,
+        timeout: 600000,
+        success: function(data){
+            $(".content-area").empty();
+            $(".content-area").append(data);
+        }
+    });
+}

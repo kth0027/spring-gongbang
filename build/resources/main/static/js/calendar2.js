@@ -12,7 +12,6 @@ $(document).ready(function() {
 
 // [클래스 예약 진행하는 함수]
 // [해당 날짜를 클릭하면 개설된 강좌와 신청 버튼을 출력합니다]
-// 1.
 function daySelect(year , month , day, roomNo){
     // 선택한 날짜의 아이디 : YYYY-MM-DD
     var date = year + "-" + (month + 1) + "-" + day;

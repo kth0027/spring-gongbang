@@ -222,9 +222,9 @@ public class MemberController { // C S
                             @RequestParam("roomTime") String classTime,
                             @RequestParam("roomDate") String roomDate,
                             @RequestParam("person") int person,
-                            @RequestParam("price") int price) {
+                            @RequestParam("price") int price,
+                            @RequestParam("phoneNumber") String phone) {
 
-        System.out.println(roomNo + "," + classTime + "," + roomDate + "," + person + "," + price);
         MemberEntity memberEntity = null;
         // 0. 로그인된 회원 정보를 불러온다.
         HttpSession session = request.getSession();
@@ -236,6 +236,7 @@ public class MemberController { // C S
         } else {
             // 0.2 로그인 세션 정보가 존재하면 member Entity 를 호출한다.
             memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
+            memberEntity.setMemberPhone(phone);
         }
 
         int memberNo = memberEntity.getMemberNo();
@@ -296,6 +297,9 @@ public class MemberController { // C S
         historyEntity.setHistoryPoint(memberPoint + price);
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
         model.addAttribute("histories", historyEntities);
+
+
+
         return "member/history_list";
     }
 

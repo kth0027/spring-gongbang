@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.sql.Time;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -72,7 +74,6 @@ public class AdminController {
             model.addAttribute("memberEntity", memberEntity);
         }
 
-
         Page<RoomEntity> roomEntities = roomService.getroomlistadmin(pageable);
         model.addAttribute("roomEntities", roomEntities);
         return "admin/admin_table";
@@ -101,7 +102,6 @@ public class AdminController {
             }
             model.addAttribute("memberEntity", memberEntity);
         }
-
 
         // 1. 각 입력값의 존재 여부는 RoomService 에서 확인한다.
         Page<RoomEntity> roomEntities = roomService.adminGetRoomEntityBySearch(pageable, keyword, local, category);
@@ -207,12 +207,64 @@ public class AdminController {
         }
         jsonObject.put("history", jsonArray);
         return jsonObject;
-
     }
+
 
     @GetMapping("/roomJSON")
     @ResponseBody
     public JSONObject roomToJSON() {
+
+        Comparator<TimeTableEntity> comparator = new Comparator<TimeTableEntity>() {
+            // TimeTableEntity 를 날짜순으로 정렬한다.
+            // roomDate --> YYYY : MM : DD 로 정렬시킨다.
+            @Override
+            public int compare(TimeTableEntity o1, TimeTableEntity o2) {
+
+                String dateCompare1 = "";
+                String dateCompare2 = "";
+
+                String dateYear1 = o1.getRoomDate().split("-")[0];
+                String dateYear2 = o2.getRoomDate().split("-")[0];
+
+                String dateMonth1 = "";
+                String dateMonth2 = "";
+
+                String dateDay1 = "";
+                String dateDay2 = "";
+
+                if (Integer.parseInt(o1.getRoomDate().split("-")[1]) < 10) {
+                    dateMonth1 = "0" + o1.getRoomDate().split("-")[1];
+                } else {
+                    dateMonth1 = o1.getRoomDate().split("-")[1];
+                }
+
+                if (Integer.parseInt(o1.getRoomDate().split("-")[2]) < 10) {
+                    dateDay1 = "0" + o1.getRoomDate().split("-")[2];
+                } else {
+                    dateDay1 = o1.getRoomDate().split("-")[2];
+                }
+
+                if (Integer.parseInt(o2.getRoomDate().split("-")[1]) < 10) {
+                    dateMonth2 = "0" + o2.getRoomDate().split("-")[1];
+                } else {
+                    dateMonth2 = o2.getRoomDate().split("-")[1];
+                }
+
+                if (Integer.parseInt(o2.getRoomDate().split("-")[2]) < 10) {
+                    dateDay2 = "0" + o2.getRoomDate().split("-")[2];
+                } else {
+                    dateDay2 = o2.getRoomDate().split("-")[2];
+                }
+
+                dateCompare1 = dateYear1 + dateMonth1 + dateDay1;
+                dateCompare2 = dateYear2 + dateMonth2 + dateDay2;
+
+                int time1 = Integer.parseInt(dateCompare1);
+                int time2 = Integer.parseInt(dateCompare2);
+
+                return time1 - time2;
+            }
+        };
 
         // RoomEntity 를 JSON 으로 변환 후 js 로 넘겨주는 역할
         JSONObject jsonObject = new JSONObject();
@@ -234,10 +286,10 @@ public class AdminController {
         // 2. 회원들이 예약한 내역을 roomDate 순으로 정렬해야한다.
         // 2.1 timetable entity 에 저장된 예약 목록을 뽑는다.
 
-        List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableOrderByRoomDate();
+        List<TimeTableEntity> timeTableEntities = timeTableRepository.findAll();
+        timeTableEntities.sort(comparator);
 
         for (TimeTableEntity timeTableEntity : timeTableEntities) {
-
             List<HistoryEntity> historyList = timeTableEntity.getHistoryEntity();
 
             for (HistoryEntity historyEntity : historyList) {

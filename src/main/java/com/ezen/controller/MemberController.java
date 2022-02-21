@@ -262,7 +262,6 @@ public class MemberController { // C S
         } else {
             // 0.2 로그인 세션 정보가 존재하면 member Entity 를 호출한다.
             memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
-            memberEntity.setMemberPhone(phone);
         }
 
         int memberNo = memberEntity.getMemberNo();
@@ -321,10 +320,9 @@ public class MemberController { // C S
             memberPoint = historyEntity.getHistoryPoint();
         }
         historyEntity.setHistoryPoint(memberPoint + price);
+        historyEntity.setPhoneNumber(phone);
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByMemberNo(memberNo);
         model.addAttribute("histories", historyEntities);
-
-
         return "member/history_list";
     }
 
@@ -341,15 +339,23 @@ public class MemberController { // C S
                                           @RequestParam("person") int person,
                                           @RequestParam("price") int price) {
 
-        MemberEntity memberEntity = null;
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        // 0.1 로그인 세션 정보가 없으면 메인 페이지로 이동해서 로그인을 요구한다.
-        if (loginDto == null) {
-            return "redirect: /index";
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
         } else {
-            // 0.2 로그인 세션 정보가 존재하면 member Entity 를 호출한다.
-            memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
+            return "redirect : /index";
         }
 
         RoomEntity roomEntity = null;
@@ -435,11 +441,27 @@ public class MemberController { // C S
     // [내가 예약한 클래스 날짜에 대한 정보를 달력에 뿌려주기 위한 메소드]
     @GetMapping("/reservation")
     @ResponseBody
-    public String reservationList() {
+    public String reservationList(Model model) {
+
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        // 로그인 세션에 저장되어 있는 세션을 이용해 memberNo 를 불러옵니다.
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
         int memberNo = loginDto.getMemberNo();
+
         // memberNo -> history -> timetable -> roomDate 순서로 접근해야한다.
         StringBuilder str = new StringBuilder();
         // 1. memberNo 사용해 History 엔티티를 List 형태로 호출한다.

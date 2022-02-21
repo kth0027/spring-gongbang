@@ -5,6 +5,7 @@ import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.ReplyEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.repository.MemberRepository;
+import com.ezen.domain.entity.repository.ReplyRepository;
 import com.ezen.service.MemberService;
 import com.ezen.service.ReplyService;
 import com.ezen.service.RoomService;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -47,6 +50,9 @@ public class AppStart {
     @Autowired
     private MemberRepository memberRepository;
 
+    @Autowired
+    private ReplyRepository replyRepository;
+
 
     // 메인 페이지 맵핑
     // 메인 페이지 실행되면서 개설된 강의, 작성된 리뷰를 Model 로 뿌려줍니다.
@@ -64,7 +70,7 @@ public class AppStart {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -81,7 +87,23 @@ public class AppStart {
     }
 
     @GetMapping("/error")
-    public String error() {
+    public String error(Model model) {
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
         return "error";
     }
 

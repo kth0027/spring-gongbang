@@ -1280,7 +1280,7 @@
                                 </a>
                             </h1>
                             <h2 class="card-sub-title">
-                                ##태그 구현 후 추가바람##
+                                <div>리뷰평균</div> <div th:text="${room.roomAvg}"> </div>
                             </h2>
                             <div class="description">
                                 <p th:text="${'작성자:' + room.memberEntity.memberName}">
@@ -1288,8 +1288,6 @@
                                 <p th:text="${'공방컨텐츠: ' + room.roomContent}">
                                 </p>
                             </div>
-
-                            </p>
                             <div th:text="${'공방가격: ' + room.roomPrice}" id="room-price" class="room-price"></div>
                             <hr>
                         </div>

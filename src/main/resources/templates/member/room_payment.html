@@ -66,14 +66,9 @@
                             <div style="font-size: 1.0rem;">연락처</div>
                             <input type="text" value="" id="paymentPhone1" name="phoneNumber"
                                    placeholder="연락가능한 번호를 입력해주세요">
-                            <div class="isTyped"></div>
+                            <div class="isTyped1"></div>
                         </div>
-                        <div class="left-item" th:if="${member.memberPhone != null}">
-                            <div style="font-size: 1.0rem;">연락처</div>
-                            <input type="text" th:value="${member.memberPhone}"
-                                   id="paymentPhone2" name="phoneNumber" placeholder="연락가능한 번호를 입력해주세요">
-                            <span class="isTyped"></span>
-                        </div>
+
                     </div>
                 </div>
 
@@ -133,36 +128,23 @@
 <script>
 
     $(function(){
-
-        $(".isTyped").html("유효한 연락처를 입력해주세요. ");
-
-        var regPhone = /^([010])-?([0-9]{3,4})-?([0-9]{4})$/;
-
+        $(".isTyped1").html("연락처를 입력해주세요. ");
+        var regPhone = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/g;
         $("#paymentPhone1").keyup(function(){
             var phone1 = $("#paymentPhone1").val();
             if(!regPhone.test(phone1)){
-                $(".isTyped").html("유효한 연락처가 아닙니다. ");
+                $(".isTyped1").html("유효한 연락처가 아닙니다. ");
+            } else{
+                $(".isTyped1").html("");
             }
         });
-
-        $("#paymentPhone2").keyup(function(){
-            var phone2 = $("#paymentPhone2").val();
-            if(!regPhone.test(phone2)){
-                $(".isTyped").html("유효한 연락처가 아닙니다. ");
-            }
-        });
-
         $("#confirm-btn").click(function(){
-            if($(".isTyped").html() == ""){
+            if($(".isTyped1").html() == ""){
                 $("form").submit();
             } else {
                 alert("연락처를 입력하지 않으셨습니다.");
             }
-
         });
-
-
-
     });
 </script>
 

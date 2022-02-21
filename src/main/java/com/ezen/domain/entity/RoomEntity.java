@@ -74,6 +74,10 @@ public class RoomEntity extends BaseTimeEntity {
     @Column(name = "roomPrice")
     private int roomPrice;
 
+    // 개설된 클래스의 평균 후기 점수
+    @Column(name = "roomAvg")
+    private float roomAvg;
+
     // 회원번호 관계
     @ManyToOne
     @JoinColumn(name = "memberNo") // 해당 필드의 이름[컬럼 = 열 = 필드]

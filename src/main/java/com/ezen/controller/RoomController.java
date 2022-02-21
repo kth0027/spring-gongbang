@@ -324,8 +324,8 @@ public class RoomController {
         String avg = String.format("%.2f", replyAvg);
         // 리뷰 평균
         model.addAttribute("avg", avg);
-
-
+        // 평균 점수를 엔티티에 기록한다.
+        roomEntity.setRoomAvg(replyAvg);
         return "room/room_view";
     }
 

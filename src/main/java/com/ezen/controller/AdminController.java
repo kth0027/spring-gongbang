@@ -72,6 +72,25 @@ public class AdminController {
         // 별다른 조건없이 모든 데이터 뿌려준다.
         Page<RoomEntity> roomEntities = roomService.getroomlistadmin(pageable);
         model.addAttribute("roomEntities", roomEntities);
+
+        // 2. 누적 결제 금액, 누적 회원수를 알려준다.
+        List<HistoryEntity> historyEntities = historyRepository.findAll();
+        int totalNumber = 0;
+        int totalPrice = 0;
+        int people = 0;
+        int roomPrice = 0;
+        RoomEntity roomEntity = null;
+        for (HistoryEntity historyEntity : historyEntities) {
+            totalPrice += historyEntity.getHistoryPoint();
+            roomEntity = roomRepository.getById(historyEntity.getRoomEntity().getRoomNo());
+            roomPrice = roomEntity.getRoomPrice();
+            people = historyEntity.getHistoryPoint() / roomPrice;
+            totalNumber += people;
+        }
+
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("totalNumber", totalNumber);
+
         return "admin/adminlist";
     }
 
@@ -88,10 +107,10 @@ public class AdminController {
         // date 에 해당하는 예약 내역만 불러온다.
         List<TimeTableEntity> timeTableEntities = timeTableRepository.getTimeTableByRoomDate(date);
 
-        for(TimeTableEntity timeTableEntity : timeTableEntities){
-            for(HistoryEntity historyEntity : historyEntities){
+        for (TimeTableEntity timeTableEntity : timeTableEntities) {
+            for (HistoryEntity historyEntity : historyEntities) {
                 // 특정 날짜에 해당하는 예약 내역 정보만 json 으로 넘겨줍니다.
-                if(historyEntity.getTimeTableEntity().getTimeTableNo() == timeTableEntity.getTimeTableNo()){
+                if (historyEntity.getTimeTableEntity().getTimeTableNo() == timeTableEntity.getTimeTableNo()) {
 
                     RoomEntity roomEntity = null;
                     JSONObject data = new JSONObject();

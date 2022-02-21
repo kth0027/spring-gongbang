@@ -238,6 +238,18 @@
                             1. 처음 접근하면 아무것도 없다
                             2. select 하면 ajax 로 데이터를 뿌려준다.
                     -->
+                    <div>
+                        <div>
+                            <span> 총 결제금액</span>
+                            <div th:text="${totalPrice}"></div>
+                        </div>
+                        <div>
+                            <span> 총 참여인원</span>
+                            <div th:text="${totalNumber}"></div>
+                        </div>
+
+                    </div>
+
 
                     <div class="row admin-select-wrapper">
 

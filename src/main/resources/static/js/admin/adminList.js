@@ -1,4 +1,5 @@
 $("ul.tabs li").click(function(){
+
     var tabId = $(this).attr("data-tab");
 
     $("ul.tabs li").removeClass("current");
@@ -6,6 +7,7 @@ $("ul.tabs li").click(function(){
 
     $(this).addClass("current");
     $("#"+ tabId).addClass("current");
+
 });
 
 // 버튼 클릭 이벤트 - 카테고리 선택
@@ -715,206 +717,206 @@ function adminSelectBtn(){
         }
         if(year != "-1" && month != "-1" && day == "-1"){
             $.ajax({
-                            crossDomain: true,
-                            url: "/admin/roomJSON",
-                            contentType: "application/json; charset=utf-8",
-                            method: "GET",
-                            dataType : "json",
-                            async : false,
-                            success: function(data){
+                    crossDomain: true,
+                    url: "/admin/roomJSON",
+                    contentType: "application/json; charset=utf-8",
+                    method: "GET",
+                    dataType : "json",
+                    async : false,
+                    success: function(data){
 
-                                console.log(JSON.stringify(data));
+                        console.log(JSON.stringify(data));
 
-                                // 달별 데이터
-                                var jan = 0;
-                                var feb = 0;
-                                var mar = 0;
-                                var apr = 0;
-                                var may = 0;
-                                var jun = 0;
-                                var jul = 0;
-                                var aug = 0;
-                                var sep = 0;
-                                var oct = 0;
-                                var nov = 0;
-                                var dec = 0;
+                        // 달별 데이터
+                        var jan = 0;
+                        var feb = 0;
+                        var mar = 0;
+                        var apr = 0;
+                        var may = 0;
+                        var jun = 0;
+                        var jul = 0;
+                        var aug = 0;
+                        var sep = 0;
+                        var oct = 0;
+                        var nov = 0;
+                        var dec = 0;
 
-                                var bundleData = $(data.history).map(function(i, history) {
-                                    // 1. 강의 개설 날짜
-                                    var date = history.date;
-                                    console.log(date);
+                        var bundleData = $(data.history).map(function(i, history) {
+                            // 1. 강의 개설 날짜
+                            var date = history.date;
+                            console.log(date);
 
-                                    // 2. 강의 개설 '월'
-                                        // 1. 각각 월에 값을 더해서 차트로 출력하기 위함
-                                    var month = date.split("-")[1];
-                                    console.log(month);
+                            // 2. 강의 개설 '월'
+                                // 1. 각각 월에 값을 더해서 차트로 출력하기 위함
+                            var month = date.split("-")[1];
+                            console.log(month);
 
-                                    switch(month){
-                                        case "1":
-                                            jan = jan + 1;
-                                            break;
-                                        case "2":
-                                            feb = feb + 1;
-                                            break;
-                                        case "3":
-                                            mar = mar + 1;
-                                            break;
-                                        case "4":
-                                            apr = apr + 1;
-                                            break;
-                                        case "5":
-                                            may = may + 1;
-                                            break;
-                                        case "6":
-                                            jun = jun + 1;
-                                            break;
-                                        case "7":
-                                            jul = jul + 1;
-                                            break;
-                                        case "8":
-                                            aug = aug + 1;
-                                            break;
-                                        case "9":
-                                            sep = sep + 1;
-                                            break;
-                                        case "10":
-                                            oct = oct + 1;
-                                            break;
-                                        case "11":
-                                            nov = nov + 1;
-                                            break;
-                                        case "12":
-                                            dec = dec + 1;
-                                            break;
-                                    }
-                                });
-
-
-                                am5.ready(function() {
-
-                                    // Create root element
-                                    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
-                                    var root = am5.Root.new("chartdiv");
-
-                                    // Set themes
-                                    // https://www.amcharts.com/docs/v5/concepts/themes/
-                                    root.setThemes([
-                                        am5themes_Animated.new(root)
-                                    ]);
-
-
-                                    // Create chart
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/
-                                    var chart = root.container.children.push(am5xy.XYChart.new(root, {
-                                        panX: true,
-                                        panY: true,
-                                        wheelX: "panX",
-                                        wheelY: "zoomX"
-                                    }));
-
-                                    // Add cursor
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
-                                    var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
-                                    cursor.lineY.set("visible", false);
-
-
-                                    // Create axes
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
-                                    var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
-                                    xRenderer.labels.template.setAll({
-                                        rotation: -90,
-                                        centerY: am5.p50,
-                                        centerX: am5.p100,
-                                        paddingRight: 15
-                                    });
-
-                                    var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        categoryField: "month",
-                                        renderer: xRenderer,
-                                        tooltip: am5.Tooltip.new(root, {})
-                                    }));
-
-                                    var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
-                                        maxDeviation: 0.3,
-                                        renderer: am5xy.AxisRendererY.new(root, {})
-                                    }));
-
-
-                                    // Create series
-                                    // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
-                                    var series = chart.series.push(am5xy.ColumnSeries.new(root, {
-                                        name: "Series 1",
-                                        xAxis: xAxis,
-                                        yAxis: yAxis,
-                                        valueYField: "value",
-                                        sequencedInterpolation: true,
-                                        categoryXField: "month",
-                                        tooltip: am5.Tooltip.new(root, {
-                                            labelText:"{valueY}"
-                                        })
-                                    }));
-
-                                    series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5 });
-                                    series.columns.template.adapters.add("fill", (fill, target) => {
-                                        return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-
-                                    series.columns.template.adapters.add("stroke", (stroke, target) => {
-                                        return chart.get("colors").getIndex(series.columns.indexOf(target));
-                                    });
-
-
-                                    // Set data
-                                    var data = [{
-                                            month: "JAN",
-                                            value: jan
-                                        }, {
-                                            month: "FEB",
-                                            value: feb
-                                        }, {
-                                            month: "MAR",
-                                            value: mar
-                                        }, {
-                                            month: "APR",
-                                            value: apr
-                                        }, {
-                                            month: "MAY",
-                                            value: may
-                                        }, {
-                                            month: "JUN",
-                                            value: jun
-                                        }, {
-                                            month: "JUL",
-                                            value: jul
-                                        }, {
-                                            month: "AUG",
-                                            value: aug
-                                        }, {
-                                            month: "SEP",
-                                            value: sep
-                                        }, {
-                                            month: "OCT",
-                                            value: oct
-                                        }, {
-                                            month: "NOV",
-                                            value: nov
-                                        }, {
-                                            month: "DEC",
-                                            value: dec
-                                    }];
-
-                                    xAxis.data.setAll(data);
-                                    series.data.setAll(data);
-
-                                    // Make stuff animate on load
-                                    // https://www.amcharts.com/docs/v5/concepts/animations/
-                                    series.appear(1000);
-                                    chart.appear(1000, 100);
-
-                                }); // end am5.ready()
+                            switch(month){
+                                case "1":
+                                    jan = jan + 1;
+                                    break;
+                                case "2":
+                                    feb = feb + 1;
+                                    break;
+                                case "3":
+                                    mar = mar + 1;
+                                    break;
+                                case "4":
+                                    apr = apr + 1;
+                                    break;
+                                case "5":
+                                    may = may + 1;
+                                    break;
+                                case "6":
+                                    jun = jun + 1;
+                                    break;
+                                case "7":
+                                    jul = jul + 1;
+                                    break;
+                                case "8":
+                                    aug = aug + 1;
+                                    break;
+                                case "9":
+                                    sep = sep + 1;
+                                    break;
+                                case "10":
+                                    oct = oct + 1;
+                                    break;
+                                case "11":
+                                    nov = nov + 1;
+                                    break;
+                                case "12":
+                                    dec = dec + 1;
+                                    break;
                             }
                         });
+
+
+                        am5.ready(function() {
+
+                            // Create root element
+                            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+                            var root = am5.Root.new("chartdiv");
+
+                            // Set themes
+                            // https://www.amcharts.com/docs/v5/concepts/themes/
+                            root.setThemes([
+                                am5themes_Animated.new(root)
+                            ]);
+
+
+                            // Create chart
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/
+                            var chart = root.container.children.push(am5xy.XYChart.new(root, {
+                                panX: true,
+                                panY: true,
+                                wheelX: "panX",
+                                wheelY: "zoomX"
+                            }));
+
+                            // Add cursor
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/cursor/
+                            var cursor = chart.set("cursor", am5xy.XYCursor.new(root, {}));
+                            cursor.lineY.set("visible", false);
+
+
+                            // Create axes
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/axes/
+                            var xRenderer = am5xy.AxisRendererX.new(root, { minGridDistance: 30 });
+                            xRenderer.labels.template.setAll({
+                                rotation: -90,
+                                centerY: am5.p50,
+                                centerX: am5.p100,
+                                paddingRight: 15
+                            });
+
+                            var xAxis = chart.xAxes.push(am5xy.CategoryAxis.new(root, {
+                                maxDeviation: 0.3,
+                                categoryField: "month",
+                                renderer: xRenderer,
+                                tooltip: am5.Tooltip.new(root, {})
+                            }));
+
+                            var yAxis = chart.yAxes.push(am5xy.ValueAxis.new(root, {
+                                maxDeviation: 0.3,
+                                renderer: am5xy.AxisRendererY.new(root, {})
+                            }));
+
+
+                            // Create series
+                            // https://www.amcharts.com/docs/v5/charts/xy-chart/series/
+                            var series = chart.series.push(am5xy.ColumnSeries.new(root, {
+                                name: "Series 1",
+                                xAxis: xAxis,
+                                yAxis: yAxis,
+                                valueYField: "value",
+                                sequencedInterpolation: true,
+                                categoryXField: "month",
+                                tooltip: am5.Tooltip.new(root, {
+                                    labelText:"{valueY}"
+                                })
+                            }));
+
+                            series.columns.template.setAll({ cornerRadiusTL: 5, cornerRadiusTR: 5 });
+                            series.columns.template.adapters.add("fill", (fill, target) => {
+                                return chart.get("colors").getIndex(series.columns.indexOf(target));
+                            });
+
+                            series.columns.template.adapters.add("stroke", (stroke, target) => {
+                                return chart.get("colors").getIndex(series.columns.indexOf(target));
+                            });
+
+
+                            // Set data
+                            var data = [{
+                                    month: "JAN",
+                                    value: jan
+                                }, {
+                                    month: "FEB",
+                                    value: feb
+                                }, {
+                                    month: "MAR",
+                                    value: mar
+                                }, {
+                                    month: "APR",
+                                    value: apr
+                                }, {
+                                    month: "MAY",
+                                    value: may
+                                }, {
+                                    month: "JUN",
+                                    value: jun
+                                }, {
+                                    month: "JUL",
+                                    value: jul
+                                }, {
+                                    month: "AUG",
+                                    value: aug
+                                }, {
+                                    month: "SEP",
+                                    value: sep
+                                }, {
+                                    month: "OCT",
+                                    value: oct
+                                }, {
+                                    month: "NOV",
+                                    value: nov
+                                }, {
+                                    month: "DEC",
+                                    value: dec
+                            }];
+
+                            xAxis.data.setAll(data);
+                            series.data.setAll(data);
+
+                            // Make stuff animate on load
+                            // https://www.amcharts.com/docs/v5/concepts/animations/
+                            series.appear(1000);
+                            chart.appear(1000, 100);
+
+                        }); // end am5.ready()
+                    }
+                });
         }
         if(year != "-1" && month != "-1" && day != "-1"){
 
@@ -952,7 +954,7 @@ function adminSelectBtn(){
 
                     var bundleData2 = $(data.history).map(function(i, history) {
                         var category = history.category;
-                        switch(local){
+                        switch(category){
                             case "핸드메이드":
                                 category1 = category1 + history.person;
                                 totalsum3 = totalsum3 + history.price;

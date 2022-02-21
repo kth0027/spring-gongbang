@@ -191,6 +191,7 @@ public class RoomController {
         HttpSession session = request.getSession();
 
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+
         if (loginDto == null) {
             // [비로그인상태]
             session.setAttribute("logindto", null);
@@ -226,8 +227,17 @@ public class RoomController {
 
         // 해당 강의를 수강했던 사람의 목록을 넘긴다.
         List<HistoryEntity> historyEntities = historyRepository.getHistoryByRoomNo(roomNo);
+        for(HistoryEntity historyEntity : historyEntities){
+            if(historyEntity.getMemberEntity().getMemberNo() == loginDto.getMemberNo()){
+                // 수강 내역이 있는 사람이면 1 보낸다.
+                model.addAttribute("memberCheck", 1);
+            } else {
+                // 수강 내역이 없으면 2 를 보낸다.
+                model.addAttribute("memberCheck", 2);
+            }
+        }
 
-        model.addAttribute("histories", historyEntities);
+
 
         return "room/room_view";
     }

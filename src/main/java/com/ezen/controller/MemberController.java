@@ -603,8 +603,8 @@ public class MemberController { // C S
     }
 
     // 충전소 페이지 맵핑
-    @GetMapping("/member_payment/{memberNo}")
-    public String payment(Model model, @PathVariable("memberNo") int memberNo) {
+    @GetMapping("/member_payment")
+    public String payment(Model model) {
 
         // 1. 로그인 세션 호출
         HttpSession session = request.getSession();

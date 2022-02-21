@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>커뮤니티</title>
+    <link rel="stylesheet" th:href="@{/css/community/community.css}">
+    <link rel="stylesheet" th:href="@{/css/community/community_main.css}">
+</head>
+<body>
+
+<div th:replace="common.html::common"></div>
+<div th:replace="header.html::header"></div>
+
+<script th:src="@{/js/community/community.js}"></script>
+
+<div class="container">
+    <div class="row">
+        <!--
+        [사이드 바 영역]
+        -->
+        <div class="col-2 sidebar-wrapper">
+            <!--카테고리 생성, 게시판 생성 버튼은 각각 Modal 창과 연결되어있다. -->
+            <div class="row" sec:authorize="hasRole('ADMIN')">
+                <div>
+                    <button type="button" id="newCategoryBtn" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">
+                        <i class="bi bi-plus-square"></i>카테고리
+                    </button>
+                </div>
+                <div>
+                    <button type="button" id="newBoardBtn" data-bs-toggle="modal"
+                            data-bs-target="#newBoardModal">
+                        <i class="bi bi-plus-square" id="createNewBoard"></i>게시판
+                    </button>
+                </div>
+            </div>
+            <!--
+                1. 카테고리를 출력하고
+                2. 해당하는 게시판을 출력한다. : for 문 안에 for 문
+            -->
+            <div th:each="category : ${categories}" class="sidebar-container" th:id="category + ${category.categoryNo}">
+                <div th:text="${category.categoryName}" class="sidebar-category"></div>
+                <div th:each="board : ${boards}" class="sidebar-board" th:id="board + ${board.boardNo}"
+                     th:if="${board.categoryEntity.categoryNo == category.categoryNo}">
+                    <div class="sidebar-tabs">
+                        <!-- 각 게시판에 id 값과 클릭 이벤트를 부여한다. -->
+                        <!-- 전달되는 인수는 id 값에 해당하는 boardNo -->
+                        <div th:text="${board.boardName}" th:id="${board.boardNo}"
+                             th:onclick="showBoardContent( [[${board.boardNo}]] );"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- 사이드바에서 게시글 클릭 시 해당하는 게시물을 출력한다. -->
+        <!-- tab 전환 이벤트로 걸어둔다. -->
+        <!-- 각각의 페이지를 모두 로드한 뒤, current 혹은 active 등의 클래스를 부여해서 해당하는 것만 화면에 출력한다. -->
+        <!-- 처음에 소개하는 메인 페이지를 default 로 둘 계획이다. -->
+        <div class="col-10 content-wrapper">
+            <div class="content-container">
+                <!-- 각각의 게시판 내용은 content-area 에 담긴다. -->
+                <div class="content-area">
+                    <!-- 맨 처음 진입 시 나타날 화면 -->
+                    <div class="content-init-box" style="border: 3px solid #374b73; background: #fff1ed; padding: 5.0rem; margin: 5.0rem; border-radius: 30px;">
+                        <div style="font-size: 2.5rem;"> 회원들과 자유롭게 의견을 나누세요 !</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--새로운 카테고리를 생성하는 모달 시작-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">새로운 카테고리</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <!--새로운 카테고리 이름-->
+                    <input type="text" class="form-control" placeholder="생성할 카테고리 명칭" id="newCategory"
+                           name="newCategory">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                <button id="createNewCategoryBtn" type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    <span>생성</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--새로운 카테고리 생성하는 모달 종료-->
+
+<!--새로운 게시판 생성하는 모달 시작-->
+<div class="modal fade" id="newBoardModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newBoardModalLabel">새로운 게시판</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <!--새로운 게시판 이름-->
+                    <input type="text" class="form-control" placeholder="생성할 게시판 명칭"
+                           id="newBoard" name="newBoard">
+                    <select name="" id="category-select" class="form-select">
+                        <option value="">카테고리를 선태해주세요</option>
+                        <div th:each="category : ${categories}">
+                            <option th:value="${category.categoryName}" th:text="${category.categoryName}"></option>
+                        </div>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소
+                </button>
+                <!-- roomNo 를 인수로 전달한다. -->
+                <!-- 게시판을 생성하는 버튼은, 각 카테고리 별로 하나씩 존재해야한다. -->
+                <!-- 버튼에 roomNo 인수를 더해서 각각 id 값을 매긴다. -->
+                <button id="createNewBoardBtn" type="button"
+                        class="buttons btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    <span>생성</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--새로운 게시판 생성하는 모달 종료-->
+
+</body>
+</html>

@@ -59,13 +59,8 @@ public class RoomController {
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
-    public String register() {
-        return "room/room_register";
-    }
+    public String register(Model model) {
 
-    // [room_register_detail.html 페이지와 맵핑]
-    @GetMapping("/registerDetail")
-    public String registerDetail(Model model) {
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
@@ -82,6 +77,31 @@ public class RoomController {
             }
             model.addAttribute("memberEntity", memberEntity);
         }
+
+        return "room/room_register";
+    }
+
+    // [room_register_detail.html 페이지와 맵핑]
+    @GetMapping("/registerDetail")
+    public String registerDetail(Model model) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
         return "room/room_register_detail";
     }
 

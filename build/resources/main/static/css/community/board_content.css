@@ -1,0 +1,15 @@
+.community-table-tr{
+    background: #374b73;
+
+}
+
+.community-table-tr td{
+    border: 2px solid #fff;
+    border-radius: 0.2rem;
+    color: white !important;
+}
+
+.community-table tr:not(:first-child) td {
+    background-color: #ffdbdb;
+    border: 2px solid #fff;
+}

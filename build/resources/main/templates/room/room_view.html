@@ -164,7 +164,6 @@
                             <button sec:authorize="isAuthenticated()" th:if="${memberCheck} == 1" class="btn" style="color:black;" data-bs-target="#reviewmodal" data-bs-toggle="modal">
                                 후기작성하기
                             </button>
-
                             <br>
                             <div class="replaybox">
                                 <div class="replayrow" th:each="reply : ${roomEntity.replyEntities}" style="clear: both;">

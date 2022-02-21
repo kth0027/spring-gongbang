@@ -196,8 +196,21 @@ public class RoomController {
             // [비로그인상태]
             session.setAttribute("logindto", null);
             model.addAttribute("memberNo", -1);
+            model.addAttribute("memberCheck", 2);
         } else {
             model.addAttribute("memberNo", loginDto.getMemberNo());
+            // 해당 강의를 수강했던 사람의 목록을 넘긴다.
+            List<HistoryEntity> historyEntities = historyRepository.getHistoryByRoomNo(roomNo);
+            for(HistoryEntity historyEntity : historyEntities){
+                if(historyEntity.getMemberEntity().getMemberNo() == loginDto.getMemberNo()){
+                    // 수강 내역이 있는 사람이면 1 보낸다.
+                    model.addAttribute("memberCheck", 1);
+                } else {
+                    // 수강 내역이 없으면 2 를 보낸다.
+                    model.addAttribute("memberCheck", 2);
+                }
+            }
+
         }
 
         if (session.getAttribute(String.valueOf(roomNo)) == null) {
@@ -224,19 +237,6 @@ public class RoomController {
         String avg = String.format("%.2f", replyAvg);
         // 리뷰 평균
         model.addAttribute("avg", avg);
-
-        // 해당 강의를 수강했던 사람의 목록을 넘긴다.
-        List<HistoryEntity> historyEntities = historyRepository.getHistoryByRoomNo(roomNo);
-        for(HistoryEntity historyEntity : historyEntities){
-            if(historyEntity.getMemberEntity().getMemberNo() == loginDto.getMemberNo()){
-                // 수강 내역이 있는 사람이면 1 보낸다.
-                model.addAttribute("memberCheck", 1);
-            } else {
-                // 수강 내역이 없으면 2 를 보낸다.
-                model.addAttribute("memberCheck", 2);
-            }
-        }
-
 
 
         return "room/room_view";

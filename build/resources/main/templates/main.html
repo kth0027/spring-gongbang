@@ -1263,9 +1263,8 @@
             <!-- 카드출력부분 -->
             <div class="row product-boxoutline p-2">
                 <h3>진행중인 공방</h3>
-                <div class="product-box">
+                <div class="product-box" id="main-gongbang-slick">
                     <div class="product-card" th:each="room : ${roomlist}">
-
                         <div class="card-thumbnail">
                             <img th:if="${room.roomImgEntities != null}" class="card-img"
                                  th:src="@{ '/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }"/>
@@ -1448,6 +1447,34 @@
                 }
             ]
         });
+
+        $('#main-gongbang-slick').slick({
+            centerMode: true,
+            centerPadding: '60px',
+            slidesToShow: 2,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 1
+                    }
+                }
+            ]
+        });
+
+
     })
 
 </script>

@@ -28,7 +28,7 @@
                         <div class="row roombox d-flex">
                             <!-- 좌측 지도 -->
                             <div class="roomboxcontentimgbox col-7">
-                                <div class="roomboxcontentimg w-100"><img th:src="@{ '/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }"></div>
+                                <div class="roomboxcontentimg w-100"><img class="img-fluid" th:src="@{ '/roomimg/' + ${room.roomImgEntities.get(0).roomImg} }"></div>
                                 <div class="roomboxtoptxt">
                                     <div class="gongbangdetail">
                                         <a th:href="@{ '/room/view/' + ${room.roomNo} }" class="logo">

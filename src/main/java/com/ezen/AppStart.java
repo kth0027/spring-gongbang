@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class AppStart {
 
     @GetMapping("/") // 최상위 경로
     public String index(Model model, @PageableDefault Pageable pageable) {
+
         // 개설된 강의 중 '승인완료' 처리된 강의만 출력된다.
         Page<RoomEntity> roomlist = roomService.getroomlist(pageable);
         model.addAttribute("roomlist", roomlist);

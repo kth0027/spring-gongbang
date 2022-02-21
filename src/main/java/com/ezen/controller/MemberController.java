@@ -6,8 +6,6 @@ import com.ezen.domain.entity.*;
 import com.ezen.domain.entity.repository.*;
 import com.ezen.service.MemberService;
 import com.ezen.service.RoomService;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +21,6 @@ import javax.transaction.Transactional;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RequestMapping("/member")
@@ -120,9 +117,7 @@ public class MemberController { // C S
             } else {
                 model.addAttribute("isLoginCheck", 2);
             }
-
         }
-
         // 3. 찾은 회원정보를 model 인터페이스를 이용한 view 전달하기
         model.addAttribute("memberEntity", memberEntity);
 

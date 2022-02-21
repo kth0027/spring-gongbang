@@ -11,11 +11,11 @@
 </head>
 
 <body>
-    <div th:replace="common.html::common"></div>
-    <div th:replace="header.html::header"></div>
+<div th:replace="common.html::common"></div>
+<div th:replace="header.html::header"></div>
 
-    <!-- 회원탈퇴 스크립트-->
-    <script th:src="@{/js/mdelete.js}"></script>
+<!-- 회원탈퇴 스크립트-->
+<script th:src="@{/js/mdelete.js}"></script>
 
     <div id="wrap" class="wrap">
         <div class="container">
@@ -36,11 +36,12 @@
                     <hr>
                 </div>
 
-                <div class="col-8 p-5 ">
-                    <div class="tab-content" id="v-pills-tabContent">
-                        <!-- 회원정보 페이지 -->
-                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                            <div class="row writeform">
+            <div class="col-8 p-5 ">
+                <div class="tab-content" id="v-pills-tabContent">
+                    <!-- 회원정보 페이지 -->
+                    <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                         aria-labelledby="v-pills-profile-tab">
+                        <div class="row writeform">
 
                                 <!-- 회원정보 -->
                                 <div class="writebox">
@@ -87,6 +88,8 @@
 
 
                                 </div>
+                                </form>
+                            </div>
 
                                 <!-- 회원정보 수정 -->
                                 <div class="rewritebox">
@@ -174,43 +177,49 @@
                             </div>
                         </div>
 
-                        <!-- 예약내역 페이지 -->
-                        <div class="tab-pane fade" id="v-pills-reserveinfo" role="tabpanel" aria-labelledby="v-pills-reserveinfo-tab">
-                            <div class="row">
-                                예약내역
-                            </div>
-                        </div>
-
-                        <!-- 회원삭제 -->
-                        <div class="tab-pane fade" id="v-pills-signout" role="tabpanel" aria-labelledby="v-pills-signout-tab">
+                    <!-- 예약내역 페이지 -->
+                    <div class="tab-pane fade" id="v-pills-reserveinfo" role="tabpanel"
+                         aria-labelledby="v-pills-reserveinfo-tab">
+                        <div class="row">
+                            예약내역
                         </div>
                     </div>
 
-
-                    <!-- 모달 -->
-                    <div class="modal" tabindex="-1" id="modalmdelete" data-bs-keyboard="false" data-bs-backdrop="static">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content rounded-4 shadow">
-                                <div class="modal-body p-4 text-center">
-                                    <h5 class="mb-0"> 회원탈퇴 </h5>
-                                    <p class="mb-3" id="deletemsg"> 회원탈퇴시 포인트 사라집니다. 환불불가 !!! </p>
-                                    <input type="password" placeholder="비밀번호 확인" class="form-control" id="passwordconfirm">
-                                </div>
-                                <div class="modal-footer flex-nowrap p-0">
-                                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" onclick="mdelete()"><strong> 탈퇴 합니다.</strong></button>
-                                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal"> 탈퇴 취소합니다.
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                    <!-- 회원삭제 -->
+                    <div class="tab-pane fade" id="v-pills-signout" role="tabpanel"
+                         aria-labelledby="v-pills-signout-tab">
                     </div>
-
                 </div>
+
+
+                <!-- 모달 -->
+                <div class="modal" tabindex="-1" id="modalmdelete" data-bs-keyboard="false" data-bs-backdrop="static">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content rounded-4 shadow">
+                            <div class="modal-body p-4 text-center">
+                                <h5 class="mb-0"> 회원탈퇴 </h5>
+                                <p class="mb-3" id="deletemsg"> 회원탈퇴시 포인트 사라집니다. 환불불가 !!! </p>
+                                <input type="password" placeholder="비밀번호 확인" class="form-control" id="passwordconfirm">
+                            </div>
+                            <div class="modal-footer flex-nowrap p-0">
+                                <button type="button"
+                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"
+                                        onclick="mdelete()"><strong> 탈퇴 합니다.</strong></button>
+                                <button type="button"
+                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                                        data-bs-dismiss="modal"> 탈퇴 취소합니다.
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+</div>
 
-    <script>
+<script>
         $(document).ready(function() {
             $(".btninfo").click(function() {
                 $(".writebox").hide();
@@ -356,8 +365,6 @@
             });
         }); // 함수 end
     </script>
-
-
 
 
 </html>

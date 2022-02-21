@@ -62,20 +62,19 @@ public class AppStart {
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-
         MemberEntity memberEntity = null;
-        if(loginDto == null){
-
-        } else {
-            memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
-            if(memberEntity.getChannelImg() == null){
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
                 // [채널에 등록된 이미지가 없는 경우]
                 model.addAttribute("isLoginCheck", 1);
             } else {
                 model.addAttribute("isLoginCheck", 2);
-                model.addAttribute("memberEntity", memberEntity);
             }
+            model.addAttribute("memberEntity", memberEntity);
         }
 
         return "index";

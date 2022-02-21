@@ -67,8 +67,8 @@
                                                 </ul>
                                                 <span class="d-flex justify-content-between carouselbtn ">
                                                         <input type="button" value="<<" id="prev" class="mx-3"
-                                                                style="" />
-                                                        <input type="button" value=">>" id="next" class="mx-3" />
+                                                               style=""/>
+                                                        <input type="button" value=">>" id="next" class="mx-3"/>
                                                 </span>
                                         </section>
                                 </div>
@@ -1464,26 +1464,73 @@
                                              <p>할인받아 다양한 공방클랙스에 참여하고, 후기작성하시면 경품선물도 드려요!!!</p>
                                      </div>
                                      <div class="rowimg"></div>
-                                
+
                               </div>
-                              
+
                         </div>
                 </main>
 
 
         </div>
 
-        <!-- 조지훈 댓글 슬릭 js -->
-        <script type="text/javascript">
-                $(".variable-width").slick({
-                        dots: true,
-                        infinite: true,
-                        speed: 300,
-                        slidesToShow: 4,
-                        centerMode: true,
-                        variableWidth: true,
-                });
-        </script>
+<script>
+    $(function(){
+        $('#main-review-slick').slick({
+            centerMode: true,
+            centerPadding: '60px',
+            slidesToShow: 2,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 1
+                    }
+                }
+            ]
+        });
+
+        $('#main-gongbang-slick').slick({
+            centerMode: true,
+            centerPadding: '60px',
+            slidesToShow: 2,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 3
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                    arrows: false,
+                    centerMode: true,
+                    centerPadding: '40px',
+                    slidesToShow: 1
+                    }
+                }
+            ]
+        });
+
+
+    })
+
+</script>
 
         <!-- 개발자 js 가져오기 : 지역, 카테고리 slick 관련 스크립트 -->
         <script th:src="@{/js/main.js}"></script>
@@ -1492,10 +1539,8 @@
         <!-- 메인 탭 캐러셀 js 가져오기 -->
         <script th:src="@{/js/maintabcarousel.js}"></script>
 
-        <!-- 메인 탭 캐러셀 js 가져오기 -->
-        <script th:src="@{/js/maincard.js}"></script>
-
-
+<!-- 메인 탭 캐러셀 js 가져오기 -->
+<script th:src="@{/js/maincard.js}"></script>
 
 
 </body>

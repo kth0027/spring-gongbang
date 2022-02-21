@@ -214,8 +214,11 @@ span {
     margin-bottom: 30px;
     position: relative;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    overflow: hidden;
-    margin: 2rem auto;
+    /*
+    오버플로우, 마진 빼야 슬릭 잘 적용되서 주석처리해두었습니다. jj
+    */
+    /*overflow: hidden;*/
+    /*margin: 2rem auto;*/
 }
 
 .card-header {

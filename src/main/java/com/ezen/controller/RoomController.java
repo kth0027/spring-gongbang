@@ -54,20 +54,54 @@ public class RoomController {
     @Autowired
     private ReplyService replyService;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
-    public String register() {
+    public String register(Model model) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
         return "room/room_register";
     }
 
     // [room_register_detail.html 페이지와 맵핑]
     @GetMapping("/registerDetail")
     public String registerDetail(Model model) {
-        // member 정보를 가져와서 뿌려준다.
+
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        MemberEntity memberEntity = memberService.getMember(loginDto.getMemberNo());
-        model.addAttribute("member", memberEntity);
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
         return "room/room_register_detail";
     }
 
@@ -84,8 +118,22 @@ public class RoomController {
     @GetMapping("/list")
     public String roomlist(@PageableDefault Pageable pageable, Model model) {
 
-        // 세션 호출
         HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
 
         String keyword = request.getParameter("roomSearch");
         String local = request.getParameter("classLocal");
@@ -134,8 +182,22 @@ public class RoomController {
     public String roomListByLocal(@PathVariable("local") String local, Model model,
                                   @PageableDefault Pageable pageable) {
 
-        // 세션 호출
         HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
         session.setAttribute("keyword", "");
         session.setAttribute("local", local);
         session.setAttribute("category", "");
@@ -153,8 +215,22 @@ public class RoomController {
     public String roomListByCategory(@PathVariable("category") String category, Model model,
                                      @PageableDefault Pageable pageable) {
 
-        // 세션 호출
         HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
         session.setAttribute("keyword", "");
         session.setAttribute("local", "");
         session.setAttribute("category", category);
@@ -186,18 +262,43 @@ public class RoomController {
         model.addAttribute("count", count);
 
         // 4. 조회수를 증가시킵니다.
-        // 3.1 세션 확인해서 동일한 세션이 없으면 조회수를 증가시킨다.
-        // 3.2 조회수를 증가시키고, 24시간 유지되는 세션을 부여한다.
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        if (loginDto == null) {
-            // [비로그인상태]
-            session.setAttribute("logindto", "");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
         }
 
-        assert loginDto != null;
+        if (loginDto == null) {
+            // [비로그인상태]
+            session.setAttribute("logindto", null);
+            model.addAttribute("memberNo", -1);
+            model.addAttribute("memberCheck", 2);
+        } else {
+            model.addAttribute("memberNo", loginDto.getMemberNo());
+            // 해당 강의를 수강했던 사람의 목록을 넘긴다.
+            List<HistoryEntity> historyEntities = historyRepository.getHistoryByRoomNo(roomNo);
+            for (HistoryEntity historyEntity : historyEntities) {
+                if (historyEntity.getMemberEntity().getMemberNo() == loginDto.getMemberNo()) {
+                    // 수강 내역이 있는 사람이면 1 보낸다.
+                    model.addAttribute("memberCheck", 1);
+                } else {
+                    // 수강 내역이 없으면 2 를 보낸다.
+                    model.addAttribute("memberCheck", 2);
+                }
+            }
 
-        model.addAttribute("memberNo", loginDto.getMemberNo());
+        }
 
         if (session.getAttribute(String.valueOf(roomNo)) == null) {
             // 조회수 증가
@@ -224,10 +325,6 @@ public class RoomController {
         // 리뷰 평균
         model.addAttribute("avg", avg);
 
-        // 해당 강의를 수강했던 사람의 목록을 넘긴다.
-        List<HistoryEntity> historyEntities = historyRepository.getHistoryByRoomNo(roomNo);
-
-        model.addAttribute("histories", historyEntities);
 
         return "room/room_view";
     }
@@ -244,6 +341,7 @@ public class RoomController {
                                 @RequestParam("checkBox2") String checkBox2,
                                 @RequestParam("checkBox3") String checkBox3,
                                 @PageableDefault Pageable pageable) {
+
         roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
@@ -251,9 +349,23 @@ public class RoomController {
 
 
         HttpSession session = request.getSession();
-
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        MemberEntity memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
+        assert loginDto != null;
         int memberNo = loginDto.getMemberNo();
 
         boolean result = roomService.registerClass(roomEntity, files);
@@ -279,13 +391,21 @@ public class RoomController {
         model.addAttribute("roomEntity", roomEntity);
 
         HttpSession session = request.getSession();
-        MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
-
-        int memberNo = memberDto.getMemberNo();
-        MemberEntity memberEntity = memberService.getMemberEntity(memberNo);
-
-        model.addAttribute("memberEntity", memberEntity);
-
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
         return "room/room_update";
     }
 
@@ -325,8 +445,22 @@ public class RoomController {
         targetRoomEntity.setRoomTitle(roomTitle);
         targetRoomEntity.setRoomContent(roomContent);
 
-        System.out.println("수정된 룸 엔티티 : " + targetRoomEntity.toString());
-        System.out.println("입력받은 이미지 : " + files.toString());
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
 
         boolean result = roomService.updateClass(targetRoomEntity, files);
 
@@ -396,6 +530,25 @@ public class RoomController {
         // 1. 등록된 클래스 가져오기
         RoomEntity roomEntity = roomService.getroom(roomNo);
         model.addAttribute("room", roomEntity);
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
+
         return "member/member_timeselect";
 
     }
@@ -412,8 +565,22 @@ public class RoomController {
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+        assert loginDto != null;
         int memberNo = loginDto.getMemberNo();
-
 
         timeTableEntity.setRoomTime(beginTime + "," + endTime);
         RoomEntity roomEntity = roomRepository.getById(roomNo);
@@ -523,8 +690,54 @@ public class RoomController {
     // 방번호를 이용한 방정보 html 반환
     @GetMapping("/getroom")
     public String getroom(@RequestParam("roomNo") int roomNo, Model model) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
         model.addAttribute("room", roomService.getroom(roomNo));
         return "room/room_list"; // room html 반환
+    }
+
+    @GetMapping("/room_map")
+    public String room_map(Model model, @RequestParam("roomNo") int roomNo) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
+        RoomEntity roomEntity = roomService.getroom(roomNo);
+        String img = roomEntity.getRoomImgEntities().get(0).getRoomImg();
+
+        model.addAttribute("roommap", roomEntity);
+        model.addAttribute("img", img);
+        return "room/room_map";
     }
 
 }

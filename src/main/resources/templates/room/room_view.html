@@ -80,7 +80,7 @@
                                     채널보기
                                 </a>
                             </button></li>
-                            <li> <button sec:authorize="isAuthenticated()" th:onclick="roomLike( [[ ${roomEntity.roomNo} ]], [[ ${session.logindto.memberNo} ]] );" class="">
+                            <li sec:authorize="isAuthenticated()"> <button th:onclick="roomLike( [[ ${roomEntity.roomNo} ]], [[ ${session.logindto.memberNo} ]] );" class="">
                                 <span th:if="${count==1}" id="like">♥</span>
                                 <span th:if="${count==0}" id="like">♡</span>
                             </button></li>
@@ -160,9 +160,14 @@
                         <!-- 후기 -->
                         <div class="writereply">
                             <h4 style="font-weight: bold;" id="review">후기</h4>
-                            <button class="btn" style="color:black;" data-bs-target="#reviewmodal" data-bs-toggle="modal">
-                                후기작성하기
-                            </button>
+                            <!-- 수업을 들었던 사람만 작성할 수 있어야 한다. -->
+                            <div th:each="history : ${histories}">
+                                <div th:if="${history.memberEntity.memberNo == memberNo}">
+                                    <button sec:authorize="isAuthenticated()" class="btn" style="color:black;" data-bs-target="#reviewmodal" data-bs-toggle="modal">
+                                        후기작성하기
+                                    </button>
+                                </div>
+                            </div>
                             <br>
                             <div class="replaybox">
                                 <div class="replayrow" th:each="reply : ${roomEntity.replyEntities}" style="clear: both;">
@@ -285,7 +290,7 @@
                 <div class="modal-body p-4 text-center">
                     <h5 class="mb-0"> <span class="badge rounded-pill bg-warning text-dark" style="font-size: 2rem;">후기</span> 남기기 </h5>
                     <p class="my-3" id="reviewmsg"> 공방 관련 후기를 작성하실 수 있습니다.</p>
-                    <form class="reviewmodalbox" action="/reply/writecontroller" method="post" enctype="multipart/form-data">
+                    <form onsubmit="return reviewImageCheck();" class="reviewmodalbox" action="/reply/writecontroller" method="post" enctype="multipart/form-data">
                         <div class="star_rating">
                             <a href="#" class="on" id="1">★</a>
                             <a href="#" id="2">★</a>
@@ -295,8 +300,8 @@
                             <input type="hidden" id="review_star" name="review_star" value="1">
                         </div>
                         <input type="hidden" id="roomNo" name="roomNo" th:value="${roomNo}">
-                        <textarea class="form-control my-2" placeholder="후기를 작성해주세요!" id="replyContent" name="replyContent" style="height: 100px; resize: none;"></textarea>
-                        <input type="file" multiple="multiple" name="file" id="file"> <br>
+                        <textarea maxlength="50" class="form-control my-2" placeholder="후기를 작성해주세요!" id="replyContent" name="replyContent" style="height: 100px; resize: none;"></textarea>
+                        <input onchange="reviewImageCheck();" type="file" multiple="multiple" name="file" id="file"> <br>
                         <div class="d-flex flex-nowrap p-0 reviewmodalbtn ">
                             <input type="submit" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" value="작성" style="color: #374b73 !important; background-color: #a1e9ff;">
                             <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal" style="color: #ff9a9a !important; background-color: antiquewhite;">나가기
@@ -374,9 +379,7 @@
             });
         }
 
-
         $(".reviewmodalbox .star_rating a").click(function() {
-            alert("oo");
             $(this).parent().children("a").removeClass("on");
             $(this).addClass("on").prevAll("a").addClass("on");
             var starRate = $(this).attr('id');
@@ -385,7 +388,7 @@
         });
 
 
-         function roomLike(roomNo,memberNo) {
+        function roomLike(roomNo,memberNo) {
             $.ajax({
                 url:"/roomLike/roomLike",
                 data: {"roomNo": roomNo,"memberNo":memberNo},
@@ -399,6 +402,15 @@
                     }
                 }
             });
+        }
+
+        // 리뷰 작성시 무조건 사진을 등록할 수 있도록
+        function reviewImageCheck(){
+
+            var reviewImage = $("#file").val();
+            if(!reviewImage){
+                return false;
+            }
         }
     </script>
 

@@ -34,6 +34,9 @@ public class ReplyService {
     RoomService roomService;
 
     public boolean write(ReplyEntity replyEntity, List<MultipartFile> files, int roomNo, int replyStar) {
+
+        System.out.println("####################" + files.toString());
+
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
 
@@ -54,6 +57,7 @@ public class ReplyService {
 
         // 파일처리
         String uuidfile = null;
+
         if (files.size() != 0) {
             for (MultipartFile file : files) {
                 UUID uuid = UUID.randomUUID();
@@ -81,13 +85,15 @@ public class ReplyService {
 
             }
         } else {
+
             ReplyImgEntity replyImgEntity = ReplyImgEntity.builder()
-                    .replyImg(null)
                     .replyEntity(replyEntitysaved)
                     .build();
+
             int replyImgNo = replyImgRepository.save(replyImgEntity).getReplyImgNo();
             replyEntitysaved.getReplyImgEntities().add(replyImgRepository.findById(replyImgNo).get());
         }
+
         return true;
     }
 

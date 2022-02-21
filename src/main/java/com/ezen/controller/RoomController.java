@@ -49,7 +49,10 @@ public class RoomController {
     private ReplyRepository replyRepository;
 
     @Autowired
-    ReplyService replyService;
+    private HistoryRepository historyRepository;
+
+    @Autowired
+    private ReplyService replyService;
 
     // [room_write.html 페이지와 맵핑]
     @GetMapping("/register")
@@ -70,7 +73,7 @@ public class RoomController {
 
     /*
      * @Author : 김정진
-     * 
+     *
      * @Date : 2022-02-07
      * 1. header 에 위치한 검색 창에서 '키워드검색' '지역 선택' '카테고리 선택' 세가지 경우에 결과값을 출력한다.
      * 2.
@@ -129,7 +132,7 @@ public class RoomController {
     // 메인 화면에서 지역 아이콘 선택했을 때 검색 후 결과 출력 페이지로 이동
     @GetMapping("/byLocal/{local}")
     public String roomListByLocal(@PathVariable("local") String local, Model model,
-            @PageableDefault Pageable pageable) {
+                                  @PageableDefault Pageable pageable) {
 
         // 세션 호출
         HttpSession session = request.getSession();
@@ -148,7 +151,7 @@ public class RoomController {
     // 메인 화면에서 카테고리 선택했을 때 검색 후 결과 출력 페이지로 이동
     @GetMapping("/byCategory/{category}")
     public String roomListByCategory(@PathVariable("category") String category, Model model,
-            @PageableDefault Pageable pageable) {
+                                     @PageableDefault Pageable pageable) {
 
         // 세션 호출
         HttpSession session = request.getSession();
@@ -186,10 +189,15 @@ public class RoomController {
         // 3.1 세션 확인해서 동일한 세션이 없으면 조회수를 증가시킨다.
         // 3.2 조회수를 증가시키고, 24시간 유지되는 세션을 부여한다.
         HttpSession session = request.getSession();
-
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        MemberEntity memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
-        model.addAttribute("memberNo", memberEntity.getMemberNo());
+        if (loginDto == null) {
+            // [비로그인상태]
+            session.setAttribute("logindto", "");
+        }
+
+        assert loginDto != null;
+
+        model.addAttribute("memberNo", loginDto.getMemberNo());
 
         if (session.getAttribute(String.valueOf(roomNo)) == null) {
             // 조회수 증가
@@ -215,6 +223,12 @@ public class RoomController {
         String avg = String.format("%.2f", replyAvg);
         // 리뷰 평균
         model.addAttribute("avg", avg);
+
+        // 해당 강의를 수강했던 사람의 목록을 넘긴다.
+        List<HistoryEntity> historyEntities = historyRepository.getHistoryByRoomNo(roomNo);
+
+        model.addAttribute("histories", historyEntities);
+
         return "room/room_view";
     }
 
@@ -222,23 +236,32 @@ public class RoomController {
     @PostMapping("/classRegister")
     @Transactional
     public String classRegister(Model model,
-            RoomEntity roomEntity,
-            @RequestParam("roomImageInput") List<MultipartFile> files,
-            @RequestParam("addressX") double addressX,
-            @RequestParam("addressY") double addressY,
-            @RequestParam("checkBox1") String checkBox1,
-            @RequestParam("checkBox2") String checkBox2,
-            @RequestParam("checkBox3") String checkBox3,
-            @PageableDefault Pageable pageable) {
+                                RoomEntity roomEntity,
+                                @RequestParam("roomImageInput") List<MultipartFile> files,
+                                @RequestParam("addressX") double addressX,
+                                @RequestParam("addressY") double addressY,
+                                @RequestParam("checkBox1") String checkBox1,
+                                @RequestParam("checkBox2") String checkBox2,
+                                @RequestParam("checkBox3") String checkBox3,
+                                @PageableDefault Pageable pageable) {
         roomEntity.setRoomStatus("검토중");
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         roomEntity.setRoomView(0);
 
+
+        HttpSession session = request.getSession();
+
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
+        int memberNo = loginDto.getMemberNo();
+
         boolean result = roomService.registerClass(roomEntity, files);
+
         if (result) {
             // 2. 등록 완료 후, 내가 등록한 클래스 페이지로 이동
-            Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
+            Page<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo, pageable);
+            // Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
             model.addAttribute("roomDtos", roomDtos);
             return "member/member_class";
         } else {
@@ -270,22 +293,22 @@ public class RoomController {
     @PostMapping("/updateController")
     @Transactional
     public String updateController(Model model,
-            @RequestParam("roomTitle") String roomTitle,
-            @RequestParam("roomContent") String roomContent,
-            @RequestParam("roomDetail") String roomDetail,
-            @RequestParam("roomImageInput") List<MultipartFile> files,
-            @RequestParam("roomCategory") String roomCategory,
-            @RequestParam("roomLocal") String roomLocal,
-            @RequestParam("roomAddress") String roomAddress,
-            @RequestParam("roomMax") int roomMax,
-            @RequestParam("addressX") double addressX,
-            @RequestParam("addressY") double addressY,
-            @RequestParam("checkBox1") String checkBox1,
-            @RequestParam("checkBox2") String checkBox2,
-            @RequestParam("checkBox3") String checkBox3,
-            @RequestParam("roomNo") int roomNo,
-            @RequestParam("roomStatus") String roomStatus,
-            @PageableDefault Pageable pageable) {
+                                   @RequestParam("roomTitle") String roomTitle,
+                                   @RequestParam("roomContent") String roomContent,
+                                   @RequestParam("roomDetail") String roomDetail,
+                                   @RequestParam("roomImageInput") List<MultipartFile> files,
+                                   @RequestParam("roomCategory") String roomCategory,
+                                   @RequestParam("roomLocal") String roomLocal,
+                                   @RequestParam("roomAddress") String roomAddress,
+                                   @RequestParam("roomMax") int roomMax,
+                                   @RequestParam("addressX") double addressX,
+                                   @RequestParam("addressY") double addressY,
+                                   @RequestParam("checkBox1") String checkBox1,
+                                   @RequestParam("checkBox2") String checkBox2,
+                                   @RequestParam("checkBox3") String checkBox3,
+                                   @RequestParam("roomNo") int roomNo,
+                                   @RequestParam("roomStatus") String roomStatus,
+                                   @PageableDefault Pageable pageable) {
 
         RoomEntity targetRoomEntity = null;
         if (roomRepository.findById(roomNo).isPresent()) {
@@ -382,17 +405,23 @@ public class RoomController {
     // form 태그로 받아오며 날짜, 시간, roomNo 를 받습니다.
     @GetMapping("/timeSelectController")
     public String timeSelectController(TimeTableEntity timeTableEntity,
-            @RequestParam("beginTime") String beginTime,
-            @RequestParam("endTime") String endTime,
-            @RequestParam("roomNo") int roomNo,
-            Model model, @PageableDefault Pageable pageable) {
+                                       @RequestParam("beginTime") String beginTime,
+                                       @RequestParam("endTime") String endTime,
+                                       @RequestParam("roomNo") int roomNo,
+                                       Model model, @PageableDefault Pageable pageable) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        int memberNo = loginDto.getMemberNo();
+
+
         timeTableEntity.setRoomTime(beginTime + "," + endTime);
         RoomEntity roomEntity = roomRepository.getById(roomNo);
         timeTableEntity.setRoomMax(roomEntity.getRoomMax());
         timeTableEntity.setRoomStatus("모집중");
         boolean result = roomService.registerTimeToClass(timeTableEntity, roomNo);
 
-        Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
+        Page<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo, pageable);
         model.addAttribute("roomDtos", roomDtos);
 
         return "member/member_class";
@@ -419,7 +448,7 @@ public class RoomController {
     @GetMapping("/toJSON")
     @ResponseBody
     public JSONObject getRoomEntityByTimeTableToJson(@RequestParam("activeId") String roomDate,
-            @RequestParam("roomNo") int roomNo) {
+                                                     @RequestParam("roomNo") int roomNo) {
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");

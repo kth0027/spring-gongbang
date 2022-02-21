@@ -936,26 +936,68 @@ function adminSelectBtn(){
                 success: function(data){
                     // 시간이 없어 '지역' 별 신청인원만 출력합니다.
 
-                    var local1 = 0;
-                    var local2 = 0;
-                    var local3 = 0;
+                    var category1 = 0;
+                    var category2 = 0;
+                    var category3 = 0;
+                    var category4 = 0;
+                    var category5 = 0;
+                    var category6 = 0;
+                    var category7 = 0;
+                    var category8 = 0;
+                    var category9 = 0;
+                    var category10 = 0;
+                    var category11 = 0;
+
                     var totalsum3 = 0; // 하루 결제된 액수
 
                     var bundleData2 = $(data.history).map(function(i, history) {
-                        var local = history.local;
+                        var category = history.category;
                         switch(local){
-                            case "서울":
-                                local1 = local1 + history.person;
+                            case "핸드메이드":
+                                category1 = category1 + history.person;
                                 totalsum3 = totalsum3 + history.price;
                                 break;
-                            case "경기":
-                                local2 = local2 + history.person;
+                            case "쿠킹":
+                                category2 = category2 + history.person;
                                 totalsum3 = totalsum3 + history.price;
                                 break;
-                            case "인천":
-                                local3 = local3 + history.person;
+                            case "플라워":
+                                category3 = category3 + history.person;
                                 totalsum3 = totalsum3 + history.price;
                                 break;
+                            case "드로잉":
+                                category4 = category4 + history.person;
+                                totalsum3 = totalsum3 + history.price;
+                                break;
+                            case "음악":
+                                category5 = category5 + history.person;
+                                totalsum3 = totalsum3 + history.price;
+                                break;
+                            case "필라테스":
+                                category6 = category6 + history.person;
+                                totalsum3 = totalsum3 + history.price;
+                                break;
+                            case "스포츠":
+                                category7 = category7 + history.person;
+                                totalsum3 = totalsum3 + history.price;
+                                break;
+                            case "뷰티":
+                                category8 = category8 + history.person;
+                                totalsum3 = totalsum3 + history.price;
+                                break;
+                            case "애완동물":
+                                category9 = category9 + history.person;
+                                totalsum3 = totalsum3 + history.price;
+                                break;
+                            case "체험":
+                                category10 = category10 + history.person;
+                                totalsum3 = totalsum3 + history.price;
+                                break;
+                            case "자기계발":
+                                category11 = category11 + history.person;
+                                totalsum3 = totalsum3 + history.price;
+                                break;
+
                         }
                     });
 
@@ -972,27 +1014,88 @@ function adminSelectBtn(){
                     ]);
 
                     var data = [
-                      {
-                        name: "서울",
-                        steps: local1,
-                        pictureSettings: {
-                          src: "https://www.amcharts.com/wp-content/uploads/2019/04/monica.jpg"
+                        {
+                            name: "핸드메이드",
+                            steps: category1,
+                            pictureSettings: {
+                            src: "https://www.urbanbrush.net/web/wp-content/uploads/edd/2017/12/web-20171228171757223431.png"
                         }
-                      },
-                      {
-                        name: "경기",
-                        steps: local2,
-                        pictureSettings: {
-                          src: "https://www.amcharts.com/wp-content/uploads/2019/04/joey.jpg"
+                        },
+                        {
+                            name: "쿠킹",
+                            steps: category2,
+                            pictureSettings: {
+                            src: "https://cdn-icons-png.flaticon.com/512/4976/4976190.png"
                         }
-                      },
-                      {
-                        name: "인천",
-                        steps: local3,
-                        pictureSettings: {
-                          src: "https://www.amcharts.com/wp-content/uploads/2019/04/ross.jpg"
+                        },
+                        {
+                            name: "플라워",
+                            steps: category3,
+                            pictureSettings: {
+                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
                         }
-                      }
+                        },
+                        {
+                            name: "드로잉",
+                            steps: category4,
+                            pictureSettings: {
+                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                        }
+                        },
+                        {
+                            name: "음악",
+                            steps: category5,
+                            pictureSettings: {
+                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                        }
+                        },
+                        {
+                            name: "필라테스",
+                            steps: category6,
+                            pictureSettings: {
+                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                        }
+                        }
+                        ,
+                        {
+                            name: "스포츠",
+                            steps: category7,
+                            pictureSettings: {
+                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                        }
+                        }
+                        ,
+                        {
+                            name: "뷰티",
+                            steps: category8,
+                            pictureSettings: {
+                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                        }
+                        },
+
+                        {
+                            name: "애완동물",
+                            steps: category9,
+                            pictureSettings: {
+                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                        }
+                        },
+
+                        {
+                            name: "체험",
+                            steps: category10,
+                            pictureSettings: {
+                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                        }
+                        },
+
+                        {
+                            name: "자기계발",
+                            steps: category11,
+                            pictureSettings: {
+                            src: "https://www.incheon.go.kr/humanframe/theme/newdeal/assets/image/main/tab01-icon.png"
+                        }
+                        }
                     ];
 
                     // Create chart

@@ -361,7 +361,6 @@ public class MemberController { // C S
     }
 
     // [내가 개설한 클래스와 맵핑]
-    //
     @GetMapping("/myclass")
     public String myclass(Model model, @PageableDefault Pageable pageable) {
 

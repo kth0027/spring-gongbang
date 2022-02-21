@@ -78,7 +78,7 @@
                     <label for="roomTitle" class="form-label">공방 이름<span>[필수]</span>
                         <span>글자수(<span id="title-key-count"></span>/50)</span>
                     </label>
-                    <input onchange="registerCheck();" type="text" class="form-control" id="roomTitle" name="roomTitle">
+                    <input maxlength="100" onchange="registerCheck();" type="text" class="form-control" id="roomTitle" name="roomTitle">
                     <div id="title-result"></div>
                     <div class="register-tip">
                         <small>작성 TIP</small>
@@ -109,7 +109,7 @@
                     <label for="addClassInfo" class="form-label">공방 간단소개 <span>[필수]</span>
                         <span>글자수(<span id="content-key-count"></span>/150)</span></label><br>
                     <div class="text-center">
-                            <textarea onchange="registerCheck();" class="" name="roomContent" id="addClassInfo"
+                            <textarea maxlength="300" onchange="registerCheck();" class="" name="roomContent" id="addClassInfo"
                                       cols="30" rows="5"></textarea>
                     </div>
                     <div id="content-result"></div>

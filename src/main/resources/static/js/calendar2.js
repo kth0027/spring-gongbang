@@ -24,6 +24,8 @@ function daySelect(year , month , day, roomNo){
     var memberNo = $("#memberNo").val();
     var hostMemberNo = $("#hostMemberNo").val();
 
+    alert("로그인한 멤버 : " + memberNo + "공방 만든 사람 : " + hostMemberNo);
+
     // 해당 날짜를 선택했을 때의 이벤트를 부여합니다.
     // DB 를 조회해서 선택한 날짜에 개설된 강좌 정보를 불러옵니다.
     $.ajax({
@@ -33,10 +35,40 @@ function daySelect(year , month , day, roomNo){
         async: false,
         contentType: "application/json",
         success: function(data){
+
+            $("#time-select-inner").empty();
+
             if(hostMemberNo == memberNo){
                 // 1. 본인은 자신이 개설한 강의를 신청할 수 없습니다.
                 // 2. 리턴된 data 값이 '1' 일 때는 선택할 수 없도록 합니다.
                 $("#time-select-inner").empty();
+                // 받아온 정보들을 html 로 넘겨준다.
+                // 반복문을 돌아야하니, 다시 controller 로 정보를 넘겨준 뒤
+                // hashmap 형태로 받아서 model 로 넘겨준다.
+                var rooms = $(data.json).map(function(i, room) {
+                    var roomNo = room.roomNo;
+                    var roomCategory = room.category;
+                    var roomTitle = room.title;
+                    var roomBeginTime = room.beginTime;
+                    var roomEndTime = room.endTime;
+                    var roomLocal = room.local;
+                    var roomMax = room.max;
+                    var roomDate = room.date;
+                    var realMax = room.timeMax;
+
+                    var roomhtml = "<div class='col-md-8'>";
+                    roomhtml += "<div class='classContent' style='border: 3px solid #374b73; background-color: #ffffff; color: #374b73; padding: 0.5rem;'>";
+                    roomhtml += "<div> 클래스 이름 : " + roomTitle + "</div>";
+                    roomhtml += "<div> <span> 시작시간 : " + roomBeginTime + "</span>  <span> 종료시간 : " + roomEndTime + "</span> </div>";
+                    roomhtml += "<div> 지역 : " + roomLocal + "</div>";
+                    roomhtml += "<div> 신청 가능한 인원 : " + realMax + "</div>";
+                    roomhtml += "</div>";
+                    roomhtml += "</div>";
+
+                    $("#time-select-inner").append(roomhtml);
+                });
+            }
+            else {
                 // 받아온 정보들을 html 로 넘겨준다.
                 // 반복문을 돌아야하니, 다시 controller 로 정보를 넘겨준 뒤
                 // hashmap 형태로 받아서 model 로 넘겨준다.
@@ -60,40 +92,14 @@ function daySelect(year , month , day, roomNo){
                     roomhtml += "<div> 신청 가능한 인원 : " + realMax + "</div>";
                     roomhtml += "</div>";
                     roomhtml += "</div>";
+                    roomhtml += "<div class='col-md-4'>";
+                    roomhtml += "<button style='border: 3px solid ##374b73; color: #374b73; padding: 0.5rem;' onclick='registerClass("+roomNo+","+roomBeginTime+","+roomEndTime+","+roomDate+");'>";
+                    roomhtml += "선택";
+                    roomhtml += "</button>";
+                    roomhtml += "</div>";
                     $("#time-select-inner").append(roomhtml);
                 });
             }
-            $("#time-select-inner").empty();
-            // 받아온 정보들을 html 로 넘겨준다.
-            // 반복문을 돌아야하니, 다시 controller 로 정보를 넘겨준 뒤
-            // hashmap 형태로 받아서 model 로 넘겨준다.
-            var rooms = $(data.json).map(function(i, room) {
-
-                var roomNo = room.roomNo;
-                var roomCategory = room.category;
-                var roomTitle = room.title;
-                var roomBeginTime = room.beginTime;
-                var roomEndTime = room.endTime;
-                var roomLocal = room.local;
-                var roomMax = room.max;
-                var roomDate = room.date;
-                var realMax = room.timeMax;
-
-                var roomhtml = "<div class='col-md-8'>";
-                roomhtml += "<div class='classContent' style='border: 3px solid #374b73; background-color: #ffffff; color: #374b73; padding: 0.5rem;'>";
-                roomhtml += "<div> 클래스 이름 : " + roomTitle + "</div>";
-                roomhtml += "<div> <span> 시작시간 : " + roomBeginTime + "</span>  <span> 종료시간 : " + roomEndTime + "</span> </div>";
-                roomhtml += "<div> 지역 : " + roomLocal + "</div>";
-                roomhtml += "<div> 신청 가능한 인원 : " + realMax + "</div>";
-                roomhtml += "</div>";
-                roomhtml += "</div>";
-                roomhtml += "<div class='col-md-4'>";
-                roomhtml += "<button style='border: 3px solid ##374b73; color: #374b73; padding: 0.5rem;' onclick='registerClass("+roomNo+","+roomBeginTime+","+roomEndTime+","+roomDate+");'>";
-                roomhtml += "선택";
-                roomhtml += "</button>";
-                roomhtml += "</div>";
-                $("#time-select-inner").append(roomhtml);
-            });
         }
     });
 }

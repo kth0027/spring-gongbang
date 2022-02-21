@@ -1,9 +1,12 @@
 package com.ezen.controller;
 
+import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.HistoryEntity;
+import com.ezen.domain.entity.MemberEntity;
 import com.ezen.domain.entity.RoomEntity;
 import com.ezen.domain.entity.TimeTableEntity;
 import com.ezen.domain.entity.repository.HistoryRepository;
+import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.domain.entity.repository.RoomRepository;
 import com.ezen.domain.entity.repository.TimeTableRepository;
 import com.ezen.service.AdminService;
@@ -19,6 +22,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.sql.Time;
 import java.util.List;
 
@@ -43,10 +47,32 @@ public class AdminController {
     private TimeTableRepository timeTableRepository;
 
     @Autowired
+    private MemberRepository memberRepository;
+
+    @Autowired
     private HttpServletRequest request;
 
     @GetMapping("/adminTableAll")
     public String adminTable(Model model, @PageableDefault Pageable pageable) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
+
         Page<RoomEntity> roomEntities = roomService.getroomlistadmin(pageable);
         model.addAttribute("roomEntities", roomEntities);
         return "admin/admin_table";
@@ -58,6 +84,25 @@ public class AdminController {
                                      @RequestParam("keyword") String keyword,
                                      @RequestParam("category") String category,
                                      @RequestParam("local") String local) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
+
         // 1. 각 입력값의 존재 여부는 RoomService 에서 확인한다.
         Page<RoomEntity> roomEntities = roomService.adminGetRoomEntityBySearch(pageable, keyword, local, category);
         // 2. 조회한 값을 Model 을 통해 table 형태로 출력한다.
@@ -67,6 +112,24 @@ public class AdminController {
 
     @GetMapping("/adminlist")
     public String adminlist(Model model, @PageableDefault Pageable pageable) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
         // 1. 아무 검색이 없는 경우 [초기 진입 화면]
         // 1.1 header.html href 통해서 들어온다.
         // 별다른 조건없이 모든 데이터 뿌려준다.
@@ -210,44 +273,6 @@ public class AdminController {
         jsonObject.put("history", jsonArray);
         return jsonObject;
 
-//        for (HistoryEntity historyEntity : historyEntities) {
-//
-//            TimeTableEntity timeTableEntity = null;
-//            RoomEntity roomEntity = null;
-//            // 1. 데이터를 담을 JSONObject 생성
-//            JSONObject data = new JSONObject();
-//            // 2. 현재 예약건에 해당하는 강좌 시간 정보
-//            int timeTableNo = historyEntity.getTimeTableEntity().getTimeTableNo();
-//            if (timeTableRepository.findById(timeTableNo).isPresent()) {
-//                timeTableEntity = timeTableRepository.findById(timeTableNo).get();
-//            }
-//            assert timeTableEntity != null;
-//
-//            data.put("date", timeTableEntity.getRoomDate()); // YYYY-MM-DD
-//            data.put("beginTime", timeTableEntity.getRoomTime().split(",")[0]); // HH, HH
-//            data.put("endTime", timeTableEntity.getRoomTime().split(",")[1]); // HH, HH
-//
-//            // 3. 현재 예약건에 해당하는 강좌 정보
-//            int roomNo = historyEntity.getRoomEntity().getRoomNo();
-//            if (roomRepository.findById(roomNo).isPresent()) {
-//                roomEntity = roomRepository.findById(roomNo).get();
-//            }
-//            assert roomEntity != null;
-//            data.put("category", roomEntity.getRoomCategory());
-//            data.put("local", roomEntity.getRoomLocal());
-//
-//            // 4. 예약 정보
-//            data.put("createdDate", historyEntity.getCreatedDate()); // 예약이 완료된 날짜
-//            data.put("price", historyEntity.getHistoryPoint()); // 회원이 결제한 금액
-//
-//            // 5. 신청한 인원 수 : 결제 금액 / 클래스 1명당 금액
-//            int person = historyEntity.getHistoryPoint() / roomEntity.getRoomPrice();
-//            data.put("person", person);
-//
-//            jsonArray.add(data);
-//        }
-//        jsonObject.put("history", jsonArray);
-//        return jsonObject;
     }
 
 

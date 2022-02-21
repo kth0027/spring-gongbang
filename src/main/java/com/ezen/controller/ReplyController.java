@@ -26,10 +26,6 @@ public class ReplyController {
     public String writecontroller(ReplyEntity replyEntity,
                                   @RequestParam("file") List<MultipartFile> files,
                                   @RequestParam("roomNo") int roomNo, @RequestParam("review_star") int replyStar) {
-
-        System.out.println("####################" + files.toString());
-
-
         replyService.write(replyEntity, files, roomNo, replyStar);
         return "redirect:/room/view/" + roomNo;
     }

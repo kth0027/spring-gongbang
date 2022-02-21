@@ -231,15 +231,6 @@ public class MemberService implements UserDetailsService {
             return false;
         }
     }
-//    @Transactional
-//    public boolean channelupdate(MemberEntity memberEntity) {
-//        try {
-//
-//        }catch (Exception e) {}
-//
-//        return true;
-//    }
-
 }
 
 

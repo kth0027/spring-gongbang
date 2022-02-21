@@ -2,6 +2,7 @@ package com.ezen.controller;
 
 import com.ezen.domain.dto.MemberDto;
 import com.ezen.domain.entity.*;
+import com.ezen.domain.entity.repository.MemberRepository;
 import com.ezen.domain.entity.repository.PostReplyRepository;
 import com.ezen.service.BoardService;
 import com.ezen.service.CategoryService;
@@ -42,12 +43,35 @@ public class CommunityController {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private MemberRepository memberRepository;
+
     // 커뮤니티 탭 컨트롤러
 
     // [게시판 사이드 바 출력]
     // 카테고리, 게시판을 Model 에 담아서 넘겨준다.
     @GetMapping("/list")
     public String list(Model model, @PageableDefault Pageable pageable) {
+
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
+
 
         // 1. 만들어진 카테고리 전체 호출
         Page<CategoryEntity> categories = categoryService.getCategoryList(pageable);
@@ -66,6 +90,23 @@ public class CommunityController {
                                      @RequestParam("boardNo") int boardNo,
                                      @PageableDefault Pageable pageable) {
 
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
         // 작성된 PostEntity 를 board_content.html 에 뿌려준다.
         Page<PostEntity> postEntities = postService.getPostList(boardNo, pageable);
 
@@ -81,6 +122,25 @@ public class CommunityController {
     @GetMapping("createPost")
     public String createPost(Model model,
                              @RequestParam("boardNo") int boardNo) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
+
         model.addAttribute("boardNo", boardNo);
         return "community/create_post";
 
@@ -95,6 +155,24 @@ public class CommunityController {
                                        @RequestParam("create-post-title") String title,
                                        @RequestParam("post-content") String content,
                                        @PageableDefault Pageable pageable) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
 
         PostEntity postEntity = PostEntity.builder()
                 .postTitle(title)
@@ -127,8 +205,20 @@ public class CommunityController {
         // 1. 현재 로그인 된 회원 정보 호출한 뒤, model 에 담기
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        MemberEntity memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
-        model.addAttribute("memberEntity", memberEntity);
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
 
         // 2. view_post.html 에 Model 값을 뿌려준 다음 html 을 출력한다.
         PostEntity postEntity = postService.getPostEntity(postNo);
@@ -154,10 +244,22 @@ public class CommunityController {
     @Transactional
     public String newPostReply(Model model, @RequestParam("postNo") int postNo, @RequestParam("content") String content, @PageableDefault Pageable pageable) {
 
-        // 1. 현재 로그인 된 회원 정보 호출
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        MemberEntity memberEntity = memberService.getMemberEntity(loginDto.getMemberNo());
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
 
         // 2. 전달받은 인수를 DB 에 저장한다.
         PostReplyEntity postReplyEntity = PostReplyEntity

@@ -106,15 +106,25 @@ public class MemberController { // C S
     @GetMapping("/info")
     public String info(Model model) {
 
-        // 1. 로그인 세션 호출
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
 
-        // 2. 세션에 회원정보를 service 에 전달해서 동일한 회원번호에 회원정보 가져오기
-        MemberDto memberDto = memberService.getmemberDto(loginDto.getMemberNo());
+        }
 
         // 3. 찾은 회원정보를 model 인터페이스를 이용한 view 전달하기
-        model.addAttribute("memberDto", memberDto);
+        model.addAttribute("memberEntity", memberEntity);
 
         return "member/info";
     }
@@ -225,10 +235,26 @@ public class MemberController { // C S
                             @RequestParam("price") int price,
                             @RequestParam("phoneNumber") String phone) {
 
+
         MemberEntity memberEntity = null;
         // 0. 로그인된 회원 정보를 불러온다.
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
 
         // 0.1 로그인 세션 정보가 없으면 메인 페이지로 이동해서 로그인을 요구한다.
         if (loginDto == null) {
@@ -299,7 +325,6 @@ public class MemberController { // C S
         model.addAttribute("histories", historyEntities);
 
 
-
         return "member/history_list";
     }
 
@@ -354,7 +379,20 @@ public class MemberController { // C S
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        System.out.println(loginDto);
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
         // 로그인 세션에 저장되어 있는 세션을 이용해 memberNo 를 불러옵니다.
         int memberNo = loginDto.getMemberNo();
         // memberNo 에 해당하는 예약 내역을 불러옵니다.
@@ -370,9 +408,24 @@ public class MemberController { // C S
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
         // 로그인 세션에 저장되어 있는 세션을 이용해 memberNo 를 불러옵니다.
         int memberNo = loginDto.getMemberNo();
-        MemberEntity memberEntity = memberService.getMemberEntity(memberNo);
 
         Page<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo, pageable);
         model.addAttribute("roomDtos", roomDtos);
@@ -432,6 +485,24 @@ public class MemberController { // C S
     // [메시지 페이지와 맵핑]
     @GetMapping("/msg")
     public String msg(Model model) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
         model.addAttribute("rooms", roomService.getmyroomlist());
         model.addAttribute("notes", roomService.getmynotelist());
         return "member/member_msg";
@@ -457,7 +528,23 @@ public class MemberController { // C S
     // 02-15 채널 정보 출력 - 조지훈
     @GetMapping("/channel/{memberNo}")
     public String channel(@PathVariable("memberNo") int memberNo, Model model) {
-        MemberEntity memberEntity = memberService.getMember(memberNo);
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
         // 02-17 조지훈
         String realimg = null;
         if (memberEntity.getChannelImg() != null) {
@@ -516,13 +603,27 @@ public class MemberController { // C S
     }
 
     // 충전소 페이지 맵핑
-    @GetMapping("/member_payment")
-    public String payment(Model model) {
+    @GetMapping("/member_payment/{memberNo}")
+    public String payment(Model model, @PathVariable("memberNo") int memberNo) {
+
         // 1. 로그인 세션 호출
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-        MemberDto memberDto = memberService.getmemberDto(loginDto.getMemberNo());
-        model.addAttribute("memberDto", memberDto);
+        MemberEntity memberEntity = null;
+        if (loginDto != null) {
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+                memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+            // [로그인이 되어있는 상태]
+            assert memberEntity != null;
+            if (memberEntity.getChannelImg() == null) {
+                // [채널에 등록된 이미지가 없는 경우]
+                model.addAttribute("isLoginCheck", 1);
+            } else {
+                model.addAttribute("isLoginCheck", 2);
+            }
+            model.addAttribute("memberEntity", memberEntity);
+        }
+
 
         return "member/member_payment";
     }

@@ -1326,11 +1326,23 @@
 
                     </div>
 
-                    <div class="card-body">
+                    <div class="card-body" style="height: 2rem;">
                         <div class="card-title" th:text="${'개설공방 :' + reply.roomEntity.roomTitle}">
                         </div>
-                        <p class="card-text" th:text="${'리뷰내용 :' +reply.replyContent}">
-                        </p>
+                        <div class="d-flex">
+                              <p class="card-text" th:text="${'리뷰내용 :' +reply.replyContent}">
+                              </p>
+                              <div class="mx-3 d-flex"  style="height: 1rem;">
+                                    <p>별점 :</p>
+                                  
+                                    <span th:each="num : ${#numbers.sequence(1,5)}">
+                                            <span th:if="${num<=reply.replyStar}"
+                                                  style="color: #ff9a9a;">★</span>
+                                        <span th:unless="${num<=reply.replyStar}">☆</span>
+                                        </span>
+                                </div>
+                        </div>
+                        
                     </div>
 
                     <!-- 리뷰카드 모달 -->

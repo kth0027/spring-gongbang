@@ -4,9 +4,9 @@
 }
 
 .title {
-    margin: 1rem 0;
+    margin: 2rem !important;
     border-bottom: 5px solid #374b73;
-    width: 15rem;
+    width: 14rem;
 }
 
 .successbtn button {

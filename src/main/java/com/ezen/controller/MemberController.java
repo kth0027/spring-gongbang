@@ -63,10 +63,16 @@ public class MemberController { // C S
 
     // 회원가입 처리 연결
     @PostMapping("/signupController") // 회원가입 처리 연결
-    public String signupController(MemberDto memberDto
-    ) {
+    public String signupController(MemberDto memberDto) {
         memberService.memberSignup(memberDto);
-        return "redirect:/";  // 회원가입 성공시 메인페이지 연결
+        return "redirect:/"; // 회원가입 성공시 메인페이지 연결
+    }
+
+    // 업데이트 처리 연결
+    @PostMapping("/updateController") // 회원가입 처리 연결
+    public String updateController(MemberDto memberDto) {
+        memberService.memberUpdate(memberDto);
+        return "member/info"; // 회원가입 성공시 메인페이지 연결
     }
 
     // 이메일 중복체크
@@ -147,7 +153,8 @@ public class MemberController { // C S
     // 아이디, 비밀번호 찾기
     @GetMapping("/findMyId")
     @ResponseBody
-    public String findMyIdController(@RequestParam("memberName") String name, @RequestParam("memberPhone") String phone) {
+    public String findMyIdController(@RequestParam("memberName") String name,
+            @RequestParam("memberPhone") String phone) {
         // js 에서 이름, 핸드폰 번호 받고 아이디 알려주기
 
         MemberEntity memberEntity = null;
@@ -157,7 +164,6 @@ public class MemberController { // C S
         }
         return "";
     }
-
 
     // @Author : 김정진
     // @Date : 2022-02-11
@@ -169,10 +175,10 @@ public class MemberController { // C S
     @ResponseBody
     @Transactional
     public String registerClass(@RequestParam("roomNo") int roomNo,
-                                @RequestParam("roomTime") String classTime,
-                                @RequestParam("roomDate") String roomDate,
-                                @RequestParam("person") int person,
-                                @RequestParam("price") int price) {
+            @RequestParam("roomTime") String classTime,
+            @RequestParam("roomDate") String roomDate,
+            @RequestParam("person") int person,
+            @RequestParam("price") int price) {
 
         MemberEntity memberEntity = null;
         // 0. 로그인된 회원 정보를 불러온다.
@@ -583,13 +589,18 @@ public class MemberController { // C S
             if (!file.getOriginalFilename().equals("")) { // 02-17 조지훈
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-"); // 02-17 조지훈
-                // String dir = "C:\\gongbang\\build\\resources\\main\\static\\channelimg";
-                String dir = "/home/ec2-user/gongbang/src/main/resources/static/channelimg";
-                String filepath = dir + "/" + uuidfile;
+                // 인텔리용
+// String dir = "C:\\gongbang\\build\\resources\\main\\static\\channelimg";
+
+                // vs코드 확인용
+               String dir = "C:\\gongbang\\src\\main\\resources\\static\\channelimg";
+
+                String filepath = dir + "\\" + uuidfile;
                 file.transferTo(new File(filepath));
             }
             memberService.channelregistration(
-                    MemberEntity.builder().memberNo(memberNo).channelTitle(channelTitle).channelContent(channelContent).channelImg(uuidfile).build());
+                    MemberEntity.builder().memberNo(memberNo).channelTitle(channelTitle).channelContent(channelContent)
+                            .channelImg(uuidfile).build());
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -645,7 +656,6 @@ public class MemberController { // C S
 
         return "member/member_payment";
     }
-
 
     // 충전 처리 컨트롤러
     @GetMapping("/paymentcontroller")

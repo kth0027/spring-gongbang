@@ -78,6 +78,10 @@ public class RoomService {
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
                 // 리눅스 전용
                 String dir = "/home/ec2-user/gongbang/src/main/resources/static/rooming";
+                //  String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+
+                // vs전용
+//              String dir = "C:\\gongbang\\src\\main\\resources\\static\\roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.

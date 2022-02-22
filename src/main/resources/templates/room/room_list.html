@@ -10,9 +10,24 @@
             overflow: hidden;
         }
     </style>-->
+    <style>
+        #map_div {
+            overflow: hidden;
+        }
+
+        .wrap1 {}
+
+        .wrap1 .close {
+            z-index: 99;
+        }
+    </style>
 </head>
 
 <body>
+
+
+
+
     <div th:replace="common.html::common"></div>
     <div th:replace="header.html::header"></div>
     <!--
@@ -180,22 +195,24 @@
     </div>
 
     <!-- 길 찾기 인증키는 실제 사용할 때만 사용해야하므로 주석처리 해둡니다. 사용할 때는 주석 해제 해야합니다. -->
-<!--    <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx1a649f9e9e5642ed82f72ada2ff00e9d"></script>-->
+    <!-- <script src="https://apis.openapi.sk.com/tmap/jsv2?version=1&appKey=l7xx1a649f9e9e5642ed82f72ada2ff00e9d"></script> -->
 
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c4b311c12f156511eb9b89bf63938e65&libraries=clusterer"></script>
-<script th:src="@{/js/roomview.js}"></script>
-<script th:src="@{/js/roomnavy.js}"></script>
-<script>
-    + function($) {
-        'use strict';
+    <script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=c4b311c12f156511eb9b89bf63938e65&libraries=clusterer"></script>
+    <script th:src="@{/js/roomview.js}"></script>
+    <script th:src="@{/js/roomnavy.js}"></script>
+    <script>
+        + function($) {
+            'use strict';
 
-        $(document).on('click.bs.sidebar.data-api', '[data-toggle="sidebar"]', function(e) {
-            e.preventDefault();
-            $(".sidebar").toggleClass("toggled");
-            $(".has-sidebar").toggleClass("toggled");
-        });
-    }(jQuery);
-</script>
+            $(document).on('click.bs.sidebar.data-api', '[data-toggle="sidebar"]', function(e) {
+                e.preventDefault();
+                $(".sidebar").toggleClass("toggled");
+                $(".has-sidebar").toggleClass("toggled");
+            });
+        }(jQuery);
+    </script>
+
+
 
 </body>
 

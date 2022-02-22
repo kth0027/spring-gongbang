@@ -4,6 +4,12 @@ body {
     margin: 0px;
 }
 
+.register-detail-wrapper svg {
+    width: 1.2rem;
+    margin: 0 0.2rem;
+    fill: #000000 !important;
+}
+
 
 /*
 클래스 등록 내부 컨텐츠 시작
@@ -88,6 +94,13 @@ clear: both;
     box-shadow: 3px 3px 3px #ff9a9a;
 }
 
+
+.register-content-wrapper label {
+    background-color: #ffdbdb;
+    padding: 0 1rem;
+    border-radius: 1rem;
+    display: block;
+}
 
 /*
 클래스 등록 내부 컨텐츠 종료
@@ -405,4 +418,38 @@ ul.tabs li.current {
     color: white;
     transform: scale(1.05);
     transition: all ease-in-out 1s;
+}
+
+/* 주소버튼 */
+.adsbtn {
+    background-color: #374b73;
+    color: #ff9a9a !important;
+    padding: 0 0.2rem;
+    border-radius: 0.2rem;
+    box-shadow: 3px 3px 3px #ff9a9a;
+
+}
+
+.adsbtn:hover {
+    transform: scale(1.05);
+    transition: all ease-in-out 0.3s;
+}
+
+/* 공방등록 */
+#class-register-btn {
+    background-color: #374b73;
+    color: #ff9a9a !important;
+    padding: 0 0.2rem;
+    border-radius: 0.2rem;
+    box-shadow: 3px 3px 3px #ff9a9a;
+    width: 8rem;
+    height: 3rem;
+}
+
+#class-register-btn:hover {
+    transform: scale(1.05);
+    transition: all ease-in-out 0.3s;
+    color: #67d5bf !important; 
+    font-size: 1.3rem;
+    width: 10rem;
 }

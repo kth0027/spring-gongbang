@@ -46,17 +46,17 @@
                         </div>
 
                         <div class="left-item">
-                            <div style="font-size: 1.0rem;">클래스 이름 :</div>
+                            <div style="font-size: 1.0rem;">클래스</div>
                             <div th:text="${room.roomTitle}" style="color: gray;"></div>
                         </div>
 
                         <div class="left-item">
-                            <div style="font-size: 1.0rem;">일시 :</div>
+                            <div style="font-size: 1.0rem;">일시</div>
                             <div th:text="${info.roomDate}" style="color: gray;"></div>
                         </div>
 
                         <div class="left-item">
-                            <div style="font-size: 1.0rem;">클래스 주소 :</div>
+                            <div style="font-size: 1.0rem;">클래스 주소</div>
                             <div th:text="${#strings.arraySplit(room.roomAddress, ',')[0]}" style="color: gray;">장소
                             </div>
                         </div>
@@ -65,8 +65,8 @@
                         <div class="left-item" th:if="${member.memberPhone == null}">
                             <div style="font-size: 1.0rem;">연락처</div>
                             <input type="text" value="" id="paymentPhone1" name="phoneNumber"
-                                   placeholder="연락가능한 번호를 입력해주세요">
-                            <div class="isTyped1"></div>
+                                   placeholder="연락가능한 번호를 입력해주세요" >
+                            <div class="isTyped1 mx-2"></div>
                         </div>
 
                     </div>

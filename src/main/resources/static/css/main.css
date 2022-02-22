@@ -599,7 +599,9 @@
         color: #666666;
     }
     
-    .rowimg {}
+    .rowimg {
+        height: 80%;
+    }
     
     .rowimg img {
         height: 100%;

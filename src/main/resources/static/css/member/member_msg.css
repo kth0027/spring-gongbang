@@ -3,6 +3,12 @@
     font-family: CookieRun-Regular;
 }
 
+.title {
+    margin: 2rem !important;
+    border-bottom: 5px solid #374b73;
+    width: 12rem;
+}
+
 .leftcontents {
     height: 45rem;
     box-shadow: 1rem 1rem 1rem #ccc;

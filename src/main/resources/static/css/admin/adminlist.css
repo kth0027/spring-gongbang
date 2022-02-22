@@ -57,6 +57,7 @@ ul.tabs li.current {
     line-height: 3rem;
     background: #ffdbdb;
     margin: 0.3rem 0;
+    font-size: 1.2rem;
 }
 
 ul.tabs li:hover {
@@ -86,25 +87,18 @@ ul.tabs li.current {
     height: 500px;
 }
 
-.admin-select-wrapper {
+.admin-select-wrapper:first {
     display: flex;
-    justify-content: left;
-    margin-top: 5.0rem;
+    justify-content: start;
+    margin-top: 2.0rem;
     padding: 0.8rem;
 }
 
-.admin-select-wrapper .admin-select-content {
+.admin-select-wrapper:first-child .admin-select-content {
     display: inherit;
     justify-content: left;
     align-items: center;
     margin-top: 0.5rem;
-    padding: 0.5rem;
-}
-
-#admin-chart-btn {
-    background: #ffffff;
-    border: 1px solid #374b73;
-    margin-top: 0.3rem;
     padding: 0.5rem;
 }
 
@@ -185,4 +179,39 @@ ul.tabs li.current {
 .pagingbox ul li a:hover {
     background: #ffdbdb !important;
     color: #374b73 !important;
+}
+
+
+/* 통계 */
+
+.admin-select-wrapper {
+    height: 4rem;
+}
+
+.admin-select-wrapper button {
+    background-color: #a1e9ff !important;
+    border-radius: 1rem;
+    height: 2rem;
+    margin: 0 auto;
+    border: none !important;
+    box-shadow: 3px 3px 10px #374b73;
+    width: 8rem;
+}
+
+.admin-select-wrapper button:hover {
+    transform: scale(1.05);
+    transition: all 0.3s ease-in-out;
+    font-size: 1.2rem;
+    color: #374b73;
+}
+
+.admin-chart-content {
+    margin-top: -1.3rem;
+    height: 35rem;
+}
+
+.admin-chart-wrapper span {
+    background-color: #f4bcff;
+    padding: 0.2rem 0.3rem;
+    border-radius: 0.3rem;
 }

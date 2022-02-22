@@ -65,7 +65,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -89,7 +89,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -122,7 +122,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -163,6 +163,7 @@ public class RoomController {
             }
         }
         roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
+
         if (roomEntities != null) {
             // 1. 개설된 강좌 리스트 정보를 넘겨줍니다.
             model.addAttribute("roomEntities", roomEntities);
@@ -186,7 +187,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -219,7 +220,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -266,7 +267,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -346,13 +347,14 @@ public class RoomController {
         roomEntity.setRoomETC(checkBox1 + "," + checkBox2 + "," + checkBox3);
         roomEntity.setRoomAddress(roomEntity.getRoomAddress() + "," + addressY + "," + addressX);
         roomEntity.setRoomView(0);
+        roomEntity.setRoomAvg(0);
 
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -394,7 +396,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -449,7 +451,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -535,7 +537,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -567,7 +569,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -695,7 +697,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -719,7 +721,7 @@ public class RoomController {
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;

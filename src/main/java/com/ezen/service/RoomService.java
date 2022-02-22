@@ -75,12 +75,13 @@ public class RoomService {
                 // 2.2 Spring 은 Tomcat 이 내장 서버라서, 실행할 때 마다 경로가 바뀐다. (내부적으로 로테이션을 돌면서)
 
                 // 인텔리전용
-                // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
-                // 리눅스 전용
-                String dir = "/home/ec2-user/gongbang/src/main/resources/static/rooming";
+                String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+                // 리눅스
+                // String dir = "/home/ec2-user/apps/ec2test/build/resources/main/static/roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.
+                // String filepath = dir + "\\" + uuidfile;
                 String filepath = dir + "/" + uuidfile;
 
                 try {
@@ -493,7 +494,7 @@ public class RoomService {
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
 
                 // 리눅스 경로
-                String dir = "/home/ec2-user/gongbang/src/main/resources/static/rooming";
+                String dir = "/home/ec2-user/apps/ec2test/build/resources/main/static/rooming";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.

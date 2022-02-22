@@ -24,6 +24,7 @@
         }
 
 
+
     </style>
 </head>
 
@@ -121,9 +122,13 @@
                                     <td th:text="${#strings.listSplit(room.roomAddress,',')[0]}"></td>
                                     <td>
                                         <span th:if="${room.roomStatus.equals('검토중')}" th:text="${room.roomStatus}"
-                                              style="color:red"></span>
+                                              style="color:pink"></span>
+                                        <span th:if="${room.roomStatus.equals('승인중')}" th:text="${room.roomStatus}"
+                                              style="color:navy"></span>
                                         <span th:if="${room.roomStatus.equals('승인완료')}" th:text="${room.roomStatus}"
                                               style="color:green"></span>
+                                        <span th:if="${room.roomStatus.equals('승인거부')}" th:text="${room.roomStatus}"
+                                              style="color:red"></span>
                                     </td>
                                     <td th:text="${#temporals.format (room.createdDate,'MM-dd hh:mm')}"></td>
                                     <td class="submitbtn_a">

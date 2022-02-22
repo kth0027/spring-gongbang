@@ -14,6 +14,7 @@ $(document).ready(function() {
 
 function test(year , month , day){
     var date = year + "-" + (month + 1) + "-" + day;
+    var selectedDate = new Date(date);
     $("#selectedDate").val(date);
     $("#roomDate").val(date);
 }

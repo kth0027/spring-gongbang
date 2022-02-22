@@ -338,7 +338,7 @@ public class MemberController { // C S
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
         if (loginDto != null) {
-            if(memberRepository.findById(loginDto.getMemberNo()).isPresent())
+            if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
                 memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
             // [로그인이 되어있는 상태]
             assert memberEntity != null;
@@ -583,8 +583,9 @@ public class MemberController { // C S
             if (!file.getOriginalFilename().equals("")) { // 02-17 조지훈
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-"); // 02-17 조지훈
-                String dir = "C:\\gongbang\\build\\resources\\main\\static\\channelimg";
-                String filepath = dir + "\\" + uuidfile;
+                // String dir = "C:\\gongbang\\build\\resources\\main\\static\\channelimg";
+                String dir = "/home/ec2-user/gongbang/src/main/resources/static/channelimg";
+                String filepath = dir + "/" + uuidfile;
                 file.transferTo(new File(filepath));
             }
             memberService.channelregistration(

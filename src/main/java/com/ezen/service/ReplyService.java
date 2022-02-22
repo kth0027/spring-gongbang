@@ -35,8 +35,6 @@ public class ReplyService {
 
     public boolean write(ReplyEntity replyEntity, List<MultipartFile> files, int roomNo, int replyStar) {
 
-        System.out.println("####################" + files.toString());
-
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
 
@@ -64,12 +62,11 @@ public class ReplyService {
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
 
                 // 인텔리 전용 경로
-                 String dir = "C:\\gongbang\\build\\resources\\main\\static\\replyimg";
-                // vs 전용 경로
-//                String dir = "C:\\gongbang\\src\\main\\resources\\static\\replyimg";
+                // String dir = "C:\\gongbang\\build\\resources\\main\\static\\replyimg";
+                // 리눅스 경로
+                String dir = "/home/ec2-user/gongbang/src/main/resources/static/replyimg";
 
-
-                String filepath = dir + "\\" + uuidfile;
+                String filepath = dir + "/" + uuidfile;
                 try {
                     file.transferTo(new File(filepath));
                 } catch (Exception e) {

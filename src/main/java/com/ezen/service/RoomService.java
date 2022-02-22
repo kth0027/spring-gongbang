@@ -75,14 +75,13 @@ public class RoomService {
                 // 2.2 Spring 은 Tomcat 이 내장 서버라서, 실행할 때 마다 경로가 바뀐다. (내부적으로 로테이션을 돌면서)
 
                 // 인텔리전용
-                String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
-
-                // vs전용
-//                String dir = "C:\\gongbang\\src\\main\\resources\\static\\roomimg";
+                // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+                // 리눅스 전용
+                String dir = "/home/ec2-user/gongbang/src/main/resources/static/rooming";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.
-                String filepath = dir + "\\" + uuidfile;
+                String filepath = dir + "/" + uuidfile;
 
                 try {
                     // 4. 지정한 경로에 파일을 저장시킨다.
@@ -208,6 +207,7 @@ public class RoomService {
         // 1. 승인 완료된 클래스만 가져와야합니다.
         roomEntities = roomRepository.findRoomByRoomStatus("승인완료", pageable);
         return roomEntities;
+
     }
 
     // [멤버용]
@@ -490,11 +490,14 @@ public class RoomService {
                 uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
                 // >> 서버에 저장
-                String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+                // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+
+                // 리눅스 경로
+                String dir = "/home/ec2-user/gongbang/src/main/resources/static/rooming";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.
-                String filepath = dir + "\\" + uuidfile;
+                String filepath = dir + "/" + uuidfile;
 
                 try {
                     file.transferTo(new File(filepath));

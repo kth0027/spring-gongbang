@@ -53,6 +53,14 @@ public class OauthService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         HttpSession session = request.getSession();   // 서버내 세션 가져오기
         session.setAttribute("logindto", loginDto);    // 세션 설정
 
+        // if 채널이미지 있으면 채널이미지 로컬에 저장된 경로 부여
+        // if 없으면
+
+
+        // 계층화
+        // 캡슐화
+
+
         // 리턴 ( 회원정보와 권한[키] )
         return new DefaultOAuth2User(
                 Collections.singleton(new SimpleGrantedAuthority(memberEntity.getRolekey())),

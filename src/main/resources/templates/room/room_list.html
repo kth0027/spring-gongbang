@@ -42,9 +42,13 @@
 <div class="wrap">
     <div class="container">
         <div class="row ">
-            <div th:if="${#lists.size(roomEntities) == 0}">개설된 강의가 없습니다 ㅜ.ㅜ</div>
+            <div th:if="${listSize == 0}" style="margin-top: 5.0rem;">
+
+                개설된 강의가 없습니다 ㅜ.ㅜ
+
+            </div>
             <!-- 룸 1개당 반복문-->
-            <div th:if="${#lists.size(roomEntities) != 0}" class="col-md-6 leftcontents" style="margin-top: 2rem;">
+            <div th:if="${listSize != 0}" class="col-md-6 leftcontents" style="margin-top: 2rem;">
                 <div class="roomlist" th:each="room : ${roomEntities}" th:if="${room.roomStatus.equals('승인완료')}">
                     <div class="row roombox d-flex">
                         <!-- 좌측 지도 -->
@@ -121,9 +125,7 @@
                 </div>
 
             </div>
-
-
-            <div th:if="${#lists.size(roomEntities) != 0}" class="col-md-5 offset-1" id="map-default-wrapper">
+            <div th:if="${listSize != 0}" class="col-md-5 offset-1" id="map-default-wrapper">
                 <div class="mb-1 h3 mb-3">
                     오픈된 <span class="text-info">공방</span>을확인하세요!
                 </div>
@@ -165,7 +167,6 @@
                 <!-- 닫기 버튼 -->
             </div>
             <div class="modal-body p-5 pt-0" id="modalnavy1">
-
                 <div class="ft_area">
                     <div class="ft_select_wrap">
                         <div class="ft_select text-center">

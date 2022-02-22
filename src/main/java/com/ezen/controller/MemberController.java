@@ -412,11 +412,10 @@ public class MemberController { // C S
 
     // [내가 개설한 클래스와 맵핑]
     @GetMapping("/myclass")
-    public String myclass(Model model, @PageableDefault Pageable pageable) {
+    public String myclass(Model model) {
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-
         MemberEntity memberEntity = null;
         if (loginDto != null) {
             if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
@@ -433,10 +432,12 @@ public class MemberController { // C S
         }
 
         // 로그인 세션에 저장되어 있는 세션을 이용해 memberNo 를 불러옵니다.
+        assert loginDto != null;
         int memberNo = loginDto.getMemberNo();
 
-        Page<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo, pageable);
+        List<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo);
         model.addAttribute("roomDtos", roomDtos);
+
         return "member/member_class";
     }
 
@@ -591,7 +592,9 @@ public class MemberController { // C S
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-"); // 02-17 조지훈
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\channelimg";
-                String dir = "/home/ec2-user/gongbang/src/main/resources/static/channelimg";
+
+                String dir = "/home/ec2-user/apps/gongbang/build/resources/main/static/channelimg";
+
                 String filepath = dir + "/" + uuidfile;
                 file.transferTo(new File(filepath));
             }

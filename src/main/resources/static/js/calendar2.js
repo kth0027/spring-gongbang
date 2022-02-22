@@ -231,6 +231,7 @@ function calendarInit(data, roomNo) {
                 if(dayId == dataSplit[j]){
                     calendar.innerHTML = calendar.innerHTML + '<div style="color: orange;" onclick="daySelect('+currentYear+','+currentMonth+','+i+','+roomNo+')" class="day current day-select active" id="'+dayId+'">' + i + '</div>';
                     j = j + 1;
+                    flag = true;
                     break;
                 } else {
                     j = j + 1;

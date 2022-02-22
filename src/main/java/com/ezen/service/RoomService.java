@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -212,19 +213,14 @@ public class RoomService {
 
     // [멤버용]
     // 내가 개설한 강좌 불러오기
-    public Page<RoomEntity> getMyGongbang(int memberNo, @PageableDefault Pageable pageable) {
+    public List<RoomEntity> getMyGongbang(int memberNo) {
+
+        HttpSession session = request.getSession();
+        MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
 
         // 1. 룸 엔티티 Page 타입 변수 선언 및 초기화
-        Page<RoomEntity> myGongbangs = null;
-        int page = -1;
-        if (pageable.getPageNumber() == 0) {
-            page = 0;
-        } else {
-            page = pageable.getPageNumber() - 1;
-        }
-        pageable
-                = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "roomNo")); // 변수 페이지 10개 출력
-        myGongbangs = roomRepository.findMyGongbang(memberNo, pageable);
+        List<RoomEntity> myGongbangs = null;
+        myGongbangs = roomRepository.findMyGongbang(memberNo);
 
         return myGongbangs;
 
@@ -493,7 +489,7 @@ public class RoomService {
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
 
                 // 리눅스 경로
-                String dir = "/home/ec2-user/gongbang/src/main/resources/static/rooming";
+                String dir = "/home/ec2-user/apps/gongbang/build/resources/main/static/roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.

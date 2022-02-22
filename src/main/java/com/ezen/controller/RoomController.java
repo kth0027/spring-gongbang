@@ -164,6 +164,10 @@ public class RoomController {
         }
         roomEntities = roomService.getRoomEntityBySearch(pageable, keyword, local, category);
 
+        int roomSize = 0;
+        System.out.println("#####" + roomEntities.get().count());
+        model.addAttribute("listSize", roomEntities.get().count());
+
         if (roomEntities != null) {
             // 1. 개설된 강좌 리스트 정보를 넘겨줍니다.
             model.addAttribute("roomEntities", roomEntities);
@@ -349,7 +353,6 @@ public class RoomController {
         roomEntity.setRoomView(0);
         roomEntity.setRoomAvg(0);
 
-
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
         MemberEntity memberEntity = null;
@@ -374,10 +377,9 @@ public class RoomController {
 
         if (result) {
             // 2. 등록 완료 후, 내가 등록한 클래스 페이지로 이동
-            Page<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo, pageable);
-            // Page<RoomEntity> roomDtos = roomService.getroomlist(pageable);
+            List<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo);
             model.addAttribute("roomDtos", roomDtos);
-            return "member/member_class";
+            return "redirect:/member/myclass";
         } else {
             return "error";
         }
@@ -590,7 +592,7 @@ public class RoomController {
         timeTableEntity.setRoomStatus("모집중");
         boolean result = roomService.registerTimeToClass(timeTableEntity, roomNo);
 
-        Page<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo, pageable);
+        List<RoomEntity> roomDtos = roomService.getMyGongbang(memberNo);
         model.addAttribute("roomDtos", roomDtos);
 
         return "member/member_class";

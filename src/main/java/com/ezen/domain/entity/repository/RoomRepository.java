@@ -13,7 +13,7 @@ public interface RoomRepository extends JpaRepository<RoomEntity, Integer> {
 
     // 1. 특정 사용자가 개설한 공방만 탐색색
     @Query(nativeQuery = true, value = "SELECT * FROM room WHERE memberNo = :memberNo")
-    Page<RoomEntity> findMyGongbang(@Param("memberNo") int memberNo, Pageable pageable);
+    List<RoomEntity> findMyGongbang(@Param("memberNo") int memberNo);
 
     // 5. roomDate 로 Room 엔티티 찾기
     @Query(nativeQuery = true, value = "SELECT * FROM room WHERE roomDate = :roomDate")

@@ -63,8 +63,11 @@ public class ReplyService {
 
                 // 인텔리 전용 경로
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\replyimg";
+                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\replyimg";
+
+
                 // VSCIDE 전용
-                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\replyimg";
+//                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\replyimg";
                 // 리눅스 경로
                 // String dir = "/home/ec2-user/apps/gongbang/build/resources/main/static/replyimg";
 

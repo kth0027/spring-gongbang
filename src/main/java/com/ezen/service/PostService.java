@@ -97,12 +97,14 @@ public class PostService {
                 uuidfile = uuid.toString() + "_"
                         + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
 
+                //                인텔리 전용
+                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\postimg";
                 // 리눅스
                 // String dir =
                 // "/home/ec2-user/apps/gongbang/build/resources/main/static/postimg";
 
                 // VSCIDE 전용
-                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\postimg";
+//                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\postimg";
                 
                 String filepath = dir + "/" + uuidfile;
 

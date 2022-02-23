@@ -78,8 +78,9 @@ public class RoomService {
 
                 // 인텔리전용
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\roomimg";
                 // VSCIDE 전용
-                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\roomimg";
+//                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\roomimg";
                 // 리눅스 전용
                 // String dir = "/home/ec2-user/gongbang/src/main/resources/static/rooming";
 
@@ -492,9 +493,11 @@ public class RoomService {
                         + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
                 // 2. 저장될 경로
                 // >> 서버에 저장
+                // 인텔리제이 전용
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
+                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\roomimg";
                 // VSCIDE 전용
-                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\roomimg";
+//                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\roomimg";
                 // 리눅스 경로
                 // String dir = "/home/ec2-user/apps/gongbang/build/resources/main/static/roomimg";
 

@@ -55,56 +55,26 @@ public class MemberController { // C S
     @Autowired
     private RoomLikeRepository roomLikeRepository;
 
-    // // 회원가입페이지 연결
-    // @GetMapping("/signup")
-    // public String signup() {
-    // return "member/signup";
-    // }
+    // 회원가입페이지 연결
+    @GetMapping("/signup")
+    public String signup() {
+        return "member/signup";
+    }
 
     // 회원가입 처리 연결
     @PostMapping("/signupController") // 회원가입 처리 연결
-    public String signupController(MemberDto memberDto) {
+    public String signupController(MemberDto memberDto
+    ) {
         memberService.memberSignup(memberDto);
-        return "redirect:/"; // 회원가입 성공시 메인페이지 연결
+        return "redirect:/";  // 회원가입 성공시 메인페이지 연결
     }
 
-    // 회원수정 처리 연결
-    @PostMapping("/updateController") // 회원수정 처리 연결
+    // 업데이트 처리 연결
+    @PostMapping("/updateController") // 회원가입 처리 연결
     public String updateController(MemberDto memberDto) {
         memberService.memberUpdate(memberDto);
-        return "redirect:/"; // 회원성공시 메인페이지 연결
+        return "member/info"; // 회원가입 성공시 메인페이지 연결
     }
-
-    // // 업데이트 처리 연결
-    // @PostMapping("/updateController") // 업데이트 처리 연결
-    // public String updateController(MemberDto memberDto, Model model) {
-    // System.out.println(memberDto.toString());
-
-    // HttpSession session = request.getSession();
-    // MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
-    // MemberEntity memberEntity = null;
-    // if (loginDto != null) {
-    // if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
-    // memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
-    // // [로그인이 되어있는 상태]
-    // assert memberEntity != null;
-    // if (memberEntity.getChannelImg() == null) {
-    // // [채널에 등록된 이미지가 없는 경우]
-    // model.addAttribute("isLoginCheck", 1);
-    // } else {
-    // model.addAttribute("isLoginCheck", 2);
-    // }
-    // model.addAttribute("memberEntity", memberEntity);
-    // }
-
-    // boolean result = memberService.memberUpdate(memberDto);
-    // if(result){
-    // return "member/info"; // 회원수정 성공시 멤버수정 연결
-    // } else {
-    // return "member/info";
-    // }
-
-    // }
 
     // 이메일 중복체크
     @GetMapping("/emailcheck")
@@ -184,8 +154,7 @@ public class MemberController { // C S
     // 아이디, 비밀번호 찾기
     @GetMapping("/findMyId")
     @ResponseBody
-    public String findMyIdController(@RequestParam("memberName") String name,
-            @RequestParam("memberPhone") String phone) {
+    public String findMyIdController(@RequestParam("memberName") String name, @RequestParam("memberPhone") String phone) {
         // js 에서 이름, 핸드폰 번호 받고 아이디 알려주기
 
         MemberEntity memberEntity = null;
@@ -195,6 +164,7 @@ public class MemberController { // C S
         }
         return "";
     }
+
 
     // @Author : 김정진
     // @Date : 2022-02-11
@@ -206,10 +176,10 @@ public class MemberController { // C S
     @ResponseBody
     @Transactional
     public String registerClass(@RequestParam("roomNo") int roomNo,
-            @RequestParam("roomTime") String classTime,
-            @RequestParam("roomDate") String roomDate,
-            @RequestParam("person") int person,
-            @RequestParam("price") int price) {
+                                @RequestParam("roomTime") String classTime,
+                                @RequestParam("roomDate") String roomDate,
+                                @RequestParam("person") int person,
+                                @RequestParam("price") int price) {
 
         MemberEntity memberEntity = null;
         // 0. 로그인된 회원 정보를 불러온다.
@@ -260,12 +230,13 @@ public class MemberController { // C S
     @PostMapping("/memberPay")
     @Transactional
     public String memberPay(Model model,
-            @RequestParam("roomNo") int roomNo,
-            @RequestParam("roomTime") String classTime,
-            @RequestParam("roomDate") String roomDate,
-            @RequestParam("person") int person,
-            @RequestParam("price") int price,
-            @RequestParam("phoneNumber") String phone) {
+                            @RequestParam("roomNo") int roomNo,
+                            @RequestParam("roomTime") String classTime,
+                            @RequestParam("roomDate") String roomDate,
+                            @RequestParam("person") int person,
+                            @RequestParam("price") int price,
+                            @RequestParam("phoneNumber") String phone) {
+
 
         MemberEntity memberEntity = null;
         // 0. 로그인된 회원 정보를 불러온다.
@@ -285,6 +256,7 @@ public class MemberController { // C S
             }
             model.addAttribute("memberEntity", memberEntity);
         }
+
 
         // 0.1 로그인 세션 정보가 없으면 메인 페이지로 이동해서 로그인을 요구한다.
         if (loginDto == null) {
@@ -356,17 +328,18 @@ public class MemberController { // C S
         return "member/history_list";
     }
 
+
     // @Author : 김정진
     // @Date : 2022-02-15 ~ 2022-02-16
     // room_view.html 에서 member_payment.html 로 넘어가는 맵핑
     // 결제하려는 회원의 정보와 클래스 정보를 member_payment.html 에 전달하는 메소드입니다.
     @GetMapping("/memberPaymentController")
     public String memberPaymentController(Model model,
-            @RequestParam("roomNo") int roomNo,
-            @RequestParam("roomDate") String roomDate,
-            @RequestParam("roomTime") String roomTime,
-            @RequestParam("person") int person,
-            @RequestParam("price") int price) {
+                                          @RequestParam("roomNo") int roomNo,
+                                          @RequestParam("roomDate") String roomDate,
+                                          @RequestParam("roomTime") String roomTime,
+                                          @RequestParam("person") int person,
+                                          @RequestParam("price") int price) {
 
         HttpSession session = request.getSession();
         MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
@@ -564,7 +537,7 @@ public class MemberController { // C S
     @GetMapping("/notereplywrite")
     @ResponseBody
     public String notereplywrite(@RequestParam("noteNo") int noteNo,
-            @RequestParam("noteReply") String noteReply) {
+                                 @RequestParam("noteReply") String noteReply) {
 
         roomService.notereplywrite(noteNo, noteReply);
 
@@ -607,33 +580,28 @@ public class MemberController { // C S
         return "member/channel";
     }
 
-    // 02-15 채널 정보 등록 - 조지훈
+    // 02-15 채널 정보 등록  - 조지훈
     @PostMapping("/channelregistration")
     public String channelregistration(@RequestParam("memberNo") int memberNo,
-            @RequestParam("channelContent") String channelContent,
-            @RequestParam("channelTitle") String channelTitle,
-            @RequestParam("memberImg") MultipartFile file) {
+                                      @RequestParam("channelContent") String channelContent,
+                                      @RequestParam("channelTitle") String channelTitle,
+                                      @RequestParam("memberImg") MultipartFile file) {
         try {
             String uuidfile = null; // 02-17 조지훈
             if (!file.getOriginalFilename().equals("")) { // 02-17 조지훈
                 UUID uuid = UUID.randomUUID();
                 uuidfile = uuid.toString() + "_" + file.getOriginalFilename().replaceAll("_", "-"); // 02-17 조지훈
-                // 인텔리제이 서버
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\channelimg";
+                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\channelimg";
 
-                // VSCODE 서버
-                String dir = "C:\\Users\\505\\git\\gongbang\\src\\main\\resources\\static\\channelimg";
 
-                // 리눅스서버
-                // String dir =
-                // "/home/ec2-user/apps/gongbang/build/resources/main/static/channelimg";
+//                String dir = "/home/ec2-user/gongbang-jj/build/resources/main/static/channelimg";
 
                 String filepath = dir + "/" + uuidfile;
                 file.transferTo(new File(filepath));
             }
             memberService.channelregistration(
-                    MemberEntity.builder().memberNo(memberNo).channelTitle(channelTitle).channelContent(channelContent)
-                            .channelImg(uuidfile).build());
+                    MemberEntity.builder().memberNo(memberNo).channelTitle(channelTitle).channelContent(channelContent).channelImg(uuidfile).build());
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -686,8 +654,10 @@ public class MemberController { // C S
             model.addAttribute("memberEntity", memberEntity);
         }
 
+
         return "member/member_payment";
     }
+
 
     // 충전 처리 컨트롤러
     @GetMapping("/paymentcontroller")

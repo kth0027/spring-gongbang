@@ -68,11 +68,11 @@ public class MemberController { // C S
         return "redirect:/"; // 회원가입 성공시 메인페이지 연결
     }
 
-    // 회원가입 처리 연결
-    @PostMapping("/updateController") // 회원가입 처리 연결
+    // 회원수정 처리 연결
+    @PostMapping("/updateController") // 회원수정 처리 연결
     public String updateController(MemberDto memberDto) {
         memberService.memberUpdate(memberDto);
-        return "redirect:/"; // 회원가입 성공시 메인페이지 연결
+        return "redirect:/"; // 회원성공시 메인페이지 연결
     }
 
     // // 업데이트 처리 연결

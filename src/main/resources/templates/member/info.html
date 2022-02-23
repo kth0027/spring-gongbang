@@ -53,54 +53,54 @@
                                 <!-- 회원정보 -->
                                 <div class="writebox">
                                     <div class="h3">회원 정보</div>
-                                    <form action="">
-                                        <table class="table">
-                                            <tr>
-                                                <td>아이디</td>
-                                                <td th:text="${memberEntity.getMemberId}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>이름</td>
-                                                <td th:text="${memberEntity.getMemberName}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>이메일</td>
-                                                <td th:text="${memberEntity.getMemberEmail}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>회원등급</td>
-                                                <td>서비스준비중</td>
-                                            </tr>
-                                            <tr>
-                                                <td>연락처</td>
-                                                <td th:text="${memberEntity.getMemberPhone}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>포인트</td>
-                                                <td th:text="${memberEntity.getMemberPoint}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>성별</td>
-                                                <td th:text="${memberEntity.getMemberGender}"></td>
-                                            </tr>
-                                            <tr>
-                                                <td>가입날짜</td>
-                                                <td
-                                                    th:text="${#temporals.format(memberEntity.createdDate,'yyyy-MM-dd hh:mm')}">
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <div class="d-flex justify-content-center infosubmitbtn">
-                                            <input class="btninfo" type="button" value="수정하기">
-                                        </div>
 
-                                    </form>
+                                    <table class="table">
+                                        <tr>
+                                            <td>아이디</td>
+                                            <td th:text="${memberEntity.getMemberId}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>이름</td>
+                                            <td th:text="${memberEntity.getMemberName}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>이메일</td>
+                                            <td th:text="${memberEntity.getMemberEmail}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>회원등급</td>
+                                            <td>서비스준비중</td>
+                                        </tr>
+                                        <tr>
+                                            <td>연락처</td>
+                                            <td th:text="${memberEntity.getMemberPhone}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>포인트</td>
+                                            <td th:text="${memberEntity.getMemberPoint}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>성별</td>
+                                            <td th:text="${memberEntity.getMemberGender}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>가입날짜</td>
+                                            <td
+                                                th:text="${#temporals.format(memberEntity.createdDate,'yyyy-MM-dd hh:mm')}">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <div class="d-flex justify-content-center infosubmitbtn">
+                                        <input class="btninfo" type="button" value="수정하기">
+                                    </div>
+
+
                                 </div>
 
                                 <!-- 회원정보 수정 -->
                                 <div class="rewritebox">
                                     <div class="h3">회원 정보수정</div>
-                                    <form action="/member/updatecontroller" method="post">
+                                    <form action="/member/updateController" method="post">
                                         <input class="d-none" type="text" maxlength="15" placeholder="5~15자리"
                                             name="memberNo" th:value="${memberEntity.getMemberNo}">
                                         <table class="table myaddtable">
@@ -112,31 +112,30 @@
                                                         th:value="${memberEntity.memberId}">
                                                     <p id="idUpdateCheck"></p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td th:text="' (비밀번호) ****** '"></td>
-                                                <td><input id="memberUpdatePassword" class="form-control" type="password" maxlength="15" placeholder="8~16자리"
+                                                <td><input id="memberUpdatePassword" class="form-control"
+                                                        type="password" maxlength="15" placeholder="8~16자리"
                                                         name="memberPassword" th:value="${memberEntity.memberPassword}">
                                                     <p id="passwordUpdatecheck"></p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td th:text="' (이름) ' + ${memberEntity.getMemberName}"></td>
-                                                <td><input id="memberNameUpdate" class="form-control"  type="text" maxlength="15" placeholder="1~15자리"
-                                                        name="memberName" th:value="${memberEntity.memberName}">
+                                                <td><input id="memberNameUpdate" class="form-control" type="text"
+                                                        maxlength="15" placeholder="1~15자리" name="memberName"
+                                                        th:value="${memberEntity.memberName}">
                                                     <p id="nameUpdatecheck"></p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td th:text="' (이메일) ' + ${memberEntity.getMemberEmail}"></td>
-                                                <td><input id="memberEmail" class="form-control" type="text" placeholder="@(포함)" maxlength=""
-                                                        name="memberEmail" th:value="${memberEntity.memberEmail}">
+                                                <td><input id="memberEmail" class="form-control" type="text"
+                                                        placeholder="@(포함)" maxlength="" name="memberEmail"
+                                                        th:value="${memberEntity.memberEmail}">
                                                     <p id="emailUpdatecheck"></p>
                                                 </td>
-
                                             </tr>
 
                                             <tr>
@@ -145,11 +144,11 @@
                                             </tr>
                                             <tr>
                                                 <td th:text="' (연락처) ' + ${memberEntity.getMemberPhone}"></td>
-                                                <td><input id="memberPhoneUpdate" class="form-control" type="text" maxlength="12" placeholder="11~12자리"
-                                                        name="memberPhone" th:value="${memberEntity.memberPhone}">
+                                                <td><input id="memberPhoneUpdate" class="form-control" type="text"
+                                                        maxlength="12" placeholder="11~12자리" name="memberPhone"
+                                                        th:value="${memberEntity.memberPhone}">
                                                     <p id="phoneUpdatecheck"></p>
                                                 </td>
-
                                             </tr>
                                             <tr>
                                                 <td>포인트</td>
@@ -157,7 +156,7 @@
                                             </tr>
                                             <tr>
                                                 <td th:text="' (성별) ' + ${memberEntity.getMemberGender}"></td>
-                                                <td class="d-flex align-items-center">
+                                                <td class="d-flex align-items-center form-control">
                                                     <input class="gendercheck col-1" type="radio" name="memberGender"
                                                         id="msex1" value="남" checked="checked">남자
                                                     <input class="gendercheck col-1" type="radio" name="memberGender"
@@ -165,6 +164,7 @@
                                                 </td>
 
                                             </tr>
+
                                             <tr>
                                                 <td>가입날짜</td>
                                                 <td th:text="${memberEntity.getCreatedDate}"></td>
@@ -172,23 +172,26 @@
                                             <tr>
                                                 <td></td>
 
-                                                <td class="">   <div class="d-flex w-100" style="">
-                                                    
-                                                    <span style="display: inline-block;"><input
-                                                            style="width: 2rem !important;" type="checkbox" class=""
-                                                            name="infosign"></span>
-                                                    <span class="text-info fw-bold">*개인정보수집·이용에 동의합니다. *
-                                                    </span>
-                                                </div></td>
-                                               
+                                                <td class="">
+                                                    <div class="d-flex w-100" style="">
+                                                        <span style="display: inline-block;"><input
+                                                                style="width: 2rem !important;" type="checkbox" class=""
+                                                                name="infosign"></span>
+                                                        <span class="text-info fw-bold">*개인정보수집·이용에 동의합니다. *
+                                                        </span>
+                                                    </div>
+
+
+
                                             </tr>
                                         </table>
-
-                                        <div class="d-flex justify-content-center btninput">
-                                            <input id="formsubmit" class="form-control" type="submit" value="확인">
-                                            <input class="btnback" type="button" value="뒤로가기">
-                                        </div>
                                     </form>
+
+                                    <div class="d-flex justify-content-center btninput">
+                                        <input id="formsubmit" class="form-control" type="submit" value="확인">
+                                        <input class="btnback" type="button" value="뒤로가기">
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -306,8 +309,8 @@
                 var emailj = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
                 var memberEmail = $("#memberEmail").val();
                 if (!emailj.test(memberEmail)) {
-                    $("#emailUpdatecheck").html("이메일 형식으로 입력해주세요");
-                    $("#emailUpdatecheck").css('color', 'green');
+                    $("#emailUpdatechec").html("이메일 형식으로 입력해주세요");
+                    $("#emailUpdatechec").css('color', 'green');
                 } else {
                     // 이메일 중복체크 비동기 통신
                     $.ajax({

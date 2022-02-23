@@ -55,11 +55,11 @@ public class MemberController { // C S
     @Autowired
     private RoomLikeRepository roomLikeRepository;
 
-    // 회원가입페이지 연결
-    @GetMapping("/signup")
-    public String signup() {
-        return "member/signup";
-    }
+    // // 회원가입페이지 연결
+    // @GetMapping("/signup")
+    // public String signup() {
+    // return "member/signup";
+    // }
 
     // 회원가입 처리 연결
     @PostMapping("/signupController") // 회원가입 처리 연결
@@ -68,12 +68,43 @@ public class MemberController { // C S
         return "redirect:/"; // 회원가입 성공시 메인페이지 연결
     }
 
-   // 업데이트 처리 연결
-   @PostMapping("/updateController") // 회원가입 처리 연결
-   public String updateController(MemberDto memberDto) {
-       memberService.memberUpdate(memberDto);
-       return "member/info"; // 회원가입 성공시 메인페이지 연결
-   }
+    // 회원가입 처리 연결
+    @PostMapping("/updateController") // 회원가입 처리 연결
+    public String updateController(MemberDto memberDto) {
+        memberService.memberUpdate(memberDto);
+        return "redirect:/"; // 회원가입 성공시 메인페이지 연결
+    }
+
+    // // 업데이트 처리 연결
+    // @PostMapping("/updateController") // 업데이트 처리 연결
+    // public String updateController(MemberDto memberDto, Model model) {
+    // System.out.println(memberDto.toString());
+
+    // HttpSession session = request.getSession();
+    // MemberDto loginDto = (MemberDto) session.getAttribute("logindto");
+    // MemberEntity memberEntity = null;
+    // if (loginDto != null) {
+    // if (memberRepository.findById(loginDto.getMemberNo()).isPresent())
+    // memberEntity = memberRepository.findById(loginDto.getMemberNo()).get();
+    // // [로그인이 되어있는 상태]
+    // assert memberEntity != null;
+    // if (memberEntity.getChannelImg() == null) {
+    // // [채널에 등록된 이미지가 없는 경우]
+    // model.addAttribute("isLoginCheck", 1);
+    // } else {
+    // model.addAttribute("isLoginCheck", 2);
+    // }
+    // model.addAttribute("memberEntity", memberEntity);
+    // }
+
+    // boolean result = memberService.memberUpdate(memberDto);
+    // if(result){
+    // return "member/info"; // 회원수정 성공시 멤버수정 연결
+    // } else {
+    // return "member/info";
+    // }
+
+    // }
 
     // 이메일 중복체크
     @GetMapping("/emailcheck")
@@ -592,9 +623,10 @@ public class MemberController { // C S
 
                 // VSCODE 서버
                 String dir = "C:\\Users\\505\\git\\gongbang\\src\\main\\resources\\static\\channelimg";
-            
+
                 // 리눅스서버
-                // String dir = "/home/ec2-user/apps/gongbang/build/resources/main/static/channelimg";
+                // String dir =
+                // "/home/ec2-user/apps/gongbang/build/resources/main/static/channelimg";
 
                 String filepath = dir + "/" + uuidfile;
                 file.transferTo(new File(filepath));

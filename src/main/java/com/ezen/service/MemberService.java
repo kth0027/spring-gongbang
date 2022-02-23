@@ -44,6 +44,7 @@ public class MemberService implements UserDetailsService {
     }
 
     // 회원수정 메소드
+    @Transactional
     public boolean memberUpdate(MemberDto memberDto) {
         // 패스워드 암호화 [ BCryptPasswordEncoder ]
         // 1. 암호화 클래스 객체 생성
@@ -51,6 +52,9 @@ public class MemberService implements UserDetailsService {
         // 2. 입력받은 memberDto내 패스워드 재설정 [ 암호화객체명.encode( 입력받은 패스워드 ) ]
         // memberDto.setMemberPassword(passwordEncoder.encode(memberDto.getMemberPassword()));
         memberRepository.save(memberDto.toentity()); // save(entity) : insert / update : Entity를 DB에 저장
+
+        // 성공, 실패 여부를 체크해야한다.
+
         return true;
     }
 

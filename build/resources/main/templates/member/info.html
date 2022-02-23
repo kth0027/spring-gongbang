@@ -22,15 +22,22 @@
             <div class="row d-flex">
                 <div class="col-4 d-flex flex-column flex-shrink-0 p-3">
                     <!-- 좌측 탭 -->
-                    <a href="#" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <a href="#"
+                        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                         <img class="mx-3" th:src="@{/img/logo/logo.png}" alt="logo" style="width:5rem;">
                         <span class="fs-4 infotitle">나의정보</span>
                     </a>
                     <hr>
                     <div class="nav  me-3 navlist" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">회원정보</button>
-                        <button class="nav-link d-none" id="v-pills-reserveinfo-tab" data-bs-toggle="pill" data-bs-target="#v-pills-reserveinfo" type="button" role="tab" aria-controls="v-pills-reserveinfo" aria-selected="false">예약정보</button>
-                        <button class="nav-link signoutbtn" id="v-pills-signout-tab" data-bs-toggle="modal" data-bs-target="#modalmdelete" type="button" role="tab" aria-controls="v-pills-signout" aria-selected="false">회원탈퇴
+                        <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
+                            aria-selected="true">회원정보</button>
+                        <button class="nav-link d-none" id="v-pills-reserveinfo-tab" data-bs-toggle="pill"
+                            data-bs-target="#v-pills-reserveinfo" type="button" role="tab"
+                            aria-controls="v-pills-reserveinfo" aria-selected="false">예약정보</button>
+                        <button class="nav-link signoutbtn" id="v-pills-signout-tab" data-bs-toggle="modal"
+                            data-bs-target="#modalmdelete" type="button" role="tab" aria-controls="v-pills-signout"
+                            aria-selected="false">회원탈퇴
                         </button>
                     </div>
                     <hr>
@@ -39,13 +46,14 @@
                 <div class="col-8 p-5 ">
                     <div class="tab-content" id="v-pills-tabContent">
                         <!-- 회원정보 페이지 -->
-                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel"
+                            aria-labelledby="v-pills-profile-tab">
                             <div class="row writeform">
 
                                 <!-- 회원정보 -->
                                 <div class="writebox">
                                     <div class="h3">회원 정보</div>
-                                    <form action="">
+                          
                                         <table class="table">
                                             <tr>
                                                 <td>아이디</td>
@@ -77,7 +85,8 @@
                                             </tr>
                                             <tr>
                                                 <td>가입날짜</td>
-                                                <td th:text="${#temporals.format(memberEntity.createdDate,'yyyy-MM-dd hh:mm')}">
+                                                <td
+                                                    th:text="${#temporals.format(memberEntity.createdDate,'yyyy-MM-dd hh:mm')}">
                                                 </td>
                                             </tr>
                                         </table>
@@ -85,32 +94,49 @@
                                             <input class="btninfo" type="button" value="수정하기">
                                         </div>
 
-                                    </form>
+                    
                                 </div>
 
                                 <!-- 회원정보 수정 -->
                                 <div class="rewritebox">
                                     <div class="h3">회원 정보수정</div>
                                     <form action="/member/updatecontroller" method="post">
-                                        <input class="d-none" type="text" maxlength="15" placeholder="5~15자리" name="memberNo" th:value="${memberEntity.getMemberNo}">
+                                        <input class="d-none" type="text" maxlength="15" placeholder="5~15자리"
+                                            name="memberNo" th:value="${memberEntity.getMemberNo}">
                                         <table class="table myaddtable">
                                             <tr>
                                                 <td th:text="'(아이디) ' + ${memberEntity.getMemberId}">
                                                 </td>
-                                                <td><input type="text" maxlength="15" placeholder="5~15자리" name="memberId" th:value="${memberEntity.memberId}"></td>
+                                                <td><input id="memberUpdateId" class="form-control" type="text"
+                                                        maxlength="15" placeholder="5~15자리" name="memberId"
+                                                        th:value="${memberEntity.memberId}">
+                                                    <p id="idUpdateCheck"></p>
+                                                </td>
+
                                             </tr>
                                             <tr>
                                                 <td th:text="' (비밀번호) ****** '"></td>
-                                                <td><input type="password" maxlength="15" placeholder="8~16자리" name="memberPassword" th:value="${memberEntity.memberPassword}">
+                                                <td><input id="memberUpdatePassword" class="form-control" type="password" maxlength="15" placeholder="8~16자리"
+                                                        name="memberPassword" th:value="${memberEntity.memberPassword}">
+                                                    <p id="passwordUpdatecheck"></p>
                                                 </td>
+
                                             </tr>
                                             <tr>
                                                 <td th:text="' (이름) ' + ${memberEntity.getMemberName}"></td>
-                                                <td><input type="text" maxlength="15" placeholder="1~15자리" name="memberName" th:value="${memberEntity.memberName}"></td>
+                                                <td><input id="memberNameUpdate" class="form-control"  type="text" maxlength="15" placeholder="1~15자리"
+                                                        name="memberName" th:value="${memberEntity.memberName}">
+                                                    <p id="nameUpdatecheck"></p>
+                                                </td>
+
                                             </tr>
                                             <tr>
                                                 <td th:text="' (이메일) ' + ${memberEntity.getMemberEmail}"></td>
-                                                <td><input type="text" placeholder="@(포함)" maxlength="" name="memberEmail" th:value="${memberEntity.memberEmail}"></td>
+                                                <td><input id="memberEmail" class="form-control" type="text" placeholder="@(포함)" maxlength=""
+                                                        name="memberEmail" th:value="${memberEntity.memberEmail}">
+                                                    <p id="emailUpdatecheck"></p>
+                                                </td>
+
                                             </tr>
 
                                             <tr>
@@ -119,7 +145,11 @@
                                             </tr>
                                             <tr>
                                                 <td th:text="' (연락처) ' + ${memberEntity.getMemberPhone}"></td>
-                                                <td><input type="text" maxlength="12" placeholder="11~12자리" name="memberPhone" th:value="${memberEntity.memberPhone}"></td>
+                                                <td><input id="memberPhoneUpdate" class="form-control" type="text" maxlength="12" placeholder="11~12자리"
+                                                        name="memberPhone" th:value="${memberEntity.memberPhone}">
+                                                    <p id="phoneUpdatecheck"></p>
+                                                </td>
+
                                             </tr>
                                             <tr>
                                                 <td>포인트</td>
@@ -128,8 +158,10 @@
                                             <tr>
                                                 <td th:text="' (성별) ' + ${memberEntity.getMemberGender}"></td>
                                                 <td class="d-flex align-items-center">
-                                                    <input class="gendercheck col-1" type="radio" name="memberGender" id="msex1" value="남" checked="checked">남자
-                                                    <input class="gendercheck col-1" type="radio" name="memberGender" id="msex2" value="여">여자
+                                                    <input class="gendercheck col-1" type="radio" name="memberGender"
+                                                        id="msex1" value="남" checked="checked">남자
+                                                    <input class="gendercheck col-1" type="radio" name="memberGender"
+                                                        id="msex2" value="여">여자
                                                 </td>
 
                                             </tr>
@@ -140,22 +172,20 @@
                                             <tr>
                                                 <td></td>
 
-                                                <td class="">
-                                                    <div class="d-flex w-100" style="">
-                                                        <span style="display: inline-block;"><input
-                                                                style="width: 2rem !important;" type="checkbox" class=""
-                                                                name="infosign"></span>
-                                                        <span class="text-info fw-bold">*개인정보수집·이용에 동의합니다. *
-                                                        </span>
-                                                    </div>
-
-
-
+                                                <td class="">   <div class="d-flex w-100" style="">
+                                                    
+                                                    <span style="display: inline-block;"><input
+                                                            style="width: 2rem !important;" type="checkbox" class=""
+                                                            name="infosign"></span>
+                                                    <span class="text-info fw-bold">*개인정보수집·이용에 동의합니다. *
+                                                    </span>
+                                                </div></td>
+                                               
                                             </tr>
                                         </table>
 
                                         <div class="d-flex justify-content-center btninput">
-                                            <input class="form-control" type="submit" value="확인">
+                                            <input id="formsubmit" class="form-control" type="submit" value="확인">
                                             <input class="btnback" type="button" value="뒤로가기">
                                         </div>
                                     </form>
@@ -164,30 +194,38 @@
                         </div>
 
                         <!-- 예약내역 페이지 -->
-                        <div class="tab-pane fade" id="v-pills-reserveinfo" role="tabpanel" aria-labelledby="v-pills-reserveinfo-tab">
+                        <div class="tab-pane fade" id="v-pills-reserveinfo" role="tabpanel"
+                            aria-labelledby="v-pills-reserveinfo-tab">
                             <div class="row">
                                 예약내역
                             </div>
                         </div>
 
                         <!-- 회원삭제 -->
-                        <div class="tab-pane fade" id="v-pills-signout" role="tabpanel" aria-labelledby="v-pills-signout-tab">
+                        <div class="tab-pane fade" id="v-pills-signout" role="tabpanel"
+                            aria-labelledby="v-pills-signout-tab">
                         </div>
                     </div>
 
 
                     <!-- 모달 -->
-                    <div class="modal" tabindex="-1" id="modalmdelete" data-bs-keyboard="false" data-bs-backdrop="static">
+                    <div class="modal" tabindex="-1" id="modalmdelete" data-bs-keyboard="false"
+                        data-bs-backdrop="static">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content rounded-4 shadow">
                                 <div class="modal-body p-4 text-center">
                                     <h5 class="mb-0"> 회원탈퇴 </h5>
                                     <p class="mb-3" id="deletemsg"> 회원탈퇴시 포인트 사라집니다. 환불불가 !!! </p>
-                                    <input type="password" placeholder="비밀번호 확인" class="form-control" id="passwordconfirm">
+                                    <input type="password" placeholder="비밀번호 확인" class="form-control"
+                                        id="passwordconfirm">
                                 </div>
                                 <div class="modal-footer flex-nowrap p-0">
-                                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right" onclick="mdelete()"><strong> 탈퇴 합니다.</strong></button>
-                                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal"> 탈퇴 취소합니다.
+                                    <button type="button"
+                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"
+                                        onclick="mdelete()"><strong> 탈퇴 합니다.</strong></button>
+                                    <button type="button"
+                                        class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0"
+                                        data-bs-dismiss="modal"> 탈퇴 취소합니다.
                                     </button>
                                 </div>
                             </div>
@@ -200,12 +238,12 @@
     </div>
 
     <script>
-        $(document).ready(function() {
-            $(".btninfo").click(function() {
+        $(document).ready(function () {
+            $(".btninfo").click(function () {
                 $(".writebox").hide();
                 $(".rewritebox").fadeIn();
             });
-            $(".btnback").click(function() {
+            $(".btnback").click(function () {
                 $(".rewritebox").fadeOut();
                 $(".writebox").show();
             });
@@ -215,9 +253,9 @@
     <!-- 수정 유효성 -->
     <script>
         // 아이디 유효성 검사
-        $(function() {
+        $(function () {
             // 아이디 유효성 검사
-            $("#memberUpdateId").keyup(function() {
+            $("#memberUpdateId").keyup(function () {
                 // 해당 태그에 키보드가 눌렸을 때 이벤트 : keyup
                 var memberId = $("#memberUpdateId").val();
                 var idj = /^[a-z0-9]{5,15}$/; // 정규표현식
@@ -232,7 +270,7 @@
                             "memberId": memberId
                         },
                         method: "GET",
-                        success: function(result) {
+                        success: function (result) {
                             if (result == 1) {
                                 $("#idUpdateCheck").html("현재 사용중인 아이디입니다.");
                                 $("#idUpdateCheck").css('color', 'red');
@@ -248,7 +286,7 @@
             });
 
             // 패스워드 유효성검사
-            $("#memberUpdatePassword").keyup(function() {
+            $("#memberUpdatePassword").keyup(function () {
                 var pwj = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[~!@#$%^&*()+|=])[A-Za-z\d~!@#$%^&*()+|=]{8,15}$/;
                 // 영대소문자+숫자+특수문자[ !@#$%^&*()+|= ] 8~15포함
                 var memberUpdatePassword = $("#memberUpdatePassword").val();
@@ -264,12 +302,12 @@
             });
 
             // 이메일 유효성검사
-            $("#memberEmail").keyup(function() {
+            $("#memberEmail").keyup(function () {
                 var emailj = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
                 var memberEmail = $("#memberEmail").val();
                 if (!emailj.test(memberEmail)) {
-                    $("#emailUpdatechec").html("이메일 형식으로 입력해주세요");
-                    $("#emailUpdatechec").css('color', 'green');
+                    $("#emailUpdatecheck").html("이메일 형식으로 입력해주세요");
+                    $("#emailUpdatecheck").css('color', 'green');
                 } else {
                     // 이메일 중복체크 비동기 통신
                     $.ajax({
@@ -278,24 +316,24 @@
                             "memberEmail": memberEmail
                         },
                         method: "GET",
-                        success: function(result) {
-                                if (result == 1) {
-                                    $("#emailUpdatecheck").html("현재 사용중인 이메일 입니다.");
-                                    $("#emailUpdatecheck").css('color', 'red');
-                                    $("#emailUpdatecheck").css('font-weight', 'bold');
-                                } else {
-                                    $("#emailUpdatecheck").html("사용가능");
-                                    $("#emailUpdatecheck").css('color', 'blue');
-                                    $("#emailUpdatecheck").css('font-weight', 'bold');
-                                }
-                            } // success send
+                        success: function (result) {
+                            if (result == 1) {
+                                $("#emailUpdatecheck").html("현재 사용중인 이메일 입니다.");
+                                $("#emailUpdatecheck").css('color', 'red');
+                                $("#emailUpdatecheck").css('font-weight', 'bold');
+                            } else {
+                                $("#emailUpdatecheck").html("사용가능");
+                                $("#emailUpdatecheck").css('color', 'blue');
+                                $("#emailUpdatecheck").css('font-weight', 'bold');
+                            }
+                        } // success send
                     }); // ajax 함수  end
                 }
             });
 
 
             // 이름 유효성검사
-            $("#memberNameUpdate").keyup(function() {
+            $("#memberNameUpdate").keyup(function () {
                 var namej = /^[A-Za-z가-힣]{1,15}$/; // 이름 정규표현식
                 var memberName = $("#memberNameUpdate").val();
                 if (!namej.test(memberName)) {
@@ -311,7 +349,7 @@
             });
 
             // 연락처 유효성검사
-            $("#memberPhoneUpdate").keyup(function() {
+            $("#memberPhoneUpdate").keyup(function () {
                 var phonej = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/; // 연락처
                 var memberPhone = $("#memberPhoneUpdate").val();
                 if (!phonej.test(memberPhone)) {
@@ -326,9 +364,9 @@
                 }
             });
 
-            $("#formsubmit").click(function() {
+            $("#formsubmit").click(function () {
                 if (!$('input[name=infosign]').is(":checked")) {
-                    alert(" 개인정보처리방침 동의시 회원가입이 가능합니다 . ");
+                    alert(" 개인정보처리방침 동의시 회원정보수정이 가능합니다 . ");
                 } else if ($("#idUpdateCheck").html() != "사용가능") {
                     alert(" 아이디 불가능합니다 . ");
                 } else if ($("#passwordUpdatecheck").html() != "사용가능") {

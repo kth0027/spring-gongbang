@@ -151,7 +151,9 @@
                                     </li>
 
                                     <li class="mych" sec:authorize="isAuthenticated()">
-                                        <a class="nav-link" th:href="@{'/member/channel/' + ${memberEntity.memberNo} }" style="text-decoration: none;">
+                                        <!-- 기존코드 오류 학인 주석 -->
+<!--                                        <a class="nav-link" th:if="${session.logindto != null }" th:href="@{/member/info}" th:href="@{'/member/channel/' + ${memberEntity.memberNo} }" style="text-decoration: none;">-->
+                                        <a class="nav-link" th:if="${session.logindto != null }" th:href="@{/member/info + ${memberEntity.memberNo} }" style="text-decoration: none;">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 0 48 48" width="48">
                                                 <path
                                                     d="M8 28h8v-8h-8v8zm0 10h8v-8h-8v8zm0-20h8v-8h-8v8zm10 10h24v-8h-24v8zm0 10h24v-8h-24v8zm0-28v8h24v-8h-24z" />

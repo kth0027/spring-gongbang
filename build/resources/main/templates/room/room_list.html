@@ -42,7 +42,11 @@
 <div class="wrap">
     <div class="container">
         <div class="row ">
-            <div th:if="${listSize == 0}" style="margin-top: 5.0rem;">개설된 강의가 없습니다 ㅜ.ㅜ</div>
+            <div th:if="${listSize == 0}" style="margin-top: 5.0rem;">
+
+                개설된 강의가 없습니다 ㅜ.ㅜ
+
+            </div>
             <!-- 룸 1개당 반복문-->
             <div th:if="${listSize != 0}" class="col-md-6 leftcontents" style="margin-top: 2rem;">
                 <div class="roomlist" th:each="room : ${roomEntities}" th:if="${room.roomStatus.equals('승인완료')}">

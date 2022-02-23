@@ -59,17 +59,22 @@ public class ReplyService {
         if (files.size() != 0) {
             for (MultipartFile file : files) {
                 UUID uuid = UUID.randomUUID();
-                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
+                uuidfile = uuid.toString() + "_"
+                        + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
 
                 // 인텔리 전용 경로
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\replyimg";
-                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\replyimg";
-
+                // String dir =
+                // "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\replyimg";
 
                 // VSCIDE 전용
-//                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\replyimg";
+                // String dir =
+                // "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\replyimg";
+                // 집
+                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\src\\main\\resources\\static\\replyimg";
                 // 리눅스 경로
-                // String dir = "/home/ec2-user/apps/gongbang/build/resources/main/static/replyimg";
+                // String dir =
+                // "/home/ec2-user/apps/gongbang/build/resources/main/static/replyimg";
 
                 String filepath = dir + "/" + uuidfile;
                 try {

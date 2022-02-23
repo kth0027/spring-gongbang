@@ -46,7 +46,7 @@ public class RoomService {
 
     @Transactional
     public boolean registerClass(RoomEntity roomEntity,
-            List<MultipartFile> files) {
+                                 List<MultipartFile> files) {
         // 1. 등록하려는 회원 번호 : 세션 정보
         HttpSession session = request.getSession();
         MemberDto memberDto = (MemberDto) session.getAttribute("logindto");
@@ -78,9 +78,12 @@ public class RoomService {
 
                 // 인텔리전용
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
-                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\roomimg";
+                // String dir =
+                // "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\roomimg";
                 // VSCIDE 전용
-//                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\roomimg";
+                // String dir =
+                // "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\roomimg";
+                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\src\\main\\resources\\static\\roomimg";
                 // 리눅스 전용
                 // String dir = "/home/ec2-user/gongbang/src/main/resources/static/rooming";
 
@@ -130,7 +133,7 @@ public class RoomService {
     // @Param local : 검색창에서 선택한 지역
     // @Param category : 검색창에서 선택한 카테고리
     public Page<RoomEntity> getRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local,
-            String category) {
+                                                  String category) {
 
         // 페이지번호
         int page = 0;
@@ -385,7 +388,7 @@ public class RoomService {
     // @Param local : 검색창에서 선택한 지역
     // @Param category : 검색창에서 선택한 카테고리
     public Page<RoomEntity> adminGetRoomEntityBySearch(@PageableDefault Pageable pageable, String keyword, String local,
-            String category) {
+                                                       String category) {
 
         // 페이지번호
         int page = 0;
@@ -495,11 +498,14 @@ public class RoomService {
                 // >> 서버에 저장
                 // 인텔리제이 전용
                 // String dir = "C:\\gongbang\\build\\resources\\main\\static\\roomimg";
-                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\roomimg";
+                // String dir = "C:\\Users\\pc\\git\\spring-gongbang\\build\\resources\\main\\static\\roomimg";
                 // VSCIDE 전용
-//                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\roomimg";
+                // String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\roomimg";
+                // vscdo 집
+                String dir = "C:\\Users\\pc\\git\\spring-gongbang\\src\\main\\resources\\static\\roomimg";
                 // 리눅스 경로
-                // String dir = "/home/ec2-user/apps/gongbang/build/resources/main/static/roomimg";
+                // String dir =
+                // "/home/ec2-user/apps/gongbang/build/resources/main/static/roomimg";
 
                 // 3. 저장될 파일의 전체 [현재는 절대]경로
                 // 3.1 프로젝트 경로를 맞춘다.

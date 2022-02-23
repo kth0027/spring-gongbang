@@ -43,11 +43,10 @@ public class PostService {
     @Autowired
     private PostImgRepository postImgRepository;
 
-
     // 작성된 게시물 리스트 불러오기
     public Page<PostEntity> getPostList(int boardNo,
-                                        @PageableDefault Pageable pageable) {
-        //페이지번호
+            @PageableDefault Pageable pageable) {
+        // 페이지번호
         int page = 0;
         if (pageable.getPageNumber() != 0) {
             page = pageable.getPageNumber() - 1;
@@ -76,7 +75,6 @@ public class PostService {
         post.setMemberEntity(memberEntity);
         post.setBoardEntity(boardEntity);
 
-
         // 2. 엔티티를 db에 저장시킨다. [현재 db에 들어가지를 않는다. 대체 왜?]
         int postNo = postRepository.save(post).getPostNo();
         // DB 에 저장된 PostEntity 를 호출한다.
@@ -85,7 +83,6 @@ public class PostService {
         if (postRepository.findById(postNo).isPresent()) {
             savedPostEntity = postRepository.findById(postNo).get();
         }
-
 
         memberEntity.getPostEntities().add(savedPostEntity);
         boardEntity.getPostEntities().add(savedPostEntity);
@@ -97,9 +94,16 @@ public class PostService {
             for (MultipartFile file : files) {
                 System.out.println("[개별 파일]" + file.toString());
                 UUID uuid = UUID.randomUUID();
-                uuidfile = uuid.toString() + "_" + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
+                uuidfile = uuid.toString() + "_"
+                        + Objects.requireNonNull(file.getOriginalFilename()).replaceAll("_", "-");
 
-                String dir = "/home/ec2-user/apps/gongbang/build/resources/main/static/postimg";
+                // 리눅스
+                // String dir =
+                // "/home/ec2-user/apps/gongbang/build/resources/main/static/postimg";
+
+                // VSCIDE 전용
+                String dir = "C:\\Users\\505\\git\\gongbang\\build\\resources\\main\\static\\postimg";
+                
                 String filepath = dir + "/" + uuidfile;
 
                 try {
@@ -219,6 +223,5 @@ public class PostService {
         return true;
 
     }
-
 
 }
